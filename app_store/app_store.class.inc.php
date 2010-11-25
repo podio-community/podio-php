@@ -7,11 +7,22 @@ class AppStoreAPI {
   }
   
   public function getTopApps($locale, $limit = 5) {
-    if ($response = $this->podio->request('/app_store/top/'.$locale.'/v2/', array('limit' => $limit, 'offset' => 0))) {
+    if ($response = $this->podio->request('/app_store/top/'.$locale.'/', array('limit' => $limit, 'offset' => 0))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
   public function getAppsByCategory($locale, $category, $limit = 100, $offset = 0) {
+    if ($response = $this->podio->request('/app_store/'.$category.'/'.$locale.'/', array('limit' => $limit, 'offset' => $offset))) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  public function getTopAppsV2($locale, $limit = 5) {
+    if ($response = $this->podio->request('/app_store/top/'.$locale.'/v2/', array('limit' => $limit, 'offset' => 0))) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  public function getAppsByCategoryV2($locale, $category, $limit = 100, $offset = 0) {
     if ($response = $this->podio->request('/app_store/'.$category.'/'.$locale.'/v2/', array('limit' => $limit, 'offset' => $offset))) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -41,6 +52,12 @@ class AppStoreAPI {
     }
   }
   public function install($app_id, $space_id) {
+    if ($response = $this->podio->request('/app_store/'.$app_id.'/install/', array('space_id' => $space_id), HTTP_Request2::METHOD_POST)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  public function installV2($app_id, $space_id) {
     if ($response = $this->podio->request('/app_store/'.$app_id.'/install/v2', array('space_id' => $space_id), HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
