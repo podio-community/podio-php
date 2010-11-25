@@ -52,7 +52,7 @@ class AppStoreAPI {
     }
   }
   public function install($app_id, $space_id) {
-    if ($response = $this->podio->request('/app_store/'.$app_id.'/install/', array('space_id' => $space_id), HTTP_Request2::METHOD_POST)) {
+    if ($response = $this->podio->request('/app_store/'.$app_id.'/install', array('space_id' => $space_id), HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
