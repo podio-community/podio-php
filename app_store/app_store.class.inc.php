@@ -69,7 +69,7 @@ class AppStoreAPI {
   }
 
   public function getSharedApp($share_id) {
-    if ($response = $this->podio->request('/app_store/'.$share_id)) {
+    if ($response = $this->podio->request('/app_store/'.$share_id . '/v2')) {
       return json_decode($response->getBody(), TRUE);
     }
   }
