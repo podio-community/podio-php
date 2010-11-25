@@ -25,6 +25,11 @@ class AppStoreAPI {
     }
     return $list;
   }
+  public function getOwn() {
+    if ($response = $this->podio->request('/app_store/own/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
   public function getAppsByAuthor($locale, $author, $limit = 100) {
     if ($response = $this->podio->request('/app_store/author/'.$author.'/'.$locale.'/', array('limit' => $limit, 'offset' => 0))) {
       return json_decode($response->getBody(), TRUE);
