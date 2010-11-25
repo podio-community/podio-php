@@ -91,16 +91,17 @@ class PodioBaseAPI {
   protected $last_error;
   private static $instance;
 
-  private function __construct($url, $client_id, $client_secret, $frontend_token = '') {
+  private function __construct($url, $client_id, $client_secret, $upload_end_point, $frontend_token = '') {
     $this->url = $url;
     $this->client_id = $client_id;
     $this->secret = $client_secret;
     $this->frontend_token = $frontend_token;
+    $this->upload_end_point = $upload_end_point;
   }
 
-  public static function instance($url = '', $client_id = '', $client_secret = '', $frontend_token = '') {
+  public static function instance($url = '', $client_id = '', $client_secret = '', $upload_end_point = '', $frontend_token = '') {
     if (!self::$instance) {
-      self::$instance = new PodioBaseAPI($url, $client_id, $client_secret, $frontend_token);
+      self::$instance = new PodioBaseAPI($url, $client_id, $client_secret, $upload_end_point, $frontend_token);
     }
     return self::$instance;
   }
@@ -119,7 +120,57 @@ class PodioBaseAPI {
   public function getError() {
     return $this->last_error;
   }
-	
+  
+  /**
+   * Upload a file for later use.
+   */
+  public function upload($file, $name) {
+    $logger = &Log::singleton('error_log', '', 'HTTP_UPLOAD');
+    $oauth = PodioOAuth::instance();
+    $request = new HTTP_Request2($this->upload_end_point, HTTP_Request2::METHOD_POST, array(
+      'ssl_verify_peer'   => false,
+      'ssl_verify_host'   => false
+    ));
+
+    $request->setConfig('use_brackets', FALSE);
+    $request->setConfig('follow_redirects', TRUE);
+    $request->setHeader('User-Agent', 'Podio API Client/1.0');
+    $request->setHeader('Accept', 'application/json');
+    $request->setHeader('AccessToken', $oauth->access_token);
+    $request->setHeader('RefreshToken', $oauth->refresh_token);
+    
+    $request->addUpload('file', $file);
+    $request->addPostParameter('name', $name);
+
+    try {
+        $response = $request->send();
+        switch ($response->getStatus()) {
+          case 200 : 
+          case 201 : 
+          case 204 : 
+            return json_decode($response->getBody(), TRUE);
+            break;
+          case 401 : 
+          case 400 : 
+          case 403 : 
+          case 404 : 
+          case 410 : 
+          case 500 : 
+          case 503 : 
+            $logger->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
+            $logger->log('*** '.$response->getBody(), PEAR_LOG_ERR);
+            $this->last_error = json_decode($response->getBody(), TRUE);
+            return FALSE;
+            break;
+          default : 
+            break;
+        }
+    } catch (HTTP_Request2_Exception $e) {
+      $logger->log($e->getMessage(), PEAR_LOG_ERR);
+    }
+    
+  }
+  
   /**
    * Build and perform the request.
    */
