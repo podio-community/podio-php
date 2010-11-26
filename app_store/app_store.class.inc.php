@@ -79,5 +79,11 @@ class AppStoreAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+
+  public function getShareDependencies($share_id) {
+    if ($response = $this->podio->request('/app_store/'.$share_id.' /dependencies')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
 }
 
