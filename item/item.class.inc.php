@@ -115,7 +115,7 @@ class ItemAPI {
   }
 
 
-  public function create($data, $user_id) {
+  public function create($data, $user_id = 0) {
     $app_id = $data['app_id'];
     unset($data['app_id']);
     if ($response = $this->podio->request('/item/app/'.$app_id.'/', $data, HTTP_Request2::METHOD_POST)) {
