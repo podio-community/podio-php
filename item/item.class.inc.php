@@ -127,7 +127,7 @@ class ItemAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  public function delete($item_id, $user_id) {
+  public function delete($item_id, $user_id = '') {
     if ($response = $this->podio->request('/item/'.$item_id, array(), HTTP_Request2::METHOD_DELETE)) {
       if ($response->getStatus() == '204') {
         return TRUE;
