@@ -80,6 +80,15 @@ class AppStoreAPI {
     }
   }
 
+  public function unshare($share_id) {
+    if ($response = $this->podio->request('/app_store/'.$share_id, array(), HTTP_Request2::METHOD_DELETE)) {
+      if ($response->getStatus() == '204') {
+        return TRUE;
+      }
+      return FALSE;
+    }
+  }
+
   public function getShareDependencies($share_id) {
     if ($response = $this->podio->request('/app_store/'.$share_id.'/dependencies/')) {
       return json_decode($response->getBody(), TRUE);
