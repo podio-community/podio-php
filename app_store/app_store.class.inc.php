@@ -94,5 +94,12 @@ class AppStoreAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+
+  public function getFeaturedApp($language) {
+    if ($response = $this->podio->request('/app_store/featured/'.$language)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
 }
 
