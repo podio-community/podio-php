@@ -79,6 +79,11 @@ class AppStoreAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+  public function update($share_id, $abstract, $description, $language, $category_ids, $file_ids) {
+    if ($response = $this->podio->request('/app_store/'.$share_id, array('abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids'=> $category_ids, 'file_ids' => $file_ids ), HTTP_Request2::METHOD_PUT)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
 
   public function unshare($share_id) {
     if ($response = $this->podio->request('/app_store/'.$share_id, array(), HTTP_Request2::METHOD_DELETE)) {
