@@ -27,6 +27,11 @@ class AppStoreAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+  public function search($locale, $words) {
+    if ($response = $this->podio->request('/app_store/search/'.$locale.'/', array('texts' => $words, 'limit' => 30, 'offset' => 0))) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
   public function getCategories() {
     static $list;
     if (!$list) {
