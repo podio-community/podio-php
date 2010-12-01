@@ -22,13 +22,13 @@ class AppStoreAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  public function getAppsByCategoryV2($locale, $category, $limit = 100, $offset = 0) {
+  public function getAppsByCategoryV2($locale, $category, $limit = 30, $offset = 0) {
     if ($response = $this->podio->request('/app_store/'.$category.'/'.$locale.'/v2/', array('limit' => $limit, 'offset' => $offset))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  public function search($locale, $words) {
-    if ($response = $this->podio->request('/app_store/search/'.$locale.'/', array('texts' => $words, 'limit' => 30, 'offset' => 0))) {
+  public function search($locale, $words, $limit = 30, $offset = 0) {
+    if ($response = $this->podio->request('/app_store/search/'.$locale.'/', array('texts' => $words, 'limit' => $limit, 'offset' => $offset))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
