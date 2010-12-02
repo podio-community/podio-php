@@ -201,6 +201,7 @@ class PodioBaseAPI {
       '/user/activate_user',
       '/user/recover_password',
       '/user/reset_password',
+      '/space/invite/decline',
     );
     if (!($url == '/user/' && $method == HTTP_Request2::METHOD_POST) && !in_array($url, $no_token_list)) {
       
