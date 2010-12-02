@@ -26,7 +26,7 @@ class RatingAPI {
   public function get($item_id, $type, $user_id = NULL) {
     static $list;
 
-    $url = '/rating/item/'.$item_id.'/'.$type;
+    $url = '/rating/item/'.$type.'/'.$item_id;
     if ($user_id) {
       $url .= '/'.$user_id;
     }
