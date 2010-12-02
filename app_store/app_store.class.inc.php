@@ -62,8 +62,8 @@ class AppStoreAPI {
     }
   }
 
-  public function installV2($app_id, $space_id) {
-    if ($response = $this->podio->request('/app_store/'.$app_id.'/install/v2', array('space_id' => $space_id), HTTP_Request2::METHOD_POST)) {
+  public function installV2($app_id, $space_id, $dependencies) {
+    if ($response = $this->podio->request('/app_store/'.$app_id.'/install/v2', array('space_id' => $space_id, 'dependencies' => $dependencies), HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
