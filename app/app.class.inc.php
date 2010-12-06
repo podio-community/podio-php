@@ -11,7 +11,7 @@ class AppAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  public function update($app_id, $data = array(), $user_id) {
+  public function update($app_id, $data = array(), $user_id = 0) {
     if ($response = $this->podio->request('/app/'.$app_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
     }
