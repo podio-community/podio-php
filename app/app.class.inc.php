@@ -16,6 +16,23 @@ class AppAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+  public function activate($app_id) {
+    if ($response = $this->podio->request('/app/'.$app_id.'/activate', array(), HTTP_Request2::METHOD_POST)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  public function deactivate($app_id) {
+    if ($response = $this->podio->request('/app/'.$app_id.'/deactivate', array(), HTTP_Request2::METHOD_POST)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  public function delete($app_id) {
+    if ($response = $this->podio->request('/app/'.$app_id, array(), HTTP_Request2::METHOD_DELETE)) {
+      if ($response->getStatus() == '204') {
+        return TRUE;
+      }
+    }
+  }
   public function getField($app_id, $field_id) {
     if ($response = $this->podio->request('/app/'.$app_id.'/field/'.$field_id)) {
       return json_decode($response->getBody(), TRUE);
@@ -33,6 +50,16 @@ class AppAPI {
       
     }
     return $list[$key];
+  }
+  public function getDependencies($app_id) {
+    if ($response = $this->podio->request('/app/'.$app_id.'/dependencies/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  public function getFeatures($app_ids, $include_space) {
+    if ($response = $this->podio->request('/app/features/', array('app_ids' => implode(',', $app_ids), 'include_space' => $include_space))) {
+      return json_decode($response->getBody(), TRUE);
+    }
   }
   public function getSpaceApps($space_id) {
     static $list;
