@@ -23,23 +23,23 @@ class AppStoreAPI
         }
     }
 
-    public function getTopAppsV2($locale, $limit = 5)
+    public function getTopAppsV2($locale, $sort = 'name', $type = '', $limit = 5)
     {
-        if ($response = $this->podio->request('/app_store/top/' . $locale . '/v2/', array('limit' => $limit, 'offset' => 0))) {
+        if ($response = $this->podio->request('/app_store/top/v2/', array('type' => $type, 'language' => $locale, 'sort' => $sort, 'limit' => $limit, 'offset' => 0))) {
             return json_decode($response->getBody(), TRUE);
         }
     }
 
-    public function getAppsByCategoryV2($locale, $category, $limit = 30, $offset = 0)
+    public function getAppsByCategoryV2($locale, $category, $sort = 'name', $type = '', $limit = 30, $offset = 0)
     {
-        if ($response = $this->podio->request('/app_store/' . $category . '/' . $locale . '/v2/', array('limit' => $limit, 'offset' => $offset))) {
+        if ($response = $this->podio->request('/app_store/category/' . $category . '/', array('language' => $locale, 'type' => $type, 'limit' => $limit, 'offset' => $offset, 'sort' => $sort))) {
             return json_decode($response->getBody(), TRUE);
         }
     }
 
-    public function search($locale, $words, $limit = 30, $offset = 0)
+    public function search($locale, $words, $sort = 'name', $type = '', $limit = 30, $offset = 0)
     {
-        if ($response = $this->podio->request('/app_store/search/' . $locale . '/', array('texts' => $words, 'limit' => $limit, 'offset' => $offset))) {
+        if ($response = $this->podio->request('/app_store/search/', array('texts' => $words, 'language' => $locale, 'sort' => $sort, 'type' => $type, 'limit' => $limit, 'offset' => $offset))) {
             return json_decode($response->getBody(), TRUE);
         }
     }
@@ -139,9 +139,9 @@ class AppStoreAPI
         }
     }
 
-    public function getFeaturedApp($language)
+    public function getFeaturedApp($language, $type = '')
     {
-        if ($response = $this->podio->request('/app_store/featured/' . $language)) {
+        if ($response = $this->podio->request('/app_store/featured', array('language' => $language, 'type' => $type))) {
             return json_decode($response->getBody(), TRUE);
         }
     }
