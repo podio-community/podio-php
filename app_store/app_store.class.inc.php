@@ -106,7 +106,18 @@ class AppStoreAPI
 
     public function shareApp($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $parent_id = NULL)
     {
-        $request_data = array('app_id' => $app_id, 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'parent' => $parent_id , 'features' => array());
+        $request_data = array('ref_id' => $app_id, 'ref_type' => 'app', 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'parent' => $parent_id , 'features' => array());
+        if ($features) {
+            $request_data['features'] = $features;
+        }
+        if ($response = $this->podio->request('/app_store/', $request_data, HTTP_Request2::METHOD_POST)) {
+            return json_decode($response->getBody(), TRUE);
+        }
+    }
+
+    public function sharePack($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $parent_id = NULL)
+    {
+        $request_data = array('ref_id' => $app_id, 'ref_type' => 'space', 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'parent' => $parent_id , 'features' => array());
         if ($features) {
             $request_data['features'] = $features;
         }
