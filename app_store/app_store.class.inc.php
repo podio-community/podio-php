@@ -37,10 +37,10 @@ class AppStoreAPI {
     }
   }
 
-  public function getCategories() {
+  public function getCategories($language) {
     static $list;
     if (!$list) {
-      if ($response = $this->podio->request('/app_store/category/')) {
+      if ($response = $this->podio->request('/app_store/category/', array('language' => $language))) {
         $list = json_decode($response->getBody(), TRUE);
       }
     }
