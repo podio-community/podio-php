@@ -23,9 +23,9 @@ class AppStoreAPI
         }
     }
 
-    public function getTopAppsV2($locale, $sort = 'name', $type = '', $limit = 5)
+    public function getTopAppsV2($locale, $type = '', $limit = 5)
     {
-        if ($response = $this->podio->request('/app_store/top/v2/', array('type' => $type, 'language' => $locale, 'sort' => $sort, 'limit' => $limit, 'offset' => 0))) {
+        if ($response = $this->podio->request('/app_store/top/v2/', array('type' => $type, 'language' => $locale, 'limit' => $limit, 'offset' => 0))) {
             return json_decode($response->getBody(), TRUE);
         }
     }
@@ -129,13 +129,6 @@ class AppStoreAPI
                 return TRUE;
             }
             return FALSE;
-        }
-    }
-
-    public function getShareDependencies($share_id)
-    {
-        if ($response = $this->podio->request('/app_store/' . $share_id . '/dependencies/')) {
-            return json_decode($response->getBody(), TRUE);
         }
     }
 
