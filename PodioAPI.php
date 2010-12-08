@@ -205,7 +205,7 @@ class PodioBaseAPI {
     );
     if (!($url == '/user/' && $method == HTTP_Request2::METHOD_POST) && !in_array($url, $no_token_list)) {
       
-      if (!$oauth->access_token) {
+      if (!$oauth->access_token && !(substr($url, 0, 6) == '/file/' && substr($url, -9) == '/location')) {
         // $logger->log('No access token. Returning FALSE: '.$url, PEAR_LOG_ERR);
         return FALSE;
       }
