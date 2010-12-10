@@ -37,14 +37,18 @@ class AppStoreAPI {
     }
   }
 
-  public function getCategories($language) {
+  public function getCategories($language = NULL) {
     static $list;
-    if (!$list) {
-      if ($response = $this->podio->request('/app_store/category/', array('language' => $language))) {
-        $list = json_decode($response->getBody(), TRUE);
+    
+    $key = $language ? $language : 'no-language';
+    $data = $language ? array('language' => $language) : array();
+    
+    if (!$list[$key]) {
+      if ($response = $this->podio->request('/app_store/category/', $data)) {
+        $list[$key] = json_decode($response->getBody(), TRUE);
       }
     }
-    return $list;
+    return $list[$key];
   }
 
   public function getOwn() {
