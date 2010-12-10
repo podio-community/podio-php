@@ -89,8 +89,8 @@ class AppStoreAPI {
     }
   }
 
-  public function shareApp($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $parent_id = NULL) {
-    $request_data = array('ref_id' => $app_id, 'ref_type' => 'app', 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'parent' => $parent_id , 'features' => array());
+  public function shareApp($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array()) {
+    $request_data = array('ref_id' => $app_id, 'ref_type' => 'app', 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array());
     if ($features) {
       $request_data['features'] = $features;
     }
