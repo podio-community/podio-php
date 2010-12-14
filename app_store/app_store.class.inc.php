@@ -103,8 +103,8 @@ class AppStoreAPI {
     }
   }
 
-  public function sharePack($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $parent_id = NULL) {
-    $request_data = array('ref_id' => $app_id, 'ref_type' => 'space', 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'parent' => $parent_id , 'features' => array());
+  public function sharePack($app_id, $title, $abstract, $description, $language, $category_ids, $file_ids, $features, $parent_id = NULL) {
+    $request_data = array('ref_id' => $app_id, 'ref_type' => 'space', 'name' => $title, 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'parent' => $parent_id , 'features' => array());
     if ($features) {
       $request_data['features'] = $features;
     }
