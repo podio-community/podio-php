@@ -18,8 +18,8 @@ class FileAPI {
     }
 	}
 	
-  public function getLocation($id) {
-    if ($response = $this->podio->request('/file/'.$id.'/location')) {
+  public function getLocation($file_id) {
+    if ($response = $this->podio->request('/file/'.$file_id.'/location')) {
       return json_decode($response->getBody(), TRUE);
     }
   }
