@@ -191,6 +191,7 @@ class PodioBaseAPI {
     $request->setConfig('follow_redirects', TRUE);
     $request->setHeader('User-Agent', 'Podio API Client/1.0');
     $request->setHeader('Accept', 'application/json');
+    $request->setHeader('Accept-Encoding', 'gzip');
     $location = $request->getUrl();
     
     // These URLs can be called without an access token.
