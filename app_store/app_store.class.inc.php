@@ -31,6 +31,12 @@ class AppStoreAPI {
     }
   }
 
+  public function getAppsByReference($ref_type, $ref_id) {
+    if ($response = $this->podio->request('/app_store/' . $ref_type . '/' . $ref_id . '/', array())) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
   public function search($locale, $words, $sort = 'name', $type = '', $limit = 30, $offset = 0) {
     if ($response = $this->podio->request('/app_store/search/', array('texts' => $words, 'language' => $locale, 'sort' => $sort, 'type' => $type, 'limit' => $limit, 'offset' => $offset))) {
       return json_decode($response->getBody(), TRUE);
