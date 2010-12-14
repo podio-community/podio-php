@@ -56,6 +56,13 @@ class AppAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+
+  public function getSpaceAppDependencies($space_id) {
+    if ($response = $this->podio->request('/app/space/'.$space_id.'/dependencies/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
   public function getFeatures($app_ids, $include_space) {
     if ($response = $this->podio->request('/app/features/', array('app_ids' => implode(',', $app_ids), 'include_space' => $include_space))) {
       return json_decode($response->getBody(), TRUE);
