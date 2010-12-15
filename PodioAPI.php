@@ -293,7 +293,7 @@ class PodioBaseAPI {
             break;
           case 401 : 
             $body = json_decode($response->getBody(), TRUE);
-            if (strstr($body['error'], 'expired_token')) {
+            if (strstr($body['error_description'], 'expired_token')) {
               if ($oauth->refresh_token) {
                 // $logger->log('Refreshing access token using: '.$oauth->refresh_token);
                 // Access token is expired. Try to refresh it.
