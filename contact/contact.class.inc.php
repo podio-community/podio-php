@@ -28,14 +28,10 @@ class ContactAPI {
     }
     return $list;
   }
-  public function getTopContacts($limit) {
-    static $list;
-    if (!isset($list)) {
-      if ($response = $this->podio->request('/contact/top/', array('limit' => $limit))) {
-        $list = json_decode($response->getBody(), TRUE);
-      }
+  public function getTopContacts($limit, $type = 'mini') {
+    if ($response = $this->podio->request('/contact/top/', array('limit' => $limit, 'type' => $type))) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list;
   }
   public function getContacts($type = 'all', $ref_id = NULL, $format = 'mini', $order = NULL, $limit = NULL) {
     static $list;
