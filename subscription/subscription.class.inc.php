@@ -7,7 +7,7 @@ class SubscriptionAPI {
   }
 
   public function create($ref_type, $ref_id) {
-    if ($response = $this->podio->request('/subscription/'.$ref_type.'/'.$ref_id, array('frequency' => 'immediately'), HTTP_Request2::METHOD_POST)) {
+    if ($response = $this->podio->request('/subscription/'.$ref_type.'/'.$ref_id, array(), HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
