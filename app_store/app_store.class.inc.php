@@ -58,7 +58,7 @@ class AppStoreAPI {
   }
 
   public function getOwn() {
-    if ($response = $this->podio->request('/app_store/own/')) {
+    if ($response = $this->podio->request('/app_store/own/', array('limit' => 99))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
