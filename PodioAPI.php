@@ -211,7 +211,9 @@ class PodioBaseAPI {
         return FALSE;
       }
       
-      $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
+      if ($oauth->access_token) {
+        $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
+      }
     }
     
     // $parsed = parse_url($request->getUrl());
