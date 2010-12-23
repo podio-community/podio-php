@@ -28,6 +28,12 @@ class ContactAPI {
     }
     return $list;
   }
+
+  public function getContact($user_id) {
+    if ($response = $this->podio->request('/contact//' . $user_id)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
   public function getTopContacts($limit, $type = 'mini') {
     if ($response = $this->podio->request('/contact/top/', array('limit' => $limit, 'type' => $type))) {
       return json_decode($response->getBody(), TRUE);
