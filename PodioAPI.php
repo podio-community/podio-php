@@ -27,7 +27,7 @@ require_once('widget/widget.class.inc.php');
 require_once('filter/filter.class.inc.php');
 
 /**
- * Primary Hoist API implementation class.
+ * Primary Podio API implementation class.
  */
 class PodioAPI {
 	
@@ -182,11 +182,7 @@ class PodioBaseAPI {
     ));
     
     $logger = &Log::singleton('error_log', '', 'HTTP_REQUEST');
-    //$logger->log($url.' *** '.print_r($data, true));
-    // $logger->log('Making request to: '.$url);
-    // $logger->log('Making request using: '.$oauth->access_token);
-    
-    // $request->setMethod($method);
+
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);
     $request->setHeader('User-Agent', 'Podio API Client/1.0');
@@ -207,7 +203,6 @@ class PodioBaseAPI {
     if (!($url == '/user/' && $method == HTTP_Request2::METHOD_POST) && !in_array($url, $no_token_list)) {
       
       if (!$oauth->access_token && !(substr($url, 0, 6) == '/file/' && substr($url, -9) == '/location')) {
-        // $logger->log('No access token. Returning FALSE: '.$url, PEAR_LOG_ERR);
         return FALSE;
       }
       
@@ -215,16 +210,6 @@ class PodioBaseAPI {
         $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
       }
     }
-    
-    // $parsed = parse_url($request->getUrl());
-    // $query = array();
-    // parse_str($parsed['query'], $query);
-    // unset($query['oauth_token']);
-    // $q_str = array();
-    // foreach ($query as $k => $v) {
-    //   $q_str[] = $k.'='.$v;
-    // }
-
     
     switch ($method) {
       case HTTP_Request2::METHOD_GET : 
@@ -234,14 +219,8 @@ class PodioBaseAPI {
             $location->setQueryVariable($key, $value);
           }
         }
-        
-        // $get = &Log::singleton('error_log', '', $request->getMethod());
-        // $get->log($_SERVER['REQUEST_URI'] . ' --- ' . $parsed['path'] . '?' . implode('&', $q_str), PEAR_LOG_ERR);
-        
         break;
       case HTTP_Request2::METHOD_DELETE : 
-        // $del = &Log::singleton('error_log', '', $request->getMethod());
-        // $del->log($_SERVER['REQUEST_URI'] . ' --- ' . $parsed['path'] . '?' . implode('&', $q_str), PEAR_LOG_ERR);
         $request->setHeader('Content-type', 'application/x-www-form-urlencoded');
         if (is_array($data)) {
           foreach ($data as $key => $value) {
@@ -273,12 +252,6 @@ class PodioBaseAPI {
 
     try {
         $response = $request->send();
-        // $logger->log($request->getUrl() . ' *** Duration: '.(microtime()-$start));
-        // $logger->log(microtime()-$start);
-        
-        // $logger->log(print_r($response, true));
-      
-
         switch ($response->getStatus()) {
           case 200 : 
             return $response;
@@ -297,7 +270,6 @@ class PodioBaseAPI {
             $body = json_decode($response->getBody(), TRUE);
             if (strstr($body['error_description'], 'expired_token')) {
               if ($oauth->refresh_token) {
-                // $logger->log('Refreshing access token using: '.$oauth->refresh_token);
                 // Access token is expired. Try to refresh it.
                 $grant_data = array(
                   'grant_type' => 'refresh_token',
@@ -308,49 +280,37 @@ class PodioBaseAPI {
 
                 $new = $this->getAccessToken($grant_data);
                 if ($new) {
-                  // $logger->log('Access token refreshed with success. Trying original request.');
-                  
                   $oauth = PodioOAuth::instance();
                   $oauth->access_token = $new['access_token'];
                   $oauth->refresh_token = $new['refresh_token'];
 
                   // Try the original request again.
                   return $this->request($url, $data, $method);
-
                 }
                 else {
-                  // $logger->log('Refresh request failed.');
                   // New token could not be fetched. Log user out.
                   $oauth->throw_error('refresh_failed', 'Refreshing access token failed.');
-                  // user_logout();
                 }
               }
               else {
                 // We have tried in vain to get a new access token. Log the user out.
                 $oauth->throw_error('no_refresh_token', 'No refresh token available.');
-                // user_logout();
               }
             }
             elseif (strstr($body['error'], 'invalid_token') || strstr($body['error'], 'invalid_request')) {
               // Access token is invalid. Log the user out and try again.
               $oauth->throw_error('invalid_token', 'Invalid token.');
-              // user_logout();
             }
             break;
           case 400 : 
             if ($url != '/oauth/token') {
               $body = json_decode($response->getBody(), TRUE);
               if (strstr($body['error'], 'invalid_grant') && $url != 'oauth/token') {
-
-                // $logger->log('Hitting invalid grant. Logging out.');
-
                 $oauth = PodioOAuth::instance();
                 $oauth->access_token = '';
                 $oauth->refresh_token = '';
 
                 $oauth->throw_error('invalid_grant', 'Invalid grant.');
-
-                // user_logout();
                 break;
               }
             }
