@@ -41,9 +41,6 @@ class ContactAPI {
   }
   public function getContacts($type = 'all', $ref_id = NULL, $format = 'mini', $order = NULL, $limit = NULL) {
     static $list;
-
-    //$logger = &Log::singleton('error_log', '', 'HTTP_REQUEST');
-
     $key = $type . '_' . $ref_id . '_' . $format . '_' . $order . '_' . $limit;
     if ($type != 'all' && !$ref_id) {
       return FALSE;
@@ -64,7 +61,6 @@ class ContactAPI {
     $requestData['order'] = $order;
     $requestData['limit'] = $limit;
 
-    //$logger->log(' *** '.print_r($requestData, true));
     if (!$list[$key]) {
       if ($response = $this->podio->request($url, $requestData)) {
         $list[$key] = json_decode($response->getBody(), TRUE);

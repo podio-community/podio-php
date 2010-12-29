@@ -1,7 +1,10 @@
 <?php
 
+// PEAR Packages
 require_once('Log.php');
 require_once('HTTP/Request2.php');
+
+// Internal
 require_once('PodioOAuth.php');
 require_once('notification/notification.class.inc.php');
 require_once('status/status.class.inc.php');
@@ -30,33 +33,33 @@ require_once('filter/filter.class.inc.php');
  * Primary Podio API implementation class.
  */
 class PodioAPI {
-	
-  public $api;
-	public $notifications;
-	public $conversation;
-	public $status;
-	public $task;
-	public $app;
-	public $item;
-	public $user;
-	public $comment;
-	public $rating;
-	public $space;
-	public $org;
-	public $contact;
-	public $subscription;
-	public $file;
-	public $calendar;
-	public $search;
-	public $stream;
-	public $app_store;
-	public $tag;
-	public $bulletin;
-	public $widget;
-	public $filter;
 
-	public function __construct() {
-	  $this->api = PodioBaseAPI::instance();
+  public $api;
+  public $notifications;
+  public $conversation;
+  public $status;
+  public $task;
+  public $app;
+  public $item;
+  public $user;
+  public $comment;
+  public $rating;
+  public $space;
+  public $org;
+  public $contact;
+  public $subscription;
+  public $file;
+  public $calendar;
+  public $search;
+  public $stream;
+  public $app_store;
+  public $tag;
+  public $bulletin;
+  public $widget;
+  public $filter;
+
+  public function __construct() {
+    $this->api = PodioBaseAPI::instance();
     $this->notification = new NotificationAPI();
     $this->conversation = new ConversationAPI();
     $this->status = new StatusAPI();
@@ -89,6 +92,8 @@ class PodioBaseAPI {
   protected $mail;
   protected $secret;
   protected $last_error;
+  protected $log_handler;
+  protected $log_name;
   private static $instance;
 
   private function __construct($url, $client_id, $client_secret, $upload_end_point, $frontend_token = '') {
@@ -97,6 +102,8 @@ class PodioBaseAPI {
     $this->secret = $client_secret;
     $this->frontend_token = $frontend_token;
     $this->upload_end_point = $upload_end_point;
+    $this->log_handler = 'error_log';
+    $this->log_name = '';
   }
 
   public static function instance($url = '', $client_id = '', $client_secret = '', $upload_end_point = '', $frontend_token = '') {
@@ -104,6 +111,16 @@ class PodioBaseAPI {
       self::$instance = new PodioBaseAPI($url, $client_id, $client_secret, $upload_end_point, $frontend_token);
     }
     return self::$instance;
+  }
+  
+  public function log($message, $level = PEAR_LOG_INFO) {
+    $logger = &Log::singleton($this->log_handler, $this->log_name, 'PODIO_API_CLIENT');
+    $logger->log($message, $level);
+  }
+  
+  public function set_log_handler($handler, $name) {
+    $this->log_handler = $handler;
+    $this->log_name = $name;
   }
   
   public function getUrl() {
@@ -125,7 +142,6 @@ class PodioBaseAPI {
    * Upload a file for later use.
    */
   public function upload($file, $name) {
-    $logger = &Log::singleton('error_log', '', 'HTTP_UPLOAD');
     $oauth = PodioOAuth::instance();
     $request = new HTTP_Request2($this->upload_end_point, HTTP_Request2::METHOD_POST, array(
       'ssl_verify_peer'   => false,
@@ -157,8 +173,8 @@ class PodioBaseAPI {
           case 410 : 
           case 500 : 
           case 503 : 
-            $logger->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
-            $logger->log('*** '.$response->getBody(), PEAR_LOG_ERR);
+            $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
+            $this->log($response->getBody(), PEAR_LOG_ERR);
             $this->last_error = json_decode($response->getBody(), TRUE);
             return FALSE;
             break;
@@ -166,9 +182,8 @@ class PodioBaseAPI {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      $logger->log($e->getMessage(), PEAR_LOG_ERR);
+      $this->log($e->getMessage(), PEAR_LOG_ERR);
     }
-    
   }
   
   /**
@@ -181,8 +196,6 @@ class PodioBaseAPI {
       'ssl_verify_host'   => false
     ));
     
-    $logger = &Log::singleton('error_log', '', 'HTTP_REQUEST');
-
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);
     $request->setHeader('User-Agent', 'Podio API Client/1.0');
@@ -242,8 +255,8 @@ class PodioBaseAPI {
           $request->setBody(json_encode($data));
         }
         
-        $logger->log($request->getMethod().' '.$request->getUrl());
-        $logger->log($request->getBody());
+        $this->log($request->getMethod().' '.$request->getUrl());
+        $this->log($request->getBody());
         
         break;
       default : 
@@ -261,7 +274,7 @@ class PodioBaseAPI {
             if ($request->getMethod() == HTTP_Request2::METHOD_POST) {
               return $response;
             }
-            $logger->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
+            $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
             break;
           case 204 : 
             return $response;
@@ -319,8 +332,8 @@ class PodioBaseAPI {
           case 410 : 
           case 500 : 
           case 503 : 
-            $logger->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
-            $logger->log('*** '.$response->getBody(), PEAR_LOG_ERR);
+            $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
+            $this->log($response->getBody(), PEAR_LOG_ERR);
             $this->last_error = json_decode($response->getBody(), TRUE);
             return FALSE;
             break;
@@ -328,8 +341,7 @@ class PodioBaseAPI {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      $logger->log($e->getMessage(), PEAR_LOG_ERR);
+      $this->log($e->getMessage(), PEAR_LOG_ERR);
     }
-    $logger->close();
   }
 }

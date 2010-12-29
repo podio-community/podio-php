@@ -97,22 +97,9 @@ class AppAPI {
       return FALSE;
     }
 
-    // if ($data['space_ids'] == '') {
-    //   xdebug_print_function_stack();
-    //   die();
-    // }
-    
-    // xdebug_print_function_stack();
-
-    
     $key = serialize($data);
     if (!isset($list[$key])) {
       if ($response = $this->podio->request('/app/', $data)) {
-        if ($data['type'] == 'full') {
-          $logger = &Log::singleton('error_log', '', 'HTTP_REQUEST');
-          // $logger->log($key .' '. print_r($data, true));
-          // $logger->log(print_r(xdebug_get_function_stack( ), true));
-        }
         $apps = json_decode($response->getBody(), TRUE);
         $list[$key] = $apps;
       }

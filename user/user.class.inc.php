@@ -9,10 +9,6 @@ class UserAPI {
   public function get($uid) {
     static $list;
     if ($uid == 0 || $uid == 1) {
-      
-      // $logger = &Log::singleton('error_log', '', 'HTTP_REQUEST');
-      // $logger->log('Trying to load anon or root user');
-      
       return FALSE;
     }
 
