@@ -94,6 +94,7 @@ class PodioBaseAPI {
   protected $last_error;
   protected $log_handler;
   protected $log_name;
+  protected $log_levels;
   private static $instance;
 
   private function __construct($url, $client_id, $client_secret, $upload_end_point, $frontend_token = '') {
@@ -104,6 +105,13 @@ class PodioBaseAPI {
     $this->upload_end_point = $upload_end_point;
     $this->log_handler = 'error_log';
     $this->log_name = '';
+    $this->log_levels = array(
+      'error' => TRUE,
+      'GET' => FALSE,
+      'POST' => 'verbose',
+      'PUT' => 'verbose',
+      'DELETE' => FALSE,
+    );
   }
 
   public static function instance($url = '', $client_id = '', $client_secret = '', $upload_end_point = '', $frontend_token = '') {
@@ -121,6 +129,13 @@ class PodioBaseAPI {
   public function set_log_handler($handler, $name) {
     $this->log_handler = $handler;
     $this->log_name = $name;
+  }
+  
+  public function get_log_level($name) {
+    return $this->log_levels[$name];
+  }
+  public function set_log_level($name, $value) {
+    $this->log_levels[$name] = $value;
   }
   
   public function getUrl() {
@@ -173,8 +188,10 @@ class PodioBaseAPI {
           case 410 : 
           case 500 : 
           case 503 : 
-            $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
-            $this->log($response->getBody(), PEAR_LOG_ERR);
+            if ($this->get_log_level('error')) {
+              $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
+              $this->log($response->getBody(), PEAR_LOG_ERR);
+            }
             $this->last_error = json_decode($response->getBody(), TRUE);
             return FALSE;
             break;
@@ -182,7 +199,9 @@ class PodioBaseAPI {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      $this->log($e->getMessage(), PEAR_LOG_ERR);
+      if ($this->get_log_level('error')) {
+        $this->log($e->getMessage(), PEAR_LOG_ERR);
+      }
     }
   }
   
@@ -254,13 +273,17 @@ class PodioBaseAPI {
           $request->setHeader('Content-type', 'application/json');
           $request->setBody(json_encode($data));
         }
-        
-        $this->log($request->getMethod().' '.$request->getUrl());
-        $this->log($request->getBody());
-        
         break;
       default : 
         break;
+    }
+
+    // Log request if needed.
+    if ($this->get_log_level($method)) {
+      $this->log($request->getMethod().' '.$request->getUrl());
+      if ($this->get_log_level($method) == 'verbose') {
+        $this->log($request->getBody());
+      }
     }
 
     try {
@@ -274,7 +297,6 @@ class PodioBaseAPI {
             if ($request->getMethod() == HTTP_Request2::METHOD_POST) {
               return $response;
             }
-            $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
             break;
           case 204 : 
             return $response;
@@ -332,8 +354,10 @@ class PodioBaseAPI {
           case 410 : 
           case 500 : 
           case 503 : 
-            $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
-            $this->log($response->getBody(), PEAR_LOG_ERR);
+            if ($this->get_log_level('error')) {
+              $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
+              $this->log($response->getBody(), PEAR_LOG_ERR);
+            }
             $this->last_error = json_decode($response->getBody(), TRUE);
             return FALSE;
             break;
@@ -341,7 +365,9 @@ class PodioBaseAPI {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      $this->log($e->getMessage(), PEAR_LOG_ERR);
+      if ($this->get_log_level('error')) {
+        $this->log($e->getMessage(), PEAR_LOG_ERR);
+      }
     }
   }
 }
