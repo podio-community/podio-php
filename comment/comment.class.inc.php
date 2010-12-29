@@ -10,8 +10,8 @@ class CommentAPI {
     if (!$data['alerts']) {
       $data['alerts'] = array();
     }
-    if( count($file_ids) > 0 ) {
-    	$data['file_ids'] = $file_ids;
+    if (count($file_ids) > 0) {
+      $data['file_ids'] = $file_ids;
     }
     if ($response = $this->podio->request('/comment/'.$ref_type.'/'.$item_id, $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);

@@ -30,9 +30,6 @@ class OrgAPI {
     }
   }
   public function get($org_id) {
-    
-    // xdebug_print_function_stack();
-    
     if ($response = $this->podio->request('/org/'.$org_id)) {
       return json_decode($response->getBody(), TRUE);
     }

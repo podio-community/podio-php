@@ -72,15 +72,15 @@ class ItemAPI {
     // Change filter structure for GET request.
     $data = array('limit' => $limit, 'offset' => $offset, 'sort_by' => $sort_by, 'sort_desc' => $sort_desc);
     foreach ($filters as $filter) {
-		if(empty($filter['values'])) {
-			$data[$filter['key']] = '';
-		} else if (is_array($filter['values'])) {
-	        if (isset($filter['values']['from'])) {
-	          $data[$filter['key']] = $filter['values']['from'].'-'.$filter['values']['to'];
-	        }
-	        else {
-	          $data[$filter['key']] = implode(';', $filter['values']);
-        	}
+      if (empty($filter['values'])) {
+        $data[$filter['key']] = '';
+        } else if (is_array($filter['values'])) {
+          if (isset($filter['values']['from'])) {
+            $data[$filter['key']] = $filter['values']['from'].'-'.$filter['values']['to'];
+          }
+          else {
+            $data[$filter['key']] = implode(';', $filter['values']);
+          }
         }
     }
 

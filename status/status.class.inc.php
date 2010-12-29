@@ -21,10 +21,10 @@ class StatusAPI {
   public function create($space_id, $message, $alerts, $file_ids) {
     $data = array('space_id' => $space_id, 'value' => $message, 'alerts' => array(), 'file_ids' => array());
 
-    if($alerts) {
+    if ($alerts) {
       $data['alerts'] = $alerts;
     }
-    if($file_ids) {
+    if ($file_ids) {
       $data['file_ids'] = $file_ids;
     }
     

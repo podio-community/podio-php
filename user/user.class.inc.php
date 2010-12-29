@@ -151,7 +151,5 @@ class UserAPI {
     }
     return FALSE;
   }
-  
-
 }
 

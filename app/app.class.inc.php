@@ -47,7 +47,6 @@ class AppAPI {
         $app = json_decode($response->getBody(), TRUE);
       }
       $list[$key] = $app;
-      
     }
     return $list[$key];
   }

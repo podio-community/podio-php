@@ -31,9 +31,6 @@ class RatingAPI {
       $url .= '/'.$user_id;
     }
     
-    // xdebug_print_function_stack();
-    
-    
     if (!isset($list[$url])) {
       if ($item_id > 0 && $response = $this->podio->request($url)) {
         $value = json_decode($response->getBody(), TRUE);
