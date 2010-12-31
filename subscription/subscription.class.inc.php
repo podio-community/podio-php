@@ -6,11 +6,25 @@ class SubscriptionAPI {
     $this->podio = PodioBaseAPI::instance();
   }
 
+  /**
+   * Subscribes the user to the given object. Based on the object type, the 
+   * user will receive notifications when actions are performed on the object. 
+   *
+   * @param $ref_type Either "app", "item" or "status"
+   * @param $ref_id The matching id (app id, item id or status id)
+   */
   public function create($ref_type, $ref_id) {
     if ($response = $this->podio->request('/subscription/'.$ref_type.'/'.$ref_id, array(), HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
+  
+  /**
+   * Unsubscribe from getting notifications on actions on the given object.
+   *
+   * @param $ref_type Either "app", "item" or "status"
+   * @param $ref_id The matching id (app id, item id or status id)
+   */
   public function delete($ref_type, $ref_id) {
     if ($response = $this->podio->request('/subscription/'.$ref_type.'/'.$ref_id, array(), HTTP_Request2::METHOD_DELETE)) {
       if ($response->getStatus() == '204') {
@@ -19,6 +33,12 @@ class SubscriptionAPI {
       return FALSE;
     }
   }
+  
+  /**
+   * Stops the subscription with the given id
+   *
+   * @param $subscription_id The id of the subscription to stop
+   */
   public function deleteByID($subscription_id) {
     if ($response = $this->podio->request('/subscription/'.$subscription_id, array(), HTTP_Request2::METHOD_DELETE)) {
       if ($response->getStatus() == '204') {
@@ -27,7 +47,15 @@ class SubscriptionAPI {
       return FALSE;
     }
   }
-  public function getById($subscription_id) {
+  
+  /**
+   * Returns the subscription with the given id
+   *
+   * @param $subscription_id The id of the subscription to retrieve
+   *
+   * @return Subscription object
+   */
+  public function get($subscription_id) {
     $response = $this->podio->request('/subscription/'.$subscription_id);
     if ($response) {
       return json_decode($response->getBody(), TRUE);
