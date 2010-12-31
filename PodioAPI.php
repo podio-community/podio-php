@@ -126,25 +126,25 @@ class PodioBaseAPI {
     $logger->log($message, $level);
   }
   
-  public function set_log_handler($handler, $name) {
+  public function setLogHandler($handler, $name) {
     $this->log_handler = $handler;
     $this->log_name = $name;
   }
   
-  public function get_log_level($name) {
+  public function getLogLevel($name) {
     return $this->log_levels[$name];
   }
-  public function set_log_level($name, $value) {
+  public function setLogLevel($name, $value) {
     $this->log_levels[$name] = $value;
   }
   
   public function getUrl() {
     return $this->url;
   }
-  public function get_client_id() {
+  public function getClientId() {
     return $this->client_id;
   }
-  public function get_client_secret() {
+  public function getClientSecret() {
     return $this->secret;
   }
   
@@ -186,7 +186,7 @@ class PodioBaseAPI {
           case 410 : 
           case 500 : 
           case 503 : 
-            if ($this->get_log_level('error')) {
+            if ($this->static('error')) {
               $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
               $this->log($response->getBody(), PEAR_LOG_ERR);
             }
@@ -197,7 +197,7 @@ class PodioBaseAPI {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      if ($this->get_log_level('error')) {
+      if ($this->static('error')) {
         $this->log($e->getMessage(), PEAR_LOG_ERR);
       }
     }
@@ -267,9 +267,9 @@ class PodioBaseAPI {
     }
 
     // Log request if needed.
-    if ($this->get_log_level($method)) {
+    if ($this->static($method)) {
       $this->log($request->getMethod().' '.$request->getUrl());
-      if ($this->get_log_level($method) == 'verbose') {
+      if ($this->static($method) == 'verbose') {
         $this->log($request->getBody());
       }
     }
@@ -303,17 +303,17 @@ class PodioBaseAPI {
                 }
                 else {
                   // New token could not be fetched. Log user out.
-                  $oauth->throw_error('refresh_failed', 'Refreshing access token failed.');
+                  $oauth->throwError('refresh_failed', 'Refreshing access token failed.');
                 }
               }
               else {
                 // We have tried in vain to get a new access token. Log the user out.
-                $oauth->throw_error('no_refresh_token', 'No refresh token available.');
+                $oauth->throwError('no_refresh_token', 'No refresh token available.');
               }
             }
             elseif (strstr($body['error'], 'invalid_token') || strstr($body['error'], 'invalid_request')) {
               // Access token is invalid. Log the user out and try again.
-              $oauth->throw_error('invalid_token', 'Invalid token.');
+              $oauth->throwError('invalid_token', 'Invalid token.');
             }
             break;
           case 400 : 
@@ -323,7 +323,7 @@ class PodioBaseAPI {
               $oauth->access_token = '';
               $oauth->refresh_token = '';
 
-              $oauth->throw_error('invalid_grant', 'Invalid grant.');
+              $oauth->throwError('invalid_grant', 'Invalid grant.');
               break;
             }
           case 403 : 
@@ -331,7 +331,7 @@ class PodioBaseAPI {
           case 410 : 
           case 500 : 
           case 503 : 
-            if ($this->get_log_level('error')) {
+            if ($this->static('error')) {
               $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
               $this->log($response->getBody(), PEAR_LOG_ERR);
             }
@@ -342,7 +342,7 @@ class PodioBaseAPI {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      if ($this->get_log_level('error')) {
+      if ($this->static('error')) {
         $this->log($e->getMessage(), PEAR_LOG_ERR);
       }
     }

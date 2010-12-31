@@ -33,8 +33,8 @@ class PodioOAuth {
   public function getAccessToken($grant_type, $data) {
     $api = PodioBaseAPI::instance();
     $post_data = array();
-    $post_data['client_id'] = $api->get_client_id();
-    $post_data['client_secret'] = $api->get_client_secret();
+    $post_data['client_id'] = $api->getClientId();
+    $post_data['client_secret'] = $api->getClientSecret();
     
     switch ($grant_type) {
       case 'password':
@@ -95,7 +95,7 @@ class PodioOAuth {
             $this->access_token = '';
             $this->refresh_token = '';
             $this->expires_in = '';
-            if ($api->get_log_level('error')) {
+            if ($api->static('error')) {
               $api->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
               $api->log($response->getBody(), PEAR_LOG_ERR);
             }
@@ -108,14 +108,14 @@ class PodioOAuth {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      if ($api->get_log_level('error')) {
+      if ($api->static('error')) {
         $api->log($e->getMessage(), PEAR_LOG_ERR);
       }
     }
     return FALSE;
   }
   
-  public function throw_error($error) {
+  public function throwError($error) {
     if ($this->error_handler) {
       call_user_func($this->error_handler, $error);
     }
