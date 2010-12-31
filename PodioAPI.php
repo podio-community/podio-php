@@ -89,7 +89,7 @@ class PodioBaseAPI {
   
   protected $url;
   protected $version;
-  protected $mail;
+  protected $client_id;
   protected $secret;
   protected $last_error;
   protected $log_handler;
@@ -113,7 +113,7 @@ class PodioBaseAPI {
       'DELETE' => FALSE,
     );
   }
-
+  
   public static function instance($url = '', $client_id = '', $client_secret = '', $upload_end_point = '', $frontend_token = '') {
     if (!self::$instance) {
       self::$instance = new PodioBaseAPI($url, $client_id, $client_secret, $upload_end_point, $frontend_token);
@@ -141,12 +141,11 @@ class PodioBaseAPI {
   public function getUrl() {
     return $this->url;
   }
-  public function getAccessToken($data) {
-    $data['client_id'] = $this->client_id;
-    $data['client_secret'] = $this->secret;
-    if ($response = $this->request('/oauth/token', $data, HTTP_Request2::METHOD_POST)) {
-      return json_decode($response->getBody(), TRUE);
-    }
+  public function get_client_id() {
+    return $this->client_id;
+  }
+  public function get_client_secret() {
+    return $this->secret;
   }
   
   public function getError() {
@@ -167,8 +166,7 @@ class PodioBaseAPI {
     $request->setConfig('follow_redirects', TRUE);
     $request->setHeader('User-Agent', 'Podio API Client/1.0');
     $request->setHeader('Accept', 'application/json');
-    $request->setHeader('AccessToken', $oauth->access_token);
-    $request->setHeader('RefreshToken', $oauth->refresh_token);
+    $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
     
     $request->addUpload('file', $file);
     $request->addPostParameter('name', $name);
@@ -225,7 +223,6 @@ class PodioBaseAPI {
     // These URLs can be called without an access token.
     $no_token_list = array(
       '/',
-      '/oauth/token',
       '/space/invite/status',
       '/user/activate_user',
       '/user/recover_password',
@@ -262,17 +259,8 @@ class PodioBaseAPI {
         break;
       case HTTP_Request2::METHOD_POST : 
       case HTTP_Request2::METHOD_PUT : 
-      
-        if ($url == '/oauth/token') {
-          $request->setHeader('Content-type', 'application/x-www-form-urlencoded');
-          foreach ($data as $key => $value) {
-            $request->addPostParameter($key, $value);
-          }
-        }
-        else {
-          $request->setHeader('Content-type', 'application/json');
-          $request->setBody(json_encode($data));
-        }
+        $request->setHeader('Content-type', 'application/json');
+        $request->setBody(json_encode($data));
         break;
       default : 
         break;
@@ -306,19 +294,10 @@ class PodioBaseAPI {
             if (strstr($body['error_description'], 'expired_token')) {
               if ($oauth->refresh_token) {
                 // Access token is expired. Try to refresh it.
-                $grant_data = array(
-                  'grant_type' => 'refresh_token',
-                  'refresh_token' => $oauth->refresh_token,
-                );
+                $refresh_token = $oauth->refresh_token;
+                $oauth->getAccessToken('refresh_token', array('refresh_token' => $refresh_token));
 
-                $oauth->refresh_token = '';
-
-                $new = $this->getAccessToken($grant_data);
-                if ($new) {
-                  $oauth = PodioOAuth::instance();
-                  $oauth->access_token = $new['access_token'];
-                  $oauth->refresh_token = $new['refresh_token'];
-
+                if ($oauth->access_token) {
                   // Try the original request again.
                   return $this->request($url, $data, $method);
                 }
@@ -338,16 +317,14 @@ class PodioBaseAPI {
             }
             break;
           case 400 : 
-            if ($url != '/oauth/token') {
-              $body = json_decode($response->getBody(), TRUE);
-              if (strstr($body['error'], 'invalid_grant') && $url != 'oauth/token') {
-                $oauth = PodioOAuth::instance();
-                $oauth->access_token = '';
-                $oauth->refresh_token = '';
+            $body = json_decode($response->getBody(), TRUE);
+            if (strstr($body['error'], 'invalid_grant') && $url != 'oauth/token') {
+              $oauth = PodioOAuth::instance();
+              $oauth->access_token = '';
+              $oauth->refresh_token = '';
 
-                $oauth->throw_error('invalid_grant', 'Invalid grant.');
-                break;
-              }
+              $oauth->throw_error('invalid_grant', 'Invalid grant.');
+              break;
             }
           case 403 : 
           case 404 : 
