@@ -1,5 +1,5 @@
 # About
-This is a PHP Client for interacting with the Podio API. Almost all parts of the Podio API is covered in this client. To get started simply include PodioAPI.php in your script:
+This is a PHP Client for interacting with the Podio API. Almost all parts of the Podio API is covered in this client. To get started include PodioAPI.php in your script:
 
     require_once('/path/to/podio-php/PodioAPI.php');
 
@@ -72,12 +72,13 @@ The PHP Client is documented using Doxygen. For your convenience a Doxygen confi
 
 # Full example: Posting status message with an image
     require_once('/path/to/podio-php/PodioAPI.php');
-    $oauth = PodioOAuth::instance();
     
     $server = 'https://api.podio.com:443';
     $client_id = 'MY_OAUTH_CLIENT_ID';
     $client_secret = 'MY_OAUTH_CLIENT_SECRET';
     $upload_end_point = 'https://upload.podio.com/upload.php';
+
+    $oauth = PodioOAuth::instance();
     $baseAPI = PodioBaseAPI::instance($server, $client_id, $client_secret, $upload_end_point);
     
     // Obtain access token
