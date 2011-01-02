@@ -1,5 +1,15 @@
 <?php
-class BulletinAPI {
+
+/**
+ * Bulletins are small updates sent from the Podio team. It can contain 
+ * information about new releases, upcoming events and notifications about 
+ * system maintenance. Bulletins are received by all users of Hoist, and 
+ * can only be sent by Hoist employees.
+ */
+class PodioBulletinAPI {
+  /**
+   * Reference to the PodioBaseAPI instance
+   */
   protected $podio;
   public function __construct() {
     $this->podio = PodioBaseAPI::instance();

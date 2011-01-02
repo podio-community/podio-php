@@ -1,6 +1,13 @@
 <?php
 
-class SubscriptionAPI {
+/**
+ * Subscriptions allows the user to be notified when an object is created, 
+ * updated, delete, comments added to it or rated.
+ */
+class PodioSubscriptionAPI {
+  /**
+   * Reference to the PodioBaseAPI instance
+   */
   protected $podio;
   public function __construct() {
     $this->podio = PodioBaseAPI::instance();

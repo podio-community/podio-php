@@ -1,6 +1,15 @@
 <?php
 
-class AppAPI {
+/**
+ * This area is used to manage application definitions. An application 
+ * definition, commonly called just an app, is the setup of an 
+ * application. It consists primarily of a list of fields and secondly 
+ * of various settings.
+ */
+class PodioAppAPI {
+  /**
+   * Reference to the PodioBaseAPI instance
+   */
   protected $podio;
   public function __construct() {
     $this->podio = PodioBaseAPI::instance();

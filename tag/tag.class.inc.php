@@ -1,6 +1,16 @@
 <?php
 
-class TagAPI {
+/**
+ * Tags are words or short sentences that are used as metadata for objects. 
+ * For a more detailed explanation, see this wikipedia article: 
+ * http://en.wikipedia.org/wiki/Tag_(metadata)
+ * 
+ * Podio supports tags on statuses and items and tags that include spaces.
+ */
+class PodioTagAPI {
+  /**
+   * Reference to the PodioBaseAPI instance
+   */
   protected $podio;
   public function __construct() {
     $this->podio = PodioBaseAPI::instance();

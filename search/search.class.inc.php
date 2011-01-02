@@ -1,6 +1,13 @@
 <?php
 
-class SearchAPI {
+/**
+ * This API makes it possible to search across Podio. For now the API is very 
+ * limited, but will be expanded greatly in the future.
+ */
+class PodioSearchAPI {
+  /**
+   * Reference to the PodioBaseAPI instance
+   */
   protected $podio;
   public function __construct() {
     $this->podio = PodioBaseAPI::instance();

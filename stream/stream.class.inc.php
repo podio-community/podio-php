@@ -1,6 +1,13 @@
 <?php
 
-class StreamAPI {
+/**
+ * The stream API will supply the different streams. Currently supported is 
+ * the global stream, the organization stream and the space stream. 
+ */
+class PodioStreamAPI {
+  /**
+   * Reference to the PodioBaseAPI instance
+   */
   protected $podio;
   public function __construct() {
     $this->podio = PodioBaseAPI::instance();

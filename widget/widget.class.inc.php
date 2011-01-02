@@ -1,6 +1,13 @@
 <?php
 
-class WidgetAPI {
+/**
+ * Widgets are small components that can be installed on an organization, 
+ * space or an app. Every widget has a title and is of a certain type.
+ */
+class PodioWidgetAPI {
+  /**
+   * Reference to the PodioBaseAPI instance
+   */
   protected $podio;
   public function __construct() {
     $this->podio = PodioBaseAPI::instance();
@@ -34,6 +41,7 @@ class WidgetAPI {
   /**
    * Updates a widget with a new title and configuration.
    *
+   * @param $widget_id The id of the widget to update
    * @param $title The title of the widget
    * @param $config Configuration options. Depends on widget type
    */
