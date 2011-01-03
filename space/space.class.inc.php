@@ -107,18 +107,13 @@ class PodioSpaceAPI {
    * @return Space object
    */
   public function get($space_id) {
-    static $list;
-    
     if (!$space_id) {
       return FALSE;
     }
     
-    if (!$list[$space_id]) {
-      if ($response = $this->podio->request('/space/'.$space_id)) {
-        $list[$space_id] = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/space/'.$space_id)) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$space_id];
   }
   
   /**
@@ -172,19 +167,13 @@ class PodioSpaceAPI {
    * @return A user object with membership status
    */
   public function getMember($space_id, $user_id) {
-    static $list;
-    $key = $space_id.'_'.$user_id;
-    
     if (!$space_id) {
       return FALSE;
     }
     
-    if (!isset($list[$key])) {
-      if ($response = $this->podio->request('/space/'.$space_id.'/member/'.$user_id)) {
-        $list[$key] = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/space/'.$space_id.'/member/'.$user_id)) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$key];
   }
   
   /**

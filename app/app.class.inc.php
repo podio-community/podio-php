@@ -138,16 +138,9 @@ class PodioAppAPI {
    * @param $app_id The id of the app to retrieve
    */
   public function get($app_id) {
-    static $list;
-    $key = $app_id;
-    
-    if (!isset($list[$key])) {
-      if ($response = $this->podio->request('/app/'.$app_id)) {
-        $app = json_decode($response->getBody(), TRUE);
-      }
-      $list[$key] = $app;
+    if ($response = $this->podio->request('/app/'.$app_id)) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$key];
   }
   
   /**
@@ -211,13 +204,9 @@ class PodioAppAPI {
    * @return Array of apps
    */
   public function getSpaceApps($space_id) {
-    static $list;
-    if (!isset($list[$space_id])) {
-      if ($response = $this->podio->request('/app/space/'.$space_id.'/')) {
-        $list[$space_id] = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/app/space/'.$space_id.'/')) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$space_id];
   }
   
   /**
@@ -230,13 +219,9 @@ class PodioAppAPI {
    * @return Array of apps
    */
   public function getAvailableApps($space_id) {
-    static $list;
-    if (!isset($list[$space_id])) {
-      if ($response = $this->podio->request('/app/space/'.$space_id.'/available/')) {
-        $list[$space_id] = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/app/space/'.$space_id.'/available/')) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$space_id];
   }
   
   /**
@@ -257,8 +242,6 @@ class PodioAppAPI {
    * @return Array of apps.
    */
   public function getApps($type, $space_ids, $status = 'active', $owner_id = NULL, $external_id = NULL) {
-    static $list;
-    
     $data = array('type' => $type, 'space_ids' => $space_ids, 'status' => $status);
     if ($owner_id) {
       $data['owner_id'] = $owner_id;
@@ -271,14 +254,9 @@ class PodioAppAPI {
       return FALSE;
     }
 
-    $key = serialize($data);
-    if (!isset($list[$key])) {
-      if ($response = $this->podio->request('/app/', $data)) {
-        $apps = json_decode($response->getBody(), TRUE);
-        $list[$key] = $apps;
-      }
+    if ($response = $this->podio->request('/app/', $data)) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$key];
   }
   
   /**

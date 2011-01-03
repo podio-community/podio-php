@@ -65,27 +65,16 @@ class PodioItemAPI {
    * Returns the item with the specified id.
    *
    * @param $item_id The id of the item to retrieve
-   * @param $reset Set to True to invalidate the static cache
    *
    * @return An item
    */
-  public function get($item_id, $reset = FALSE) {
-    static $list;
-    
+  public function get($item_id) {
     if (!$item_id) {
       return FALSE;
     }
-
-    if ($reset == TRUE) {
-      unset($list[$item_id]);
+    if ($response = $this->podio->request('/item/'.$item_id)) {
+      return json_decode($response->getBody(), TRUE);
     }
-    
-    if (!isset($list[$item_id])) {
-      if ($response = $this->podio->request('/item/'.$item_id)) {
-        $list[$item_id] = json_decode($response->getBody(), TRUE);
-      }
-    }
-    return $list[$item_id];
   }
   
   /**
@@ -164,19 +153,12 @@ class PodioItemAPI {
    * @return Array of revisions
    */
   public function getRevisions($item_id) {
-    static $list;
-    
     if (!$item_id) {
       return FALSE;
     }
-
-    $key = $item_id;
-    if (!isset($list[$key])) {
-      if ($response = $this->podio->request('/item/'.$item_id.'/revision')) {
-        $list[$key] = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/item/'.$item_id.'/revision')) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$key];
   }
 
   /**
@@ -189,14 +171,9 @@ class PodioItemAPI {
    * @return Array of fields with old and new values
    */
   public function getRevisionDiff($item_id, $from, $to) {
-    static $list;
-    $key = $item_id . '|' . $from . '|' . $to;
-    if (!isset($list[$key])) {
-      if ($response = $this->podio->request('/item/'.$item_id.'/revision/'.$from.'/'.$to)) {
-        $list[$key] = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/item/'.$item_id.'/revision/'.$from.'/'.$to)) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$key];
   }
 
   /**

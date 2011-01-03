@@ -70,13 +70,9 @@ class PodioUserAPI {
    * profile data and notification data.
    */
   public function getStatus() {
-    static $list;
-    if (!$list) {
-      if ($response = $this->podio->request('/user/status')) {
-        $list = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/user/status')) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list;
   }
 
   /**

@@ -32,8 +32,6 @@ class PodioCalendarAPI {
    * @return Array of calendar events
    */
   public function getGlobal($date_from, $date_to, $space_ids = NULL, $types = NULL) {
-    static $list;
-    
     $data = array(
       'date_from' => $date_from,
       'date_to' => $date_to,
@@ -44,14 +42,9 @@ class PodioCalendarAPI {
     if ($types) {
       $data['types'] = $types;
     }
-    $key = serialize($data);
-    
-    if (!isset($list[$key])) {
-      if ($response = $this->podio->request('/calendar/', $data)) {
-        $list[$key] = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/calendar/', $data)) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$key];
   }
 
   /**

@@ -106,13 +106,9 @@ class PodioOrgAPI {
    * @return Array of organization objects
    */
   public function getOrgs() {
-    static $list;
-    if (!isset($list)) {
-      if ($response = $this->podio->request('/org/')) {
-        $list = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/org/')) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list;
   }
   
   /**

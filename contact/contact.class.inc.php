@@ -23,13 +23,9 @@ class PodioContactAPI {
    * @return Array of contact objects
    */
   public function getContactsTotals() {
-    static $list;
-    if (!isset($list)) {
-      if ($response = $this->podio->request('/contact/totals/')) {
-        $list = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request('/contact/totals/')) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list;
   }
 
   /**
@@ -76,8 +72,6 @@ class PodioContactAPI {
    * @return Array of contact objects
    */
   public function getContacts($type = 'all', $ref_id = NULL, $format = 'mini', $order = NULL, $limit = NULL) {
-    static $list;
-    $key = $type . '_' . $ref_id . '_' . $format . '_' . $order . '_' . $limit;
     if ($type != 'all' && !$ref_id) {
       return FALSE;
     }
@@ -97,12 +91,9 @@ class PodioContactAPI {
     $requestData['order'] = $order;
     $requestData['limit'] = $limit;
 
-    if (!$list[$key]) {
-      if ($response = $this->podio->request($url, $requestData)) {
-        $list[$key] = json_decode($response->getBody(), TRUE);
-      }
+    if ($response = $this->podio->request($url, $requestData)) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$key];
   }
 
 }

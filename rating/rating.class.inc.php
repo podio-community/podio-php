@@ -51,16 +51,9 @@ class PodioRatingAPI {
    * @return Array of ratings
    */
   public function getRatings($ref_type, $ref_id) {
-    static $list;
-    
-    $key = $ref_id;
-    if (!isset($list[$key])) {
-      if ($ref_id > 0 && $response = $this->podio->request('/rating/'.$ref_type.'/'.$ref_id)) {
-        $ratings = json_decode($response->getBody(), TRUE);
-        $list[$key] = $ratings;
-      }
+    if ($ref_id > 0 && $response = $this->podio->request('/rating/'.$ref_type.'/'.$ref_id)) {
+      return json_decode($response->getBody(), TRUE);
     }
-    return $list[$key];
   }
   
   /**
@@ -74,24 +67,19 @@ class PodioRatingAPI {
    * @return A single rating value
    */
   public function get($ref_type, $ref_id, $rating_type, $user_id = NULL) {
-    static $list;
-
     $url = '/rating/'.$ref_type.'/'.$ref_id.'/'.$rating_type;
     if ($user_id) {
       $url .= '/'.$user_id;
     }
     
-    if (!isset($list[$url])) {
-      if ($ref_id > 0 && $response = $this->podio->request($url)) {
-        $value = json_decode($response->getBody(), TRUE);
-        if (is_array($value)) {
-          $list[$url] = $value;
-        } else {
-          $list[$url] = FALSE;
-        }
+    if ($ref_id > 0 && $response = $this->podio->request($url)) {
+      $value = json_decode($response->getBody(), TRUE);
+      if (is_array($value)) {
+        return $value;
+      } else {
+        return FALSE;
       }
     }
-    return $list[$url];
   }
 
   /**
