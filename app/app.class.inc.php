@@ -15,12 +15,67 @@ class PodioAppAPI {
     $this->podio = PodioBaseAPI::instance();
   }
   
-  public function create($data) {
+  /**
+   * Creates a new app on a space. This creates an empty app. Fields must be 
+   * created manually afterwards.
+   *
+   * @param $space_id The id of the space on which the app is placed
+   * @param $config Array with the current configuration of the app. Options:
+   * - "name": The name of the app
+   * - "item_name": The name of each item in an app
+   * - "description": The description of the app
+   * - "usage": Description of how the app should be used
+   * - "external_id": The external id of the app. This can be used to store an 
+   *                  id from an external system on the app
+   * - "icon": The name of the icon used to represent the app
+   * - "allow_edit": True if other members are allowed to edit items from the 
+   *                 app, false otherwise
+   * - "default_view": The default view of the app items on the app main page
+   * - "allow_attachments": True if attachment of files to an item is allowed, 
+   *                        false otherwise
+   * - "allow_comments": True if members can make comments on an item, 
+   *                     false otherwise
+   * - "fivestar": True if fivestar rating is enabled on an item, 
+   *               false otherwise
+   * - "fivestar_label": If fivestar rating is enabled, this is the label that 
+   *                     will be presented to the users
+   * - "approved": True if an item can be approved, false otherwise
+   * - "thumbs": True if an item can have a thumbs up or thumbs down, 
+   *             false otherwise
+   * - "thumbs_label": If thumbs ratings are enabled, this is the label that 
+   *                   will be presented to the users
+   * - "rsvp": True if RSVP is enabled, false otherwise
+   * - "rsvp_label": If RSVP is enabled, this is the label that will be 
+   *                 presented to the users
+   * - "yesno": True if yes/no rating is enabled, false otherwise
+   * - "yesno_label": If yes/no is enabled, this is the label that will be 
+   *                  presented to the users
+   * - "tasks": A comma separated list of the tasks that will automatically be 
+   *            created when a new item is added
+   * @param $notify True if at the space members should be notified about 
+   *                this new app, false otherwise
+   * @param $subscribe True if the space members should be subscribed to this 
+   *                   new app, false otherwise
+   *
+   * @return Array with new app id
+   */
+  public function create($space_id, $config, $notify, $subscribe) {
+    $data = array('space_id' => $space_id, 'config' => $config, 'notify' => $notify, 'subscribe' => $subscribe);
     if ($response = $this->podio->request('/app/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  public function update($app_id, $data = array(), $user_id = 0) {
+  
+  /**
+   * Updates the app config. Fields must be updates separately.
+   *
+   * @param $app_id The id of the app to update
+   * @param $config New config array. For options see the 'create' method
+   * @param $resubscribe True if all space members should be resubscribed to 
+   *                     this app, false otherwise
+   */
+  public function update($app_id, $config, $resubscribe) {
+    $data = array('config' => $config, 'resubscribe' => $resubscribe);
     if ($response = $this->podio->request('/app/'.$app_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -205,13 +260,45 @@ class PodioAppAPI {
     }
     return $list[$key];
   }
-  public function createField($app_id, $data, $user_id) {
+  
+  /**
+   * Adds a new field to an app
+   *
+   * @param $app_id The id of the app to add field on
+   * @param $type The type of field. See API documentation for possible values
+   * @param $config Array with a config object for the field. Options are:
+   * - "name": The name of the field (might be removed in a future version)
+   * - "label": The label of the field, which is what the users will see
+   * - "delta": An integer indicating the order of the field compared to other fields
+   * - "settings": The settings of the field which depends on the type of the field
+   * - "required": True if the field is required when creating and editing items, false otherwise
+   * - "visible": True if the field is visible, false otherwise (might be removed in a future version)
+   *
+   * @return Array with the new field id
+   */
+  public function createField($app_id, $type, $config) {
+    $data = array('type' => $type, 'config' => $config);
     if ($response = $this->podio->request('/app/'.$app_id.'/field/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  public function updateField($app_id, $field_id, $data, $user_id) {
-    if ($response = $this->podio->request('/app/'.$app_id.'/field/'.$field_id, $data, HTTP_Request2::METHOD_PUT)) {
+  
+  /**
+   * Updates the configuration of an app field. The type of the field cannot 
+   * be updated, only the configuration.
+   * 
+   * @param $app_id The id of the app to edit field on
+   * @param $field_id The id of the field to update
+   * @param $config Array with a config object for the field. Options are:
+   * - "name": The name of the field (might be removed in a future version)
+   * - "label": The label of the field, which is what the users will see
+   * - "delta": An integer indicating the order of the field compared to other fields
+   * - "settings": The settings of the field which depends on the type of the field
+   * - "required": True if the field is required when creating and editing items, false otherwise
+   * - "visible": True if the field is visible, false otherwise (might be removed in a future version)
+   */
+  public function updateField($app_id, $field_id, $config) {
+    if ($response = $this->podio->request('/app/'.$app_id.'/field/'.$field_id, $config, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
