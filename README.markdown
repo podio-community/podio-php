@@ -91,5 +91,5 @@ The PHP Client is documented using Doxygen. For your convenience a Doxygen confi
     
     // Post status message
     $space_id = MY_SPACE_ID;
-    $api->status->create($space_id, 'This has an image attached', array(), array((int)$file['result']['file_id']));
+    $api->status->create($space_id, 'This has an image attached', array((int)$file['result']['file_id']));
 

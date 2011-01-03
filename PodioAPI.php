@@ -30,70 +30,163 @@ require_once('widget/widget.class.inc.php');
 require_once('filter/filter.class.inc.php');
 
 /**
- * Primary Podio API implementation class.
+ * Primary Podio API implementation class. This is merely a container for 
+ * the specific API areas.
  */
 class PodioAPI {
 
+  /**
+   * Reference to PodioBaseAPI instance
+   */
   public $api;
-  public $notifications;
+  /**
+   * Reference to PodioNotificationAPI instance
+   */
+  public $notification;
+  /**
+   * Reference to PodioConversationAPI instance
+   */
   public $conversation;
+  /**
+   * Reference to PodioStatusAPI instance
+   */
   public $status;
+  /**
+   * Reference to PodioTaskAPI instance
+   */
   public $task;
+  /**
+   * Reference to PodioAppAPI instance
+   */
   public $app;
+  /**
+   * Reference to PodioItemAPI instance
+   */
   public $item;
+  /**
+   * Reference to PodioUserAPI instance
+   */
   public $user;
+  /**
+   * Reference to PodioCommentAPI instance
+   */
   public $comment;
+  /**
+   * Reference to PodioRatingAPI instance
+   */
   public $rating;
+  /**
+   * Reference to PodioSpaceAPI instance
+   */
   public $space;
+  /**
+   * Reference to PodioOrgAPI instance
+   */
   public $org;
+  /**
+   * Reference to PodioContactAPI instance
+   */
   public $contact;
+  /**
+   * Reference to PodioSubscriptionAPI instance
+   */
   public $subscription;
+  /**
+   * Reference to PodioFileAPI instance
+   */
   public $file;
+  /**
+   * Reference to PodioCalendarAPI instance
+   */
   public $calendar;
+  /**
+   * Reference to PodioSearchAPI instance
+   */
   public $search;
+  /**
+   * Reference to PodioStreamAPI instance
+   */
   public $stream;
+  /**
+   * Reference to PodioAppStoreAPI instance
+   */
   public $app_store;
+  /**
+   * Reference to PodioTagAPI instance
+   */
   public $tag;
+  /**
+   * Reference to PodioBulletinAPI instance
+   */
   public $bulletin;
+  /**
+   * Reference to PodioWidgetAPI instance
+   */
   public $widget;
+  /**
+   * Reference to PodioFilterAPI instance
+   */
   public $filter;
 
   public function __construct() {
     $this->api = PodioBaseAPI::instance();
-    $this->notification = new NotificationAPI();
-    $this->conversation = new ConversationAPI();
-    $this->status = new StatusAPI();
-    $this->task = new TaskAPI();
-    $this->app = new AppAPI();
-    $this->item = new ItemAPI();
-    $this->user = new UserAPI();
-    $this->comment = new CommentAPI();
-    $this->rating = new RatingAPI();
-    $this->space = new SpaceAPI();
-    $this->org = new OrgAPI();
-    $this->contact = new ContactAPI();
-    $this->subscription = new SubscriptionAPI();
-    $this->file = new FileAPI();
-    $this->calendar = new CalendarAPI();
-    $this->search = new SearchAPI();
-    $this->stream = new StreamAPI();
-    $this->app_store = new AppStoreAPI();
-    $this->tag = new TagAPI();
-    $this->bulletin = new BulletinAPI();
-    $this->widget = new WidgetAPI();
-    $this->filter = new FilterAPI();
-	}
+    $this->notification = new PodioNotificationAPI();
+    $this->conversation = new PodioConversationAPI();
+    $this->status = new PodioStatusAPI();
+    $this->task = new PodioTaskAPI();
+    $this->app = new PodioAppAPI();
+    $this->item = new PodioItemAPI();
+    $this->user = new PodioUserAPI();
+    $this->comment = new PodioCommentAPI();
+    $this->rating = new PodioRatingAPI();
+    $this->space = new PodioSpaceAPI();
+    $this->org = new PodioOrgAPI();
+    $this->contact = new PodioContactAPI();
+    $this->subscription = new PodioSubscriptionAPI();
+    $this->file = new PodioFileAPI();
+    $this->calendar = new PodioCalendarAPI();
+    $this->search = new PodioSearchAPI();
+    $this->stream = new PodioStreamAPI();
+    $this->app_store = new PodioAppStoreAPI();
+    $this->tag = new PodioTagAPI();
+    $this->bulletin = new PodioBulletinAPI();
+    $this->widget = new PodioWidgetAPI();
+    $this->filter = new PodioFilterAPI();
+  }
 }
 
+/**
+ * A Singleton class that handles all communication with the API server.
+ */
 class PodioBaseAPI {
   
+  /**
+   * URL for the API server
+   */
   protected $url;
-  protected $version;
+  /**
+   * OAuth client id
+   */
   protected $client_id;
+  /**
+   * OAuth client secret
+   */
   protected $secret;
+  /**
+   * Contains the last error message from the API server
+   */
   protected $last_error;
+  /**
+   * Current log handler for the API log
+   */
   protected $log_handler;
+  /**
+   * Current log name for the API log
+   */
   protected $log_name;
+  /**
+   * Current log levels for the API log
+   */
   protected $log_levels;
   private static $instance;
 
@@ -114,6 +207,18 @@ class PodioBaseAPI {
     );
   }
   
+  /**
+   * Constructor for the singleton instance. Call with parameters first time, 
+   * call without parameters subsequent times.
+   *
+   * @param $url URL for the API server
+   * @param $client_id OAuth Client id
+   * @param $client_secret OAuth client secret
+   * @param $upload_end_point Upload end point for file uploads
+   * @param $frontend_token Special token used by Podio
+   *
+   * @return Singleton instance of PodioBaseAPI object
+   */
   public static function instance($url = '', $client_id = '', $client_secret = '', $upload_end_point = '', $frontend_token = '') {
     if (!self::$instance) {
       self::$instance = new PodioBaseAPI($url, $client_id, $client_secret, $upload_end_point, $frontend_token);
@@ -121,39 +226,93 @@ class PodioBaseAPI {
     return self::$instance;
   }
   
+  /**
+   * Log a message to the API log
+   *
+   * @param $message The message to log
+   * @param $level The log level. See:
+   *               http://www.indelible.org/php/Log/guide.html#log-levels
+   */
   public function log($message, $level = PEAR_LOG_INFO) {
     $logger = &Log::singleton($this->log_handler, $this->log_name, 'PODIO_API_CLIENT');
     $logger->log($message, $level);
   }
   
+  /**
+   * Set the log handler for the API log. See:
+   * http://www.indelible.org/php/Log/guide.html#configuring-a-handler
+   *
+   * @param $handler
+   * @param $name
+   */
   public function setLogHandler($handler, $name) {
     $this->log_handler = $handler;
     $this->log_name = $name;
   }
   
+  /**
+   * Get the current log level for an area.
+   *
+   * @param $name Area to get log level for. Can be:
+   * - error: Any error from API server
+   * - GET: GET requests
+   * - POST: POST requests
+   * - PUT: PUT requests
+   * - DELETE: DELETE requests
+   */
   public function getLogLevel($name) {
     return $this->log_levels[$name];
   }
+  
+  /**
+   * Set the current log level for an area.
+   * @param $name Area to set. Can be:
+   * - error: Any error from API server
+   * - GET: GET requests
+   * - POST: POST requests
+   * - PUT: PUT requests
+   * - DELETE: DELETE requests
+   * @param $value New log level. Either TRUE, FALSE, "concise" or "verbose"
+   */
   public function setLogLevel($name, $value) {
     $this->log_levels[$name] = $value;
   }
   
+  /**
+   * Get the current API server URL
+   */
   public function getUrl() {
     return $this->url;
   }
+  
+  /**
+   * Get the OAuth client id
+   */
   public function getClientId() {
     return $this->client_id;
   }
+  
+  /**
+   * Get the OAuth client secret
+   */
   public function getClientSecret() {
     return $this->secret;
   }
   
+  /**
+   * Get the last error message from the API server
+   */
   public function getError() {
     return $this->last_error;
   }
   
   /**
    * Upload a file for later use.
+   *
+   * @param $file Path to file for upload
+   * @param $name File name to use
+   *
+   * @return Array with new file id
    */
   public function upload($file, $name) {
     $oauth = PodioOAuth::instance();
@@ -186,7 +345,7 @@ class PodioBaseAPI {
           case 410 : 
           case 500 : 
           case 503 : 
-            if ($this->static('error')) {
+            if ($this->getLogLevel('error')) {
               $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
               $this->log($response->getBody(), PEAR_LOG_ERR);
             }
@@ -197,14 +356,20 @@ class PodioBaseAPI {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      if ($this->static('error')) {
+      if ($this->getLogLevel('error')) {
         $this->log($e->getMessage(), PEAR_LOG_ERR);
       }
     }
   }
   
   /**
-   * Build and perform the request.
+   * Build and perform an API request.
+   *
+   * @param $url URL to make call to. E.g. /user/status
+   * @param $data Any data to send with the request
+   * @param method HTTP method to be used for call
+   *
+   * @return Varies by API call
    */
   public function request($url, $data = '', $method = HTTP_Request2::METHOD_GET) {
     $oauth = PodioOAuth::instance();
@@ -267,9 +432,9 @@ class PodioBaseAPI {
     }
 
     // Log request if needed.
-    if ($this->static($method)) {
+    if ($this->getLogLevel($method)) {
       $this->log($request->getMethod().' '.$request->getUrl());
-      if ($this->static($method) == 'verbose') {
+      if ($this->getLogLevel($method) == 'verbose') {
         $this->log($request->getBody());
       }
     }
@@ -318,7 +483,7 @@ class PodioBaseAPI {
             break;
           case 400 : 
             $body = json_decode($response->getBody(), TRUE);
-            if (strstr($body['error'], 'invalid_grant') && $url != 'oauth/token') {
+            if (strstr($body['error'], 'invalid_grant')) {
               $oauth = PodioOAuth::instance();
               $oauth->access_token = '';
               $oauth->refresh_token = '';
@@ -331,7 +496,7 @@ class PodioBaseAPI {
           case 410 : 
           case 500 : 
           case 503 : 
-            if ($this->static('error')) {
+            if ($this->getLogLevel('error')) {
               $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
               $this->log($response->getBody(), PEAR_LOG_ERR);
             }
@@ -342,7 +507,7 @@ class PodioBaseAPI {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      if ($this->static('error')) {
+      if ($this->getLogLevel('error')) {
         $this->log($e->getMessage(), PEAR_LOG_ERR);
       }
     }

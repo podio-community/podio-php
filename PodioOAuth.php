@@ -9,9 +9,21 @@ require_once('HTTP/Request2.php');
 class PodioOAuth {
   
   private static $instance;
+  /**
+   * The current access token. Used on every API call
+   */
   public $access_token;
+  /**
+   * The current refresh token. Used to retrieve a new access token
+   */
   public $refresh_token;
+  /**
+   * The current expiration date for the access token
+   */
   public $expires_in;
+  /**
+   * Error callback function.
+   */
   protected $error_handler;
 
   private function __construct($error_handler = '') {
@@ -23,6 +35,14 @@ class PodioOAuth {
     }
   }
 
+  /**
+   * Constructor for the singleton instance. Call with parameters first time, 
+   * call without parameters subsequent times.
+   *
+   * @param $error_handler A function name to use as the error handler
+   *
+   * @return Singleton instance of PodioOAuth object
+   */
   public static function instance($error_handler = '') {
     if (!self::$instance) {
       self::$instance = new PodioOAuth($error_handler);
@@ -30,6 +50,18 @@ class PodioOAuth {
     return self::$instance;
   }
 
+  /**
+   * Get an access token or refresh an expired one.
+   *
+   * @param $grant_type The type of request. Can be:
+   * - password: Use username and password to get access token
+   * - refresh token: Refresh expired access token
+   * - authorization_code: Use the authorization code obtained from step 
+   *   one of the authorization
+   * @param $data Request data. Varies by grant type. See OAuth specification
+   *
+   * @return TRUE if access token was retrieved
+   */
   public function getAccessToken($grant_type, $data) {
     $api = PodioBaseAPI::instance();
     $post_data = array();
@@ -95,7 +127,7 @@ class PodioOAuth {
             $this->access_token = '';
             $this->refresh_token = '';
             $this->expires_in = '';
-            if ($api->static('error')) {
+            if ($api->getLogLevel('error')) {
               $api->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
               $api->log($response->getBody(), PEAR_LOG_ERR);
             }
@@ -108,13 +140,16 @@ class PodioOAuth {
             break;
         }
     } catch (HTTP_Request2_Exception $e) {
-      if ($api->static('error')) {
+      if ($api->getLogLevel('error')) {
         $api->log($e->getMessage(), PEAR_LOG_ERR);
       }
     }
     return FALSE;
   }
   
+  /**
+   * Throws an OAuth error. If an error callback is defined it will be called.
+   */
   public function throwError($error) {
     if ($this->error_handler) {
       call_user_func($this->error_handler, $error);
