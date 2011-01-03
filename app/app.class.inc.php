@@ -239,12 +239,32 @@ class PodioAppAPI {
     return $list[$space_id];
   }
   
-  
-  public function getApps($data, $type = NULL) {
+  /**
+   * Gets a list of apps by certain criteria. The apps are sorted by the 
+   * order they were created in, unless apps have been moved manually 
+   * by a space administrator.
+   *
+   * @param $type How the results should be returned. "full" will return both 
+   *              config and fields, while "short" will return only the config
+   * @param $space_ids A comma-separated list of space ids to which the apps 
+   *                   should belong
+   * @param $status The status of the app, "active", "inactive" or "deleted". 
+   *                Defaults to "active"
+   * @param $owner_id The id of the owner of the app
+   * @param $external_id The external id of the app. Can be used to get apps 
+   *                     based on an external id from another system
+   *
+   * @return Array of apps.
+   */
+  public function getApps($type, $space_ids, $status = 'active', $owner_id = NULL, $external_id = NULL) {
     static $list;
     
-    if ($type == 'full' || $type == 'simple') {
-      $data['type'] = $type;
+    $data = array('type' => $type, 'space_ids' => $space_ids, 'status' => $status);
+    if ($owner_id) {
+      $data['owner_id'] = $owner_id;
+    }
+    if ($external_id) {
+      $data['external_id'] = $external_id;
     }
     
     if ($data['space_ids'] == '0') {

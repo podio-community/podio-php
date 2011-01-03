@@ -49,25 +49,42 @@ class PodioNotificationAPI {
     }
   }
   
-  public function getViewed($limit = 20, $offset = 0, $sent = 0, $filter_values = NULL) {
+  /**
+   * Returns the notifications in the inbox that has already been viewed. 
+   * The notifications are sorted in descending order, either by viewed time 
+   * or creation time.
+   *
+   * @param $limit The limit on the number of notifications to return, 
+   *               default is 10
+   * @param $offset The offset on the notifications to return, default is 0
+   * @param $date_type The type of date to use for sorting and filtering. 
+   *                   Can be either "created" or "viewed". 
+   *                   Default is "created"
+   * @param $types Array of the types of notifications to see in the inbox
+   * @param $date_from The earliest date to get notifications from
+   * @param $date_to The latest date to get notifications from
+   * @param $users Array of user ids to see notifications from
+   * @param $sent 1 if sent notifications should be returned, 0 otherwise
+   */
+  public function getViewed($limit, $offset = 0, $date_type = 'created', $types = NULL, $date_from = NULL, $date_to = NULL, $users = NULL, $sent = 0) {
+  //public function getViewed($limit = 20, $offset = 0, $sent = 0, $filter_values = NULL) {
+    $data = array();
     $data['limit'] = $limit;
     $data['offset'] = $offset;
     $data['sent'] = $sent;
-    if( $sent == 1 ) {
-      $data['types'] = 'message';
-      $data['date_type'] = 'created';
+    $data['date_type'] = $date_type;
+
+    if($types) {
+      $data['types'] = implode(',', $types);
     }
-    
-    if( isset($filter_values) ) {
-      if( isset($filter_values['contacts']) ) {
-        $data['users'] = implode(',', $filter_values['contacts']);
-      }
-      if( isset($filter_values['month']) && isset($filter_values['year']) ) {
-        $start_date = mktime(0, 0, 0, $filter_values['month'], 1, $filter_values['year']);
-        $end_date = mktime(0, 0, 0, $filter_values['month']+1, 1, $filter_values['year']);
-        $data['date_from'] = date('Y-m-d h:i:s', $start_date);
-        $data['date_to'] = date('Y-m-d h:i:s', $end_date);
-      }
+    if($date_from) {
+      $data['date_from'] = $date_from;
+    }
+    if($date_to) {
+      $data['date_to'] = $date_to;
+    }
+    if($users) {
+      $data['users'] = implode(',', $users);
     }
     
     $response = $this->podio->request('/notification/inbox/viewed', $data);
