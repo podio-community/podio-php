@@ -199,15 +199,45 @@ class PodioItemAPI {
     return $list[$key];
   }
 
-
-  public function create($data, $user_id = 0) {
-    $app_id = $data['app_id'];
-    unset($data['app_id']);
+  /**
+   * Adds a new item to the given app.
+   *
+   * @param $app_id The id of the app to create item in
+   * @param $fields Array of values for each field. Each item has two keys:
+   * - "field_id" : The id of the field
+   * - "values" : Array. The values for the field
+   * @param $file_ids Array. Temporary files that have been uploaded and 
+   *                  should be attached to this item
+   * @param $tags Array of tags to put on the item
+   * @param $external_id The external id of the item. This can be used to 
+   *                     hold a reference to the item in an external system
+   *
+   * @return Array with the new item id
+   */
+  public function create($app_id, $fields, $file_ids = array(), $tags = array(), $external_id = NULL) {
+    $data = array('fields' => $fields, 'file_ids' => $file_ids, 'tags' => $tags, 'external_id' => $external_id);
     if ($response = $this->podio->request('/item/app/'.$app_id.'/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  public function update($item_id, $data, $user_id) {
+  
+  /**
+   * Update an already existing item. Values will only be updated for fields 
+   * included. To delete all values for a field supply an empty array as 
+   * values for that field.
+   *
+   * @param $item_id The id of the item that's being updated
+   * @param $fields Array of values for each field. Each item has two keys:
+   * - "field_id" : The id of the field
+   * - "values" : Array. The values for the field
+   * @param $revision The revision of the item that is being updated. 
+   *                  This is optional.
+   */
+  public function update($item_id, $fields, $revision = NULL) {
+    $data = array('fields' => $fields);
+    if ($revision) {
+      $data['revision'] = $revision;
+    }
     if ($response = $this->podio->request('/item/'.$item_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
     }
