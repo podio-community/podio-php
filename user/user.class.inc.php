@@ -12,12 +12,13 @@ class PodioUserAPI {
     $this->podio = PodioBaseAPI::instance();
   }
   
-  public function get($uid) {
-    if ($uid == 0 || $uid == 1) {
-      return FALSE;
-    }
-
-    if ($response = $this->podio->request('/user/'.$uid)) {
+  /**
+   * Gets the active user
+   *
+   * @return User object for the current user
+   */
+  public function get() {
+    if ($response = $this->podio->request('/user/')) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -76,23 +77,6 @@ class PodioUserAPI {
       }
     }
     return $list;
-  }
-  
-  public function getWithProfile($uid) {
-    if ($uid == 0) {
-      return FALSE;
-    }
-    
-    $user = array('user_id' => $uid);
-    if ($response = $this->podio->request('/contact/'.$uid)) {
-      $user['profile'] = json_decode($response->getBody(), TRUE);
-      if ($user['profile']) {
-        return $user;
-      }
-      else {
-        return FALSE;
-      }
-    }
   }
 
   /**
