@@ -100,6 +100,10 @@ class PodioAppStoreAPI {
    * @return Array of verticals and function categories
    */
   public function getCategories($language = NULL) {
+    $data = array();
+    if ($language) {
+      $data = array('language' => $language);
+    }
     if ($response = $this->podio->request('/app_store/category/', $data)) {
       return json_decode($response->getBody(), TRUE);
     }
