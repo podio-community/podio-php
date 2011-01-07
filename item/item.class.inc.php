@@ -181,7 +181,10 @@ class PodioItemAPI {
    *
    * @param $app_id The id of the app to create item in
    * @param $fields Array of values for each field. Each item has two keys:
-   * - "field_id" : The id of the field
+   * - "field_id" : The id of the field (field_id or external_id must
+   *                be specified)
+   * - "external_id" : The external id of the field (field_id or external_id 
+   *                   must be specified)
    * - "values" : Array. The values for the field
    * @param $file_ids Array. Temporary files that have been uploaded and 
    *                  should be attached to this item
@@ -205,7 +208,10 @@ class PodioItemAPI {
    *
    * @param $item_id The id of the item that's being updated
    * @param $fields Array of values for each field. Each item has two keys:
-   * - "field_id" : The id of the field
+   * - "field_id" : The id of the field (field_id or external_id must
+   *                be specified)
+   * - "external_id" : The external id of the field (field_id or external_id 
+   *                   must be specified)
    * - "values" : Array. The values for the field
    * @param $revision The revision of the item that is being updated. 
    *                  This is optional.
