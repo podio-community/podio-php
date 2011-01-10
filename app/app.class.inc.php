@@ -265,7 +265,6 @@ class PodioAppAPI {
    * @param $app_id The id of the app to add field on
    * @param $type The type of field. See API documentation for possible values
    * @param $config Array with a config object for the field. Options are:
-   * - "name": The name of the field (might be removed in a future version)
    * - "label": The label of the field, which is what the users will see
    * - "description": The description of the field, shown to the user when 
    *                  inserting and editing
@@ -290,7 +289,6 @@ class PodioAppAPI {
    * @param $app_id The id of the app to edit field on
    * @param $field_id The id of the field to update
    * @param $config Array with a config object for the field. Options are:
-   * - "name": The name of the field (might be removed in a future version)
    * - "label": The label of the field, which is what the users will see
    * - "description": The description of the field, shown to the user when 
    *                  inserting and editing
