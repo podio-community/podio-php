@@ -267,6 +267,8 @@ class PodioAppAPI {
    * @param $config Array with a config object for the field. Options are:
    * - "name": The name of the field (might be removed in a future version)
    * - "label": The label of the field, which is what the users will see
+   * - "description": The description of the field, shown to the user when 
+   *                  inserting and editing
    * - "delta": An integer indicating the order of the field compared to other fields
    * - "settings": The settings of the field which depends on the type of the field
    * - "required": True if the field is required when creating and editing items, false otherwise
@@ -290,6 +292,8 @@ class PodioAppAPI {
    * @param $config Array with a config object for the field. Options are:
    * - "name": The name of the field (might be removed in a future version)
    * - "label": The label of the field, which is what the users will see
+   * - "description": The description of the field, shown to the user when 
+   *                  inserting and editing
    * - "delta": An integer indicating the order of the field compared to other fields
    * - "settings": The settings of the field which depends on the type of the field
    * - "required": True if the field is required when creating and editing items, false otherwise
