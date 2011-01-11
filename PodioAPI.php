@@ -28,6 +28,7 @@ require_once('tag/tag.class.inc.php');
 require_once('bulletin/bulletin.class.inc.php');
 require_once('widget/widget.class.inc.php');
 require_once('filter/filter.class.inc.php');
+require_once('form/form.class.inc.php');
 
 /**
  * Primary Podio API implementation class. This is merely a container for 
@@ -127,6 +128,10 @@ class PodioAPI {
    * Reference to PodioFilterAPI instance
    */
   public $filter;
+  /**
+   * Reference to PodioFormAPI instance
+   */
+  public $form;
 
   public function __construct() {
     $this->api = PodioBaseAPI::instance();
@@ -152,6 +157,7 @@ class PodioAPI {
     $this->bulletin = new PodioBulletinAPI();
     $this->widget = new PodioWidgetAPI();
     $this->filter = new PodioFilterAPI();
+    $this->form = new PodioFormAPI();
   }
 }
 
