@@ -108,7 +108,7 @@ class PodioItemAPI {
   /**
    * Returns the items on app matching the given filters.
    *
-   * @param $app_id
+   * @param $app_id The id of the app to get items from
    * @param $limit The maximum number of items to receive
    * @param $offset The offset from the start of the items returned
    * @param $sort_by How the items should be sorted. For the possible options, 
@@ -130,14 +130,14 @@ class PodioItemAPI {
     foreach ($filters as $filter) {
       if (empty($filter['values'])) {
         $data[$filter['key']] = '';
-        } else if (is_array($filter['values'])) {
-          if (isset($filter['values']['from'])) {
-            $data[$filter['key']] = $filter['values']['from'].'-'.$filter['values']['to'];
-          }
-          else {
-            $data[$filter['key']] = implode(';', $filter['values']);
-          }
+      } else if (is_array($filter['values'])) {
+        if (isset($filter['values']['from'])) {
+          $data[$filter['key']] = $filter['values']['from'].'-'.$filter['values']['to'];
         }
+        else {
+          $data[$filter['key']] = implode(';', $filter['values']);
+        }
+      }
     }
 
     if ($response = $this->podio->request('/item/app/'.$app_id.'/v2/', $data)) {
@@ -253,5 +253,61 @@ class PodioItemAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+  
+  /**
+   * Returns a CSV file with the following options:
+   * 
+   * - Header row
+   * - UTF-8 encoding
+   * - "," delimiter
+   * - carriage return and line-feed line terminator
+   * - Double quoting with quoting only used when needed
+   * First two columns are "Created on" and "Created by". 
+   * The remaining columns are the fields on the app.
+   * 
+   * @param $app_id The id of the app to get items from
+   * @param $limit The maximum number of items to receive
+   * @param $offset The offset from the start of the items returned
+   * @param $sort_by How the items should be sorted. For the possible options, 
+   *                 see the filter area.
+   * @param $sort_desc Use 1 or leave out to sort descending, 
+   *                   use 0 to sort ascending
+   * @param $filters Array of key/value pairs to use for filtering. For the 
+   *                 valid keys and values see the filter area. For list 
+   *                 filtering, the values are given as a comma-separated 
+   *                 list, for range filtering the values are given as "x-y".
+   *
+   * @return Array with two keys:
+   * - "body": The CSV content
+   * - "filename": Filename to use in any downloads
+   */
+  function csv($app_id, $limit, $offset, $sort_by, $sort_desc, $filters = array()) {
+    // Change filter structure for GET request.
+    $data = array('offset' => $offset, 'sort_by' => $sort_by, 'sort_desc' => $sort_desc);
+    if ($limit) {
+      $data['limit'] = $limit;
+    }
+    foreach ($filters as $filter) {
+      if (empty($filter['values'])) {
+        $data[$filter['key']] = '';
+      } else if (is_array($filter['values'])) {
+        if (isset($filter['values']['from'])) {
+          $data[$filter['key']] = $filter['values']['from'].'-'.$filter['values']['to'];
+        }
+        else {
+          $data[$filter['key']] = implode(';', $filter['values']);
+        }
+      }
+    }
+
+    if ($response = $this->podio->request('/item/app/'.$app_id.'/csv/', $data)) {
+      $header = $response->getHeader('content-disposition');
+      preg_match('/filename="(.+)"/', $header, $matches);
+      $filename = $matches[1];
+      return array('body' => $response->getBody(), 'filename' => $filename);
+    }
+    
+  }
+  
 }
 
