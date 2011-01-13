@@ -277,9 +277,10 @@ class PodioItemAPI {
    *                 filtering, the values are given as a comma-separated 
    *                 list, for range filtering the values are given as "x-y".
    *
-   * @return Array with two keys:
+   * @return Array with three keys:
    * - "body": The CSV content
    * - "filename": Filename to use in any downloads
+   * - "content_type"
    */
   function csv($app_id, $limit, $offset, $sort_by, $sort_desc, $filters = array()) {
     // Change filter structure for GET request.
@@ -304,7 +305,7 @@ class PodioItemAPI {
       $header = $response->getHeader('content-disposition');
       preg_match('/filename="(.+)"/', $header, $matches);
       $filename = $matches[1];
-      return array('body' => $response->getBody(), 'filename' => $filename);
+      return array('body' => $response->getBody(), 'filename' => $filename, 'content_type' => $response->getHeader('content-type'));
     }
     
   }
