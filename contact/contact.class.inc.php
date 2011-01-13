@@ -88,7 +88,9 @@ class PodioContactAPI {
 
     $requestData = array();
     $requestData['type'] = $format;
-    $requestData['order'] = $order;
+    if ($order) {
+      $requestData['order'] = $order;
+    }
     $requestData['limit'] = $limit;
 
     if ($response = $this->podio->request($url, $requestData)) {
