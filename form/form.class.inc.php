@@ -23,13 +23,11 @@ class PodioFormAPI {
    * - "text": The texts used for the form. Array with two keys: 
    *   - "submit": The text for the submit button
    *   - "success": The text when the form was successfully submitted
-   * - color": The colors for the form in the form "#xxxxxx". 
-   *           Array with these keys:
-   *   - "text": The color for the text,
-   *   - "background": The color for the backgroun,
-   *   - "button": The color for the buttons,
-   *   - "border": The color for the borders
-   * - "font": String for the CSS font-family to use. Valid choices:
+   * - "theme": The theme to use. Options:
+   *   - clean
+   *   - glossy
+   *   - classic
+   *   - dark
    * - Arial
    * - Georgia
    * - Lucida Sans Unicode
@@ -56,12 +54,11 @@ class PodioFormAPI {
    * - "text": The texts used for the form. Array with two keys: 
    *   - "submit": The text for the submit button
    *   - "success": The text when the form was successfully submitted
-   * - color": The colors for the form in the form "#xxxxxx". 
-   *           Array with these keys:
-   *   - "text": The color for the text,
-   *   - "background": The color for the backgroun,
-   *   - "button": The color for the buttons,
-   *   - "border": The color for the borders
+   * - "theme": The theme to use. Options:
+   *   - clean
+   *   - glossy
+   *   - classic
+   *   - dark
    * @param $domains Array of domains where the form can be used
    * @param $field_ids Array of ids of the fields that should be 
    *                   active for the form
