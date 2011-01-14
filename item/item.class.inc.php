@@ -266,6 +266,8 @@ class PodioItemAPI {
    * The remaining columns are the fields on the app.
    * 
    * @param $app_id The id of the app to get items from
+   * @param $format Use "windows" to get the windows format, 
+   *                something else for any other format.
    * @param $limit The maximum number of items to receive
    * @param $offset The offset from the start of the items returned
    * @param $sort_by How the items should be sorted. For the possible options, 
@@ -282,9 +284,9 @@ class PodioItemAPI {
    * - "filename": Filename to use in any downloads
    * - "content_type"
    */
-  function csv($app_id, $limit, $offset, $sort_by, $sort_desc, $filters = array()) {
+  function csv($app_id, $format, $limit, $offset, $sort_by, $sort_desc, $filters = array()) {
     // Change filter structure for GET request.
-    $data = array('offset' => $offset, 'sort_by' => $sort_by, 'sort_desc' => $sort_desc);
+    $data = array('format' => $format, 'offset' => $offset, 'sort_by' => $sort_by, 'sort_desc' => $sort_desc);
     if ($limit) {
       $data['limit'] = $limit;
     }
