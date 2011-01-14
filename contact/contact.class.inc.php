@@ -90,8 +90,6 @@ class PodioContactAPI {
     $requestData['type'] = $format;
     $requestData['order'] = $order;
     $requestData['limit'] = $limit;
-    
-    podio_log($requestData);
 
     if ($response = $this->podio->request($url, $requestData)) {
       return json_decode($response->getBody(), TRUE);
