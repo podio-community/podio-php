@@ -71,7 +71,7 @@ class PodioContactAPI {
    *
    * @return Array of contact objects
    */
-  public function getContacts($type = 'all', $ref_id = NULL, $format = 'mini', $order = NULL, $limit = NULL) {
+  public function getContacts($type = 'all', $ref_id = NULL, $format = 'mini', $order = 'name', $limit = NULL) {
     if ($type != 'all' && !$ref_id) {
       return FALSE;
     }
@@ -88,10 +88,10 @@ class PodioContactAPI {
 
     $requestData = array();
     $requestData['type'] = $format;
-    if ($order) {
-      $requestData['order'] = $order;
-    }
+    $requestData['order'] = $order;
     $requestData['limit'] = $limit;
+    
+    podio_log($requestData);
 
     if ($response = $this->podio->request($url, $requestData)) {
       return json_decode($response->getBody(), TRUE);
