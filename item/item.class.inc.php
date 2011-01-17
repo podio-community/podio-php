@@ -130,7 +130,15 @@ class PodioItemAPI {
     foreach ($filters as $filter) {
       if (empty($filter['values'])) {
         $data[$filter['key']] = '';
-      } else if (is_array($filter['values'])) {
+      }
+      else if ($filter['key'] == 'created_by') {
+        $created_bys = array();
+        foreach ($filter['values'] as $value) {
+          $created_bys[] = $value['type'].':'.$value['id'];
+        }
+        $data['created_by'] = implode(';', $created_bys);
+      }
+      else if (is_array($filter['values'])) {
         if (isset($filter['values']['from'])) {
           $data[$filter['key']] = $filter['values']['from'].'-'.$filter['values']['to'];
         }
