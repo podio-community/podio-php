@@ -300,5 +300,20 @@ class PodioSpaceAPI {
     }
     return FALSE;
   }
+  
+  /**
+   * Returns the statistics for the space with the number of members, statuses,
+   * items and comments.
+   *
+   * @param $space_id The id of the space to get statistics for
+   *
+   * @return Array with statistics
+   */
+  public function getStatistics($space_id) {
+    if ($response = $this->podio->request('/space/'.$space_id.'/statistics')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
 }
 

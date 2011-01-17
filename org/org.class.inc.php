@@ -126,5 +126,19 @@ class PodioOrgAPI {
     }
   }
   
+  /**
+   * Returns interesting statistics for this organization. Only org creator 
+   * is allowed to see this.
+   *
+   * @param $org_id The id of the organization to get statistics for
+   *
+   * @return Array with statistics
+   */
+  public function getStatistics($org_id) {
+    if ($response = $this->podio->request('/org/'.$org_id.'/statistics')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
 }
 
