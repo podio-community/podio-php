@@ -124,7 +124,6 @@ class PodioItemAPI {
    *         an array of items
    */
   public function getItems($app_id, $limit, $offset, $sort_by, $sort_desc, $filters = array()) {
-
     // Change filter structure for GET request.
     $data = array('limit' => $limit, 'offset' => $offset, 'sort_by' => $sort_by, 'sort_desc' => $sort_desc);
     foreach ($filters as $filter) {
@@ -143,6 +142,11 @@ class PodioItemAPI {
           $data[$filter['key']] = $filter['values']['from'].'-'.$filter['values']['to'];
         }
         else {
+          foreach ($filter['values'] as $k => $v) {
+            if ($v === NULL) {
+              $filter['values'][$k] = 'null';
+            }
+          }
           $data[$filter['key']] = implode(';', $filter['values']);
         }
       }
@@ -188,7 +192,7 @@ class PodioItemAPI {
    * Adds a new item to the given app.
    *
    * @param $app_id The id of the app to create item in
-   * @param $fields Array of values for each field. Each item has two keys:
+   * @param $fields Array of values for each field. Each item has three keys:
    * - "field_id" : The id of the field (field_id or external_id must
    *                be specified)
    * - "external_id" : The external id of the field (field_id or external_id 
