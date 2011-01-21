@@ -260,6 +260,20 @@ class PodioAppAPI {
   }
   
   /**
+   * Returns the top apps for the active user. This is the apps that the user 
+   * have interacted with the most.
+   * 
+   * @param $limit The maximum number of apps to return, defaults to 4.
+   *
+   * @return Array of apps
+   */
+  public function getTop($limit = 4) {
+    if ($response = $this->podio->request('/app/top/', array('limit' => $limit))) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
+  /**
    * Adds a new field to an app
    *
    * @param $app_id The id of the app to add field on
