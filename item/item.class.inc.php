@@ -259,9 +259,15 @@ class PodioItemAPI {
    * @param $item_id The id of the item to update
    * @param $field_id The id of the field to update
    * @param $data Array of new values
+   * @param $silent Set to 1 if the operating should not result in 
+   *                stream events and notifications
    */
-  public function updateFieldValue($item_id, $field_id, $data) {
-    if ($response = $this->podio->request('/item/'.$item_id.'/value/'.$field_id, $data, HTTP_Request2::METHOD_PUT)) {
+  public function updateFieldValue($item_id, $field_id, $data, $silent = 0) {
+    $url = '/item/'.$item_id.'/value/'.$field_id;
+    if ($silent = 1) {
+      $url .= '?silent=1';
+    }
+    if ($response = $this->podio->request($url, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
