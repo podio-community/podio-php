@@ -167,5 +167,15 @@ class PodioNotificationAPI {
     $data['digest'] = $send_digest;
     $response = $this->podio->request('/notification/settings', $data, HTTP_Request2::METHOD_PUT);
   }
+
+  /**
+   * Updates the bulletin notification settings for the user
+   *
+   * @param $send_bulletin True to enable bulletin mails, false otherwise
+   */
+  public function setBulletinSetting($send_bulletin) {
+    $data['bulletin'] = $send_bulletin;
+    $response = $this->podio->request('/notification/settings', $data, HTTP_Request2::METHOD_PUT);
+  }
 }
 
