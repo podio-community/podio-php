@@ -234,7 +234,10 @@ class PodioItemAPI {
       $data['revision'] = $revision;
     }
     if ($response = $this->podio->request('/item/'.$item_id, $data, HTTP_Request2::METHOD_PUT)) {
-      return json_decode($response->getBody(), TRUE);
+      if ($response->getStatus() == '204') {
+        return TRUE;
+      }
+      return FALSE;
     }
   }
   
