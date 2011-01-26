@@ -55,7 +55,7 @@ class PodioFileAPI {
    * @param $file_id Id for the file
    */
   public function getLocation($file_id) {
-    if ($response = $this->podio->request('/file/'.$file_id.'/location')) {
+    if ($response = $this->podio->request('/file/'.$file_id.'/location', array(), HTTP_Request2::METHOD_GET, TRUE)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -84,7 +84,7 @@ class PodioFileAPI {
   public function attach($file_id, $ref_type, $ref_id) {	
     $data['ref_type'] = $ref_type;
     $data['ref_id'] = $ref_id;
-    $response = $this->podio->request('/file/'.$file_id.'/attach', $data, HTTP_Request2::METHOD_POST);
+    $response = $this->podio->request('/file/'.$file_id.'/attach', $data, HTTP_Request2::METHOD_POST, TRUE);
     if ($response) {
       return TRUE;
     }
@@ -105,7 +105,7 @@ class PodioFileAPI {
   public function create($name, $mimetype) {
     $data['name'] = $name;
     $data['mimetype'] = $mimetype; 
-    $response = $this->podio->request('/file/', $data, HTTP_Request2::METHOD_POST);
+    $response = $this->podio->request('/file/', $data, HTTP_Request2::METHOD_POST, TRUE);
     if ($response) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -120,7 +120,7 @@ class PodioFileAPI {
    * @param $file_id The id of the file to announce
    */
   public function announceAvailable($file_id) {
-    $response = $this->podio->request('/file/'.$file_id.'/available', array(), HTTP_Request2::METHOD_POST);
+    $response = $this->podio->request('/file/'.$file_id.'/available', array(), HTTP_Request2::METHOD_POST, TRUE);
     if ($response) {
       return TRUE;
     }
@@ -138,7 +138,7 @@ class PodioFileAPI {
   public function replace($old_file_id, $new_file_id) {
     $data['old_file_id'] = (int)$old_file_id;
     $new_file_id = (int)$new_file_id;
-    $response = $this->podio->request('/file/'.$new_file_id.'/replace', $data, HTTP_Request2::METHOD_POST);
+    $response = $this->podio->request('/file/'.$new_file_id.'/replace', $data, HTTP_Request2::METHOD_POST, TRUE);
     if ($response) {
       return TRUE;
     }
