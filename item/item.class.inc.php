@@ -76,6 +76,23 @@ class PodioItemAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+
+  /**
+   * Gets the basic details about the given item. Similar to the full get 
+   * item method, but only returns data for the item itself.
+   *
+   * @param $item_id The id of the item to retrieve
+   *
+   * @return A basic version of an item
+   */
+  public function getBasic($item_id) {
+    if (!$item_id) {
+      return FALSE;
+    }
+    if ($response = $this->podio->request('/item/'.$item_id.'/basic')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
   
   /**
    * Returns the previous item relative to the given item. This takes into 
