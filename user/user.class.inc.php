@@ -196,5 +196,17 @@ class PodioUserAPI {
     }
     return FALSE;
   }
+
+  /**
+   * Deletes the active user.
+   */
+  public function delete() {
+    if ($response = $this->podio->request('/user/', array(), HTTP_Request2::METHOD_DELETE)) {
+      if ($response->getStatus() == '204') {
+        return TRUE;
+      }
+      return FALSE;
+    }
+  }
 }
 
