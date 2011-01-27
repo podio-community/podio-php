@@ -377,7 +377,7 @@ class PodioBaseAPI {
    *
    * @return Varies by API call
    */
-  public function request($url, $data = '', $method = HTTP_Request2::METHOD_GET, $use_frontend_token = FALSE) {
+  public function request($url, $data = '', $method = HTTP_Request2::METHOD_GET) {
     $oauth = PodioOAuth::instance();
     $request = new HTTP_Request2($this->url . $url, $method, array(
       'ssl_verify_peer'   => false,
@@ -389,7 +389,7 @@ class PodioBaseAPI {
     $request->setHeader('User-Agent', 'Podio API Client/1.0');
     $request->setHeader('Accept', 'application/json');
     $request->setHeader('Accept-Encoding', 'gzip');
-    if ($use_frontend_token) {
+    if ($this->frontend_token) {
       $request->setHeader('X-Podio-Frontend-Token', $this->frontend_token);
     }
     $location = $request->getUrl();

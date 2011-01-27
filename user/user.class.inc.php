@@ -49,7 +49,7 @@ class PodioUserAPI {
       unset($data['mail']);
     }
     
-    $response = $this->podio->request('/user/'.$user_id, $data, HTTP_Request2::METHOD_PUT, TRUE);
+    $response = $this->podio->request('/user/'.$user_id, $data, HTTP_Request2::METHOD_PUT);
     if ($response && $response->getStatus() == '204') {
       return TRUE;
     }
@@ -138,7 +138,7 @@ class PodioUserAPI {
    */
   public function create($name, $mail, $password, $locale, $timezone) {
     $data =  array('name' => $name, 'mail' => $mail, 'password' => $password, 'locale' => $locale, 'timezone' => $timezone);
-    if ($response = $this->podio->request('/user/', $data, HTTP_Request2::METHOD_POST, TRUE)) {
+    if ($response = $this->podio->request('/user/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -150,7 +150,7 @@ class PodioUserAPI {
    * @param $mail The e-mail to recover password for
    */
   public function recoverPassword($mail) {
-    if ($response = $this->podio->request('/user/recover_password', array('mail' => $mail), HTTP_Request2::METHOD_POST, TRUE)) {
+    if ($response = $this->podio->request('/user/recover_password', array('mail' => $mail), HTTP_Request2::METHOD_POST)) {
       if ($response->getStatus() == '204') {
         return TRUE;
       }
@@ -168,7 +168,7 @@ class PodioUserAPI {
    * @return The mail address of the user for which the password was just reset
    */
   public function resetPassword($password, $recovery_code) {
-    if ($response = $this->podio->request('/user/reset_password', array('password' => $password, 'recovery_code' => $recovery_code), HTTP_Request2::METHOD_POST, TRUE)) {
+    if ($response = $this->podio->request('/user/reset_password', array('password' => $password, 'recovery_code' => $recovery_code), HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -188,7 +188,7 @@ class PodioUserAPI {
       'password' => $password,
       'name' => $name,
     );
-    if ($response = $this->podio->request('/user/activate_user', $data, HTTP_Request2::METHOD_POST, TRUE)) {
+    if ($response = $this->podio->request('/user/activate_user', $data, HTTP_Request2::METHOD_POST)) {
       if ($response->getStatus() == '204') {
         return TRUE;
       }
