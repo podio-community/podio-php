@@ -313,6 +313,41 @@ class PodioBaseAPI {
   }
   
   /**
+   * Normalize filters for GET requests
+   */
+  public function normalizeFilters($filters) {
+    $data = array();
+    foreach ($filters as $filter) {
+      if (empty($filter['values'])) {
+        $data[$filter['key']] = '';
+      }
+      else if ($filter['key'] == 'created_by') {
+        $created_bys = array();
+        foreach ($filter['values'] as $value) {
+          $created_bys[] = $value['type'].':'.$value['id'];
+        }
+        $data['created_by'] = implode(';', $created_bys);
+      }
+      else if (is_array($filter['values'])) {
+        if (array_key_exists('from', $filter['values'])) {
+          $from = $filter['values']['from'] ? $filter['values']['from'] : '';
+          $to = $filter['values']['to'] ? $filter['values']['to'] : '';
+          $data[$filter['key']] = $from.'-'.$to;
+        }
+        else {
+          foreach ($filter['values'] as $k => $v) {
+            if ($v === NULL) {
+              $filter['values'][$k] = 'null';
+            }
+          }
+          $data[$filter['key']] = implode(';', $filter['values']);
+        }
+      }
+    }
+    return $data;
+  }
+  
+  /**
    * Upload a file for later use.
    *
    * @param $file Path to file for upload

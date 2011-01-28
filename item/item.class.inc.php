@@ -141,32 +141,11 @@ class PodioItemAPI {
    *         an array of items
    */
   public function getItems($app_id, $limit, $offset, $sort_by, $sort_desc, $filters = array()) {
-    // Change filter structure for GET request.
     $data = array('limit' => $limit, 'offset' => $offset, 'sort_by' => $sort_by, 'sort_desc' => $sort_desc);
-    foreach ($filters as $filter) {
-      if (empty($filter['values'])) {
-        $data[$filter['key']] = '';
-      }
-      else if ($filter['key'] == 'created_by') {
-        $created_bys = array();
-        foreach ($filter['values'] as $value) {
-          $created_bys[] = $value['type'].':'.$value['id'];
-        }
-        $data['created_by'] = implode(';', $created_bys);
-      }
-      else if (is_array($filter['values'])) {
-        if (isset($filter['values']['from'])) {
-          $data[$filter['key']] = $filter['values']['from'].'-'.$filter['values']['to'];
-        }
-        else {
-          foreach ($filter['values'] as $k => $v) {
-            if ($v === NULL) {
-              $filter['values'][$k] = 'null';
-            }
-          }
-          $data[$filter['key']] = implode(';', $filter['values']);
-        }
-      }
+    
+    $normalized_filters = $this->podio->normalizeFilters($filters);
+    foreach ($normalized_filters as $key => $value) {
+      $data[$key] = $value;
     }
 
     if ($response = $this->podio->request('/item/app/'.$app_id.'/v2/', $data)) {
@@ -320,7 +299,7 @@ class PodioItemAPI {
    * @return Array with three keys:
    * - "body": The CSV content
    * - "filename": Filename to use in any downloads
-   * - "content_type"
+   * - "content_type": Content-type header from the API
    */
   function csv($app_id, $format, $limit, $offset, $sort_by, $sort_desc, $filters = array()) {
     // Change filter structure for GET request.
@@ -328,40 +307,54 @@ class PodioItemAPI {
     if ($limit) {
       $data['limit'] = $limit;
     }
-    foreach ($filters as $filter) {
-      if (empty($filter['values'])) {
-        $data[$filter['key']] = '';
-      }
-      else if ($filter['key'] == 'created_by') {
-        $created_bys = array();
-        foreach ($filter['values'] as $value) {
-          $created_bys[] = $value['type'].':'.$value['id'];
-        }
-        $data['created_by'] = implode(';', $created_bys);
-      }
-      else if (is_array($filter['values'])) {
-        if (isset($filter['values']['from'])) {
-          $data[$filter['key']] = $filter['values']['from'].'-'.$filter['values']['to'];
-        }
-        else {
-          foreach ($filter['values'] as $k => $v) {
-            if ($v === NULL) {
-              $filter['values'][$k] = 'null';
-            }
-          }
-          $data[$filter['key']] = implode(';', $filter['values']);
-        }
-      }
+    $normalized_filters = $this->podio->normalizeFilters($filters);
+    foreach ($normalized_filters as $key => $value) {
+      $data[$key] = $value;
     }
-
     if ($response = $this->podio->request('/item/app/'.$app_id.'/csv/', $data)) {
       $header = $response->getHeader('content-disposition');
       preg_match('/filename="(.+)"/', $header, $matches);
       $filename = $matches[1];
       return array('body' => $response->getBody(), 'filename' => $filename, 'content_type' => $response->getHeader('content-type'));
     }
-    
   }
-  
+
+  /**
+   * Returns a XLSX file of items
+   * 
+   * @param $app_id The id of the app to get items from
+   * @param $limit The maximum number of items to receive
+   * @param $offset The offset from the start of the items returned
+   * @param $sort_by How the items should be sorted. For the possible options, 
+   *                 see the filter area.
+   * @param $sort_desc Use 1 or leave out to sort descending, 
+   *                   use 0 to sort ascending
+   * @param $filters Array of key/value pairs to use for filtering. For the 
+   *                 valid keys and values see the filter area. For list 
+   *                 filtering, the values are given as a comma-separated 
+   *                 list, for range filtering the values are given as "x-y".
+   *
+   * @return Array with three keys:
+   * - "body": The CSV content
+   * - "filename": Filename to use in any downloads
+   * - "content_type": Content-type header from the API
+   */
+  function xlsx($app_id, $limit, $offset, $sort_by, $sort_desc, $filters = array()) {
+    // Change filter structure for GET request.
+    $data = array('offset' => $offset, 'sort_by' => $sort_by, 'sort_desc' => $sort_desc);
+    if ($limit) {
+      $data['limit'] = $limit;
+    }
+    $normalized_filters = $this->podio->normalizeFilters($filters);
+    foreach ($normalized_filters as $key => $value) {
+      $data[$key] = $value;
+    }
+    if ($response = $this->podio->request('/item/app/'.$app_id.'/xlsx/', $data)) {
+      $header = $response->getHeader('content-disposition');
+      preg_match('/filename="(.+)"/', $header, $matches);
+      $filename = $matches[1];
+      return array('body' => $response->getBody(), 'filename' => $filename, 'content_type' => $response->getHeader('content-type'));
+    }
+  }
 }
 
