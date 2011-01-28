@@ -137,6 +137,13 @@ class PodioNotificationAPI {
     }
     $response = $this->podio->request('/notification/'.$notification_id.'/viewed', array(), $method);
   }
+
+  /**
+   * Marks all the users notifications as viewed.
+   */
+  public function markAllViewed() {
+    $response = $this->podio->request('/notification//viewed', array(), HTTP_Request2::METHOD_POST);
+  }
   
   /**
    * Returns the notification settings for the active user
