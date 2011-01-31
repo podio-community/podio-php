@@ -207,7 +207,7 @@ class PodioItemAPI {
   public function create($app_id, $fields, $file_ids = array(), $tags = array(), $external_id = NULL, $silent = 0) {
     $data = array('fields' => $fields, 'file_ids' => $file_ids, 'tags' => $tags, 'external_id' => $external_id);
     $url = '/item/app/'.$app_id.'/';
-    if ($silent = 1) {
+    if ($silent == 1) {
       $url .= '?silent=1';
     }
     if ($response = $this->podio->request($url, $data, HTTP_Request2::METHOD_POST)) {
