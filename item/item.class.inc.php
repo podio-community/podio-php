@@ -199,12 +199,18 @@ class PodioItemAPI {
    * @param $tags Array of tags to put on the item
    * @param $external_id The external id of the item. This can be used to 
    *                     hold a reference to the item in an external system
+   * @param $silent Set to 1 if the operating should not result in 
+   *                stream events and notifications
    *
    * @return Array with the new item id
    */
-  public function create($app_id, $fields, $file_ids = array(), $tags = array(), $external_id = NULL) {
+  public function create($app_id, $fields, $file_ids = array(), $tags = array(), $external_id = NULL, $silent = 0) {
     $data = array('fields' => $fields, 'file_ids' => $file_ids, 'tags' => $tags, 'external_id' => $external_id);
-    if ($response = $this->podio->request('/item/app/'.$app_id.'/', $data, HTTP_Request2::METHOD_POST)) {
+    $url = '/item/app/'.$app_id.'/';
+    if ($silent = 1) {
+      $url .= '?silent=1';
+    }
+    if ($response = $this->podio->request($url, $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
