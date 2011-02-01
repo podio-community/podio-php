@@ -269,7 +269,7 @@ class PodioItemAPI {
    */
   public function updateFieldValue($item_id, $field_id, $data, $silent = 0) {
     $url = '/item/'.$item_id.'/value/'.$field_id;
-    if ($silent = 1) {
+    if ($silent == 1) {
       $url .= '?silent=1';
     }
     if ($response = $this->podio->request($url, $data, HTTP_Request2::METHOD_PUT)) {
