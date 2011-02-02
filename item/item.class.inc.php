@@ -123,7 +123,7 @@ class PodioItemAPI {
    *
    * @return Array with item id and title
    */
-  public function getNext($item_id) {
+  public function getNext($item_id, $time = NULL) {
     $data = $time ? array('time' => $time) : array();
     if ($response = $this->podio->request('/item/'.$item_id.'/next', $data)) {
       return json_decode($response->getBody(), TRUE);
