@@ -99,11 +99,15 @@ class PodioItemAPI {
    * consideration the last used filter on the app.
    *
    * @param $item_id The id of the current item
+   * @param $time Optional. The time to base the filtering on. Set this to 
+   *              get the previous item based on the filtering and ordering 
+   *              of items at the given time.
    *
    * @return Array with item id and title
    */
-  public function getPrevious($item_id) {
-    if ($response = $this->podio->request('/item/'.$item_id.'/previous')) {
+  public function getPrevious($item_id, $time = NULL) {
+    $data = $time ? array('time' => $time) : array();
+    if ($response = $this->podio->request('/item/'.$item_id.'/previous', $data)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -113,11 +117,15 @@ class PodioItemAPI {
    * consideration the last used filter on the app.
    *
    * @param $item_id The id of the current item
+   * @param $time Optional. The time to base the filtering on. Set this to 
+   *              get the next item based on the filtering and ordering of 
+   *              items at the given time.
    *
    * @return Array with item id and title
    */
   public function getNext($item_id) {
-    if ($response = $this->podio->request('/item/'.$item_id.'/next')) {
+    $data = $time ? array('time' => $time) : array();
+    if ($response = $this->podio->request('/item/'.$item_id.'/next', $data)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
