@@ -17,7 +17,7 @@ class PodioSubscriptionAPI {
    * Subscribes the user to the given object. Based on the object type, the 
    * user will receive notifications when actions are performed on the object. 
    *
-   * @param $ref_type Either "app", "item" or "status"
+   * @param $ref_type Either "app", "item", "status" or "space"
    * @param $ref_id The matching id (app id, item id or status id)
    */
   public function create($ref_type, $ref_id) {
@@ -29,7 +29,7 @@ class PodioSubscriptionAPI {
   /**
    * Unsubscribe from getting notifications on actions on the given object.
    *
-   * @param $ref_type Either "app", "item" or "status"
+   * @param $ref_type Either "app", "item", "status" or "space"
    * @param $ref_id The matching id (app id, item id or status id)
    */
   public function delete($ref_type, $ref_id) {
