@@ -63,15 +63,26 @@ class PodioContactAPI {
    *
    * @param $type Context for call. "all", "space" or "org"
    * @param $ref_id The id of the reference, if any
+   * @param $contact_type The types of contacts to return, can be either 
+   *                      "user", "connection" or "space". Defaults to 
+   *                      "user". To get all types of contacts supply a 
+   *                      blank value for the parameter.
    * @param $format Determines the way the result is returned. Valid options 
    *                are "mini", "short" and "full". Default is "mini".
    * @param $order The order in which the contacts can be returned. See the 
    *               area for details on the ordering options.
    * @param $limit The maximum number of contacts that should be returned.
+   * @param $offset he offset to use when returning contacts.
+   * @param $required An array of fields that should exist for 
+   *                  the contacts returned. Useful for only getting 
+   *                  contacts with an email address or phone number.
+   * @param $field An array with one key/value pair. The key is name of a 
+   *               required field. The value is the value for the field. 
+   *               For text fields partial matches will be returned.
    *
    * @return Array of contact objects
    */
-  public function getContacts($type = 'all', $ref_id = NULL, $format = 'mini', $order = 'name', $limit = NULL) {
+  public function getContacts($type = 'all', $ref_id = NULL, $contact_type = 'user', $format = 'mini', $order = 'name', $limit = NULL, $offset = 0, $required = array(), $field = array()) {
     if ($type != 'all' && !$ref_id) {
       return FALSE;
     }
@@ -90,6 +101,15 @@ class PodioContactAPI {
     $requestData['type'] = $format;
     $requestData['order'] = $order;
     $requestData['limit'] = $limit;
+    $requestData['contact_type'] = $contact_type;
+    
+    if ($offset) {
+      $requestData['offset'] = $offset;
+    }
+    if (count($required) > 0) {
+      $requestData['required'] = implode(',', $required);
+    }
+    $requestData = array_merge($requestData, $field);
 
     if ($response = $this->podio->request($url, $requestData)) {
       return json_decode($response->getBody(), TRUE);
