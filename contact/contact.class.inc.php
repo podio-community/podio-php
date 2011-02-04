@@ -63,10 +63,10 @@ class PodioContactAPI {
    *
    * @param $type Context for call. "all", "space" or "org"
    * @param $ref_id The id of the reference, if any
-   * @param $contact_type The types of contacts to return, can be either 
-   *                      "user", "connection" or "space". Defaults to 
-   *                      "user". To get all types of contacts supply a 
-   *                      blank value for the parameter.
+   * @param $contact_type Comma-separated list of contacts to return, 
+   *                      can be either "user", "connection" or "space". 
+   *                      Defaults to "user". To get all types of 
+   *                      contacts supply a blank value for the parameter.
    * @param $format Determines the way the result is returned. Valid options 
    *                are "mini", "short" and "full". Default is "mini".
    * @param $order The order in which the contacts can be returned. See the 
