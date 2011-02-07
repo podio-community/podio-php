@@ -128,8 +128,8 @@ class PodioOAuth {
             $this->refresh_token = '';
             $this->expires_in = '';
             if ($api->getLogLevel('error')) {
-              $api->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
-              $api->log($response->getBody(), PEAR_LOG_ERR);
+              $api->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_WARNING);
+              $api->log($response->getBody(), PEAR_LOG_WARNING);
             }
             return FALSE;
             break;
@@ -141,7 +141,7 @@ class PodioOAuth {
         }
     } catch (HTTP_Request2_Exception $e) {
       if ($api->getLogLevel('error')) {
-        $api->log($e->getMessage(), PEAR_LOG_ERR);
+        $api->log($e->getMessage(), PEAR_LOG_WARNING);
       }
     }
     return FALSE;
