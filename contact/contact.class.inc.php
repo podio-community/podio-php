@@ -42,6 +42,18 @@ class PodioContactAPI {
   }
   
   /**
+   * Returns all the contact details about the contact with the 
+   * given profile id.
+   *
+   * @param $profile_id The id of the profile to retrieve
+   */
+  public function getContactV2($profile_id) {
+    if ($response = $this->podio->request('/contact/' . $profile_id . '/v2')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
+  /**
    * Returns the top contacts for the user ordered by their overall 
    * interactive with the active user.
    * 
