@@ -26,16 +26,23 @@ class PodioStreamAPI {
    * @param $ref_id The space id or org id when getting stream for org or space
    * @param $limit The number of stream objects to get. Defaults to 20
    * @param $offset How far should the objects be offset, defaults to 0
+   * @param $latest The date and time that all events should be before, 
+   *                defaults to no limit
    *
    * @return An array of stream objects
    */
-  public function get($type = 'global', $ref_id = NULL, $limit = 20, $offset = 0) {
+  public function get($type = 'global', $ref_id = NULL, $limit = 20, $offset = 0, $latest = NULL) {
     $url = '/stream/';
     if ($type != 'global') {
       $url = '/stream/'.$type.'/'.$ref_id.'/';
     }
 
-    if ($response = $this->podio->request($url, array('limit' => $limit, 'offset' => $offset))) {
+    $data = array('limit' => $limit, 'offset' => $offset);
+    if ($latest) {
+      $data['latest'] = $latest;
+    }
+
+    if ($response = $this->podio->request($url, $data)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
