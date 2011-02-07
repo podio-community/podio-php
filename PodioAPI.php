@@ -191,6 +191,10 @@ class PodioBaseAPI {
    */
   protected $log_name;
   /**
+   * Current log identification for the API log
+   */
+  protected $log_ident;
+  /**
    * Current log levels for the API log
    */
   protected $log_levels;
@@ -204,6 +208,7 @@ class PodioBaseAPI {
     $this->upload_end_point = $upload_end_point;
     $this->log_handler = 'error_log';
     $this->log_name = '';
+    $this->log_ident = 'PODIO_API_CLIENT';
     $this->log_levels = array(
       'error' => TRUE,
       'GET' => FALSE,
@@ -240,8 +245,8 @@ class PodioBaseAPI {
    *               http://www.indelible.org/php/Log/guide.html#log-levels
    */
   public function log($message, $level = PEAR_LOG_INFO) {
-    $logger = &Log::singleton($this->log_handler, $this->log_name, 'PODIO_API_CLIENT');
-    $logger->log($message, $level);
+    $logger = &Log::singleton($this->log_handler, $this->log_name, $this->log_ident);
+    $logger->log('[api] ' . $message, $level);
   }
   
   /**
@@ -251,9 +256,10 @@ class PodioBaseAPI {
    * @param $handler
    * @param $name
    */
-  public function setLogHandler($handler, $name) {
+  public function setLogHandler($handler, $name, $ident) {
     $this->log_handler = $handler;
     $this->log_name = $name;
+    $this->log_ident = $ident;
   }
   
   /**
