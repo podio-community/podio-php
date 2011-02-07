@@ -181,13 +181,20 @@ class PodioUserAPI {
    * @param $password The new password for the user
    * @param $name The full name of the user
    */
-  public function activate($activation_code, $mail, $password, $name) {
+  public function activate($activation_code, $mail, $password, $name, $locale = NULL, $timezone = NULL) {
     $data = array(
       'activation_code' => $activation_code,
       'mail' => $mail,
       'password' => $password,
       'name' => $name,
     );
+    if ($locale) {
+      $data['locale'] = $locale;
+    }
+    if ($timezone) {
+      $data['timezone'] = $timezone;
+    }
+    
     if ($response = $this->podio->request('/user/activate_user', $data, HTTP_Request2::METHOD_POST)) {
       if ($response->getStatus() == '204') {
         return TRUE;
@@ -195,6 +202,30 @@ class PodioUserAPI {
       return FALSE;
     }
     return FALSE;
+  }
+
+  /**
+   * Invites the contact to try out Podio. 
+   * Either profile_id or mail must given.
+   *
+   * @param $profile_id The id of the profile to invite. 
+   *                    The profile must have an mail address
+   * @param $mail The mail address of the person to invite
+   */
+  public function invite($profile_id = NULL, $mail = NULL) {
+    $data = array();
+    if ($profile_id) {
+      $data['profile_id'] = $profile_id;
+    }
+    elseif ($mail) {
+      $data['mail'] = $mail;
+    }
+    if ($response = $this->podio->request('/user/invite', $data, HTTP_Request2::METHOD_POST)) {
+      if ($response->getStatus() == '204') {
+        return TRUE;
+      }
+      return FALSE;
+    }
   }
 
   /**
