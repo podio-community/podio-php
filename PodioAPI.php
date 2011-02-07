@@ -393,8 +393,8 @@ class PodioBaseAPI {
           case 500 : 
           case 503 : 
             if ($this->getLogLevel('error')) {
-              $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
-              $this->log($response->getBody(), PEAR_LOG_ERR);
+              $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_WARNING);
+              $this->log($response->getBody(), PEAR_LOG_WARNING);
             }
             $this->last_error = json_decode($response->getBody(), TRUE);
             return FALSE;
@@ -404,7 +404,7 @@ class PodioBaseAPI {
         }
     } catch (HTTP_Request2_Exception $e) {
       if ($this->getLogLevel('error')) {
-        $this->log($e->getMessage(), PEAR_LOG_ERR);
+        $this->log($e->getMessage(), PEAR_LOG_WARNING);
       }
     }
   }
@@ -547,8 +547,8 @@ class PodioBaseAPI {
           case 500 : 
           case 503 : 
             if ($this->getLogLevel('error')) {
-              $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_ERR);
-              $this->log($response->getBody(), PEAR_LOG_ERR);
+              $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_WARNING);
+              $this->log($response->getBody(), PEAR_LOG_WARNING);
             }
             $this->last_error = json_decode($response->getBody(), TRUE);
             return FALSE;
@@ -558,7 +558,7 @@ class PodioBaseAPI {
         }
     } catch (HTTP_Request2_Exception $e) {
       if ($this->getLogLevel('error')) {
-        $this->log($e->getMessage(), PEAR_LOG_ERR);
+        $this->log($e->getMessage(), PEAR_LOG_WARNING);
       }
     }
   }
