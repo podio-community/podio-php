@@ -37,6 +37,19 @@ class PodioTagAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+  
+  /**
+   * Updates the tags on the given object.
+   *
+   * @param $ref_type The type of object to act on. E.g. 'item'
+   * @param $ref_id The id of the object to update tags for
+   * @param $tags Array of tags.
+   */
+  public function update($ref_type, $ref_id, $tags = array()) {
+    if ($response = $this->podio->request('/tag/'.$ref_type.'/'.$ref_id.'/', $tags, HTTP_Request2::METHOD_PUT)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
 
   /**
    * Removes a single tag from an object.
@@ -56,15 +69,25 @@ class PodioTagAPI {
   }
 
   /**
-   * Returns the tags on the given app. This includes only items. The tags are 
-   * ordered firstly by the number of uses, secondly by the tag text.
+   * Returns the tags on the given app. This includes only items. The tags 
+   * are first limited ordered by their frequency of use, and then 
+   * returned sorted alphabetically.
    *
    * @param $app_id The id of the app to get tags for.
+   * @param $limit The maximum number of tags to return
+   * @param $text Any text to filter by
    *
    * @return An array of tag text and usage counts for each tag
    */
-  public function getByApp($app_id) {
-    if ($response = $this->podio->request('/tag/app/'.$app_id . '/')) {
+  public function getByApp($app_id, $limit = NULL, $text = '') {
+    $data = array();
+    if ($limit) {
+      $data['limit'] = $limit;
+    }
+    if ($text) {
+      $data['text'] = $text;
+    }
+    if ($response = $this->podio->request('/tag/app/'.$app_id . '/', $data)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
