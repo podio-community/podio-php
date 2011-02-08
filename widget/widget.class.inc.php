@@ -26,6 +26,7 @@ class PodioWidgetAPI {
    * - tag_cloud
    * - state_count
    * - member_count
+   * - contact_count
    * - app_count
    * - item_count
    * @param $title The title of the widget
