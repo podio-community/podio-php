@@ -91,10 +91,13 @@ class PodioContactAPI {
    * @param $field An array with one key/value pair. The key is name of a 
    *               required field. The value is the value for the field. 
    *               For text fields partial matches will be returned.
+   * @param $exclude_self If set to 1 (the default) the active user will not 
+   *                      be returned, else the active user can be included 
+   *                      in the results.
    *
    * @return Array of contact objects
    */
-  public function getContacts($type = 'all', $ref_id = NULL, $contact_type = 'user', $format = 'mini', $order = 'name', $limit = NULL, $offset = 0, $required = array(), $field = array()) {
+  public function getContacts($type = 'all', $ref_id = NULL, $contact_type = 'user', $format = 'mini', $order = 'name', $limit = NULL, $offset = 0, $required = array(), $field = array(), $exclude_self = 1) {
     if ($type != 'all' && !$ref_id) {
       return FALSE;
     }
@@ -114,6 +117,7 @@ class PodioContactAPI {
     $requestData['order'] = $order;
     $requestData['limit'] = $limit;
     $requestData['contact_type'] = $contact_type;
+    $requestData['exclude_self'] = $exclude_self;
     
     if ($offset) {
       $requestData['offset'] = $offset;
@@ -121,6 +125,7 @@ class PodioContactAPI {
     if (count($required) > 0) {
       $requestData['required'] = implode(',', $required);
     }
+    
     $requestData = array_merge($requestData, $field);
 
     if ($response = $this->podio->request($url, $requestData)) {
