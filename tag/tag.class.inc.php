@@ -91,6 +91,28 @@ class PodioTagAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+  
+  /**
+   * Returns the top tags on the app.
+   *
+   * @param $app_id The id of the app to get tags for.
+   * @param $limit The maximum number of tags to return
+   * @param $text Any text to filter by
+   *
+   * @return An array of tags
+   */
+  public function getTopByApp($app_id, $limit = NULL, $text = '') {
+    $data = array();
+    if ($limit) {
+      $data['limit'] = $limit;
+    }
+    if ($text) {
+      $data['text'] = $text;
+    }
+    if ($response = $this->podio->request('/tag/app/'.$app_id . '/top/', $data)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
 
   /**
    * Returns the tags on the given space. This includes both items and 
