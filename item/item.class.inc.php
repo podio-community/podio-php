@@ -62,6 +62,18 @@ class PodioItemAPI {
   }
   
   /**
+   * Returns the top possible values for the given field. 
+   * This is currently only valid for fields of type "app".
+   *
+   * @param $field_id The id of the field to get top values for
+   */
+  public function getFieldTop($field_id) {
+    if ($response = $this->podio->request('/item/field/'.$field_id.'/top/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
+  /**
    * Returns the item with the specified id.
    *
    * @param $item_id The id of the item to retrieve
