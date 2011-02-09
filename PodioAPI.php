@@ -336,7 +336,7 @@ class PodioBaseAPI {
       }
       else if (is_array($filter['values'])) {
         if (array_key_exists('from', $filter['values'])) {
-          $from = $filter['values']['from'] ? $filter['values']['from'] : '';
+          $from = isset($filter['values']['from']) ? $filter['values']['from'] : '';
           $to = $filter['values']['to'] ? $filter['values']['to'] : '';
           $data[$filter['key']] = $from.'-'.$to;
         }
