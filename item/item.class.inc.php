@@ -298,6 +298,36 @@ class PodioItemAPI {
   }
   
   /**
+   * Performs a calculation on the given app. The calculation is made up 
+   * of 4 parts; aggreation, formula, grouping and filtering. See the API 
+   * documentation for detals.
+   *
+   * @param $app_id The id of the app to perform calculation on.
+   * @param $aggregation The type of aggregation, either "sum", "average", 
+   *                     "count", "mininum" or "maximum"
+   * @param $filters Filters to apply. See filter area.
+   * @param $formula An array of formula parts. Each part is an array with 
+   *                 two keys: "type" and "value"
+   * @param $grouping The group to be applied. See method documentation 
+   *                  for details
+   * @param $limit The maximum number of results to return, defaults to 15
+   */
+  public function calculate($app_id, $aggregation, $filters = array(), $formula = array(), $grouping = NULL, $limit = 15) {
+    $data = array(
+      'aggregation' => $aggregation,
+      'filters' => $filters,
+      'formula' => $formula,
+      'limit' => $limit,
+    );
+    if ($grouping) {
+      $data['grouping'] = $grouping;
+    }
+    if ($response = $this->podio->request('/item/app/'.$app_id.'/calculate', $data, HTTP_Request2::METHOD_POST)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
+  /**
    * Returns a CSV file with the following options:
    * 
    * - Header row
