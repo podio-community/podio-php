@@ -76,6 +76,21 @@ class PodioUserAPI {
   }
 
   /**
+   * Returns the value (true or false) of the property for the active user with the given name.
+   * The property is specific to the auth client used.
+   *
+   * @param $name Property name to get
+   */
+  public function getProperty($name) {
+    if ($response = $this->podio->request('/user/property/'.$name)) {
+      $result = json_decode($response->getBody(), TRUE);
+      return (bool)$result['value'];
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Sets the value of the property for the active user with the given name. 
    * The property is specific to the auth client used.
    *
@@ -89,7 +104,7 @@ class PodioUserAPI {
   }
   
   /**
-   * Returns the value of the property for the active user with the given name.
+   * Deletes the property for the active user with the given name.
    * The property is specific to the auth client used.
    *
    * @param $name Property name to delete
