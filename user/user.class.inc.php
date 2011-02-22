@@ -254,5 +254,17 @@ class PodioUserAPI {
       return FALSE;
     }
   }
+  
+  /**
+   * Returns the current first time user experience status for the user.
+   * This includes user's number of orgs, spaces, apps and users.
+   * This method is only available to Podio.
+   */
+  public function get1UXStatus() {
+    if ($response = $this->podio->request('/user/status/1ux')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
 }
 
