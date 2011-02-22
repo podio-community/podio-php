@@ -64,5 +64,56 @@ class PodioStreamAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+  
+  /**
+   * Returns the apps and spaces the user has muted in the global stream.
+   */
+  public function getMutes() {
+    if ($response = $this->podio->request('/stream/mute/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
+  /**
+   * Mutes the app from the users global stream
+   */
+  public function muteApp($app_id) {
+    if ($response = $this->podio->request('/stream/mute/app/'.$app_id, array(), HTTP_Request2::METHOD_POST)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Unmutes the app from the users global stream
+   */
+  public function unmuteApp($app_id) {
+    if ($response = $this->podio->request('/stream/mute/app/'.$app_id, array(), HTTP_Request2::METHOD_DELETE)) {
+      if ($response->getStatus() == '204') {
+        return TRUE;
+      }
+      return FALSE;
+    }
+  }
+  
+  /**
+   * Mutes the space from the users global stream.
+   */
+  public function muteSpace($space_id) {
+    if ($response = $this->podio->request('/stream/mute/space/'.$space_id, array(), HTTP_Request2::METHOD_POST)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Unmutes the space from the users global stream.
+   */
+  public function unmuteSpace($space_id) {
+    if ($response = $this->podio->request('/stream/mute/space/'.$space_id, array(), HTTP_Request2::METHOD_DELETE)) {
+      if ($response->getStatus() == '204') {
+        return TRUE;
+      }
+      return FALSE;
+    }
+  }
 }
 
