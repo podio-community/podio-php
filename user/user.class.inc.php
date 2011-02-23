@@ -270,6 +270,8 @@ class PodioUserAPI {
    * Returns the current first time user experience status for the user on the given space.
    * This includes user's number of apps and users.
    * This method is only available to Podio.
+   *
+   * @param $space_id The id of the space to status for
    */
   public function get1UXStatusForSpace($space_id) {
     if ($response = $this->podio->request('/user/status/1ux/space/'.$space_id)) {

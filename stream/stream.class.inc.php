@@ -76,6 +76,8 @@ class PodioStreamAPI {
   
   /**
    * Mutes the app from the users global stream
+   *
+   * @param $app_id The id of the app to mute
    */
   public function muteApp($app_id) {
     if ($response = $this->podio->request('/stream/mute/app/'.$app_id, array(), HTTP_Request2::METHOD_POST)) {
@@ -85,6 +87,8 @@ class PodioStreamAPI {
 
   /**
    * Unmutes the app from the users global stream
+   *
+   * @param $app_id The id of the app to unmute
    */
   public function unmuteApp($app_id) {
     if ($response = $this->podio->request('/stream/mute/app/'.$app_id, array(), HTTP_Request2::METHOD_DELETE)) {
@@ -97,6 +101,8 @@ class PodioStreamAPI {
   
   /**
    * Mutes the space from the users global stream.
+   *
+   * @param $space_id The id of the space to mute
    */
   public function muteSpace($space_id) {
     if ($response = $this->podio->request('/stream/mute/space/'.$space_id, array(), HTTP_Request2::METHOD_POST)) {
@@ -106,6 +112,8 @@ class PodioStreamAPI {
 
   /**
    * Unmutes the space from the users global stream.
+   *
+   * @param $space_id The id of the space to unmute
    */
   public function unmuteSpace($space_id) {
     if ($response = $this->podio->request('/stream/mute/space/'.$space_id, array(), HTTP_Request2::METHOD_DELETE)) {
