@@ -437,19 +437,36 @@ class PodioBaseAPI {
     
     // These URLs can be called without an access token.
     $no_token_list = array(
-      '/',
-      '/space/invite/status',
-      '/user/activate_user',
-      '/user/recover_password',
-      '/user/reset_password',
-      '/space/invite/decline',
+      '@^/$@',
+      '@^/space/invite/status$@',
+      '@^/user/activate_user$@',
+      '@^/user/recover_password$@',
+      '@^/user/reset_password$@',
+      '@^/space/invite/decline$@',
+      '@^/app_store/author/[0-9]+/profile$@',
+      '@^/app_store/category/$@',
+      '@^/app_store/category/[0-9]+$@',
+      '@^/app_store/featured$@',
+      '@^/app_store/[0-9]+/v2$@',
+      '@^/app_store/[a-z]+/[0-9]+/$@',
+      '@^/app_store/author/[0-9]+/v2/$@',
+      '@^/app_store/category/[0-9]+/$@',
+      '@^/app_store/search/$@',
+      '@^/app_store/top/v2/$@',
     );
-    if (!($url == '/user/' && $method == HTTP_Request2::METHOD_POST) && !in_array($url, $no_token_list)) {
-      
+    
+    $is_on_no_token_list = FALSE;
+    foreach ($no_token_list as $regex) {
+      if (preg_match($regex, $url)) {
+        $is_on_no_token_list = TRUE;
+        break;
+      }
+    }
+    
+    if (!($url == '/user/' && $method == HTTP_Request2::METHOD_POST) && !$is_on_no_token_list) {
       if (!$oauth->access_token && !(substr($url, 0, 6) == '/file/' && substr($url, -9) == '/location')) {
         return FALSE;
       }
-      
       if ($oauth->access_token) {
         $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
       }
