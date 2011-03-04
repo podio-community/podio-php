@@ -150,9 +150,11 @@ class PodioUserAPI {
    * @param $password The users password
    * @param $locale The locale of the new user
    * @param $timezone The timezone of the user
+   * @param $source_type The type of the source, if any, should only use "share"
+   * @param $source_id The id of the source, if any
    */
-  public function create($name, $mail, $password, $locale, $timezone) {
-    $data =  array('name' => $name, 'mail' => $mail, 'password' => $password, 'locale' => $locale, 'timezone' => $timezone);
+  public function create($name, $mail, $password, $locale, $timezone, $source_type, $source_id) {
+    $data =  array('name' => $name, 'mail' => $mail, 'password' => $password, 'locale' => $locale, 'timezone' => $timezone, 'source_type' => $source_type, 'source_id' => $source_id);
     if ($response = $this->podio->request('/user/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
