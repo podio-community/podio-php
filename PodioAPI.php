@@ -448,7 +448,6 @@ class PodioBaseAPI {
       '@^/app_store/category/[0-9]+$@',
       '@^/app_store/featured$@',
       '@^/app_store/[0-9]+/v2$@',
-      '@^/app_store/[a-z]+/[0-9]+/$@',
       '@^/app_store/author/[0-9]+/v2/$@',
       '@^/app_store/category/[0-9]+/$@',
       '@^/app_store/search/$@',
