@@ -183,6 +183,10 @@ class PodioBaseAPI {
    */
   protected $last_error;
   /**
+   * Contains the last error status code from the API server
+   */
+  protected $last_error_status_code;
+  /**
    * Current log handler for the API log
    */
   protected $log_handler;
@@ -319,6 +323,13 @@ class PodioBaseAPI {
   }
   
   /**
+   * Get the last error status code from the API server
+   */
+  public function getErrorStatusCode() {
+    return $this->last_error_status_code;
+  }
+  
+  /**
    * Normalize filters for GET requests
    */
   public function normalizeFilters($filters) {
@@ -397,6 +408,7 @@ class PodioBaseAPI {
               $this->log($response->getBody(), PEAR_LOG_WARNING);
             }
             $this->last_error = json_decode($response->getBody(), TRUE);
+            $this->last_error_status_code = $response->getStatus();
             return FALSE;
             break;
           default : 
@@ -567,6 +579,7 @@ class PodioBaseAPI {
               $this->log($response->getBody(), PEAR_LOG_WARNING);
             }
             $this->last_error = json_decode($response->getBody(), TRUE);
+            $this->last_error_status_code = $response->getStatus();
             return FALSE;
             break;
           default : 
