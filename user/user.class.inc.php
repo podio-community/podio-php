@@ -153,8 +153,14 @@ class PodioUserAPI {
    * @param $source_type The type of the source, if any, should only use "share"
    * @param $source_id The id of the source, if any
    */
-  public function create($name, $mail, $password, $locale, $timezone, $source_type, $source_id) {
-    $data =  array('name' => $name, 'mail' => $mail, 'password' => $password, 'locale' => $locale, 'timezone' => $timezone, 'source_type' => $source_type, 'source_id' => $source_id);
+  public function create($name, $mail, $password, $locale, $timezone, $source_type = '', $source_id = '') {
+    $data =  array('name' => $name, 'mail' => $mail, 'password' => $password, 'locale' => $locale, 'timezone' => $timezone);
+    if ($source_type) {
+      $data['source_type'] = $source_type;
+    }
+    if ($source_id) {
+      $data['source_id'] = $source_id;
+    }
     if ($response = $this->podio->request('/user/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
