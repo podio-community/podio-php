@@ -153,6 +153,25 @@ class PodioTaskAPI {
     }
     return $list;
   }
+
+  /**
+   * Returns the total task count for the active user.
+   *
+   * @param $space_id The id of the space to get totals for
+   *                  Leave blank to get global totals
+   *
+   * @return An array of task totals
+   */
+  public function getTotalV2($space_id = NULL) {
+    $data = array();
+    if ($space_id) {
+      $data['space_id'] = $space_id;
+    }
+    if ($response = $this->podio->request('/task/total/', $data)) {
+      $list = json_decode($response->getBody(), TRUE);
+    }
+    return $list;
+  }
   
   /**
    * Returns the tasks that are started and where the active user 
