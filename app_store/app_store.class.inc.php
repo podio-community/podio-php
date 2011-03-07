@@ -149,11 +149,8 @@ class PodioAppStoreAPI {
   public function install($share_id, $space_id, $dependencies) {
     $response = $this->podio->request('/app_store/' . $share_id . '/install/v2', array('space_id' => $space_id, 'dependencies' => $dependencies), HTTP_Request2::METHOD_POST);
     if ($response) {
-      if ($response->getStatus() == '204') {
-        return TRUE;
-      }
+      return json_decode($response->getBody(), TRUE);
     }
-    return json_decode($response->getBody(), TRUE);
   }
 
   /**
