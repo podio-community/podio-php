@@ -536,6 +536,7 @@ class PodioBaseAPI {
             $body = json_decode($response->getBody(), TRUE);
             if (strstr($body['error_description'], 'expired_token')) {
               if ($oauth->refresh_token) {
+
                 // Access token is expired. Try to refresh it.
                 $refresh_token = $oauth->refresh_token;
                 $oauth->getAccessToken('refresh_token', array('refresh_token' => $refresh_token));
@@ -546,16 +547,22 @@ class PodioBaseAPI {
                 }
                 else {
                   // New token could not be fetched. Log user out.
+                  $oauth->access_token = '';
+                  $oauth->refresh_token = '';
                   $oauth->throwError('refresh_failed', 'Refreshing access token failed.');
                 }
               }
               else {
                 // We have tried in vain to get a new access token. Log the user out.
+                $oauth->access_token = '';
+                $oauth->refresh_token = '';
                 $oauth->throwError('no_refresh_token', 'No refresh token available.');
               }
             }
             elseif (strstr($body['error'], 'invalid_token') || strstr($body['error'], 'invalid_request')) {
               // Access token is invalid. Log the user out and try again.
+              $oauth->access_token = '';
+              $oauth->refresh_token = '';
               $oauth->throwError('invalid_token', 'Invalid token.');
             }
             break;
