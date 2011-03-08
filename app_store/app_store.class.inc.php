@@ -178,13 +178,17 @@ class PodioAppStoreAPI {
    * @param $file_ids The file ids to use as screenshots for the app
    * @param $features Array of features to enable
    * @param $children Array of ids of the child shares that should be included
+   * @param $info Info array for the share
    *
    * @return Array with the new share id
    */
-  public function shareApp($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array()) {
+  public function shareApp($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array()) {
     $request_data = array('ref_id' => $app_id, 'ref_type' => 'app', 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array());
     if ($features) {
       $request_data['features'] = $features;
+    }
+    if ($info) {
+      $request_data['info'] = $info;
     }
     if ($response = $this->podio->request('/app_store/', $request_data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
@@ -203,13 +207,17 @@ class PodioAppStoreAPI {
    * @param $file_ids The file ids to use as screenshots for the pack
    * @param $features Array of features to enable
    * @param $children Array of ids of the child shares that should be included
+   * @param $info Info array for the share
    *
    * @return Array with the new share id
    */
-  public function sharePack($space_id, $name, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array()) {
+  public function sharePack($space_id, $name, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array()) {
     $request_data = array('ref_id' => $space_id, 'ref_type' => 'space', 'name' => $name, 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array());
     if ($features) {
       $request_data['features'] = $features;
+    }
+    if ($info) {
+      $request_data['info'] = $info;
     }
     if ($response = $this->podio->request('/app_store/', $request_data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
