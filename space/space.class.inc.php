@@ -76,8 +76,8 @@ class PodioSpaceAPI {
   public function update($space_id, $name, $post_on_new_app, $post_on_new_member) {
     $data = array(
       'name' => $name,
-      'post_on_new_app' => $post_on_new_app,
-      'post_on_new_member' => $post_on_new_member,
+      'post_on_new_app' => $post_on_new_app ? TRUE : FALSE,
+      'post_on_new_member' => $post_on_new_member ? TRUE : FALSE,
     );
     if ($response = $this->podio->request('/space/'.$space_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
