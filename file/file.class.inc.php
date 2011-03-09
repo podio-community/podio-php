@@ -83,7 +83,7 @@ class PodioFileAPI {
    */
   public function attach($file_id, $ref_type, $ref_id) {	
     $data['ref_type'] = $ref_type;
-    $data['ref_id'] = $ref_id;
+    $data['ref_id'] = (int)$ref_id;
     $response = $this->podio->request('/file/'.$file_id.'/attach', $data, HTTP_Request2::METHOD_POST);
     if ($response) {
       return TRUE;
