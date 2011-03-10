@@ -1,8 +1,7 @@
 <?php
 
 /**
- * This API makes it possible to search across Podio. For now the API is very 
- * limited, but will be expanded greatly in the future.
+ * This API controls the integration supported by Podio "out-of-the-box".
  */
 class PodioIntegrationAPI {
   /**
@@ -14,6 +13,9 @@ class PodioIntegrationAPI {
   }
 
   /**
+   * Returns the integration with the given id.
+   *
+   * @param $app_id The app to get integration for
    */
   public function get($app_id) {
     if ($response = $this->podio->request('/integration/'.$app_id)) {
