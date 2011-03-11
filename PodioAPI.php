@@ -464,6 +464,7 @@ class PodioBaseAPI {
       '@^/app_store/category/[0-9]+/$@',
       '@^/app_store/search/$@',
       '@^/app_store/top/v2/$@',
+      '@^/app_store/org$@',
     );
     
     $is_on_no_token_list = FALSE;

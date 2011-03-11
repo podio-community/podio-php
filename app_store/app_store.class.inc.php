@@ -71,6 +71,30 @@ class PodioAppStoreAPI {
   }
 
   /**
+   * Returns all the shares the organization with the give URL has shared in the app store.
+   *
+   * @param $ref_type Type of reference. "space" or "app"
+   * @param $organization_url The url of the organization
+   * @param $locale The language of the shares to return. English apps will
+   *                always be returned.
+   * @param $sort The sorting of the shares, either "install", "rating" or
+   *              "name". Defaults to "name".
+   * @param $type The type of share to return, either "app", "pack" or
+   *              leave out for both.
+   * @param $limit The maximum number of apps to return. Defaults to 30
+   * @param $offset The offset to used when returning the apps.
+   *
+   * @return Array of shares*
+   *
+   * @return Array of shares
+   */
+  public function getByOrganization($organization_url, $locale, $sort = 'name', $type = '', $limit = 30, $offset = 0) {
+    if ($response = $this->podio->request('/app_store/org/' . $organization_url . '/', array('language' => $locale, 'type' => $type, 'limit' => $limit, 'offset' => $offset, 'sort' => $sort))) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }  
+
+  /**
    * Searches the app store for apps with the given language and texts.
    *
    * @param $words Comma-separated list of texts to search for
@@ -272,5 +296,17 @@ class PodioAppStoreAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+
+  /**
+   * Returns the app store profile of the organization.
+   *
+   * @param $organization_url The URL of the organization
+   * 
+   */
+  public function getOrganizationProfile($organization_url) {
+    if ($response = $this->podio->request('/app_store/org/' . $organization_url .'/profile', array())) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }  
 }
 
