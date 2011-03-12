@@ -165,7 +165,7 @@ class PodioTaskAPI {
   public function getTotalV2($space_id = NULL) {
     $data = array();
     if ($space_id) {
-      $data['space_id'] = $space_id;
+      $data['space'] = $space_id;
     }
     if ($response = $this->podio->request('/task/total/', $data)) {
       $list = json_decode($response->getBody(), TRUE);
