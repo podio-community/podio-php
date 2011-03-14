@@ -258,11 +258,15 @@ class PodioAppStoreAPI {
    * @param $category_ids The ids of the categories the app should be placed in
    * @param $file_ids The file ids to use as screenshots for the app
    * @param $name The name of the share, only valid if the share is a space
+   * @param $info Info array for the share
    */
-  public function update($share_id, $abstract, $description, $language, $category_ids, $file_ids, $name = NULL) {
+  public function update($share_id, $abstract, $description, $language, $category_ids, $file_ids, $name = NULL, $info = array()) {
     $data = array('abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids);
     if ($name) {
       $data['name'] = $name;
+    }
+    if ($info) {
+      $data['info'] = $info;
     }
     if ($response = $this->podio->request('/app_store/' . $share_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
