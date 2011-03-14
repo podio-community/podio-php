@@ -485,9 +485,9 @@ class PodioBaseAPI {
       if (!$oauth->access_token && !(substr($url, 0, 6) == '/file/' && substr($url, -9) == '/location')) {
         return FALSE;
       }
-      if ($oauth->access_token) {
-        $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
-      }
+    }
+    if ($oauth->access_token) {
+      $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
     }
     
     switch ($method) {
