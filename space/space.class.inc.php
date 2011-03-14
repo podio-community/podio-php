@@ -120,11 +120,13 @@ class PodioSpaceAPI {
    * Returns the space and organization with the given full URL.
    *
    * @param $url The URL of the space to retrieve
+   * @param $info Set to "1" to return the informationals on the 
+   *              space, "0" otherwise. Defaults to "0".
    *
    * @return Space object
    */
-  public function getByURL($url) {
-    if ($response = $this->podio->request('/space/url', array('url' => $url))) {
+  public function getByURL($url, $info = 0) {
+    if ($response = $this->podio->request('/space/url', array('url' => $url, 'info' => $info))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
