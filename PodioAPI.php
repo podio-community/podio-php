@@ -589,6 +589,8 @@ class PodioBaseAPI {
           case 404 : 
           case 410 : 
           case 500 : 
+          case 502 : 
+          case 504 : 
           case 503 : 
             if ($this->getLogLevel('error')) {
               $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_WARNING);
