@@ -270,5 +270,20 @@ class PodioTaskAPI {
   public function stop($task_id) {
     $this->podio->request('/task/'.$task_id.'/stop', array(), HTTP_Request2::METHOD_POST);
   }
+  
+  /**
+   * This is used to delete a task.
+   *
+   * @param $task_id Id of the task to delete
+   */
+  public function delete($task_id) {
+    if ($response = $this->podio->request('/task/'.$task_id, array(), HTTP_Request2::METHOD_DELETE)) {
+      if ($response->getStatus() == '204') {
+        return TRUE;
+      }
+      return FALSE;
+    }
+  }
+  
 }
 
