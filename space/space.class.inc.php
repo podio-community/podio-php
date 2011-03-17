@@ -30,10 +30,12 @@ class PodioSpaceAPI {
   /**
    * Returns the top spaces for the user
    *
+   * @param $limit The number of spaces to get. Defaults to 6
+   *
    * @return Array of spaces
    */
-  public function getTop() {
-    if ($response = $this->podio->request('/space/top/')) {
+  public function getTop($limit = 6) {
+    if ($response = $this->podio->request('/space/top/', array('limit' => $limit))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
