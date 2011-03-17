@@ -208,6 +208,10 @@ class PodioBaseAPI {
    * Current log levels for the API log
    */
   protected $log_levels;
+  /**
+   * Current API error handler.
+   */
+  protected $error_handler;
   private static $instance;
 
   private function __construct($url, $client_id, $client_secret, $upload_end_point, $frontend_token = '') {
@@ -226,6 +230,7 @@ class PodioBaseAPI {
       'PUT' => 'verbose',
       'DELETE' => FALSE,
     );
+    $this->error_handler = NULL;
   }
   
   /**
@@ -245,6 +250,15 @@ class PodioBaseAPI {
       self::$instance = new PodioBaseAPI($url, $client_id, $client_secret, $upload_end_point, $frontend_token);
     }
     return self::$instance;
+  }
+  
+  /**
+   * Set the API error handler.
+   *
+   * @param $handler
+   */
+  public function setErrorHandler($handler) {
+    $this->error_handler = $handler;
   }
   
   /**
@@ -588,16 +602,27 @@ class PodioBaseAPI {
           case 403 : 
           case 404 : 
           case 410 : 
-          case 500 : 
-          case 502 : 
-          case 504 : 
-          case 503 : 
             if ($this->getLogLevel('error')) {
               $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_WARNING);
               $this->log($response->getBody(), PEAR_LOG_WARNING);
             }
             $this->last_error = json_decode($response->getBody(), TRUE);
             $this->last_error_status_code = $response->getStatus();
+            return FALSE;
+            break;
+          case 500 : 
+          case 502 : 
+          case 503 : 
+          case 504 : 
+            if ($this->getLogLevel('error')) {
+              $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_WARNING);
+              $this->log($response->getBody(), PEAR_LOG_WARNING);
+            }
+            $this->last_error = json_decode($response->getBody(), TRUE);
+            $this->last_error_status_code = $response->getStatus();
+            
+            // Throw API error
+            $this->throwError($response);
             return FALSE;
             break;
           default : 
@@ -609,4 +634,14 @@ class PodioBaseAPI {
       }
     }
   }
+  
+  /**
+   * Throws an API error. If an error callback is defined it will be called.
+   */
+  public function throwError($response) {
+    if ($this->error_handler) {
+      call_user_func($this->error_handler, $response);
+    }
+  }
+  
 }
