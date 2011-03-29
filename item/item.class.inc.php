@@ -68,8 +68,8 @@ class PodioItemAPI {
    * @param $field_id The id of the field to get top values for
    * @param $limit The maximum number of results to return, defaults to 8
    */
-  public function getFieldTop($field_id, $limit=8) {
-    if ($response = $this->podio->request('/item/field/'.$field_id.'/top/', array('limit' =>$limit ))) {
+  public function getFieldTop($field_id, $limit = 8) {
+    if ($response = $this->podio->request('/item/field/'.$field_id.'/top/', array('limit' => $limit ))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
