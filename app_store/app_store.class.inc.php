@@ -73,7 +73,6 @@ class PodioAppStoreAPI {
   /**
    * Returns all the shares the organization with the give URL has shared in the app store.
    *
-   * @param $ref_type Type of reference. "space" or "app"
    * @param $organization_url The url of the organization
    * @param $locale The language of the shares to return. English apps will
    *                always be returned.
@@ -84,15 +83,34 @@ class PodioAppStoreAPI {
    * @param $limit The maximum number of apps to return. Defaults to 30
    * @param $offset The offset to used when returning the apps.
    *
-   * @return Array of shares*
-   *
    * @return Array of shares
    */
   public function getByOrganization($organization_url, $locale, $sort = 'name', $type = '', $limit = 30, $offset = 0) {
     if ($response = $this->podio->request('/app_store/org/' . $organization_url . '/', array('language' => $locale, 'type' => $type, 'limit' => $limit, 'offset' => $offset, 'sort' => $sort))) {
       return json_decode($response->getBody(), TRUE);
     }
-  }  
+  }
+
+  /**
+   * Returns all the shares the organization with the given id has shared in the private app store
+   *
+   * @param $organization_id The url of the organization
+   * @param $locale The language of the shares to return. English apps will
+   *                always be returned.
+   * @param $sort The sorting of the shares, either "install", "rating" or
+   *              "name". Defaults to "name".
+   * @param $type The type of share to return, either "app", "pack" or
+   *              leave out for both.
+   * @param $limit The maximum number of apps to return. Defaults to 30
+   * @param $offset The offset to used when returning the apps.
+   *
+   * @return Array of shares
+   */
+  public function getPrivateByOrganization($organization_id, $locale, $sort = 'name', $type = '', $limit = 30, $offset = 0) {
+    if ($response = $this->podio->request('/app_store/org/' . $organization_id . '/', array('language' => $locale, 'type' => $type, 'limit' => $limit, 'offset' => $offset, 'sort' => $sort))) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
 
   /**
    * Searches the app store for apps with the given language and texts.
@@ -203,10 +221,11 @@ class PodioAppStoreAPI {
    * @param $features Array of features to enable
    * @param $children Array of ids of the child shares that should be included
    * @param $info Info array for the share
+   * @param $scope The scope the app should be shared with, either public or private
    *
    * @return Array with the new share id
    */
-  public function shareApp($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array()) {
+  public function shareApp($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array(), $scope='private') {
     $request_data = array('ref_id' => $app_id, 'ref_type' => 'app', 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array());
     if ($features) {
       $request_data['features'] = $features;
@@ -232,10 +251,11 @@ class PodioAppStoreAPI {
    * @param $features Array of features to enable
    * @param $children Array of ids of the child shares that should be included
    * @param $info Info array for the share
+   * @param $scope The scope the app should be shared with, either public or private
    *
    * @return Array with the new share id
    */
-  public function sharePack($space_id, $name, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array()) {
+  public function sharePack($space_id, $name, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array(), $scope='private') {
     $request_data = array('ref_id' => $space_id, 'ref_type' => 'space', 'name' => $name, 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array());
     if ($features) {
       $request_data['features'] = $features;
