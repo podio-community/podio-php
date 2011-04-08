@@ -48,6 +48,16 @@ class PodioNotificationAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+
+  /**
+   * Returns the number of unread notifications for the active user.
+   */
+  public function getNewCount() {
+    $response = $this->podio->request('/notification/inbox/new/count');
+    if ($response) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
   
   /**
    * Returns the notifications in the inbox that has already been viewed. 
