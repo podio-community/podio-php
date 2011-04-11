@@ -225,8 +225,8 @@ class PodioAppStoreAPI {
    *
    * @return Array with the new share id
    */
-  public function shareApp($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array(), $scope='private') {
-    $request_data = array('ref_id' => $app_id, 'ref_type' => 'app', 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array());
+  public function shareApp($app_id, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array(), $scope = 'public') {
+    $request_data = array('ref_id' => $app_id, 'ref_type' => 'app', 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array(), 'scope' => $scope);
     if ($features) {
       $request_data['features'] = $features;
     }
@@ -255,8 +255,8 @@ class PodioAppStoreAPI {
    *
    * @return Array with the new share id
    */
-  public function sharePack($space_id, $name, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array(), $scope='private') {
-    $request_data = array('ref_id' => $space_id, 'ref_type' => 'space', 'name' => $name, 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array());
+  public function sharePack($space_id, $name, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array(), $scope='public') {
+    $request_data = array('ref_id' => $space_id, 'ref_type' => 'space', 'name' => $name, 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array(), 'scope' => $scope);
     if ($features) {
       $request_data['features'] = $features;
     }
