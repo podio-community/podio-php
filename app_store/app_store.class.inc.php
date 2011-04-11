@@ -246,7 +246,7 @@ class PodioAppStoreAPI {
    * @param $language The language the pack is written in
    * @param $category_ids The ids of the categories the pack should be placed in
    * @param $file_ids The file ids to use as screenshots for the pack
-   * @param $features Array of features to enable
+   * @param $features Array of features to enable 
    * @param $children Array of ids of the child shares that should be included
    * @param $info Info array for the share
    * @param $scope The scope the app should be shared with, either public or private
