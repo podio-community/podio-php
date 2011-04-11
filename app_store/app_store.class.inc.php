@@ -95,8 +95,6 @@ class PodioAppStoreAPI {
    * Returns all the shares the organization with the given id has shared in the private app store
    *
    * @param $organization_id The url of the organization
-   * @param $locale The language of the shares to return. English apps will
-   *                always be returned.
    * @param $sort The sorting of the shares, either "install", "rating" or
    *              "name". Defaults to "name".
    * @param $type The type of share to return, either "app", "pack" or
@@ -106,8 +104,8 @@ class PodioAppStoreAPI {
    *
    * @return Array of shares
    */
-  public function getPrivateByOrganization($organization_id, $locale, $sort = 'name', $type = '', $limit = 30, $offset = 0) {
-    if ($response = $this->podio->request('/app_store/org/' . $organization_id . '/', array('language' => $locale, 'type' => $type, 'limit' => $limit, 'offset' => $offset, 'sort' => $sort))) {
+  public function getPrivateByOrganization($organization_id, $sort = 'name', $type = '', $limit = 30, $offset = 0) {
+    if ($response = $this->podio->request('/app_store/org/' . $organization_id . '/', array('type' => $type, 'limit' => $limit, 'offset' => $offset, 'sort' => $sort))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -329,6 +327,16 @@ class PodioAppStoreAPI {
    */
   public function getOrganizationProfile($organization_url) {
     if ($response = $this->podio->request('/app_store/org/' . $organization_url .'/profile', array())) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns all the orgs, that the user is member of, and that has shared private apps.
+   *
+   */
+  public function getOrganizationsWithPrivateShares($language, $type = '') {
+    if ($response = $this->podio->request('/app_store/org/', array())) {
       return json_decode($response->getBody(), TRUE);
     }
   }  
