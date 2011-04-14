@@ -80,7 +80,13 @@ class PodioWidgetAPI {
    */
   public function getForDisplay($ref_type, $ref_id) {
     if ($response = $this->podio->request('/widget/'.$ref_type.'/'.$ref_id.'/display/')) {
-      return json_decode($response->getBody(), TRUE);
+      if ($result = json_decode($response->getBody(), TRUE)) {
+        return $result;
+      }
+      else {
+        $this->podio->log('Widget get for display failed or empty');
+        $this->podio->log(print_r($response, true));
+      }
     }
   }
   
