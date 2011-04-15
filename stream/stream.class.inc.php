@@ -20,15 +20,18 @@ class PodioStreamAPI {
    *
    * @param $limit The number of stream objects to get. Defaults to 20
    * @param $offset How far should the objects be offset, defaults to 0
-   * @param $latest The date and time that all events should be before, 
-   *                defaults to no limit
+   * @param $date_from Events before this date and time will be filtered out
+   * @param $date_to Events after this date and time will be filtered out
    *
    * @return An array of stream objects
    */
-  public function getGlobal($limit = 20, $offset = 0, $latest = NULL) {
+  public function getGlobal($limit = 20, $offset = 0, $date_from = NULL, $date_to = NULL) {
     $data = array('limit' => $limit, 'offset' => $offset);
-    if ($latest) {
-      $data['latest'] = $latest;
+    if ($date_from) {
+      $data['date_from'] = $date_from;
+    }
+    if ($date_to) {
+      $data['date_to'] = $date_to;
     }
     if ($response = $this->podio->request('/stream/v2/', $data)) {
       return json_decode($response->getBody(), TRUE);
@@ -43,15 +46,18 @@ class PodioStreamAPI {
    * @param $org_id The id of the organisation to get a stream for
    * @param $limit The number of stream objects to get. Defaults to 20
    * @param $offset How far should the objects be offset, defaults to 0
-   * @param $latest The date and time that all events should be before, 
-   *                defaults to no limit
+   * @param $date_from Events before this date and time will be filtered out
+   * @param $date_to Events after this date and time will be filtered out
    *
    * @return An array of stream objects
    */
-  public function getOrg($org_id, $limit = 20, $offset = 0, $latest = NULL) {
+  public function getOrg($org_id, $limit = 20, $offset = 0, $date_from = NULL, $date_to = NULL) {
     $data = array('limit' => $limit, 'offset' => $offset);
-    if ($latest) {
-      $data['latest'] = $latest;
+    if ($date_from) {
+      $data['date_from'] = $date_from;
+    }
+    if ($date_to) {
+      $data['date_to'] = $date_to;
     }
     if ($response = $this->podio->request('/stream/org/'.$org_id.'/v2/', $data)) {
       return json_decode($response->getBody(), TRUE);
@@ -66,15 +72,18 @@ class PodioStreamAPI {
    * @param $space_id The id of the space to get a stream for
    * @param $limit The number of stream objects to get. Defaults to 20
    * @param $offset How far should the objects be offset, defaults to 0
-   * @param $latest The date and time that all events should be before, 
-   *                defaults to no limit
+   * @param $date_from Events before this date and time will be filtered out
+   * @param $date_to Events after this date and time will be filtered out
    *
    * @return An array of stream objects
    */
-  public function getSpace($space_id, $limit = 20, $offset = 0, $latest = NULL) {
+  public function getSpace($space_id, $limit = 20, $offset = 0, $date_from = NULL, $date_to = NULL) {
     $data = array('limit' => $limit, 'offset' => $offset);
-    if ($latest) {
-      $data['latest'] = $latest;
+    if ($date_from) {
+      $data['date_from'] = $date_from;
+    }
+    if ($date_to) {
+      $data['date_to'] = $date_to;
     }
     if ($response = $this->podio->request('/stream/space/'.$space_id.'/v2/', $data)) {
       return json_decode($response->getBody(), TRUE);
@@ -94,20 +103,23 @@ class PodioStreamAPI {
    * @param $ref_id The space id or org id when getting stream for org or space
    * @param $limit The number of stream objects to get. Defaults to 20
    * @param $offset How far should the objects be offset, defaults to 0
-   * @param $latest The date and time that all events should be before, 
-   *                defaults to no limit
+   * @param $date_from Events before this date and time will be filtered out
+   * @param $date_to Events after this date and time will be filtered out
    *
    * @return An array of stream objects
    */
-  public function get($type = 'global', $ref_id = NULL, $limit = 20, $offset = 0, $latest = NULL) {
+  public function get($type = 'global', $ref_id = NULL, $limit = 20, $offset = 0, $date_from = NULL, $date_to = NULL) {
     $url = '/stream/';
     if ($type != 'global') {
       $url = '/stream/'.$type.'/'.$ref_id.'/';
     }
 
     $data = array('limit' => $limit, 'offset' => $offset);
-    if ($latest) {
-      $data['latest'] = $latest;
+    if ($date_from) {
+      $data['date_from'] = $date_from;
+    }
+    if ($date_to) {
+      $data['date_to'] = $date_to;
     }
 
     if ($response = $this->podio->request($url, $data)) {
