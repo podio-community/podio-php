@@ -84,7 +84,7 @@ class PodioWidgetAPI {
         return $result;
       }
       else {
-        $this->podio->log('Widget get for display failed or empty');
+        $this->podio->log('Widget get for display failed or empty: '.$ref_type.' : '.$ref_id);
         $this->podio->log(print_r($response, true));
       }
     }
