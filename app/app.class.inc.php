@@ -54,13 +54,11 @@ class PodioAppAPI {
    *            created when a new item is added
    * @param $notify True if at the space members should be notified about 
    *                this new app, false otherwise
-   * @param $subscribe True if the space members should be subscribed to this 
-   *                   new app, false otherwise
    *
    * @return Array with new app id
    */
   public function create($space_id, $config, $notify, $subscribe) {
-    $data = array('space_id' => $space_id, 'config' => $config, 'notify' => $notify, 'subscribe' => $subscribe);
+    $data = array('space_id' => $space_id, 'config' => $config, 'notify' => $notify);
     if ($response = $this->podio->request('/app/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -74,8 +72,8 @@ class PodioAppAPI {
    * @param $resubscribe True if all space members should be resubscribed to 
    *                     this app, false otherwise
    */
-  public function update($app_id, $config, $resubscribe) {
-    $data = array('config' => $config, 'resubscribe' => $resubscribe);
+  public function update($app_id, $config) {
+    $data = array('config' => $config);
     if ($response = $this->podio->request('/app/'.$app_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
     }
