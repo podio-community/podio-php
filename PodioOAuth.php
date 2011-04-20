@@ -123,7 +123,9 @@ class PodioOAuth {
           case 404 : 
           case 410 : 
           case 500 : 
+          case 502 : 
           case 503 : 
+          case 504 : 
             $this->access_token = '';
             $this->refresh_token = '';
             $this->expires_in = '';
