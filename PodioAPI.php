@@ -557,7 +557,7 @@ class PodioBaseAPI {
             break;
           case 401 : 
             $body = json_decode($response->getBody(), TRUE);
-            if (strstr($body['error_description'], 'expired_token')) {
+            if (strstr($body['error_description'], 'expired_token') || strstr($body['error'], 'invalid_token')) {
               if ($oauth->refresh_token) {
 
                 // Access token is expired. Try to refresh it.
@@ -582,7 +582,7 @@ class PodioBaseAPI {
                 $oauth->throwError('no_refresh_token', 'No refresh token available.');
               }
             }
-            elseif (strstr($body['error'], 'invalid_token') || strstr($body['error'], 'invalid_request')) {
+            elseif (strstr($body['error'], 'invalid_request')) {
               // Access token is invalid. Log the user out and try again.
               $oauth->access_token = '';
               $oauth->refresh_token = '';
