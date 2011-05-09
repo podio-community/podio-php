@@ -50,14 +50,12 @@ class PodioAppAPI {
    * - "yesno": True if yes/no rating is enabled, false otherwise
    * - "yesno_label": If yes/no is enabled, this is the label that will be 
    *                  presented to the users
-   * - "tasks": A comma separated list of the tasks that will automatically be 
-   *            created when a new item is added
-   * @param $notify True if at the space members should be notified about 
-   *                this new app, false otherwise
+   * - "tasks": A list of tasks to be automatically created when an 
+   *            item is created
    *
    * @return Array with new app id
    */
-  public function create($space_id, $config, $notify, $subscribe) {
+  public function create($space_id, $config) {
     $data = array('space_id' => $space_id, 'config' => $config, 'notify' => $notify);
     if ($response = $this->podio->request('/app/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
@@ -134,9 +132,11 @@ class PodioAppAPI {
    * This method will always return the latest revision of the app definition.
    *
    * @param $app_id The id of the app to retrieve
+   * @param $type The type of the view of the app requested. 
+   *              Can be either "full", "short", "mini" or "micro".
    */
-  public function get($app_id) {
-    if ($response = $this->podio->request('/app/'.$app_id)) {
+  public function get($app_id, $type = 'full') {
+    if ($response = $this->podio->request('/app/'.$app_id, array('type' => $type))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
