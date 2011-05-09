@@ -34,11 +34,21 @@ class PodioOrgAPI {
    * @param $org_id The id of the organization to update
    * @param $name The new name
    * @param $logo The file id of the logo
+   * @param $url_label The new subdomain of the URL of the organization, 
+   *                   defaults to the existing URL
+   * @param $billing_interval How often the organization should be billed, 
+   *                          either 1 or 3 (months)
    */
-  public function update($org_id, $name, $logo = NULL) {
+  public function update($org_id, $name, $logo = NULL, $url_label = NULL, $billing_interval = NULL) {
     $data = array('name' => $name);
     if ($logo) {
       $data['logo'] = $logo;
+    }
+    if ($url_label) {
+      $data['url_label'] = $url_label;
+    }
+    if ($billing_interval) {
+      $data['billing_interval'] = $billing_interval;
     }
     if ($response = $this->podio->request('/org/'.$org_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
