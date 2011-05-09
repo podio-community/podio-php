@@ -83,6 +83,28 @@ class PodioRatingAPI {
   }
 
   /**
+   * Returns the active users rating value for the given rating type and object.
+   *
+   * @param $ref_type The type of reference. E.g. "item", "status" or "share"
+   * @param $ref_id The id of the reference
+   * @param $rating_type The type of rating.
+   *
+   * @return A single rating value
+   */
+  public function getOwn($ref_type, $ref_id, $rating_type) {
+    $url = '/rating/'.$ref_type.'/'.$ref_id.'/'.$rating_type.'/self';
+    
+    if ($ref_id > 0 && $response = $this->podio->request($url)) {
+      $value = json_decode($response->getBody(), TRUE);
+      if (is_array($value)) {
+        return $value;
+      } else {
+        return FALSE;
+      }
+    }
+  }
+
+  /**
    * Removes a previous rating of the given type by the user of the 
    * specified object.
    *
