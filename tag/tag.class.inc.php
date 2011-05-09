@@ -130,6 +130,21 @@ class PodioTagAPI {
   }    
 
   /**
+   * Returns the tags on the given org. This includes both items and 
+   * statuses. The tags are ordered firstly by the number of uses, 
+   * secondly by the tag text.
+   *
+   * @param $org_id The id of the org to get tags for
+   *
+   * @return An array of tag text and usage counts for each tag
+   */
+  public function getByOrg($org_id) {
+    if ($response = $this->podio->request('/tag/org/'.$org_id . '/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }    
+
+  /**
    * Returns the objects that are tagged with the given text on the space. 
    * The objects are returned sorted descending by the time the tag 
    * was added.
@@ -142,6 +157,44 @@ class PodioTagAPI {
   public function getBySpaceWithText($space_id, $text) {
     $data = array('text' => $text);
     $url = '/tag/space/'.$space_id . '/search/';
+    if ($response = $this->podio->request($url, $data)) {
+      $response = json_decode($response->getBody(), TRUE);
+      return $response;
+    }
+  }
+
+  /**
+   * Returns the objects that are tagged with the given text on the app. 
+   * The objects are returned sorted descending by the time the tag 
+   * was added.
+   *
+   * @param $app_id The id of the app to get tags for
+   * @param $text The tag to search for
+   *
+   * @return An array of result objects
+   */
+  public function getByAppWithText($app_id, $text) {
+    $data = array('text' => $text);
+    $url = '/tag/app/'.$app_id . '/search/';
+    if ($response = $this->podio->request($url, $data)) {
+      $response = json_decode($response->getBody(), TRUE);
+      return $response;
+    }
+  }
+
+  /**
+   * Returns the objects that are tagged with the given text on the org. 
+   * The objects are returned sorted descending by the time the tag 
+   * was added.
+   *
+   * @param $org_id The id of the org to get tags for
+   * @param $text The tag to search for
+   *
+   * @return An array of result objects
+   */
+  public function getByOrgWithText($org_id, $text) {
+    $data = array('text' => $text);
+    $url = '/tag/app/'.$org_id . '/search/';
     if ($response = $this->podio->request($url, $data)) {
       $response = json_decode($response->getBody(), TRUE);
       return $response;
