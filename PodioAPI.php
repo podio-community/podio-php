@@ -30,6 +30,7 @@ require_once('widget/widget.class.inc.php');
 require_once('filter/filter.class.inc.php');
 require_once('form/form.class.inc.php');
 require_once('integration/integration.class.inc.php');
+require_once('importer/importer.class.inc.php');
 
 /**
  * Primary Podio API implementation class. This is merely a container for 
@@ -137,6 +138,10 @@ class PodioAPI {
    * Reference to PodioIntegrationAPI instance
    */
   public $integration;
+  /**
+   * Reference to PodioImporterAPI instance
+   */
+  public $importer;
 
   public function __construct() {
     $this->api = PodioBaseAPI::instance();
@@ -164,6 +169,7 @@ class PodioAPI {
     $this->filter = new PodioFilterAPI();
     $this->form = new PodioFormAPI();
     $this->integration = new PodioIntegrationAPI();
+    $this->importer = new PodioImporterAPI();
   }
 }
 
