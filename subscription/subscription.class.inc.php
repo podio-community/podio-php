@@ -68,5 +68,20 @@ class PodioSubscriptionAPI {
       return json_decode($response->getBody(), TRUE);
     }
   }
+
+  /**
+   * Returns the subscription for the given object
+   *
+   * @param $ref_type The type of reference
+   * @param $ref_id The id of the reference
+   *
+   * @return Subscription object
+   */
+  public function getByReference($ref_type, $ref_id) {
+    $response = $this->podio->request('/subscription/'.$ref_type.'/'.$ref_id);
+    if ($response) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
 }
 
