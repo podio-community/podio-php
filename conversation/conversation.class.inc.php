@@ -52,16 +52,14 @@ class PodioConversationAPI {
    * @param $subject The subject of the conversation
    * @param $text The body of the first message in the conversation
    * @param $participants Array of user ids in the conversation
-   * @param $ref_type If conversation is on an object, the type, 
-   *                  blank otherwise
-   * @param $ref_id The id of the reference object
+   * @param $file_ids Array of file ids to be attached to the initial message
    */
-  public function create($subject, $text, $participants, $ref_type = NULL, $ref_id = NULL) {
+  public function create($subject, $text, $participants, $file_ids = array()) {
     $url = '/conversation/';
-    if ($ref_type == 'item' || $ref_type == 'bulletin') {
-      $url = '/conversation/'.$ref_type.'/'.$ref_id.'/';
-    }
     $data = array('subject' => $subject, 'text' => $text, 'participants' => $participants);
+    if ($file_ids) {
+      $data['file_ids'] = $file_ids;
+    }
     if ($response = $this->podio->request($url, $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -72,9 +70,14 @@ class PodioConversationAPI {
    *
    * @param $conversation_id Id of the conversation being replied to
    * @param $text The text of the reply
+   * @param $file_ids Array of file ids to be attached to the initial message
    */
-  public function createReply($conversation_id, $text) {
-    if ($response = $this->podio->request('/conversation/'.$conversation_id.'/reply', array('text' => $text), HTTP_Request2::METHOD_POST)) {
+  public function createReply($conversation_id, $text, $file_ids = array()) {
+    $data = array('text' => $text);
+    if ($file_ids) {
+      $data['file_ids'] = $file_ids;
+    }
+    if ($response = $this->podio->request('/conversation/'.$conversation_id.'/reply', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
