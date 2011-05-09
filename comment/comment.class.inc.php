@@ -85,7 +85,7 @@ class PodioCommentAPI {
    * @return Array of comment objects
    */
   public function getComments($ref_type, $ref_id) {
-    if ($ref_id > 0 && $response = $this->podio->request('/comment/'.$ref_type.'/'.$ref_id)) {
+    if ($ref_id > 0 && $response = $this->podio->request('/comment/'.$ref_type.'/'.$ref_id.'/')) {
       return json_decode($response->getBody(), TRUE);
     }
   }
