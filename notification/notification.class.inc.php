@@ -37,12 +37,20 @@ class PodioNotificationAPI {
    * @param $limit The limit on the number of notifications to 
    *               return, default is 20
    * @param $offset The offset on the notifications to return, default is 0
+   * @param $date_from The earliest date and time to get notifications from
+   * @param $date_to The latest date and time to get notifications from
    *
    * @return Array of notifications
    */
-  public function getNew($limit = 20, $offset = 0) {
+  public function getNew($limit = 20, $offset = 0, $date_from = NULL, $date_to = NULL) {
     $data['limit'] = $limit;
     $data['offset'] = $offset;
+    if ($date_from) {
+      $data['date_from'] = $date_from;
+    }
+    if ($date_to) {
+      $data['date_to'] = $date_to;
+    }
     $response = $this->podio->request('/notification/inbox/new', $data);
     if ($response) {
       return json_decode($response->getBody(), TRUE);
@@ -77,7 +85,6 @@ class PodioNotificationAPI {
    * @param $sent 1 if sent notifications should be returned, 0 otherwise
    */
   public function getViewed($limit, $offset = 0, $date_type = 'created', $types = NULL, $date_from = NULL, $date_to = NULL, $users = NULL, $sent = 0) {
-  //public function getViewed($limit = 20, $offset = 0, $sent = 0, $filter_values = NULL) {
     $data = array();
     $data['limit'] = $limit;
     $data['offset'] = $offset;
@@ -101,7 +108,73 @@ class PodioNotificationAPI {
     if ($response) {
       return json_decode($response->getBody(), TRUE);
     }
+  }
+  
+  /**
+   * Returns a list of notifications based on the query parameters. 
+   * The notifications will be grouped based on their context.
+   *
+   * @param $limit The limit on the number of notifications to return, 
+   *               default is 10
+   * @param $offset The offset on the notifications to return, default is 0
+   * @param $type A type of notification
+   * @param $created_from The earliest date to get notifications from
+   * @param $created_to The latest date to get notifications from
+   * @param $user_id User id to see notifications from
+   * @param $direction "incoming" to get incoming notifications, 
+   *                   "outgoing" to get outgoing notifications
+   * @param $starred "0" to get only unstarred notifications, 
+   *                 "1" to get only starred notifications, leave blank for both
+   * @param $context_type The type of the context to get notifications for,
+   *                      f.ex. "conversation", "item" or "task"
+   * @param $viewed "0" to get all unviewed notifications, 
+   *                "1" to get all viewed notifications
+   * @param $viewed_from When returning only unviewed notifications (above), 
+   *                     notifications viewed after the given date and time 
+   *                     will also be returned. Use this to keep pagination 
+   *                     even when some notifications has been viewed after 
+   *                     initial page load.
+   */
+  public function getNotifications($limit, $offset = 0, $type = NULL, $created_from = NULL, $created_to = NULL, $users = NULL, $sent = 0, $direction = NULL, $starred = NULL, $context_type = NULL, $viewed = NULL, $viewed_from = NULL) {
+    $data = array();
+    $data['limit'] = $limit;
+    $data['offset'] = $offset;
+    $data['sent'] = $sent;
+
+    if($type) {
+      $data['type'] = $type;
+    }
+    if($created_from) {
+      $data['created_from'] = $created_from;
+    }
+    if($created_to) {
+      $data['created_to'] = $created_to;
+    }
+    if($users) {
+      $data['users'] = implode(',', $users);
+    }
+    if ($direction) {
+      $data['direction'] = $direction;
+    }
+    if ($context_type) {
+      $data['context_type'] = $context_type;
+    }
+    if ($starred !== NULL) {
+      $data['starred'] = $starred;
+    }
+    if ($viewed !== NULL) {
+      $data['viewed'] = $viewed;
+    }
+    if ($viewed_from) {
+      $data['viewed_from'] = $viewed_from;
+    }
+    
+    $response = $this->podio->request('/notification/inbox/viewed', $data);
+    if ($response) {
+      return json_decode($response->getBody(), TRUE);
+    }
   }  
+  
   
   /**
    * Return the top filter options for the inbox viewed.
@@ -147,12 +220,30 @@ class PodioNotificationAPI {
     }
     $response = $this->podio->request('/notification/'.$notification_id.'/viewed', array(), $method);
   }
+  
+  /**
+   * Star the given notification to move it to the star list.
+   *
+   * @param $notification_id The id of the notification to star
+   */
+  public function star($notification_id) {
+    $response = $this->podio->request('/notification/'.$notification_id.'/star', array(), HTTP_Request2::METHOD_POST);
+  }
+
+  /**
+   * Removes the star on the notification
+   *
+   * @param $notification_id The id of the notification to unstar
+   */
+  public function unstar($notification_id) {
+    $response = $this->podio->request('/notification/'.$notification_id.'/star', array(), HTTP_Request2::METHOD_DELETE);
+  }
 
   /**
    * Marks all the users notifications as viewed.
    */
   public function markAllViewed() {
-    $response = $this->podio->request('/notification//viewed', array(), HTTP_Request2::METHOD_POST);
+    $response = $this->podio->request('/notification/viewed', array(), HTTP_Request2::METHOD_POST);
   }
   
   /**
@@ -163,6 +254,15 @@ class PodioNotificationAPI {
     if ($response) {
       return json_decode($response->getBody(), TRUE);
     }
+  }
+
+  /**
+   * Updates the notification settings for the user
+   *
+   * @param $settings Array of settings to set
+   */
+  public function updateSettings($settings) {
+    $response = $this->podio->request('/notification/settings', $settings, HTTP_Request2::METHOD_PUT);
   }
   
   /**
