@@ -9,7 +9,7 @@ In addition to the client you need two PEAR Packages:
 * HTTP\_Request2: [http://pear.php.net/package/HTTP_Request2/](http://pear.php.net/package/HTTP_Request2/)
 * Log: [http://pear.php.net/package/Log/](http://pear.php.net/package/Log/)
 
-Both must be present in your PHP include path. If you have PEAR installed you can install these packages using the `pear install` command. If you do not use `pear install` and download the packages manually you should use `set\_include\_path()` to include their location.
+Both must be present in your PHP include path. If you have PEAR installed you can install these packages using the `pear install` command. If you do not use `pear install` and download the packages manually you should use `set_include_path()` to include their location.
 
 # Including the client in your application
 All you need to get started is to include PodioAPI.php like so:
@@ -81,10 +81,8 @@ You can see which log handlers are available in the [PEAR Log documentation](htt
 # Full example: Posting status message with an image
     require_once('/path/to/podio-php/PodioAPI.php');
     
-    $server = 'https://api.podio.com:443';
     $client_id = 'MY_OAUTH_CLIENT_ID';
     $client_secret = 'MY_OAUTH_CLIENT_SECRET';
-    $upload_end_point = 'https://upload.podio.com/upload.php';
 
     $oauth = PodioOAuth::instance();
     $baseAPI = PodioBaseAPI::instance($client_id, $client_secret);
