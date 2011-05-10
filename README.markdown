@@ -27,7 +27,7 @@ Before you can make any API calls you need to obtain an OAuth access token. The 
 
     require_once('/path/to/podio-php/PodioAPI.php');
     $oauth = PodioOAuth::instance();
-    $baseAPI = PodioBaseAPI::instance($server, $client_id, $client_secret, $upload_end_point);
+    $baseAPI = PodioBaseAPI::instance($client_id, $client_secret);
     
     // Obtain access token using authorization code from the first step of the authentication flow
     $oauth->getAccessToken('authorization_code', array('code' => $_GET['code'], 'redirect_uri' => $redirect_uri));
@@ -87,7 +87,7 @@ You can see which log handlers are available in the [PEAR Log documentation](htt
     $upload_end_point = 'https://upload.podio.com/upload.php';
 
     $oauth = PodioOAuth::instance();
-    $baseAPI = PodioBaseAPI::instance($server, $client_id, $client_secret, $upload_end_point);
+    $baseAPI = PodioBaseAPI::instance($client_id, $client_secret);
     
     // Obtain access token
     $username = 'MY_USERNAME';

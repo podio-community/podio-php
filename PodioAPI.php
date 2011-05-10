@@ -226,7 +226,7 @@ class PodioBaseAPI {
   protected $error_handler;
   private static $instance;
 
-  private function __construct($url, $client_id, $client_secret, $upload_end_point, $frontend_token = '') {
+  private function __construct($client_id, $client_secret, $url, $upload_end_point, $frontend_token = '') {
     $this->url = $url;
     $this->client_id = $client_id;
     $this->secret = $client_secret;
@@ -257,9 +257,9 @@ class PodioBaseAPI {
    *
    * @return Singleton instance of PodioBaseAPI object
    */
-  public static function instance($url = '', $client_id = '', $client_secret = '', $upload_end_point = '', $frontend_token = '') {
+  public static function instance($client_id = '', $client_secret = '', $url = 'https://api.podio.com:443', $upload_end_point = 'https://upload.podio.com/upload.php', $frontend_token = '') {
     if (!self::$instance) {
-      self::$instance = new PodioBaseAPI($url, $client_id, $client_secret, $upload_end_point, $frontend_token);
+      self::$instance = new PodioBaseAPI($client_id, $client_secret, $url, $upload_end_point, $frontend_token);
     }
     return self::$instance;
   }
