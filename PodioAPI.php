@@ -233,7 +233,7 @@ class PodioBaseAPI {
     $this->frontend_token = $frontend_token;
     $this->upload_end_point = $upload_end_point;
     $this->log_handler = 'error_log';
-    $this->log_name = '';
+    $this->log_name = 0;
     $this->log_ident = 'PODIO_API_CLIENT';
     $this->log_levels = array(
       'error' => TRUE,
