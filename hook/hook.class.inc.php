@@ -57,7 +57,7 @@ class PodioHookAPI {
    * @param $code The verification code
    */
   public function validate($hook_id, $code) {
-    if ($response = $this->podio->request('/hook/'.$hook_id.'/verify/validate', array(), HTTP_Request2::METHOD_POST)) {
+    if ($response = $this->podio->request('/hook/'.$hook_id.'/verify/validate', array('code' => $code), HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
