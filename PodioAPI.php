@@ -175,7 +175,7 @@ class PodioAPI {
     $this->form = new PodioFormAPI();
     $this->integration = new PodioIntegrationAPI();
     $this->importer = new PodioImporterAPI();
-    $this->hook = new PodioImporterAPI();
+    $this->hook = new PodioHookAPI();
   }
 }
 
