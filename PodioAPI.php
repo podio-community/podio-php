@@ -232,6 +232,7 @@ class PodioBaseAPI {
     $this->secret = $client_secret;
     $this->frontend_token = $frontend_token;
     $this->upload_end_point = $upload_end_point;
+    $this->download_end_point = 'https://download.podio.com/';
     $this->log_handler = 'error_log';
     $this->log_name = 0;
     $this->log_ident = 'PODIO_API_CLIENT';
@@ -427,6 +428,71 @@ class PodioBaseAPI {
           case 201 : 
           case 204 : 
             return json_decode($response->getBody(), TRUE);
+            break;
+          case 401 : 
+          case 400 : 
+          case 403 : 
+          case 404 : 
+          case 410 : 
+          case 500 : 
+          case 503 : 
+            if ($this->getLogLevel('error')) {
+              $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_WARNING);
+              $this->log($response->getBody(), PEAR_LOG_WARNING);
+            }
+            $this->last_error = json_decode($response->getBody(), TRUE);
+            $this->last_error_status_code = $response->getStatus();
+            return FALSE;
+            break;
+          default : 
+            break;
+        }
+    } catch (HTTP_Request2_Exception $e) {
+      if ($this->getLogLevel('error')) {
+        $this->log($e->getMessage(), PEAR_LOG_WARNING);
+      }
+    }
+  }
+
+  /**
+   * Download a file from Podio.
+   *
+   * @param $file_id ID of the file to download
+   *
+   * @return Array with the following data:
+   *  - "name": The filename provided by Podio
+   *  - "mimetype": The mimetype of the file
+   *  - "file": The file contents
+   */
+  public function download($file_id) {
+    $oauth = PodioOAuth::instance();
+    $request = new HTTP_Request2($this->download_end_point.$file_id, HTTP_Request2::METHOD_GET, array(
+      'ssl_verify_peer'   => false,
+      'ssl_verify_host'   => false
+    ));
+
+    $request->setConfig('use_brackets', FALSE);
+    $request->setConfig('follow_redirects', TRUE);
+    $request->setHeader('User-Agent', 'Podio API Client/1.0');
+    $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
+    
+    try {
+        $response = $request->send();
+        switch ($response->getStatus()) {
+          case 200 : 
+          case 201 : 
+          case 204 : 
+            $mimetype = $response->getHeader('content-type');
+            if (strstr($response->getHeader('content-type'), ';')) {
+              $mimetype = substr($mimetype, 0, strpos($mimetype, ';'));
+            }
+            preg_match('/filename="(.+)"/', $response->getHeader('content-disposition'), $matches);
+            $name = $matches[1];
+            return array(
+              'name' => $name,
+              'mimetype' => $mimetype,
+              'file' => $response->getBody(),
+            );
             break;
           case 401 : 
           case 400 : 
