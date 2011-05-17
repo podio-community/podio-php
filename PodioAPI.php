@@ -221,6 +221,10 @@ class PodioBaseAPI {
    */
   protected $log_levels;
   /**
+   * Current config for HTTP_Request2
+   */
+  protected $http_config;
+  /**
    * Current API error handler.
    */
   protected $error_handler;
@@ -244,6 +248,10 @@ class PodioBaseAPI {
       'DELETE' => FALSE,
     );
     $this->error_handler = NULL;
+    $this->http_config = array(
+      'ssl_verify_peer'   => false,
+      'ssl_verify_host'   => false
+    );
   }
   
   /**
@@ -315,6 +323,7 @@ class PodioBaseAPI {
   
   /**
    * Set the current log level for an area.
+   *
    * @param $name Area to set. Can be:
    * - error: Any error from API server
    * - GET: GET requests
@@ -325,6 +334,22 @@ class PodioBaseAPI {
    */
   public function setLogLevel($name, $value) {
     $this->log_levels[$name] = $value;
+  }
+  
+  /**
+   * Set the config used for HTTP_Request2.
+   *
+   * @param $http_config Array with options.
+   */
+  public function setConfig($http_config) {
+    $this->http_config = $http_config;
+  }
+
+  /**
+   * Get the config used for HTTP_Request2.
+   */
+  public function getConfig() {
+    return $this->http_config;
   }
   
   /**
@@ -407,10 +432,7 @@ class PodioBaseAPI {
    */
   public function upload($file, $name) {
     $oauth = PodioOAuth::instance();
-    $request = new HTTP_Request2($this->upload_end_point, HTTP_Request2::METHOD_POST, array(
-      'ssl_verify_peer'   => false,
-      'ssl_verify_host'   => false
-    ));
+    $request = new HTTP_Request2($this->upload_end_point, HTTP_Request2::METHOD_POST, $this->http_config);
 
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);
@@ -466,10 +488,7 @@ class PodioBaseAPI {
    */
   public function download($file_id) {
     $oauth = PodioOAuth::instance();
-    $request = new HTTP_Request2($this->download_end_point.$file_id, HTTP_Request2::METHOD_GET, array(
-      'ssl_verify_peer'   => false,
-      'ssl_verify_host'   => false
-    ));
+    $request = new HTTP_Request2($this->download_end_point.$file_id, HTTP_Request2::METHOD_GET, $this->http_config);
 
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);
@@ -530,10 +549,7 @@ class PodioBaseAPI {
    */
   public function request($url, $data = '', $method = HTTP_Request2::METHOD_GET) {
     $oauth = PodioOAuth::instance();
-    $request = new HTTP_Request2($this->url . $url, $method, array(
-      'ssl_verify_peer'   => false,
-      'ssl_verify_host'   => false
-    ));
+    $request = new HTTP_Request2($this->url . $url, $method, $this->http_config);
     
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);

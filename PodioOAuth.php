@@ -87,10 +87,7 @@ class PodioOAuth {
         break;
     }
     
-    $request = new HTTP_Request2($api->getUrl() . '/oauth/token', HTTP_Request2::METHOD_POST, array(
-      'ssl_verify_peer'   => false,
-      'ssl_verify_host'   => false
-    ));
+    $request = new HTTP_Request2($api->getUrl() . '/oauth/token', HTTP_Request2::METHOD_POST, $api->getConfig());
 
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);
