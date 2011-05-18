@@ -593,6 +593,7 @@ class PodioBaseAPI {
     
     if (!($url == '/user/' && $method == HTTP_Request2::METHOD_POST) && !$is_on_no_token_list) {
       if (!$oauth->access_token && !(substr($url, 0, 6) == '/file/' && substr($url, -9) == '/location')) {
+        $this->log('Trying to make request but no access token is available.', PEAR_LOG_ERR);
         return FALSE;
       }
     }
