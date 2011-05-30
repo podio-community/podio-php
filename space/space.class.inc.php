@@ -239,19 +239,16 @@ class PodioSpaceAPI {
    * @param $role The role of the new users
    * @param $subject The subject to put in the invitation mail to the users
    * @param $message The personalized message to put in the invitation
-   * @param $resend True if the invitation should be resend every week, 
-   *                false otherwise
    * @param $notify True if the inviter should be notified when the user 
    *                accepts or declines the invitation
    * @param $users Array of user ids to invite
    * @param $mails Array of e-mails to invite
    */
-  public function invite($space_id, $role, $subject, $message, $resend, $notify, $users, $mails) {
+  public function invite($space_id, $role, $subject, $message, $notify, $users, $mails) {
     $data = array(
       'role' => $role,
       'subject' => $subject,
       'message' => $message,
-      'resend' => $resend,
       'notify' => $notify,
       'users' => $users,
       'mails' => $mails,

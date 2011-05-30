@@ -56,7 +56,7 @@ class PodioAppAPI {
    * @return Array with new app id
    */
   public function create($space_id, $config) {
-    $data = array('space_id' => $space_id, 'config' => $config, 'notify' => $notify);
+    $data = array('space_id' => $space_id, 'config' => $config);
     if ($response = $this->podio->request('/app/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }

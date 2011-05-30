@@ -176,8 +176,7 @@ class PodioAPI {
     $this->form = new PodioFormAPI();
     $this->integration = new PodioIntegrationAPI();
     $this->importer = new PodioImporterAPI();
-    $this->hook = new PodioImporterAPI();
-    $this->news = new PodioNewsAPI();
+    $this->hook = new PodioHookAPI();
   }
 }
 
@@ -223,6 +222,10 @@ class PodioBaseAPI {
    */
   protected $log_levels;
   /**
+   * Current config for HTTP_Request2
+   */
+  protected $http_config;
+  /**
    * Current API error handler.
    */
   protected $error_handler;
@@ -234,8 +237,9 @@ class PodioBaseAPI {
     $this->secret = $client_secret;
     $this->frontend_token = $frontend_token;
     $this->upload_end_point = $upload_end_point;
+    $this->download_end_point = 'https://download.podio.com/';
     $this->log_handler = 'error_log';
-    $this->log_name = '';
+    $this->log_name = 0;
     $this->log_ident = 'PODIO_API_CLIENT';
     $this->log_levels = array(
       'error' => TRUE,
@@ -245,6 +249,10 @@ class PodioBaseAPI {
       'DELETE' => FALSE,
     );
     $this->error_handler = NULL;
+    $this->http_config = array(
+      'ssl_verify_peer'   => false,
+      'ssl_verify_host'   => false
+    );
   }
   
   /**
@@ -316,6 +324,7 @@ class PodioBaseAPI {
   
   /**
    * Set the current log level for an area.
+   *
    * @param $name Area to set. Can be:
    * - error: Any error from API server
    * - GET: GET requests
@@ -326,6 +335,22 @@ class PodioBaseAPI {
    */
   public function setLogLevel($name, $value) {
     $this->log_levels[$name] = $value;
+  }
+  
+  /**
+   * Set the config used for HTTP_Request2.
+   *
+   * @param $http_config Array with options.
+   */
+  public function setConfig($http_config) {
+    $this->http_config = $http_config;
+  }
+
+  /**
+   * Get the config used for HTTP_Request2.
+   */
+  public function getConfig() {
+    return $this->http_config;
   }
   
   /**
@@ -408,10 +433,7 @@ class PodioBaseAPI {
    */
   public function upload($file, $name) {
     $oauth = PodioOAuth::instance();
-    $request = new HTTP_Request2($this->upload_end_point, HTTP_Request2::METHOD_POST, array(
-      'ssl_verify_peer'   => false,
-      'ssl_verify_host'   => false
-    ));
+    $request = new HTTP_Request2($this->upload_end_point, HTTP_Request2::METHOD_POST, $this->http_config);
 
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);
@@ -454,6 +476,68 @@ class PodioBaseAPI {
       }
     }
   }
+
+  /**
+   * Download a file from Podio.
+   *
+   * @param $file_id ID of the file to download
+   *
+   * @return Array with the following data:
+   *  - "name": The filename provided by Podio
+   *  - "mimetype": The mimetype of the file
+   *  - "file": The file contents
+   */
+  public function download($file_id) {
+    $oauth = PodioOAuth::instance();
+    $request = new HTTP_Request2($this->download_end_point.$file_id, HTTP_Request2::METHOD_GET, $this->http_config);
+
+    $request->setConfig('use_brackets', FALSE);
+    $request->setConfig('follow_redirects', TRUE);
+    $request->setHeader('User-Agent', 'Podio API Client/1.0');
+    $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
+    
+    try {
+        $response = $request->send();
+        switch ($response->getStatus()) {
+          case 200 : 
+          case 201 : 
+          case 204 : 
+            $mimetype = $response->getHeader('content-type');
+            if (strstr($response->getHeader('content-type'), ';')) {
+              $mimetype = substr($mimetype, 0, strpos($mimetype, ';'));
+            }
+            preg_match('/filename="(.+)"/', $response->getHeader('content-disposition'), $matches);
+            $name = $matches[1];
+            return array(
+              'name' => $name,
+              'mimetype' => $mimetype,
+              'file' => $response->getBody(),
+            );
+            break;
+          case 401 : 
+          case 400 : 
+          case 403 : 
+          case 404 : 
+          case 410 : 
+          case 500 : 
+          case 503 : 
+            if ($this->getLogLevel('error')) {
+              $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_WARNING);
+              $this->log($response->getBody(), PEAR_LOG_WARNING);
+            }
+            $this->last_error = json_decode($response->getBody(), TRUE);
+            $this->last_error_status_code = $response->getStatus();
+            return FALSE;
+            break;
+          default : 
+            break;
+        }
+    } catch (HTTP_Request2_Exception $e) {
+      if ($this->getLogLevel('error')) {
+        $this->log($e->getMessage(), PEAR_LOG_WARNING);
+      }
+    }
+  }
   
   /**
    * Build and perform an API request.
@@ -466,10 +550,7 @@ class PodioBaseAPI {
    */
   public function request($url, $data = '', $method = HTTP_Request2::METHOD_GET) {
     $oauth = PodioOAuth::instance();
-    $request = new HTTP_Request2($this->url . $url, $method, array(
-      'ssl_verify_peer'   => false,
-      'ssl_verify_host'   => false
-    ));
+    $request = new HTTP_Request2($this->url . $url, $method, $this->http_config);
     
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);
@@ -513,6 +594,7 @@ class PodioBaseAPI {
     
     if (!($url == '/user/' && $method == HTTP_Request2::METHOD_POST) && !$is_on_no_token_list) {
       if (!$oauth->access_token && !(substr($url, 0, 6) == '/file/' && substr($url, -9) == '/location')) {
+        $this->log('Trying to make request but no access token is available.', PEAR_LOG_ERR);
         return FALSE;
       }
     }
