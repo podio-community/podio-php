@@ -148,6 +148,11 @@ class PodioAPI {
    * Reference to PodioHookAPI instance
    */
   public $hook;
+  /**
+   * Reference to PodioNewsAPI instance
+   */
+  public $news;
+
 
   public function __construct() {
     $this->api = PodioBaseAPI::instance();
@@ -177,6 +182,7 @@ class PodioAPI {
     $this->integration = new PodioIntegrationAPI();
     $this->importer = new PodioImporterAPI();
     $this->hook = new PodioHookAPI();
+    $this->news = new PodioNewsAPI();
   }
 }
 
