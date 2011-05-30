@@ -32,6 +32,7 @@ require_once('form/form.class.inc.php');
 require_once('integration/integration.class.inc.php');
 require_once('importer/importer.class.inc.php');
 require_once('hook/hook.class.inc.php');
+require_once('news/news.class.inc.php');
 
 /**
  * Primary Podio API implementation class. This is merely a container for 
@@ -176,6 +177,7 @@ class PodioAPI {
     $this->integration = new PodioIntegrationAPI();
     $this->importer = new PodioImporterAPI();
     $this->hook = new PodioImporterAPI();
+    $this->news = new PodioNewsAPI();
   }
 }
 
