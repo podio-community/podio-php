@@ -142,6 +142,20 @@ class PodioAppAPI {
   }
   
   /**
+   * Returns the app on the given space with the given URL label
+   *
+   * @param $space_id The id of the space the app is on
+   * @param $url_label The URL label of the app
+   * @param $type The type of the view of the app requested. 
+   *              Can be either "full", "short", "mini" or "micro".
+   */
+  public function getByLabel($space_id, $url_label, $type = 'full') {
+    if ($response = $this->podio->request('/app/space/'.$space_id.'/'.$url_label, array('type' => $type))) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
+  /**
    * Returns the apps that the given app depends on.
    *
    * @param $app_id The id of the app to get dependencies for
