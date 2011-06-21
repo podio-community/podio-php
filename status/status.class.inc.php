@@ -55,8 +55,10 @@ class PodioStatusAPI {
    * @param $file_ids Temporary files that have been uploaded and should be 
    *                  attached to this item
    * @param $alerts The users who should be alerted about this status message
+   * @param $embed_id The id of an embedded link that has been created with the Add an embed operation in the Embed area,
+   * @param $embed_file_id  The id of a thumbnail that has been returned from the Add an embed operation
    */
-  public function create($space_id, $value, $file_ids = array(), $alerts = array()) {
+  public function create($space_id, $value, $file_ids = array(), $alerts = array(), $embed_id, $embed_file_id) {
     $data = array('space_id' => $space_id, 'value' => $value, 'alerts' => array(), 'file_ids' => array());
 
     if ($alerts) {
@@ -64,6 +66,14 @@ class PodioStatusAPI {
     }
     if ($file_ids) {
       $data['file_ids'] = $file_ids;
+    }
+
+    if ($embed_id) {
+      $data['embed_id'] = $embed_id;
+    }
+
+    if ($embed_file_id) {
+      $data['embed_file_id'] = $embed_file_id;
     }
     
     if ($response = $this->podio->request('/status/', $data, HTTP_Request2::METHOD_POST)) {
