@@ -568,6 +568,9 @@ class PodioBaseAPI {
     }
     $location = $request->getUrl();
     
+    $this->last_error = NULL;
+    $this->last_error_status_code = NULL;
+    
     // These URLs can be called without an access token.
     $no_token_list = array(
       '@^/$@',
