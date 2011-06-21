@@ -250,13 +250,19 @@ class PodioItemAPI {
    * - "values" : Array. The values for the field
    * @param $revision The revision of the item that is being updated. 
    *                  This is optional.
+   * @param $silent Set to 1 if the operating should not result in 
+   *                stream events and notifications
    */
-  public function update($item_id, $fields, $revision = NULL) {
+  public function update($item_id, $fields, $revision = NULL, $silent = 0) {
     $data = array('fields' => $fields);
     if ($revision) {
       $data['revision'] = $revision;
     }
-    if ($response = $this->podio->request('/item/'.$item_id, $data, HTTP_Request2::METHOD_PUT)) {
+    $url = '/item/'.$item_id;
+    if ($silent == 1) {
+      $url .= '?silent=1';
+    }
+    if ($response = $this->podio->request($url, $data, HTTP_Request2::METHOD_PUT)) {
       if ($response->getStatus() == '204') {
         return TRUE;
       }

@@ -568,6 +568,9 @@ class PodioBaseAPI {
     }
     $location = $request->getUrl();
     
+    $this->last_error = NULL;
+    $this->last_error_status_code = NULL;
+    
     // These URLs can be called without an access token.
     $no_token_list = array(
       '@^/$@',
@@ -703,7 +706,9 @@ class PodioBaseAPI {
             }
           case 403 : 
           case 404 : 
+          case 409 : 
           case 410 : 
+          case 420 : 
             if ($this->getLogLevel('error')) {
               $this->log($request->getMethod() .' '. $response->getStatus().' '.$response->getReasonPhrase().' '.$request->getUrl(), PEAR_LOG_WARNING);
               $this->log($response->getBody(), PEAR_LOG_WARNING);
