@@ -52,26 +52,32 @@ class PodioAppAPI {
    *                  presented to the users
    * - "tasks": A list of tasks to be automatically created when an 
    *            item is created
+   * @param $fields Optional array of fields to create
    *
    * @return Array with new app id
    */
-  public function create($space_id, $config) {
+  public function create($space_id, $config, $fields = NULL) {
     $data = array('space_id' => $space_id, 'config' => $config);
+    if ($fields !== NULL) {
+      $data['fields'] = $fields;
+    }
     if ($response = $this->podio->request('/app/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
   
   /**
-   * Updates the app config. Fields must be updates separately.
+   * Updates an app.
    *
    * @param $app_id The id of the app to update
    * @param $config New config array. For options see the 'create' method
-   * @param $resubscribe True if all space members should be resubscribed to 
-   *                     this app, false otherwise
+   * @param $fields Optional array of fields to update
    */
-  public function update($app_id, $config) {
+  public function update($app_id, $config, $fields = NULL) {
     $data = array('config' => $config);
+    if ($fields !== NULL) {
+      $data['fields'] = $fields;
+    }
     if ($response = $this->podio->request('/app/'.$app_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -326,6 +332,20 @@ class PodioAppAPI {
   public function updateField($app_id, $field_id, $config) {
     if ($response = $this->podio->request('/app/'.$app_id.'/field/'.$field_id, $config, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
+  /**
+   * Deletes the app field with the given id. This operating is not reversible.
+   *
+   * @param $app_id The id of the app to act on
+   * @param $field_id The id of the field to delete
+   */
+  public function deleteField($app_id, $field_id) {
+    if ($response = $this->podio->request('/app/'.$app_id.'/field/'.$field_id, array(), HTTP_Request2::METHOD_DELETE)) {
+      if ($response->getStatus() == '204') {
+        return TRUE;
+      }
     }
   }
   
