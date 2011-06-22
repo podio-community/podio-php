@@ -377,5 +377,16 @@ class PodioAppAPI {
     }
   }
   
+  /**
+   * Returns the list of possible calculations that can be done on related apps
+   *
+   * @param $app_id The id of the app to act on
+   */
+  public function calculation($app_id) {
+    if ($response = $this->podio->request('/app/'.$app_id.'/calculation/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
 }
 

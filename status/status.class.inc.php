@@ -58,7 +58,7 @@ class PodioStatusAPI {
    * @param $embed_id The id of an embedded link that has been created with the Add an embed operation in the Embed area,
    * @param $embed_file_id  The id of a thumbnail that has been returned from the Add an embed operation
    */
-  public function create($space_id, $value, $file_ids = array(), $alerts = array(), $embed_id, $embed_file_id) {
+  public function create($space_id, $value, $file_ids = array(), $alerts = array(), $embed_id = NULL, $embed_file_id = NULL) {
     $data = array('space_id' => $space_id, 'value' => $value, 'alerts' => array(), 'file_ids' => array());
 
     if ($alerts) {
