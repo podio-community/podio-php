@@ -25,13 +25,21 @@ class PodioCommentAPI {
    * @param $external_id The external id for the comment, if any
    * @param $file_ids Array of file ids attached to this comment
    * @param $alerts Array of users who should be alerted about this comment
+   * @param $embed_id The id of an embedded link that has been created with the Add an mebed operation in the Embed area,
+   * @param $embed_file_id The id of a thumbnail that has been returned from the Add an embed operation,
    *
    * @return Array with new comment id
    */
-  public function create($ref_type, $ref_id, $value, $external_id = NULL, $file_ids = array(), $alerts = array()) {
+  public function create($ref_type, $ref_id, $value, $external_id = NULL, $file_ids = array(), $alerts = array(), $embed_id, $embed_file_id) {
     $data = array('value' => $value);
     if ($external_id) {
       $data['external_id'] = $external_id;
+    }
+    if ($embed_id) {
+      $data['embed_id'] = $embed_id;
+    }
+    if ($embed_file_id) {
+      $data['embed_file_id'] = $embed_file_id;
     }
     $data['alerts'] = $alerts;
     $data['file_ids'] = $file_ids;
