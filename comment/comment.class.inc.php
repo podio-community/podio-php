@@ -30,7 +30,7 @@ class PodioCommentAPI {
    *
    * @return Array with new comment id
    */
-  public function create($ref_type, $ref_id, $value, $external_id = NULL, $file_ids = array(), $alerts = array(), $embed_id, $embed_file_id) {
+  public function create($ref_type, $ref_id, $value, $external_id = NULL, $file_ids = array(), $alerts = array(), $embed_id = NULL, $embed_file_id = NULL) {
     $data = array('value' => $value);
     if ($external_id) {
       $data['external_id'] = $external_id;
