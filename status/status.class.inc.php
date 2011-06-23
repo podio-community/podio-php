@@ -76,7 +76,7 @@ class PodioStatusAPI {
       $data['embed_file_id'] = $embed_file_id;
     }
     
-    if ($response = $this->podio->request('/status/', $data, HTTP_Request2::METHOD_POST)) {
+    if ($response = $this->podio->request('/status/space/'.$space_id.'/', $data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
