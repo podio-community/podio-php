@@ -78,14 +78,18 @@ class PodioItemAPI {
    * Returns the item with the specified id.
    *
    * @param $item_id The id of the item to retrieve
+   * @param $mark_as_viewed Optional. Set to FALSE to avoid marking 
+   *                        notifications as viewed when fetching
+   *                        the item.
    *
    * @return An item
    */
-  public function get($item_id) {
+  public function get($item_id, $mark_as_viewed = TRUE) {
     if (!$item_id) {
       return FALSE;
     }
-    if ($response = $this->podio->request('/item/'.$item_id)) {
+    $data = !$mark_as_viewed ? array('mark_as_viewed' => '0') : array();
+    if ($response = $this->podio->request('/item/'.$item_id, $data)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -95,14 +99,18 @@ class PodioItemAPI {
    * item method, but only returns data for the item itself.
    *
    * @param $item_id The id of the item to retrieve
+   * @param $mark_as_viewed Optional. Set to FALSE to avoid marking 
+   *                        notifications as viewed when fetching
+   *                        the item.
    *
    * @return A basic version of an item
    */
-  public function getBasic($item_id) {
+  public function getBasic($item_id, $mark_as_viewed = TRUE) {
     if (!$item_id) {
       return FALSE;
     }
-    if ($response = $this->podio->request('/item/'.$item_id.'/basic')) {
+    $data = !$mark_as_viewed ? array('mark_as_viewed' => '0') : array();
+    if ($response = $this->podio->request('/item/'.$item_id.'/basic', $data)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -157,12 +165,17 @@ class PodioItemAPI {
    *                 valid keys and values see the filter area. For list 
    *                 filtering, the values are given as a comma-separated 
    *                 list, for range filtering the values are given as "x-y".
+   * @param $remember_filter Set to FALSE to avoid remembering the filter for 
+   *                         this user.
    *
    * @return Array with the total count and filtered count for the results and 
    *         an array of items
    */
-  public function getItems($app_id, $limit, $offset, $sort_by, $sort_desc, $filters = array()) {
+  public function getItems($app_id, $limit, $offset, $sort_by, $sort_desc, $filters = array(), $remember_filter = TRUE) {
     $data = array('limit' => $limit, 'offset' => $offset, 'sort_by' => $sort_by, 'sort_desc' => $sort_desc);
+    if (!$remember_filter) {
+      $data['remember_filter'] = '0';
+    }
     
     $normalized_filters = $this->podio->normalizeFilters($filters);
     foreach ($normalized_filters as $key => $value) {
