@@ -184,6 +184,7 @@ class PodioAPI {
     $this->importer = new PodioImporterAPI();
     $this->hook = new PodioHookAPI();
     $this->news = new PodioNewsAPI();
+    $this->questions = new PodioQuestionsAPI();
   }
 }
 
