@@ -279,6 +279,9 @@ class PodioItemAPI {
       if ($response->getStatus() == '204') {
         return TRUE;
       }
+      elseif ($response->getStatus() == '200') {
+        return json_decode($response->getBody(), TRUE);
+      }
       return FALSE;
     }
   }
