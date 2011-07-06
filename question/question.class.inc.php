@@ -4,7 +4,7 @@
  * The question area makes it possible to attach questions to other objects in Podio.
  * Questions are simply a text with a list of single-choice options.
  */
-class PodioQuestionsAPI {
+class PodioQuestionAPI {
   /**
    * Reference to the PodioBaseAPI instance
    */
