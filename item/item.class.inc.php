@@ -171,7 +171,7 @@ class PodioItemAPI {
    * @return Array with the total count and filtered count for the results and 
    *         an array of items
    */
-  public function getItems($app_id, $limit, $offset, $sort_by, $sort_desc, $filters = array(), $remember_filter = TRUE) {
+  public function getItems($app_id, $limit = 20, $offset = 0, $sort_by = 'title', $sort_desc = 0, $filters = array(), $remember_filter = TRUE) {
     $data = array('limit' => $limit, 'offset' => $offset, 'sort_by' => $sort_by, 'sort_desc' => $sort_desc);
     if (!$remember_filter) {
       $data['remember_filter'] = '0';
