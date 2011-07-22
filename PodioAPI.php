@@ -405,7 +405,7 @@ class PodioBaseAPI {
       if (empty($filter['values'])) {
         $data[$filter['key']] = '';
       }
-      else if ($filter['key'] == 'created_by') {
+      else if ($filter['key'] == 'created_by' || $filter['key'] == 'last_edit_by') {
         $created_bys = array();
         foreach ($filter['values'] as $value) {
           $created_bys[] = $value['type'].':'.$value['id'];
