@@ -302,6 +302,18 @@ class PodioItemAPI {
   }
   
   /**
+   * Returns the values for a specified field on an item
+   *
+   * @param $item_id The Id of the item to get values for
+   * @param $field_id The Id of the field to get values for
+   */
+  public function getFieldValue($item_id, $field_id) {
+    if ($response = $this->podio->request('/item/'.$item_id.'/value/'.$field_id)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
+  /**
    * Update the item values for a specific field.
    *
    * @param $item_id The id of the item to update
