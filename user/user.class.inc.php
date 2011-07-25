@@ -49,7 +49,40 @@ class PodioUserAPI {
       unset($data['mail']);
     }
     
-    $response = $this->podio->request('/user/'.$user_id, $data, HTTP_Request2::METHOD_PUT);
+    $response = $this->podio->request('/user/', $data, HTTP_Request2::METHOD_PUT);
+    if ($response && $response->getStatus() == '204') {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Updates the active user. The old and new password can be left out, 
+   * in which case the password will not be changed. If the mail is 
+   * changed, the old password has to be supplied as well.
+   *
+   * @param $mails The new email of the user
+   * @param $old_password The users current password
+   * @param $new_password The users new password
+   * @param $locale The locale of the new user
+   * @param $timezone The timezone of the user
+   */
+  public function updateV2($mails, $old_password, $new_password, $locale, $timezone) {
+    
+    $data = array(
+      'mails' => $mails,
+      'old_password' => $old_password,
+      'new_password' => $new_password, 
+      'locale' => $locale,
+      'timezone' => $timezone,
+    );
+    if (!$old_password) {
+      unset($data['old_password']);
+      unset($data['new_password']);
+      unset($data['mails']);
+    }
+    
+    $response = $this->podio->request('/user/', $data, HTTP_Request2::METHOD_PUT);
     if ($response && $response->getStatus() == '204') {
       return TRUE;
     }
