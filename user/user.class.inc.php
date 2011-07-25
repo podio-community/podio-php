@@ -261,6 +261,17 @@ class PodioUserAPI {
   }
 
   /**
+   * Request a verification email to get send out to the user
+   *
+   * @param $mail The email to send verification mail to
+   */
+  public function mail_verification($mail) {
+    if ($response = $this->podio->request('/user/mail_verification/', array('mail' => $mail), HTTP_Request2::METHOD_POST)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
    * Invites the contact to try out Podio. 
    * Either profile_id or mail must given.
    *
