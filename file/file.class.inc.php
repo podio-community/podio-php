@@ -50,6 +50,28 @@ class PodioFileAPI {
 
   /**
    * Returns the name, mimetype and location of the file. 
+   *
+   * @param $file_id Id for the file
+   */
+  public function get($file_id) {
+    if ($response = $this->podio->request('/file/'.$file_id, array(), HTTP_Request2::METHOD_GET)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the raw file.
+   *
+   * @param $file_id Id for the file
+   */
+  public function get_raw($file_id) {
+    if ($response = $this->podio->request('/file/'.$file_id.'/raw', array(), HTTP_Request2::METHOD_GET)) {
+      return $response->getBody();
+    }
+  }
+
+  /**
+   * Returns the name, mimetype and location of the file. 
    * This is only used for the download script.
    *
    * @param $file_id Id for the file
