@@ -234,6 +234,10 @@ class PodioBaseAPI {
    */
   protected $http_config;
   /**
+   * Extra HTTP headers to send with all requests
+   */
+  protected $http_headers;
+  /**
    * Current API error handler.
    */
   protected $error_handler;
@@ -259,6 +263,7 @@ class PodioBaseAPI {
       'ssl_verify_peer'   => false,
       'ssl_verify_host'   => false
     );
+    $this->http_headers = array();
   }
   
   /**
@@ -357,6 +362,22 @@ class PodioBaseAPI {
   public function getConfig() {
     return $this->http_config;
   }
+
+  /**
+   * Sets extra HTTP headers to use.
+   *
+   * @param $http_headers Array with headers.
+   */
+  public function setHeaders($http_headers) {
+    $this->http_headers = $http_headers;
+  }
+
+  /**
+   * Get the extra HTTP headers set.
+   */
+  public function getHeaders() {
+    return $this->http_headers;
+  }
   
   /**
    * Get the current API server URL
@@ -446,6 +467,11 @@ class PodioBaseAPI {
     $request->setHeader('User-Agent', 'Podio API Client/1.0');
     $request->setHeader('Accept', 'application/json');
     $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
+    if ($this->http_headers) {
+      foreach ($this->http_headers as $header => $value) {
+        $request->setHeader($header, $value);
+      }
+    }
     
     $request->addUpload('source', $file);
     $request->addPostParameter('filename', $name);
@@ -501,6 +527,11 @@ class PodioBaseAPI {
     $request->setConfig('follow_redirects', TRUE);
     $request->setHeader('User-Agent', 'Podio API Client/1.0');
     $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
+    if ($this->http_headers) {
+      foreach ($this->http_headers as $header => $value) {
+        $request->setHeader($header, $value);
+      }
+    }
     
     try {
         $response = $request->send();
@@ -565,6 +596,11 @@ class PodioBaseAPI {
     $request->setHeader('Accept-Encoding', 'gzip');
     if ($this->frontend_token) {
       $request->setHeader('X-Podio-Frontend-Token', $this->frontend_token);
+    }
+    if ($this->http_headers) {
+      foreach ($this->http_headers as $header => $value) {
+        $request->setHeader($header, $value);
+      }
     }
     $location = $request->getUrl();
     
