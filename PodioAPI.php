@@ -239,13 +239,11 @@ class PodioBaseAPI {
   protected $error_handler;
   private static $instance;
 
-  private function __construct($client_id, $client_secret, $url, $upload_end_point, $frontend_token = '') {
+  private function __construct($client_id, $client_secret, $url, $frontend_token = '') {
     $this->url = $url;
     $this->client_id = $client_id;
     $this->secret = $client_secret;
     $this->frontend_token = $frontend_token;
-    $this->upload_end_point = $upload_end_point;
-    $this->download_end_point = 'https://download.podio.com/';
     $this->log_handler = 'error_log';
     $this->log_name = 0;
     $this->log_ident = 'PODIO_API_CLIENT';
@@ -270,14 +268,13 @@ class PodioBaseAPI {
    * @param $url URL for the API server
    * @param $client_id OAuth Client id
    * @param $client_secret OAuth client secret
-   * @param $upload_end_point Upload end point for file uploads
    * @param $frontend_token Special token used by Podio
    *
    * @return Singleton instance of PodioBaseAPI object
    */
-  public static function instance($client_id = '', $client_secret = '', $url = 'https://api.podio.com:443', $upload_end_point = 'https://upload.podio.com/upload.php', $frontend_token = '') {
+  public static function instance($client_id = '', $client_secret = '', $url = 'https://api.podio.com:443', $frontend_token = '') {
     if (!self::$instance) {
-      self::$instance = new PodioBaseAPI($client_id, $client_secret, $url, $upload_end_point, $frontend_token);
+      self::$instance = new PodioBaseAPI($client_id, $client_secret, $url, $frontend_token);
     }
     return self::$instance;
   }
@@ -441,7 +438,8 @@ class PodioBaseAPI {
    */
   public function upload($file, $name) {
     $oauth = PodioOAuth::instance();
-    $request = new HTTP_Request2($this->upload_end_point, HTTP_Request2::METHOD_POST, $this->http_config);
+    $request = new HTTP_Request2($this->url . '/file/v2/', HTTP_Request2::METHOD_POST, $this->http_config);
+    
 
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);
@@ -449,8 +447,8 @@ class PodioBaseAPI {
     $request->setHeader('Accept', 'application/json');
     $request->setHeader('Authorization', 'OAuth2 '.$oauth->access_token);
     
-    $request->addUpload('file', $file);
-    $request->addPostParameter('name', $name);
+    $request->addUpload('source', $file);
+    $request->addPostParameter('filename', $name);
 
     try {
         $response = $request->send();
@@ -497,7 +495,7 @@ class PodioBaseAPI {
    */
   public function download($file_id) {
     $oauth = PodioOAuth::instance();
-    $request = new HTTP_Request2($this->download_end_point.$file_id, HTTP_Request2::METHOD_GET, $this->http_config);
+    $request = new HTTP_Request2($this->url . '/file/' . $file_id . '/raw', HTTP_Request2::METHOD_GET, $this->http_config);
 
     $request->setConfig('use_brackets', FALSE);
     $request->setConfig('follow_redirects', TRUE);
