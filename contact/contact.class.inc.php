@@ -92,8 +92,8 @@ class PodioContactAPI {
    *
    * @return Array of contact objects
    */
-  public function getTopSpaceContacts($space_id, $limit, $type = 'mini') {
-    if ($response = $this->podio->request('/contact/space/'.$space_id.'top/', array('limit' => $limit, 'type' => $type, 'offset' => $offset))) {
+  public function getTopSpaceContacts($space_id, $limit, $type = 'mini', $offset = 0) {
+    if ($response = $this->podio->request('/contact/space/'.$space_id.'/top/', array('limit' => $limit, 'type' => $type, 'offset' => $offset))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
