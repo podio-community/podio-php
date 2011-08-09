@@ -89,9 +89,22 @@ class PodioStatusAPI {
    * @param $value The updated status message
    * @param $file_ids Temporary files that have been uploaded and should 
    *                  be attached to this item
+   * @param $embed_id The id of an embedded link that has been created with the Add an embed operation in the Embed area,
+   * @param $embed_file_id  The id of a thumbnail that has been returned from the Add an embed operation
    */
-  public function update($status_id, $value, $file_ids = array()) {
-    $data = array('value' => $value, 'file_ids' => $file_ids);
+  public function update($status_id, $value, $file_ids = array(), $embed_id = NULL, $embed_file_id = NULL) {
+    $data = array('value' => $value);
+    if ($file_ids) {
+      $data['file_ids'] = $file_ids;
+    }
+
+    if ($embed_id) {
+      $data['embed_id'] = $embed_id;
+    }
+
+    if ($embed_file_id) {
+      $data['embed_file_id'] = $embed_file_id;
+    }
     if ($response = $this->podio->request('/status/'.$status_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
     }
