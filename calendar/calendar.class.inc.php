@@ -87,5 +87,48 @@ class PodioCalendarAPI {
     }
   }
 
+
+  /**
+   * Returns the objects that are currently muted from the global calendar.
+   *
+   *
+   * @return Array of calendar mutes
+   */
+  public function getMutes() {
+    if ($response = $this->podio->request('/calendar/mute/', $data)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Mutes the given object types in the given scope from the global calendar.
+   *
+   * @param $scope_type
+   * @param $scope_id
+   * @param $object_type
+   *
+   * @return Array of calendar mutes
+   */
+  public function muteObject($scope_type, $scope_id, $object_type) {
+    if ($response = $this->podio->request('/calendar/mute/' . $scope_type .'/' .$scope_id . '/'. $object_type , $data, HTTP_Request2::METHOD_POST)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Unmutes the given object types in the given scope from the global calendar.
+   *
+   * @param $scope_type
+   * @param $scope_id
+   * @param $object_type
+   *
+   * @return Array of calendar mutes
+   */
+  public function unmuteObject($scope_type, $scope_id, $object_type) {
+    if ($response = $this->podio->request('/calendar/mute/' . $scope_type .'/' .$scope_id . '/'. $object_type , $data, HTTP_Request2::METHOD_DELETE)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
 }
 
