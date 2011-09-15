@@ -58,6 +58,7 @@ class PodioOAuth {
    * - refresh token: Refresh expired access token
    * - authorization_code: Use the authorization code obtained from step 
    *   one of the authorization
+   * - app: Use the app_id and app_token from a Podio app to get access token
    * @param $data Request data. Varies by grant type. See OAuth specification
    *
    * @return TRUE if access token was retrieved
@@ -83,6 +84,10 @@ class PodioOAuth {
         $post_data['code'] = $data['code'];
         $post_data['redirect_uri'] = $data['redirect_uri'];
         break;
+      case 'app':
+        $post_data['grant_type'] = 'app';
+        $post_data['app_id'] = $data['app_id'];
+        $post_data['app_token'] = $data['app_token'];
       default:
         break;
     }
