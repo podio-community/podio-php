@@ -122,19 +122,6 @@ class PodioOrgAPI {
   }
 
   /**
-   * Returns hash with two lists of all the organizations and spaces the user is member of.
-   * One list is organizations beloning to a verified organization (verified_orgs)
-   * and the other list is the orgs that doesn't (user)
-   *
-   * @return Hash with two arrays of organization objects
-   */
-  public function getOrgsV2() {
-    if ($response = $this->podio->request('/org/v2/')) {
-      return json_decode($response->getBody(), TRUE);
-    }
-  }
-  
-  /**
    * Returns the organizations and spaces that the logged in user shares with 
    * the specified user. The organizations and spaces will be returned sorted 
    * by name.
