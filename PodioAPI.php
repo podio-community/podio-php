@@ -34,6 +34,7 @@ require_once('importer/importer.class.inc.php');
 require_once('hook/hook.class.inc.php');
 require_once('news/news.class.inc.php');
 require_once('question/question.class.inc.php');
+require_once('mobile/mobile.class.inc.php');
 
 /**
  * Primary Podio API implementation class. This is merely a container for 
@@ -150,6 +151,10 @@ class PodioAPI {
    */
   public $hook;
   /**
+   * Reference to PodioMobile instance
+   */
+  public $mobile;
+  /**
    * Reference to PodioNewsAPI instance
    */
   public $news;
@@ -185,6 +190,7 @@ class PodioAPI {
     $this->hook = new PodioHookAPI();
     $this->news = new PodioNewsAPI();
     $this->question = new PodioQuestionAPI();
+    $this->mobile = new PodioMobileAPI();
   }
 }
 
