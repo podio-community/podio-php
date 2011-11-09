@@ -19,7 +19,7 @@ class PodioMobileAPI {
    */
   public function install_app($app_id) {
     if ($response = $this->podio->request('/mobile/install_app/'.$app_id, array(), HTTP_Request2::METHOD_POST)) {
-      podio_log($response);
+      podio_log($response); 
       return json_decode($response->getBody(), TRUE);
     }
   }
