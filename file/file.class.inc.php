@@ -16,7 +16,7 @@ class PodioFileAPI {
   }
   
   /**
-   * Returns all the files on the space order by the file name.
+   * Returns all the files on the space, order by the file name.
    *
    * @param $space_id Space id of the space wanted
    * @param $limit The maximum number of files to be returned. 
@@ -26,8 +26,25 @@ class PodioFileAPI {
    *
    * @return Array of file objects
    */
-  public function getFilesOnSpace($space_id, $limit, $offset = 0) {
+  public function getFilesOnSpace($space_id, $limit = 50, $offset = 0) {
     if ($response = $this->podio->request('/file/space/'.$space_id.'/', array('limit' => $limit, 'offset' => $offset))) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns all the files on the app, order by the file name.
+   *
+   * @param $app_id App id of the space wanted
+   * @param $limit The maximum number of files to be returned. 
+   *               Defaults to 50 and cannot be higher than 100
+   * @param $offset The offset to use when returning files to be used 
+   *                for pagination. Defaults to 0 (no offset)
+   *
+   * @return Array of file objects
+   */
+  public function getFilesOnApp($app_id, $limit = 50, $offset = 0) {
+    if ($response = $this->podio->request('/file/app/'.$app_id.'/', array('limit' => $limit, 'offset' => $offset))) {
       return json_decode($response->getBody(), TRUE);
     }
   }
