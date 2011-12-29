@@ -2,12 +2,7 @@
 This is a PHP Client for interacting with the Podio API. Almost all parts of the Podio API is covered in this client.
 
 # Getting the client and dependencies
-The first step is to download a copy of the PHP client from GitHub: [https://github.com/podio/podio-php](https://github.com/podio/podio-php). It requires PHP5. Place it inside your new PHP project.
-
-Make sure that your PHP install supports these extensions. Both should be present even on shared hosting.
-
-* cURL: [http://php.net/manual/en/book.curl.php](http://php.net/manual/en/book.curl.php)
-* OpenSSL: [http://php.net/manual/en/book.openssl.php](http://php.net/manual/en/book.openssl.php)
+The first step is to download a copy of the PHP client from GitHub: [https://github.com/podio/podio-php](https://github.com/podio/podio-php). It requires PHP5 with the [curl](http://php.net/manual/en/book.curl.php) and [openssl](http://php.net/manual/en/book.openssl.php) extensions. Place it inside your new PHP project.
 
 # Including the client in your application
 All you need to get started is to include PodioAPI.php like so:
@@ -54,6 +49,23 @@ If you wish to upload a file, for example to status messages, comments, items, w
     if ($response) {
       print 'File uploaded. The file id is: '.$response['result']['file_id'];
     }
+
+# Error handling
+All unsuccessful responses returned by the API (everything that has a 4xx or 5xx HTTP status code) will throw an exception. All exceptions inherit from `PodioError` and have three additional properties which give you more information about the error:
+
+    try {
+      // This is missing the mandatory $attributes parameter
+      $api->status->create(45605);
+    }
+    catch (PodioBadRequestError $e) {
+      print $e->body;   # Parsed JSON response from the API
+      print $e->status; # Status code of the response
+      print $e->url;    # URI of the API request
+      
+      // You normally want this one, a human readable error description
+      print $e->body['error_description'];
+    }
+
 
 # Full example: Posting status message with an image
     require_once('/path/to/podio-php/PodioAPI.php');
