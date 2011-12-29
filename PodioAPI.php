@@ -145,14 +145,14 @@ class Podio {
         curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, self::GET);
         $this->headers['Content-type'] = 'application/x-www-form-urlencoded';
         $query = $this->encode_attributes($attributes);
-        $url = $url.$query;
+        $url = $url.'?'.$query;
         $this->headers['Content-length'] = "0";
         break;
       case self::DELETE:
         curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, self::DELETE);
         $this->headers['Content-type'] = 'application/x-www-form-urlencoded';
         $query = $this->encode_attributes($attributes);
-        $url = $url.$query;
+        $url = $url.'?'.$query;
         $this->headers['Content-length'] = "0";
         break;
       case self::POST:
