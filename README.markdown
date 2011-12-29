@@ -2,52 +2,43 @@
 This is a PHP Client for interacting with the Podio API. Almost all parts of the Podio API is covered in this client.
 
 # Getting the client and dependencies
-The first step is to download a copy of the PHP client from GitHub: [https://github.com/podio/podio-php](https://github.com/podio/podio-php). Place it inside your new PHP project.
+The first step is to download a copy of the PHP client from GitHub: [https://github.com/podio/podio-php](https://github.com/podio/podio-php). It requires PHP5. Place it inside your new PHP project.
 
-In addition to the client you need two PEAR Packages:
+Make sure that your PHP install supports these extensions. Both should be present even on shared hosting.
 
-* HTTP\_Request2: [http://pear.php.net/package/HTTP_Request2/](http://pear.php.net/package/HTTP_Request2/)
-* Log: [http://pear.php.net/package/Log/](http://pear.php.net/package/Log/)
-
-Both must be present in your PHP include path. If you have PEAR installed you can install these packages using the `pear install` command. If you do not use `pear install` and download the packages manually you should use `set_include_path()` to include their location.
+* cURL: [http://php.net/manual/en/book.curl.php](http://php.net/manual/en/book.curl.php)
+* OpenSSL: [http://php.net/manual/en/book.openssl.php](http://php.net/manual/en/book.openssl.php)
 
 # Including the client in your application
 All you need to get started is to include PodioAPI.php like so:
 
-    require_once('/path/to/podio-php/PodioAPI.php');
+    require_once '/path/to/podio-php/PodioAPI.php';
 
 # Constructing API client instance and authentication
-You will working with three classes:
-
-* **PodioOAuth:** Handles authentication with the API server and holds your OAuth tokens.
-* **PodioAPI:** Handles all communication with the API server. This is where you will spend most of your time.
-* **PodioBaseAPI:** A base class, you need to create an instance of this to hold your API credentials.
-
-Before you can make any API calls you need to obtain an OAuth access token. The exact process depends on which type of authentication you are using, but in all cases you must create instances of `PodioBaseAPI` and `PodioOAuth` and call the `getAccessToken` method:
+Before you can make any API calls you need to create an instance of the `Podio` class and authenticate with the Podio API. The exact process depends on which type of authentication you are using:
 
     require_once('/path/to/podio-php/PodioAPI.php');
-    $oauth = PodioOAuth::instance();
-    $baseAPI = PodioBaseAPI::instance($client_id, $client_secret);
+    $api = Podio::instance($client_id, $client_secret);
     
     // Obtain access token using authorization code from the first step of the authentication flow
-    $oauth->getAccessToken('authorization_code', array('code' => $_GET['code'], 'redirect_uri' => $redirect_uri));
+    $api->authenticate('authorization_code', array('code' => $_GET['code'], 'redirect_uri' => $redirect_uri));
     
     // Alternatively you can supply a username and password directly. E.g.:
-    // $oauth->getAccessToken('password', array('username' => $username, 'password' => $password));
+    // $api->authenticate('password', array('username' => $username, 'password' => $password));
     
-    print $oauth->access_token; // Your access token
+    print $api->oauth->access_token; // Your access token
     
     // Woohoo! Now it's time to make API calls!
 
 # Making API calls
-To make API calls you use the `PodioAPI` class. This is contains references to all areas of the Podio API. See each area to see individual methods and their arguments.
+To make API calls you use the `Podio` class. This is contains references to all areas of the Podio API. See each area to see individual methods and their arguments.
 
 For example: If I want to post a new status message _'Posted from the PHP Client'_ to a space I would call the `create` method in the `status` area like so:
 
-    $api = new PodioAPI();
+    $api = Podio::instance();
     
     // $space_id is the id for the space I want to post the status message on
-    $response = $api->status->create($space_id, 'Posted from the PHP Client');
+    $response = $api->status->create($space_id, array('value' => 'Posted from the PHP Client'));
     
     if ($response) {
       print 'The id for the new status message is: '.$response['status_id'];
@@ -56,27 +47,13 @@ For example: If I want to post a new status message _'Posted from the PHP Client
 The Podio API always returns data in JSON and the PHP client automatically decodes this and places responses into associative arrays for easy traversal.
 
 # Handling file uploads
-If you wish to upload a file, for example to status messages, comments, items, widgets etc., you will use the `upload` method in the `api` area:
+If you wish to upload a file, for example to status messages, comments, items, widgets etc., you will use the `upload` method in the `file` area:
 
-    $response = $api->api->upload($path_to_file, $filename_to_display);
+    $response = $api->file->upload($path_to_file, $filename_to_display);
     
     if ($response) {
       print 'File uploaded. The file id is: '.$response['result']['file_id'];
     }
-
-# API reference
-The PHP Client is documented using Doxygen. For your convenience a Doxygen configuration file has been included in the repository. To generate an API reference:
-
-* Install Doxygen if you haven't: [http://doxygen.org/](http://doxygen.org/)
-* Navigate to the podio-php folder and run `doxygen .doxygen`
-* The API reference will now be available in the `docs` folder
-
-# Logging
-By default all logging happens in the PHP error log. You can overwrite this behaviour with the `setLogHandler` method on the `PodioBaseAPI` class. For example, you can log to a specific file:
-
-    $baseAPI->setLogHandler('file', '/path/to/log/file/podio_log.log');
-
-You can see which log handlers are available in the [PEAR Log documentation](http://www.indelible.org/php/Log/guide.html).
 
 # Full example: Posting status message with an image
     require_once('/path/to/podio-php/PodioAPI.php');
@@ -84,18 +61,18 @@ You can see which log handlers are available in the [PEAR Log documentation](htt
     $client_id = 'MY_OAUTH_CLIENT_ID';
     $client_secret = 'MY_OAUTH_CLIENT_SECRET';
 
-    $oauth = PodioOAuth::instance();
-    $baseAPI = PodioBaseAPI::instance($client_id, $client_secret);
+    $api = Podio::instance($client_id, $client_secret);
     
     // Obtain access token
     $username = 'MY_USERNAME';
     $password = 'MY_PASSWORD';
-    $oauth->getAccessToken('password', array('username' => $username, 'password' => $password));
+    $api->authenticate('password', array('username' => $username, 'password' => $password));
     
     // Upload file
-    $file = $api->api->upload('/path/to/myimage.png', 'myimage.png');
+    $file = $api->file->upload('/path/to/myimage.png', 'myimage.png');
     
     // Post status message
     $space_id = MY_SPACE_ID;
-    $api->status->create($space_id, 'This has an image attached', array((int)$file['result']['file_id']));
+    $file_ids = array((int)$file['result']['file_id']);
+    $api->status->create($space_id, array('value' => 'This has an image attached', 'file_ids' => $file_ids));
 
