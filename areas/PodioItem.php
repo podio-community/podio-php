@@ -217,7 +217,7 @@ class PodioItem {
    * First two columns are "Created on" and "Created by". 
    * The remaining columns are the fields on the app.
    */
-  function csv($app_id, $attributes = array()) {
+  public function csv($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/app/'.$app_id.'/csv/', $attributes)) {
       return $response->getBody();
     }
@@ -226,7 +226,7 @@ class PodioItem {
   /**
    * Returns a XLSX file of items
    */
-  function xlsx($app_id, $attributes = array()) {
+  public function xlsx($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/app/'.$app_id.'/xlsx/', $attributes)) {
       return $response->getBody();
     }

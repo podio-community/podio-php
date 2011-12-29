@@ -60,7 +60,7 @@ class PodioCalendar {
    * Mutes the given object types in the given scope from the global calendar.
    */
   public function muteObject($scope_type, $scope_id, $object_type) {
-    if ($response = $this->podio->post('/calendar/mute/' . $scope_type .'/' .$scope_id . '/'. $object_type)) {
+    if ($response = $this->podio->post('/calendar/mute/'.$scope_type.'/'.$scope_id.'/'.$object_type)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -69,7 +69,7 @@ class PodioCalendar {
    * Unmutes the given object types in the given scope from the global calendar.
    */
   public function unmuteObject($scope_type, $scope_id, $object_type) {
-    if ($response = $this->podio->delete('/calendar/mute/' . $scope_type .'/' .$scope_id . '/'. $object_type)) {
+    if ($response = $this->podio->delete('/calendar/mute/'.$scope_type.'/'.$scope_id.'/'.$object_type)) {
       return TRUE;
     }
   }
