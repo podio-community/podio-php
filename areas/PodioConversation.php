@@ -28,7 +28,7 @@ class PodioConversation {
    * Creates a new conversation with a list of users. Once a conversation is 
    * started, the participants cannot (yet) be changed.
    */
-  public function create($attributes) {
+  public function create($attributes = array()) {
     if ($response = $this->podio->post('/conversation/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -37,7 +37,7 @@ class PodioConversation {
   /**
    * Creates a reply to the conversation.
    */
-  public function createReply($conversation_id, $attributes) {
+  public function createReply($conversation_id, $attributes = array()) {
     if ($response = $this->podio->post('/conversation/'.$conversation_id.'/reply', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

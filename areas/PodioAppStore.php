@@ -18,7 +18,7 @@ class PodioAppStore {
   /**
    * Returns the top apps in the app store in the given language.
    */
-  public function getTopApps($attributes) {
+  public function getTopApps($attributes = array()) {
     if ($response = $this->podio->get('/app_store/top/v2/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -27,7 +27,7 @@ class PodioAppStore {
   /**
    * Returns the apps in the app store in the given category and language.
    */
-  public function getByCategory($category_id, $attributes) {
+  public function getByCategory($category_id, $attributes = array()) {
     if ($response = $this->podio->get('/app_store/category/'.$category_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -47,7 +47,7 @@ class PodioAppStore {
   /**
    * Returns all the shares the organization with the give URL has shared in the app store.
    */
-  public function getByOrganization($organization_url, $attributes) {
+  public function getByOrganization($organization_url, $attributes = array()) {
     if ($response = $this->podio->get('/app_store/org/'.$organization_url.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -56,7 +56,7 @@ class PodioAppStore {
   /**
    * Returns all the shares the organization with the given id has shared in the private app store
    */
-  public function getPrivateByOrganization($organization_id, $attributes) {
+  public function getPrivateByOrganization($organization_id, $attributes = array()) {
     if ($response = $this->podio->get('/app_store/org/'.$organization_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -65,7 +65,7 @@ class PodioAppStore {
   /**
    * Searches the app store for apps with the given language and texts.
    */
-  public function search($attributes) {
+  public function search($attributes = array()) {
     if ($response = $this->podio->get('/app_store/search/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -74,7 +74,7 @@ class PodioAppStore {
   /**
    * Returns the categories available in the system.
    */
-  public function getCategories($attributes) {
+  public function getCategories($attributes = array()) {
     if ($response = $this->podio->get('/app_store/category/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -83,7 +83,7 @@ class PodioAppStore {
   /**
    * Returns all the apps that the active user has shared.
    */
-  public function getOwn($attributes) {
+  public function getOwn($attributes = array()) {
     if ($response = $this->podio->get('/app_store/own/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -92,7 +92,7 @@ class PodioAppStore {
   /**
    * Installs the share with the given id on the space.
    */
-  public function install($share_id, $attributes) {
+  public function install($share_id, $attributes = array()) {
     if ($response = $this->podio->post('/app_store/'.$share_id.'/install/v2', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -111,7 +111,7 @@ class PodioAppStore {
   /**
    * Shares the app/pack in the app store
    */
-  public function share($attributes) {
+  public function share($attributes = array()) {
     if ($response = $this->podio->post('/app_store/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -120,7 +120,7 @@ class PodioAppStore {
   /**
    * Updates the share with changes to abstract, description, etc.
    */
-  public function update($share_id, $attributes) {
+  public function update($share_id, $attributes = array()) {
     if ($response = $this->podio->put('/app_store/'.$share_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -138,7 +138,7 @@ class PodioAppStore {
   /**
    * Returns a random featured app with the given language.
    */
-  public function getFeatured($attributes) {
+  public function getFeatured($attributes = array()) {
     if ($response = $this->podio->get('/app_store/featured', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

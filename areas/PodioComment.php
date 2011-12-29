@@ -19,7 +19,7 @@ class PodioComment {
   /**
    * Adds a new comment to the object of the given type and id.
    */
-  public function create($ref_type, $ref_id, $attributes) {
+  public function create($ref_type, $ref_id, $attributes = array()) {
     if ($response = $this->podio->post('/comment/'.$ref_type.'/'.$ref_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -29,7 +29,7 @@ class PodioComment {
    * Updates an already created comment. This should only be used to correct 
    * spelling and grammatical mistakes in the comment.
    */
-  public function update($comment_id, $attributes) {
+  public function update($comment_id, $attributes = array()) {
     if ($response = $this->podio->put('/comment/'.$comment_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

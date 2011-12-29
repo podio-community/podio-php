@@ -15,7 +15,7 @@ class PodioOrganization {
   /**
    * Creates a new organization
    */
-  public function create($attributes) {
+  public function create($attributes = array()) {
     if ($response = $this->podio->post('/org/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -25,7 +25,7 @@ class PodioOrganization {
    * Updates an organization with new name and logo. Note that the URL of the 
    * organization will not change even though the name changes.
    */
-  public function update($org_id, $attributes) {
+  public function update($org_id, $attributes = array()) {
     if ($response = $this->podio->put('/org/'.$org_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -54,7 +54,7 @@ class PodioOrganization {
    * Returns the organization with the given full URL. The URL does not have 
    * to be truncated to the root, it can be to any resource on the URL.
    */
-  public function getByUrl($attributes) {
+  public function getByUrl($attributes = array()) {
     if ($response = $this->podio->get('/org/url', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

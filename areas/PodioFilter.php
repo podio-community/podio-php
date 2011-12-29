@@ -21,7 +21,7 @@ class PodioFilter {
   /**
    * Creates a new filter on the given app.
    */
-  public function create($app_id, $attributes) {
+  public function create($app_id, $attributes = array()) {
     if ($response = $this->podio->post('/filter/app/'.$app_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

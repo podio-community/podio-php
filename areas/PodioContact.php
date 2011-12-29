@@ -29,7 +29,7 @@ class PodioContact {
   /**
    * Returns the total number of contacts on the space.
    */
-   public function getSpaceContactsTotals($space_id, $attributes) {
+   public function getSpaceContactsTotals($space_id, $attributes = array()) {
      if ($response = $this->podio->get('/contact/space/'.$space_id.'totals/', $attributes)) {
        return json_decode($response->getBody(), TRUE);
      }
@@ -49,7 +49,7 @@ class PodioContact {
    * Returns the top contacts for the user ordered by their overall 
    * interactive with the active user.
    */
-  public function getTopContacts($attributes) {
+  public function getTopContacts($attributes = array()) {
     if ($response = $this->podio->get('/contact/top/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -59,7 +59,7 @@ class PodioContact {
    * Returns the top contacts for a space ordered by their overall 
    * interactive with the active user.
    */
-  public function getTopSpaceContacts($space_id, $attributes) {
+  public function getTopSpaceContacts($space_id, $attributes = array()) {
     if ($response = $this->podio->get('/contact/space/'.$space_id.'/top/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -68,7 +68,7 @@ class PodioContact {
   /**
    * Used to get a list of contacts for the user.
    */
-  public function getContacts($attributes) {
+  public function getContacts($attributes = array()) {
     if ($response = $this->podio->get('/contact/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -77,7 +77,7 @@ class PodioContact {
   /**
    * Used to get a list of organization contacts for the user.
    */
-  public function getOrgContacts($org_id, $attributes) {
+  public function getOrgContacts($org_id, $attributes = array()) {
     if ($response = $this->podio->get('/contact/org/'.$org_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -86,7 +86,7 @@ class PodioContact {
   /**
    * Used to get a list of space contacts for the user.
    */
-  public function getSpaceContacts($space_id, $attributes) {
+  public function getSpaceContacts($space_id, $attributes = array()) {
     if ($response = $this->podio->get('/contact/space/'.$space_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -95,7 +95,7 @@ class PodioContact {
   /**
    * Returns all the contacts for the connection with the given id.
    */
-  public function getByConnection($connection_id, $attributes) {
+  public function getByConnection($connection_id, $attributes = array()) {
     if ($response = $this->podio->get('/contact/connection/'.$connection_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -104,7 +104,7 @@ class PodioContact {
   /**
    * Returns all the contacts for the connection with the given type.
    */
-  public function getByConnectionType($connection_type, $attributes) {
+  public function getByConnectionType($connection_type, $attributes = array()) {
     if ($response = $this->podio->get('/contact/connection/'.$connection_type, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -113,7 +113,7 @@ class PodioContact {
   /**
    * Creates a new space contact for use by everyone on the space.
    */
-  public function createSpaceContact($space_id, $attributes) {
+  public function createSpaceContact($space_id, $attributes = array()) {
     if ($response = $this->podio->post('/contact/space/'.$space_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -168,7 +168,7 @@ class PodioContact {
   /**
    * Returns the total number of contacts for the active user.
    */
-  public function getContactsTotalsV2($attributes) {
+  public function getContactsTotalsV2($attributes = array()) {
     if ($response = $this->podio->get('/contact/totals/v2/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -178,7 +178,7 @@ class PodioContact {
    * Updates the contact with the given profile id. It is currently only
    * possible to update contacts of type "connection".
    */
-  public function update($profile_id, $attributes) {
+  public function update($profile_id, $attributes = array()) {
     if ($response = $this->podio->put('/contact/'.$profile_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -188,7 +188,7 @@ class PodioContact {
    * Updates the given field on the given contact. Updates are currently only
    * allowed from contacts of type "connection".
    */
-  public function updateField($profile_id, $key, $attributes) {
+  public function updateField($profile_id, $key, $attributes = array()) {
     if ($response = $this->podio->put('/contact/'.$profile_id.'/'.$key, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

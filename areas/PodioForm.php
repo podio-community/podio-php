@@ -17,7 +17,7 @@ class PodioForm {
   /**
    * Creates a new form on an app.
    */
-  public function create($app_id, $attributes) {
+  public function create($app_id, $attributes = array()) {
     if ($response = $this->podio->post('/form/app/'.$app_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -26,7 +26,7 @@ class PodioForm {
   /**
    * Updates the form with new settings, domains, fields, etc.
    */
-  public function update($form_id, $attributes) {
+  public function update($form_id, $attributes = array()) {
     if ($response = $this->podio->put('/form/'.$form_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

@@ -20,7 +20,7 @@ class PodioTag {
    * Add a new set of tags to the object. If a tag with the same text is 
    * already present, the tag will be ignored.
    */
-  public function create($ref_type, $ref_id, $tags) {
+  public function create($ref_type, $ref_id, $tags = array()) {
     if ($response = $this->podio->post('/tag/'.$ref_type.'/'.$ref_id.'/', $tags)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -38,7 +38,7 @@ class PodioTag {
   /**
    * Removes a single tag from an object.
    */
-  public function remove($ref_type, $ref_id, $attributes) {
+  public function remove($ref_type, $ref_id, $attributes = array()) {
     if ($response = $this->podio->delete('/tag/'.$ref_type.'/'.$ref_id.'/', $attributes)) {
       return TRUE;
     }
@@ -49,7 +49,7 @@ class PodioTag {
    * are first limited ordered by their frequency of use, and then 
    * returned sorted alphabetically.
    */
-  public function getByApp($app_id, $attributes) {
+  public function getByApp($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/tag/app/'.$app_id . '/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -58,7 +58,7 @@ class PodioTag {
   /**
    * Returns the top tags on the app.
    */
-  public function getTopByApp($app_id, $attributes) {
+  public function getTopByApp($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/tag/app/'.$app_id . '/top/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -91,7 +91,7 @@ class PodioTag {
    * The objects are returned sorted descending by the time the tag 
    * was added.
    */
-  public function getBySpaceWithText($space_id, $attributes) {
+  public function getBySpaceWithText($space_id, $attributes = array()) {
     if ($response = $this->podio->get('/tag/space/'.$space_id . '/search/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -102,7 +102,7 @@ class PodioTag {
    * The objects are returned sorted descending by the time the tag 
    * was added.
    */
-  public function getByAppWithText($app_id, $attributes) {
+  public function getByAppWithText($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/tag/app/'.$app_id . '/search/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -113,7 +113,7 @@ class PodioTag {
    * The objects are returned sorted descending by the time the tag 
    * was added.
    */
-  public function getByOrgWithText($org_id, $attributes) {
+  public function getByOrgWithText($org_id, $attributes = array()) {
     if ($response = $this->podio->get('/tag/app/'.$org_id . '/search/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

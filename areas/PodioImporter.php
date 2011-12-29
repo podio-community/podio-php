@@ -26,7 +26,7 @@ class PodioImporter {
    * Imports the file into the given app. The mapping value for a field 
    * depends on the type of field.
    */
-  public function process($file_id, $attributes) {
+  public function process($file_id, $attributes = array()) {
     if ($response = $this->podio->post('/importer/'.$file_id.'/process', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

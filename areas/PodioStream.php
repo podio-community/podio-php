@@ -18,7 +18,7 @@ class PodioStream {
    * be either "item", "status" or "task". See API documentation 
    * for details.
    */
-  public function get($attributes) {
+  public function get($attributes = array()) {
     if ($response = $this->podio->get('/stream/v2/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -29,7 +29,7 @@ class PodioStream {
    * be either "item", "status" or "task". See API documentation 
    * for details.
    */
-  public function getOrg($org_id, $attributes) {
+  public function getOrg($org_id, $attributes = array()) {
     if ($response = $this->podio->get('/stream/org/'.$org_id.'/v2/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -40,7 +40,7 @@ class PodioStream {
    * be either "item", "status" or "task". See API documentation 
    * for details.
    */
-  public function getSpace($space_id, $attributes) {
+  public function getSpace($space_id, $attributes = array()) {
     if ($response = $this->podio->get('/stream/space/'.$space_id.'/v2/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

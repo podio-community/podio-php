@@ -16,7 +16,7 @@ class PodioSearch {
   /**
    * Searches globally in all items, tasks and statuses.
    */
-  public function search($words) {
+  public function search($words = array()) {
     if ($response = $this->podio->post('/search/', $words)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -25,7 +25,7 @@ class PodioSearch {
   /**
    * Searches in an organization.
    */
-  public function searchOrganization($org_id, $words) {
+  public function searchOrganization($org_id, $words = array()) {
     if ($response = $this->podio->post('/search/org/'.$org_id.'/', $words)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -34,7 +34,7 @@ class PodioSearch {
   /**
    * Searches in a space.
    */
-  public function searchSpace($space_id, $words) {
+  public function searchSpace($space_id, $words = array()) {
     if ($response = $this->podio->post('/search/space/'.$space_id.'/', $words)) {
       return json_decode($response->getBody(), TRUE);
     }

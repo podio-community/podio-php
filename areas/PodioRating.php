@@ -28,7 +28,7 @@ class PodioRating {
    * Add a new rating of the user to the object. The rating can be one of many 
    * different types. For more details see the area.
    */
-  public function create($ref_type, $ref_id, $rating_type, $attributes) {
+  public function create($ref_type, $ref_id, $rating_type, $attributes = array()) {
     if ($response = $this->podio->post('/rating/'.$ref_type.'/'.$ref_id.'/'.$rating_type, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

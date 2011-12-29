@@ -18,7 +18,7 @@ class PodioApp {
   /**
    * Creates a new app on a space.
    */
-  public function create($attributes) {
+  public function create($attributes = array()) {
     if ($response = $this->podio->post('/app/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -27,7 +27,7 @@ class PodioApp {
   /**
    * Updates an app.
    */
-  public function update($app_id, $attributes) {
+  public function update($app_id, $attributes = array()) {
     if ($response = $this->podio->put('/app/'.$app_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -76,7 +76,7 @@ class PodioApp {
    * Gets the definition of an app and can include configuration and fields. 
    * This method will always return the latest revision of the app definition.
    */
-  public function get($app_id, $attributes) {
+  public function get($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/app/'.$app_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -85,7 +85,7 @@ class PodioApp {
   /**
    * Returns the app on the given space with the given URL label
    */
-  public function getByLabel($space_id, $url_label, $attributes) {
+  public function getByLabel($space_id, $url_label, $attributes = array()) {
     if ($response = $this->podio->get('/app/space/'.$space_id.'/'.$url_label, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -113,7 +113,7 @@ class PodioApp {
   /**
    * Returns the features that the given apps and optionally space includes. 
    */
-  public function getFeatures($attributes) {
+  public function getFeatures($attributes = array()) {
     if ($response = $this->podio->get('/app/features/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -145,7 +145,7 @@ class PodioApp {
    * order they were created in, unless apps have been moved manually 
    * by a space administrator.
    */
-  public function getApps($attributes) {
+  public function getApps($attributes = array()) {
     if ($response = $this->podio->get('/app/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -155,7 +155,7 @@ class PodioApp {
    * Returns the top apps for the active user. This is the apps that the user 
    * have interacted with the most.
    */
-  public function getTop($attributes) {
+  public function getTop($attributes = array()) {
     if ($response = $this->podio->get('/app/top/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -164,7 +164,7 @@ class PodioApp {
   /**
    * Adds a new field to an app
    */
-  public function createField($app_id, $attributes) {
+  public function createField($app_id, $attributes = array()) {
     if ($response = $this->podio->post('/app/'.$app_id.'/field/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -174,7 +174,7 @@ class PodioApp {
    * Updates the configuration of an app field. The type of the field cannot 
    * be updated, only the configuration.
    */
-  public function updateField($app_id, $field_id, $attributes) {
+  public function updateField($app_id, $field_id, $attributes = array()) {
     if ($response = $this->podio->put('/app/'.$app_id.'/field/'.$field_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -193,7 +193,7 @@ class PodioApp {
    * Updates the order of the apps on the space. It should post all the apps 
    * from the space in the order required.
    */
-  public function reorder($space_id, $attributes) {
+  public function reorder($space_id, $attributes = array()) {
     if ($response = $this->podio->put('/app/space/'.$space_id.'/order', $attributes)) {
       return TRUE;
     }
@@ -202,7 +202,7 @@ class PodioApp {
   /**
    * Installs the app with the given id on the space.
    */
-  public function install($app_id, $attributes) {
+  public function install($app_id, $attributes = array()) {
     if ($response = $this->podio->post('/app/'.$app_id.'/install', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

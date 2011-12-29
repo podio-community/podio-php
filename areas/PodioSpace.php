@@ -26,7 +26,7 @@ class PodioSpace {
   /**
    * Returns the top spaces for the user
    */
-  public function getTop($attributes) {
+  public function getTop($attributes = array()) {
     if ($response = $this->podio->get('/space/top/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -35,7 +35,7 @@ class PodioSpace {
   /**
    * Add a new space to an organization.
    */
-  public function create($attributes) {
+  public function create($attributes = array()) {
     if ($response = $this->podio->post('/space/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -44,7 +44,7 @@ class PodioSpace {
   /**
    * Updates the space with the given id
    */
-  public function update($space_id, $attributes) {
+  public function update($space_id, $attributes = array()) {
     if ($response = $this->podio->put('/space/'.$space_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -72,7 +72,7 @@ class PodioSpace {
   /**
    * Returns the space and organization with the given full URL.
    */
-  public function getByURL($attributes) {
+  public function getByURL($attributes = array()) {
     if ($response = $this->podio->get('/space/url', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -91,7 +91,7 @@ class PodioSpace {
   /**
    * Updates a space membership with another role
    */
-  public function updateMember($space_id, $user_id, $attributes) {
+  public function updateMember($space_id, $user_id, $attributes = array()) {
     if ($response = $this->podio->put('/space/'.$space_id.'/member/'.$user_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -138,7 +138,7 @@ class PodioSpace {
    * Returns the status for a space invitation. Used to present the proper 
    * screen to the user when attempting to join a space.
    */
-  public function getInviteByToken($attributes) {
+  public function getInviteByToken($attributes = array()) {
     if ($response = $this->podio->get('/space/invite/status', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -147,7 +147,7 @@ class PodioSpace {
   /**
    * Invites a list of users (either through user_id or email) to the space.
    */
-  public function invite($space_id, $attributes) {
+  public function invite($space_id, $attributes = array()) {
     if ($response = $this->podio->post('/space/'.$space_id.'/invite', $attributes)) {
       return TRUE;
     }
@@ -156,7 +156,7 @@ class PodioSpace {
   /**
    * Used to accept an invite to a space
    */
-  public function inviteAccept($attributes) {
+  public function inviteAccept($attributes = array()) {
     if ($response = $this->podio->post('/space/invite/accept', $attributes)) {
       return TRUE;
     }
@@ -165,7 +165,7 @@ class PodioSpace {
   /**
    * Used to decline an invite to a space for the active user
    */
-  public function inviteDecline($attributes) {
+  public function inviteDecline($attributes = array()) {
     if ($response = $this->podio->post('/space/invite/decline', $attributes)) {
       return TRUE;
     }
@@ -174,7 +174,7 @@ class PodioSpace {
   /**
    * Resends the space invite with a new subject and message.
    */
-  public function inviteResend($space_id, $user_id, $attributes) {
+  public function inviteResend($space_id, $user_id, $attributes = array()) {
     if ($response = $this->podio->post('/space/'.$space_id.'/member/'.$user_id.'/resend_invite', $attributes)) {
       return TRUE;
     }

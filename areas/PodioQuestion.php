@@ -16,7 +16,7 @@ class PodioQuestion {
   /**
    * Answers the question for the given object. The object type can be either "status" or "comment".
    */
-  public function answer($question_id, $ref_type, $ref_id, $attributes) {
+  public function answer($question_id, $ref_type, $ref_id, $attributes = array()) {
     if ($response = $this->podio->post('/question/'.$question_id.'/'.$ref_type.'/'.$ref_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -25,7 +25,7 @@ class PodioQuestion {
   /**
    * Creates a new question on the given object. Supported object types are "status" and "comment".
    */
-  public function create($ref_type, $ref_id, $attributes) {
+  public function create($ref_type, $ref_id, $attributes = array()) {
     if ($response = $this->podio->post('/question/'.$ref_type.'/'.$ref_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

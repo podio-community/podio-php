@@ -39,7 +39,7 @@ class PodioStatus {
    * update is simply a short text message that the user wishes to share with 
    * the rest of the space.
    */
-  public function create($space_id, $attributes) {
+  public function create($space_id, $attributes = array()) {
     if ($response = $this->podio->post('/status/space/'.$space_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -49,7 +49,7 @@ class PodioStatus {
    * This will update an existing status message. This will normally only be 
    * used to correct spelling and grammatical mistakes.
    */
-  public function update($status_id, $attributes) {
+  public function update($status_id, $attributes = array()) {
     if ($response = $this->podio->put('/status/'.$status_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

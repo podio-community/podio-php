@@ -30,7 +30,7 @@ class PodioNotification {
    * Returns a list of notifications that have not yet been viewed. 
    * The notifications will be sorted descending by the time of creation.
    */
-  public function getNew($attributes) {
+  public function getNew($attributes = array()) {
     if ($response = $this->podio->get('/notification/inbox/new', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -50,7 +50,7 @@ class PodioNotification {
    * The notifications are sorted in descending order, either by viewed time 
    * or creation time.
    */
-  public function getViewed($attributes) {
+  public function getViewed($attributes = array()) {
     if ($response = $this->podio->get('/notification/inbox/viewed', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -60,7 +60,7 @@ class PodioNotification {
    * Returns a list of notifications based on the query parameters. 
    * The notifications will be grouped based on their context.
    */
-  public function getNotifications($attributes) {
+  public function getNotifications($attributes = array()) {
     if ($response = $this->podio->get('/notification/inbox/viewed', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -69,7 +69,7 @@ class PodioNotification {
   /**
    * Return the top filter options for the inbox viewed.
    */
-  public function getFiltersAndCounts($attributes) {
+  public function getFiltersAndCounts($attributes = array()) {
     if ($response = $this->podio->get('/notification/inbox/viewed/filters', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -126,7 +126,7 @@ class PodioNotification {
   /**
    * Updates the notification settings for the user
    */
-  public function updateSettings($attributes) {
+  public function updateSettings($attributes = array()) {
     if ($response = $this->podio->put('/notification/settings', $attributes)){
       return TRUE;
     }

@@ -27,7 +27,7 @@ class PodioFile {
   /**
    * Returns all the files on the space, order by the file name.
    */
-  public function getFilesOnSpace($space_id, $attributes) {
+  public function getFilesOnSpace($space_id, $attributes = array()) {
     if ($response = $this->podio->get('/file/space/'.$space_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -36,7 +36,7 @@ class PodioFile {
   /**
    * Returns all the files on the app, order by the file name.
    */
-  public function getFilesOnApp($app_id, $attributes) {
+  public function getFilesOnApp($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/file/app/'.$app_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -46,7 +46,7 @@ class PodioFile {
    * Returns the latest files on the space order descending by the date the 
    * file was uploaded.
    */
-  public function getRecentOnSpace($space_id, $attributes) {
+  public function getRecentOnSpace($space_id, $attributes = array()) {
     if ($response = $this->podio->get('/file/space/'.$space_id.'/latest/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -93,7 +93,7 @@ class PodioFile {
    * Attaches the uploaded file to the given object. 
    * Valid objects are "status", "item" and "comment".
    */
-  public function attach($file_id, $attributes) {	
+  public function attach($file_id, $attributes = array()) {	
     if ($response = $this->podio->post('/file/'.$file_id.'/attach', $attributes)) {
       return TRUE;
     }
@@ -105,7 +105,7 @@ class PodioFile {
    * existing file using the replace operation or used as file id when 
    * posting a new object.
    */
-  public function create($attributes) {
+  public function create($attributes = array()) {
     if ($response = $this->podio->post('/file/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -126,7 +126,7 @@ class PodioFile {
    * Marks the current file as an replacement for the old file. Only files 
    * with type of "attachment" can be replaced.
    */
-  public function replace($new_file_id, $attributes) {
+  public function replace($new_file_id, $attributes = array()) {
     if ($response = $this->podio->post('/file/'.$new_file_id.'/replace', $attributes)) {
       return TRUE;
     }

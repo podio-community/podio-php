@@ -54,7 +54,7 @@ class PodioUser {
    * Sets the value of the property for the active user with the given name. 
    * The property is specific to the auth client used.
    */
-  public function setProperty($name, $attributes) {
+  public function setProperty($name, $attributes = array()) {
     if ($response = $this->podio->put('/user/property/'.$name, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -83,7 +83,7 @@ class PodioUser {
   /**
    * Updates the specific field on the user.
    */
-  public function updateProfileField($field, $attributes) {
+  public function updateProfileField($field, $attributes = array()) {
     if ($response = $this->podio->put('/user/profile/'.$field, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

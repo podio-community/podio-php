@@ -15,7 +15,7 @@ class PodioTask {
   /**
    * Creates a new task without reference to an object
    */
-  public function create($attributes) {
+  public function create($attributes = array()) {
     if ($response = $this->podio->post('/task/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -24,7 +24,7 @@ class PodioTask {
   /**
    * Creates a new task with reference to an object
    */
-  public function createWithReference($ref_type, $ref_id, $attributes) {
+  public function createWithReference($ref_type, $ref_id, $attributes = array()) {
     if ($response = $this->podio->post('/task/'.$ref_type.'/'.$ref_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -42,7 +42,7 @@ class PodioTask {
   /**
    * Get a list of tasks.
    */
-  public function getTasks($attributes) {
+  public function getTasks($attributes = array()) {
     if ($response = $this->podio->get('/task/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -62,7 +62,7 @@ class PodioTask {
   /**
    * Update the private flag on the given task.
    */
-  public function updatePrivacy($task_id, $attributes) {
+  public function updatePrivacy($task_id, $attributes = array()) {
     if ($response = $this->podio->put('/task/'.$task_id.'/private', $attributes)) {
       return TRUE;
     }
@@ -71,7 +71,7 @@ class PodioTask {
   /**
    * Updates the text of the task.
    */
-  public function updateText($task_id, $attributes) {
+  public function updateText($task_id, $attributes = array()) {
     if ($response = $this->podio->put('/task/'.$task_id.'/text', $attributes)) {
       return TRUE;
     }
@@ -80,7 +80,7 @@ class PodioTask {
   /**
    * Updates the due date of the task to the given value
    */
-  public function updateDue($task_id, $attributes) {
+  public function updateDue($task_id, $attributes = array()) {
     if ($response = $this->podio->put('/task/'.$task_id.'/due_date', $attributes)) {
       return TRUE;
     }
@@ -89,7 +89,7 @@ class PodioTask {
   /**
    * Updates the description of the task to the given value
    */
-  public function updateDescription($task_id, $attributes) {
+  public function updateDescription($task_id, $attributes = array()) {
     if ($response = $this->podio->put('/task/'.$task_id.'/description', $attributes)) {
       return TRUE;
     }
@@ -99,7 +99,7 @@ class PodioTask {
    * Attached this task to an object. This is only valid for tasks that 
    * are not currently attached to any object.
    */
-  public function updateReference($task_id, $attributes) {
+  public function updateReference($task_id, $attributes = array()) {
     if ($response = $this->podio->put('/task/'.$task_id.'/ref', $attributes)) {
       return TRUE;
     }
@@ -118,7 +118,7 @@ class PodioTask {
    * Assigns the task to another user. This makes the user responsible for 
    * the task and its completion.
    */
-  public function assign($task_id, $attributes) {
+  public function assign($task_id, $attributes = array()) {
     if ($response = $this->podio->post('/task/'.$task_id.'/assign', $attributes)) {
       return TRUE;
     }
@@ -187,7 +187,7 @@ class PodioTask {
    * with a direct reference to the space, and tasks with an indirect 
    * reference to the space (like items and status updates).
    */
-  public function getBySpace($space_id, $attributes) {
+  public function getBySpace($space_id, $attributes = array()) {
     if ($response = $this->podio->get('/task/in_space/'.$space_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -223,7 +223,7 @@ class PodioTask {
   /**
    * Creates a new personal label for the user.
    */
-  public function createLabel($attributes) {
+  public function createLabel($attributes = array()) {
     if ($response = $this->podio->post('/task/label/', $attributes)) {
       return TRUE;
     }
@@ -250,7 +250,7 @@ class PodioTask {
   /**
    * Updates the label of the task to the given value
    */
-  public function updateLabel($label_id, $attributes) {
+  public function updateLabel($label_id, $attributes = array()) {
     if ($response = $this->podio->put('/task/label/'.$label_id, $attributes)) {
       return TRUE;
     }
@@ -259,7 +259,7 @@ class PodioTask {
   /**
    * Rank tasks.
    */
-  public function rank($task_id, $attributes) {
+  public function rank($task_id, $attributes = array()) {
     $this->podio->post('/task/'.$task_id.'/rank', $attributes);
   }
 }

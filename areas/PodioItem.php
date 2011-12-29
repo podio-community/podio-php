@@ -45,7 +45,7 @@ class PodioItem {
    * Used to find possible items for a given application field. It searches 
    * the relevant items for the title given.
    */
-  public function searchField($field_id, $attributes) {
+  public function searchField($field_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/field/'.$field_id.'/find', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -55,7 +55,7 @@ class PodioItem {
    * Returns the top possible values for the given field. 
    * This is currently only valid for fields of type "app".
    */
-  public function getFieldTop($field_id, $attributes) {
+  public function getFieldTop($field_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/field/'.$field_id.'/top/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -64,7 +64,7 @@ class PodioItem {
   /**
    * Returns the item with the specified id.
    */
-  public function get($item_id, $attributes) {
+  public function get($item_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/'.$item_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -74,7 +74,7 @@ class PodioItem {
    * Gets the basic details about the given item. Similar to the full get 
    * item method, but only returns data for the item itself.
    */
-  public function getBasic($item_id, $attributes) {
+  public function getBasic($item_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/'.$item_id.'/basic', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -84,7 +84,7 @@ class PodioItem {
    * Returns the previous item relative to the given item. This takes into 
    * consideration the last used filter on the app.
    */
-  public function getPrevious($item_id, $attributes) {
+  public function getPrevious($item_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/'.$item_id.'/previous', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -94,7 +94,7 @@ class PodioItem {
    * Returns the next item after the given item id. This takes into 
    * consideration the last used filter on the app.
    */
-  public function getNext($item_id, $attributes) {
+  public function getNext($item_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/'.$item_id.'/next', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -103,7 +103,7 @@ class PodioItem {
   /**
    * Returns the items on app matching the given filters.
    */
-  public function getItems($app_id, $attributes) {
+  public function getItems($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/app/'.$app_id.'/v2/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -130,7 +130,7 @@ class PodioItem {
   /**
    * Adds a new item to the given app.
    */
-  public function create($app_id, $attributes) {
+  public function create($app_id, $attributes = array()) {
     $url = '/item/app/'.$app_id.'/';
     if (isset($attributes['silent']) && $attributes['silent'] == 1) {
       $url .= '?silent=1';
@@ -146,7 +146,7 @@ class PodioItem {
    * included. To delete all values for a field supply an empty array as 
    * values for that field.
    */
-  public function update($item_id, $attributes) {
+  public function update($item_id, $attributes = array()) {
     $url = '/item/'.$item_id;
     if (isset($attributes['silent']) && $attributes['silent'] == 1) {
       $url .= '?silent=1';
@@ -184,7 +184,7 @@ class PodioItem {
   /**
    * Update the item values for a specific field.
    */
-  public function updateFieldValue($item_id, $field_id, $attributes) {
+  public function updateFieldValue($item_id, $field_id, $attributes = array()) {
     $url = '/item/'.$item_id.'/value/'.$field_id;
     if (isset($attributes['silent']) && $attributes['silent'] == 1) {
       $url .= '?silent=1';
@@ -200,7 +200,7 @@ class PodioItem {
    * of 4 parts; aggreation, formula, grouping and filtering. See the API 
    * documentation for detals.
    */
-  public function calculate($app_id, $attributes) {
+  public function calculate($app_id, $attributes = array()) {
     if ($response = $this->podio->post('/item/app/'.$app_id.'/calculate', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -217,7 +217,7 @@ class PodioItem {
    * First two columns are "Created on" and "Created by". 
    * The remaining columns are the fields on the app.
    */
-  function csv($app_id, $attributes) {
+  function csv($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/app/'.$app_id.'/csv/', $attributes)) {
       return $response->getBody();
     }
@@ -226,7 +226,7 @@ class PodioItem {
   /**
    * Returns a XLSX file of items
    */
-  function xlsx($app_id, $attributes) {
+  function xlsx($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/app/'.$app_id.'/xlsx/', $attributes)) {
       return $response->getBody();
     }

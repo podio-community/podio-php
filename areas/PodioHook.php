@@ -25,7 +25,7 @@ class PodioHook {
   /**
    * Create a new hook on the given object.
    */
-  public function create($ref_type, $ref_id, $attributes) {
+  public function create($ref_type, $ref_id, $attributes = array()) {
     if ($response = $this->podio->post('/hook/'.$ref_type.'/'.$ref_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -43,7 +43,7 @@ class PodioHook {
   /**
    * Request the hook to be validated.
    */
-  public function validate($hook_id, $attributes) {
+  public function validate($hook_id, $attributes = array()) {
     if ($response = $this->podio->post('/hook/'.$hook_id.'/verify/validate', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

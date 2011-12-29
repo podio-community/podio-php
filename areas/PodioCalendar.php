@@ -21,7 +21,7 @@ class PodioCalendar {
    * assigned to the user. The items and tasks can be filtered by a list 
    * of space ids, but tasks without a reference will always be returned.
    */
-  public function get($attributes) {
+  public function get($attributes = array()) {
     if ($response = $this->podio->get('/calendar/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -32,7 +32,7 @@ class PodioCalendar {
    * space. Tasks with reference to other spaces are not returned or tasks 
    * with no reference.
    */
-  public function getSpace($space_id, $attributes) {
+  public function getSpace($space_id, $attributes = array()) {
     if ($response = $this->podio->get('/calendar/space/'.$space_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -41,7 +41,7 @@ class PodioCalendar {
   /**
    * Returns the items and tasks that are related to the given app
    */
-  public function getApp($app_id, $attributes) {
+  public function getApp($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/calendar/app/'.$app_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }

@@ -17,7 +17,7 @@ class PodioWidget {
    * Create a new widget on the given reference. Supported references are 
    * organizations, spaces and apps.
    */
-  public function create($ref_type, $ref_id, $attributes) {
+  public function create($ref_type, $ref_id, $attributes = array()) {
     if ($response = $this->podio->post('/widget/'.$ref_type.'/'.$ref_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -26,7 +26,7 @@ class PodioWidget {
   /**
    * Updates a widget with a new title and configuration.
    */
-  public function update($widget_id, $attributes) {
+  public function update($widget_id, $attributes = array()) {
     if ($response = $this->podio->put('/widget/'.$widget_id, $attributes)) {
       return TRUE;
     }
