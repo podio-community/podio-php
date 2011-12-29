@@ -1,4 +1,4 @@
-# About
+# About 
 This is a PHP Client for interacting with the Podio API. Almost all parts of the Podio API is covered in this client.
 
 # Getting the client and dependencies
