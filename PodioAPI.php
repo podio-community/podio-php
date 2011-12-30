@@ -3,13 +3,16 @@
 require_once 'PodioResponse.php';
 require_once 'PodioOAuth.php';
 require_once 'PodioError.php';
+require_once 'areas/PodioAction.php';
 require_once 'areas/PodioApp.php';
 require_once 'areas/PodioAppStore.php';
 require_once 'areas/PodioBulletin.php';
 require_once 'areas/PodioCalendar.php';
 require_once 'areas/PodioComment.php';
+require_once 'areas/PodioConnection.php';
 require_once 'areas/PodioContact.php';
 require_once 'areas/PodioConversation.php';
+require_once 'areas/PodioEmbed.php';
 require_once 'areas/PodioFile.php';
 require_once 'areas/PodioFilter.php';
 require_once 'areas/PodioForm.php';
@@ -70,13 +73,16 @@ class Podio {
       curl_setopt(self::$instance->ch, CURLOPT_SSL_VERIFYHOST, false);
       curl_setopt(self::$instance->ch, CURLOPT_USERAGENT, 'Podio PHP Client/2.0');
 
+      self::$instance->action = new PodioAction();
       self::$instance->app = new PodioApp();
       self::$instance->appstore = new PodioAppStore();
       self::$instance->bulletin = new PodioBulletin();
       self::$instance->calendar = new PodioCalendar();
       self::$instance->comment = new PodioComment();
+      self::$instance->connection = new PodioConnection();
       self::$instance->contact = new PodioContact();
       self::$instance->conversation = new PodioConversation();
+      self::$instance->embed = new PodioEmbed();
       self::$instance->file = new PodioFile();
       self::$instance->filter = new PodioFilter();
       self::$instance->form = new PodioForm();
