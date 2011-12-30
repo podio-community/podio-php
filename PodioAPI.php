@@ -20,6 +20,7 @@ require_once 'areas/PodioHook.php';
 require_once 'areas/PodioImporter.php';
 require_once 'areas/PodioIntegration.php';
 require_once 'areas/PodioItem.php';
+require_once 'areas/PodioMeeting.php';
 require_once 'areas/PodioMobile.php';
 require_once 'areas/PodioNews.php';
 require_once 'areas/PodioNotification.php';
@@ -90,6 +91,7 @@ class Podio {
       self::$instance->importer = new PodioImporter();
       self::$instance->integration = new PodioIntegration();
       self::$instance->item = new PodioItem();
+      self::$instance->meeting = new PodioMeeting();
       self::$instance->mobile = new PodioMobile();
       self::$instance->news = new PodioNews();
       self::$instance->notification = new PodioNotification();

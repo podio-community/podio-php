@@ -38,17 +38,26 @@ class PodioRating {
    * Returns all the ratings for the given object. It will only return the 
    * ratings that are enabled for the object.
    */
-  public function getRatings($ref_type, $ref_id) {
+  public function getAllRatings($ref_type, $ref_id) {
     if ($response = $this->podio->get('/rating/'.$ref_type.'/'.$ref_id)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
   
   /**
+   * Returns the rating value for the given rating type and object.
+   */
+  public function getRatings($ref_type, $ref_id, $rating_type) {
+    if ($response = $this->podio->get('/rating/'.$ref_type.'/'.$ref_id.'/'.$rating_type)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
    * Returns the rating value for the given rating type, object and user.
    */
-  public function get($ref_type, $ref_id, $rating_type) {
-    if ($response = $this->podio->get('/rating/'.$ref_type.'/'.$ref_id.'/'.$rating_type)) {
+  public function get($ref_type, $ref_id, $rating_type, $user_id) {
+    if ($response = $this->podio->get('/rating/'.$ref_type.'/'.$ref_id.'/'.$rating_type.'/'.$user_id)) {
       return json_decode($response->getBody(), TRUE);
     }
   }

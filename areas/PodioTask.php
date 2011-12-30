@@ -60,6 +60,52 @@ class PodioTask {
   }
   
   /**
+   * Returns the task summary for the active user
+   */
+  public function getSummary() {
+    if ($response = $this->podio->get('/task/summary')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the task summary for the organization for the active user
+   */
+  public function getOrgSummary($org_id) {
+    if ($response = $this->podio->get('/task/org/'.$org_id'/summary')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the task summary for the space for the active user
+   */
+  public function getSpaceSummary($space_id) {
+    if ($response = $this->podio->get('/task/space/'.$space_id'/summary')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the task summary for the space for the reference
+   */
+  public function getRefSummary($ref_type, $ref_id) {
+    if ($response = $this->podio->get('/task/'.$ref_type.'/'.$ref_id'/summary')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the tasks summary for personal tasks and tasks on 
+   * personal spaces and sub-orgs.
+   */
+  public function getPersonalSummary() {
+    if ($response = $this->podio->get('/task/personal/summary')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+  
+  /**
    * Update the private flag on the given task.
    */
   public function updatePrivacy($task_id, $attributes = array()) {

@@ -79,6 +79,52 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
+
+  /**
+   * Returns the items that have a reference to the given item.
+   */
+  public function getReferences($item_id) {
+    if ($response = $this->podio->get('/item/'.$item_id.'/reference/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns all the revisions that have been made to an item
+   */
+  public function getRevisions($item_id) {
+    if ($response = $this->podio->get('/item/'.$item_id.'/revision/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the data about the specific revision on an item
+   */
+  public function getRevision($item_id, $revision_id) {
+    if ($response = $this->podio->get('/item/'.$item_id.'/revision/'.$revision_id)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Reverts the change done in the given revision.
+   */
+  public function revert($item_id, $revision_id) {
+    if ($response = $this->podio->delete('/item/'.$item_id.'/revision/'.$revision_id)) {
+      return TRUE;
+    }
+  }
+
+  /**
+   * Returns all the values for an item, with the additional data provided 
+   * by the get item operation.
+   */
+  public function getValue($item_id) {
+    if ($response = $this->podio->get('/item/'.$item_id.'/value/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
   
   /**
    * Returns the previous item relative to the given item. This takes into 
@@ -206,23 +252,6 @@ class PodioItem {
     }
   }
   
-  /**
-   * Returns a CSV file with the following options:
-   * 
-   * - Header row
-   * - UTF-8 encoding
-   * - "," delimiter
-   * - carriage return and line-feed line terminator
-   * - Double quoting with quoting only used when needed
-   * First two columns are "Created on" and "Created by". 
-   * The remaining columns are the fields on the app.
-   */
-  public function csv($app_id, $attributes = array()) {
-    if ($response = $this->podio->get('/item/app/'.$app_id.'/csv/', $attributes)) {
-      return $response->getBody();
-    }
-  }
-
   /**
    * Returns a XLSX file of items
    */

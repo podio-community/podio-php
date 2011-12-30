@@ -40,6 +40,16 @@ class PodioWidget {
       return json_decode($response->getBody(), TRUE);
     }
   }
+
+  /**
+   * Returns the widgets on the given reference. 
+   * The widgets will be returned in order.
+   */
+  public function getWidgets($ref_type, $ref_id) {
+    if ($response = $this->podio->get('/widget/'.$ref_type.'/'.$ref_id.'/')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
   
   /**
    * Returns the widgets on the given reference for display. This includes the 

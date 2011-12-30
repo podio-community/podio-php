@@ -58,4 +58,22 @@ class PodioForm {
       return TRUE;
     }
   }
+  
+  /**
+   * Enables the form with the given id.
+   */
+  public function activate($form_id) {
+    if ($response = $this->podio->post('/form/'.$form_id.'/activate')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Disables the form with the given id.
+   */
+  public function deactivate($form_id) {
+    if ($response = $this->podio->post('/form/'.$form_id.'/deactivate')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
 }

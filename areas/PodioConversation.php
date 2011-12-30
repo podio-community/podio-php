@@ -42,5 +42,14 @@ class PodioConversation {
       return json_decode($response->getBody(), TRUE);
     }
   }
+  
+  /**
+   * Adds a new user to the conversation.
+   */
+  public function addParticipant($conversation_id, $attributes = array()) {
+    if ($response = $this->podio->post('/conversation/'.$conversation_id.'/participant/', $attributes)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
 }
 
