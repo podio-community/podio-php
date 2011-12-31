@@ -29,6 +29,7 @@ require_once 'areas/PodioQuestion.php';
 require_once 'areas/PodioRating.php';
 require_once 'areas/PodioSearch.php';
 require_once 'areas/PodioSpace.php';
+require_once 'areas/PodioSpaceMember.php';
 require_once 'areas/PodioStatus.php';
 require_once 'areas/PodioStream.php';
 require_once 'areas/PodioSubscription.php';
@@ -76,7 +77,7 @@ class Podio {
 
       self::$instance->action = new PodioAction();
       self::$instance->app = new PodioApp();
-      self::$instance->appstore = new PodioAppStore();
+      self::$instance->appStore = new PodioAppStore();
       self::$instance->bulletin = new PodioBulletin();
       self::$instance->calendar = new PodioCalendar();
       self::$instance->comment = new PodioComment();
@@ -100,6 +101,7 @@ class Podio {
       self::$instance->rating = new PodioRating();
       self::$instance->search = new PodioSearch();
       self::$instance->space = new PodioSpace();
+      self::$instance->spaceMember = new PodioSpaceMember();
       self::$instance->status = new PodioStatus();
       self::$instance->stream = new PodioStream();
       self::$instance->subscription = new PodioSubscription();

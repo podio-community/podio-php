@@ -47,6 +47,35 @@ class PodioStream {
   }
 
   /**
+   * Returns the stream for the given app. This includes items 
+   * from the app and tasks on the app.
+   */
+  public function getApp($app_id, $attributes = array()) {
+    if ($response = $this->podio->get('/stream/app/'.$app_id.'/', $attributes)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the personal stream from personal spaces and sub-orgs.
+   */
+  public function getPersonal($attributes = array()) {
+    if ($response = $this->podio->get('/stream/personal/', $attributes)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the stream for the given user. This returns all objects the 
+   * active user has access to sorted by the given user last touched the object.
+   */
+  public function getUser($user_id, $attributes = array()) {
+    if ($response = $this->podio->get('/stream/user/'.$user_id.'/', $attributes)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
    * Returns an object (item or status) as a stream object. This is useful 
    * when a new status has been posted and should be rendered directly in the 
    * stream without reloading the entire stream.

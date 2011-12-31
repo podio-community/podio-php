@@ -48,6 +48,71 @@ class PodioCalendar {
   }
 
   /**
+   * Returns the users global calendar in the iCal format 90 days 
+   * into the future. The token can retrieved by getting the user status.
+   */
+  public function getIcal($user_id, $token) {
+    if ($response = $this->podio->get('/calendar/ics/'.$user_id.'/'.$token.'/')) {
+      return $response->getBody();
+    }
+  }
+
+  /**
+   * Returns the space calendar in the iCal format 90 days into the 
+   * future. The token can retrieved by getting the user status.
+   */
+  public function getSpaceIcal($space_id, $user_id, $token) {
+    if ($response = $this->podio->get('/calendar/space/'.$space_id.'/ics/'.$user_id.'/'.$token.'/')) {
+      return $response->getBody();
+    }
+  }
+  
+  /**
+   * Returns the items and tasks that are related to the given app
+   */
+  public function getAppIcal($app_id, $user_id, $token) {
+    if ($response = $this->podio->get('/calendar/app/'.$app_id.'/ics/'.$user_id.'/'.$token.'/')) {
+      return $response->getBody();
+    }
+  }
+
+  /**
+   * Returns the calendar summary for the active user
+   */
+  public function getSummary() {
+    if ($response = $this->podio->get('/calendar/summary')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the calendar summary for personal tasks, spaces and sub-orgs
+   */
+  public function getPersonalSummary() {
+    if ($response = $this->podio->get('/calendar/personal/summary')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the summary for the given organization for the active user
+   */
+  public function getOrgSummary($org_id) {
+    if ($response = $this->podio->get('/calendar/org/'.$org_id.'/summary')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Returns the summary for the given space for the active user
+   */
+  public function getSpaceSummary($space_id) {
+    if ($response = $this->podio->get('/calendar/space/'.$space_id.'/summary')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
    * Returns the objects that are currently muted from the global calendar.
    */
   public function getMutes() {

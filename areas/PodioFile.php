@@ -53,6 +53,16 @@ class PodioFile {
   }
 
   /**
+   * Returns the latest files added to the app sorted descending by 
+   * the time the file was uploaded.
+   */
+  public function getRecentOnApp($app_id, $attributes = array()) {
+    if ($response = $this->podio->get('/file/app/'.$app_id.'/latest/', $attributes)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
    * Returns the name, mimetype and location of the file. 
    */
   public function get($file_id) {
@@ -71,16 +81,6 @@ class PodioFile {
   }
 
   /**
-   * Returns the name, mimetype and location of the file. 
-   * This is only used for the download script.
-   */
-  public function getLocation($file_id) {
-    if ($response = $this->podio->get('/file/'.$file_id.'/location')) {
-      return json_decode($response->getBody(), TRUE);
-    }
-  }
-  
-  /**
    * Deletes the file with the given id.
    */
   public function delete($file_id) {
@@ -98,6 +98,24 @@ class PodioFile {
       return TRUE;
     }
   }
+
+  /**
+   * Copies the file, which makes it available for attaching to another object.
+   */
+  public function copy($file_id) {	
+    if ($response = $this->podio->post('/file/'.$file_id.'/copy')) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Used to update the description of the file.
+   */
+  public function update($file_id, $attributes = array()) {	
+    if ($response = $this->podio->put('/file/'.$file_id, $attributes)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
   
   /**
    * Upload a new temporary file. After upload the file can either be attached 
@@ -108,17 +126,6 @@ class PodioFile {
   public function create($attributes = array()) {
     if ($response = $this->podio->post('/file/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
-    }
-  }
-  
-  /**
-   * Marks the file as available on the location given when the file was 
-   * registered. This will cause the thumbnails to be generated 
-   * and available.
-   */
-  public function announceAvailable($file_id) {
-    if ($response = $this->podio->post('/file/'.$file_id.'/available')) {
-      return TRUE;
     }
   }
   
