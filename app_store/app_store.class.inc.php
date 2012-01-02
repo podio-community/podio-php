@@ -253,13 +253,13 @@ class PodioAppStoreAPI {
    *
    * @return Array with the new share id
    */
-  public function sharePack($space_id, $name, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $info = array(), $scope='public') {
+  public function sharePack($space_id, $name, $abstract, $description, $language, $category_ids, $file_ids, $features, $children = array(), $video = '', $scope='public') {
     $request_data = array('ref_id' => $space_id, 'ref_type' => 'space', 'name' => $name, 'abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids, 'children' => $children , 'features' => array(), 'scope' => $scope);
     if ($features) {
       $request_data['features'] = $features;
     }
-    if ($info) {
-      $request_data['info'] = $info;
+    if ($video) {
+      $request_data['video'] = $video;
     }
     if ($response = $this->podio->request('/app_store/', $request_data, HTTP_Request2::METHOD_POST)) {
       return json_decode($response->getBody(), TRUE);
@@ -278,13 +278,13 @@ class PodioAppStoreAPI {
    * @param $name The name of the share, only valid if the share is a space
    * @param $info Info array for the share
    */
-  public function update($share_id, $abstract, $description, $language, $category_ids, $file_ids, $name = NULL, $info = array()) {
+  public function update($share_id, $abstract, $description, $language, $category_ids, $file_ids, $name = NULL, $video = '') {
     $data = array('abstract' => $abstract, 'description' => $description, 'language' => $language, 'category_ids' => $category_ids, 'file_ids' => $file_ids);
     if ($name) {
       $data['name'] = $name;
     }
-    if ($info) {
-      $data['info'] = $info;
+    if ($video) {
+      $data['video'] = $video;
     }
     if ($response = $this->podio->request('/app_store/' . $share_id, $data, HTTP_Request2::METHOD_PUT)) {
       return json_decode($response->getBody(), TRUE);
