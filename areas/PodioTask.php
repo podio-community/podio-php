@@ -72,7 +72,7 @@ class PodioTask {
    * Returns the task summary for the organization for the active user
    */
   public function getOrgSummary($org_id) {
-    if ($response = $this->podio->get('/task/org/'.$org_id'/summary')) {
+    if ($response = $this->podio->get('/task/org/'.$org_id.'/summary')) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -81,7 +81,7 @@ class PodioTask {
    * Returns the task summary for the space for the active user
    */
   public function getSpaceSummary($space_id) {
-    if ($response = $this->podio->get('/task/space/'.$space_id'/summary')) {
+    if ($response = $this->podio->get('/task/space/'.$space_id.'/summary')) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -90,7 +90,7 @@ class PodioTask {
    * Returns the task summary for the space for the reference
    */
   public function getRefSummary($ref_type, $ref_id) {
-    if ($response = $this->podio->get('/task/'.$ref_type.'/'.$ref_id'/summary')) {
+    if ($response = $this->podio->get('/task/'.$ref_type.'/'.$ref_id.'/summary')) {
       return json_decode($response->getBody(), TRUE);
     }
   }

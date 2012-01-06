@@ -156,15 +156,6 @@ class PodioItem {
   }
 
   /**
-   * Returns all the revisions that have been made to an item
-   */
-  public function getRevisions($item_id) {
-    if ($response = $this->podio->get('/item/'.$item_id.'/revision')) {
-      return json_decode($response->getBody(), TRUE);
-    }
-  }
-
-  /**
    * Returns the difference in fields values between the two revisions.
    */
   public function getRevisionDiff($item_id, $from, $to) {
