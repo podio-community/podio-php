@@ -42,14 +42,14 @@ class Podio {
   protected $url, $client_id, $secret, $ch, $headers;
   public $oauth, $debug;
   private static $instance;
-  
+
   const GET = 'GET';
   const POST = 'POST';
   const PUT = 'PUT';
   const DELETE = 'DELETE';
 
   /**
-   * Constructor for the singleton instance. Call with parameters first time, 
+   * Constructor for the singleton instance. Call with parameters first time,
    * call without parameters subsequent times.
    *
    * @param $client_id OAuth Client id
@@ -69,7 +69,7 @@ class Podio {
       self::$instance->headers = array(
         'Accept' => 'application/json',
       );
-      curl_setopt(self::$instance->ch, CURLOPT_FOLLOWLOCATION, true);
+      // curl_setopt(self::$instance->ch, CURLOPT_FOLLOWLOCATION, true);
       curl_setopt(self::$instance->ch, CURLOPT_RETURNTRANSFER, true);
       curl_setopt(self::$instance->ch, CURLOPT_SSL_VERIFYPEER, false);
       curl_setopt(self::$instance->ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -112,12 +112,12 @@ class Podio {
     }
     return self::$instance;
   }
-  
+
   public function authenticate($grant_type, $attributes) {
     $data = array();
     $data['client_id'] = $this->client_id;
     $data['client_secret'] = $this->client_secret;
-    
+
     switch ($grant_type) {
       case 'password':
         $data['grant_type'] = 'password';
@@ -147,7 +147,7 @@ class Podio {
     }
     return false;
   }
-  
+
   public function request($method, $url, $attributes = array(), $options = array()) {
     unset($this->headers['Content-length']);
     switch ($method) {
@@ -192,7 +192,7 @@ class Podio {
         $this->headers['Content-type'] = 'application/json';
         break;
     }
-    
+
     // Add access token to request
     if (isset($this->oauth) && !empty($this->oauth->access_token)) {
       $this->headers['Authorization'] = "OAuth2 {$this->oauth->access_token}";
@@ -200,10 +200,10 @@ class Podio {
     else {
       unset($this->headers['Authorization']);
     }
-    
+
     // TODO: Debug, remove
     curl_setopt($this->ch, CURLINFO_HEADER_OUT, true);
-    
+
     curl_setopt($this->ch, CURLOPT_HTTPHEADER, $this->curl_headers());
     curl_setopt($this->ch, CURLOPT_URL, $this->url.$url);
 
@@ -217,15 +217,15 @@ class Podio {
         error_log("[PODIO] Request body: ".$encoded_attributes);
       }
       error_log("[PODIO] Reponse: {$response->body}");
-      
+
       // TODO: Debug, remove
       error_log(curl_getinfo($this->ch, CURLINFO_HEADER_OUT));
     }
-    
+
     switch ($response->getStatus()) {
-      case 200 : 
-      case 201 : 
-      case 204 : 
+      case 200 :
+      case 201 :
+      case 204 :
         return $response;
         break;
       case 400 :
@@ -267,27 +267,27 @@ class Podio {
           throw new PodioAuthorizationError($response->getBody(), $response->getStatus(), $url);
         }
         break;
-      case 403 : 
+      case 403 :
         throw new PodioAuthorizationError($response->getBody(), $response->getStatus(), $url);
         break;
-      case 404 : 
+      case 404 :
         throw new PodioNotFoundError($response->getBody(), $response->getStatus(), $url);
         break;
-      case 409 : 
+      case 409 :
         throw new PodioConflictError($response->getBody(), $response->getStatus(), $url);
         break;
-      case 410 : 
+      case 410 :
         throw new PodioGoneError($response->getBody(), $response->getStatus(), $url);
         break;
-      case 420 : 
+      case 420 :
         throw new PodioRateLimitError($response->getBody(), $response->getStatus(), $url);
         break;
-      case 500 : 
+      case 500 :
         throw new PodioServerError($response->getBody(), $response->getStatus(), $url);
         break;
-      case 502 : 
-      case 503 : 
-      case 504 : 
+      case 502 :
+      case 503 :
+      case 504 :
         throw new PodioUnavailableError($response->getBody(), $response->getStatus(), $url);
         break;
       default :
@@ -296,7 +296,7 @@ class Podio {
     }
     return false;
   }
-  
+
   public function get($url, $attributes = array()) {
     return $this->request(Podio::GET, $url, $attributes);
   }
@@ -309,7 +309,7 @@ class Podio {
   public function delete($url, $attributes = array()) {
     return $this->request(Podio::DELETE, $url, $attributes);
   }
-  
+
   public function curl_headers() {
     $headers = array();
     foreach ($this->headers as $header => $value) {
