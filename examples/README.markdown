@@ -1,5 +1,7 @@
 # Podio PHP Examples
-This folder contains a small handful of examples for the Podio PHP library.
+This folder contains a small handful of examples for the Podio PHP library. They illustrate how you authenticate and make your first API call.
+
+They are bare bones examples, one thing that is left as an exercise for the reader is the management of the access and refresh tokens. You will want to store these somewhere (e.g. in the session) so you don't have to do the authentication on every single page load.
 
 To run these examples you must perform some quick configuration. Follow these steps:
 
