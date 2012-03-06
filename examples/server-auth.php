@@ -14,7 +14,7 @@ To run this example:
  */
 
 // Set up the REDIRECT_URI -- which is just the URL for this file.
-define("REDIRECT_URI", 'http://localhost:8888/~andreas/podio/podio-php/examples/server-auth.php');
+define("REDIRECT_URI", 'http://localhost/podio-php/examples/server-auth.php');
 
 ?><html>
 <head>
