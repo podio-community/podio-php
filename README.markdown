@@ -14,16 +14,18 @@ Before you can make any API calls you need to create an instance of the `Podio` 
 
     require_once('/path/to/podio-php/PodioAPI.php');
     $api = Podio::instance($client_id, $client_secret);
-    
+
     // Obtain access token using authorization code from the first step of the authentication flow
     $api->authenticate('authorization_code', array('code' => $_GET['code'], 'redirect_uri' => $redirect_uri));
-    
+
     // Alternatively you can supply a username and password directly. E.g.:
     // $api->authenticate('password', array('username' => $username, 'password' => $password));
-    
+
     print $api->oauth->access_token; // Your access token
-    
+
     // Woohoo! Now it's time to make API calls!
+
+You can view full authentication examples in the `examples´ folder. Consult the README in that folder for instructions on how to get the examples running.
 
 # Making API calls
 To make API calls you use the `Podio` class. This is contains references to all areas of the Podio API. See each area to see individual methods and their arguments.
@@ -31,10 +33,10 @@ To make API calls you use the `Podio` class. This is contains references to all 
 For example: If I want to post a new status message _'Posted from the PHP Client'_ to a space I would call the `create` method in the `status` area like so:
 
     $api = Podio::instance();
-    
+
     // $space_id is the id for the space I want to post the status message on
     $response = $api->status->create($space_id, array('value' => 'Posted from the PHP Client'));
-    
+
     if ($response) {
       print 'The id for the new status message is: '.$response['status_id'];
     }
@@ -45,7 +47,7 @@ The Podio API always returns data in JSON and the PHP client automatically decod
 If you wish to upload a file, for example to status messages, comments, items, widgets etc., you will use the `upload` method in the `file` area:
 
     $response = $api->file->upload($path_to_file, $filename_to_display);
-    
+
     if ($response) {
       print 'File uploaded. The file id is: '.$response['result']['file_id'];
     }
@@ -61,7 +63,7 @@ All unsuccessful responses returned by the API (everything that has a 4xx or 5xx
       print $e->body;   # Parsed JSON response from the API
       print $e->status; # Status code of the response
       print $e->url;    # URI of the API request
-      
+
       // You normally want this one, a human readable error description
       print $e->body['error_description'];
     }
@@ -69,20 +71,20 @@ All unsuccessful responses returned by the API (everything that has a 4xx or 5xx
 
 # Full example: Posting status message with an image
     require_once('/path/to/podio-php/PodioAPI.php');
-    
+
     $client_id = 'MY_OAUTH_CLIENT_ID';
     $client_secret = 'MY_OAUTH_CLIENT_SECRET';
 
     $api = Podio::instance($client_id, $client_secret);
-    
+
     // Obtain access token
     $username = 'MY_USERNAME';
     $password = 'MY_PASSWORD';
     $api->authenticate('password', array('username' => $username, 'password' => $password));
-    
+
     // Upload file
     $file = $api->file->upload('/path/to/myimage.png', 'myimage.png');
-    
+
     // Post status message
     $space_id = MY_SPACE_ID;
     $file_ids = array((int)$file['result']['file_id']);
