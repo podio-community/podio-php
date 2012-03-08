@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Items are entries in an app. If you think of app as a table, items will be 
- * the rows in the table. Items consists of some basic information as well 
- * values for each of the fields in the app. For each field there can be 
- * multiple values (F.ex. there can be multiple links to another app) and 
- * multiple types of values (F.ex. a field of type date field consists of both 
+ * Items are entries in an app. If you think of app as a table, items will be
+ * the rows in the table. Items consists of some basic information as well
+ * values for each of the fields in the app. For each field there can be
+ * multiple values (F.ex. there can be multiple links to another app) and
+ * multiple types of values (F.ex. a field of type date field consists of both
  * a start date and an optional end date).
  */
 class PodioItem {
@@ -18,10 +18,10 @@ class PodioItem {
   }
 
   /**
-   * Used to get the distinct values for all items in an app. Will return 
-   * a list of the distinct item creators, as well as a list of the 
-   * possible values for fields of type "state", "member", "app", 
-   * "number" and "progress". The return values for fields depends on the 
+   * Used to get the distinct values for all items in an app. Will return
+   * a list of the distinct item creators, as well as a list of the
+   * possible values for fields of type "state", "member", "app",
+   * "number" and "progress". The return values for fields depends on the
    * type of field
    */
   public function getValues($app_id) {
@@ -29,10 +29,10 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Returns the recent activity on the app divided into activity today and 
-   * activity the last week. The activity events are ordered descending by 
+   * Returns the recent activity on the app divided into activity today and
+   * activity the last week. The activity events are ordered descending by
    * the time the events occurred.
    */
   public function getActivity($app_id) {
@@ -40,9 +40,9 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Used to find possible items for a given application field. It searches 
+   * Used to find possible items for a given application field. It searches
    * the relevant items for the title given.
    */
   public function searchField($field_id, $attributes = array()) {
@@ -50,9 +50,9 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Returns the top possible values for the given field. 
+   * Returns the top possible values for the given field.
    * This is currently only valid for fields of type "app".
    */
   public function getFieldTop($field_id, $attributes = array()) {
@@ -60,7 +60,7 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Returns the item with the specified id.
    */
@@ -71,7 +71,7 @@ class PodioItem {
   }
 
   /**
-   * Gets the basic details about the given item. Similar to the full get 
+   * Gets the basic details about the given item. Similar to the full get
    * item method, but only returns data for the item itself.
    */
   public function getBasic($item_id, $attributes = array()) {
@@ -117,7 +117,7 @@ class PodioItem {
   }
 
   /**
-   * Returns all the values for an item, with the additional data provided 
+   * Returns all the values for an item, with the additional data provided
    * by the get item operation.
    */
   public function getValue($item_id) {
@@ -125,9 +125,9 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Returns the previous item relative to the given item. This takes into 
+   * Returns the previous item relative to the given item. This takes into
    * consideration the last used filter on the app.
    */
   public function getPrevious($item_id, $attributes = array()) {
@@ -137,7 +137,7 @@ class PodioItem {
   }
 
   /**
-   * Returns the next item after the given item id. This takes into 
+   * Returns the next item after the given item id. This takes into
    * consideration the last used filter on the app.
    */
   public function getNext($item_id, $attributes = array()) {
@@ -151,6 +151,24 @@ class PodioItem {
    */
   public function getItems($app_id, $attributes = array()) {
     if ($response = $this->podio->get('/item/app/'.$app_id.'/v2/', $attributes)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Filters the items and returns the matching items.
+   */
+  public function filterItems($app_id, $attributes = array()) {
+    if ($response = $this->podio->post('/item/app/'.$app_id.'/filter/', $attributes)) {
+      return json_decode($response->getBody(), TRUE);
+    }
+  }
+
+  /**
+   * Filters the items by filter id and returns the matching items.
+   */
+  public function filterItemsById($app_id, $filter_id) {
+    if ($response = $this->podio->post('/item/app/'.$app_id.'/filter/'.$filter_id.'/', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -177,10 +195,10 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Update an already existing item. Values will only be updated for fields 
-   * included. To delete all values for a field supply an empty array as 
+   * Update an already existing item. Values will only be updated for fields
+   * included. To delete all values for a field supply an empty array as
    * values for that field.
    */
   public function update($item_id, $attributes = array()) {
@@ -198,9 +216,9 @@ class PodioItem {
       }
     }
   }
-  
+
   /**
-   * Deletes an item and removes it from all views. 
+   * Deletes an item and removes it from all views.
    * The data can no longer be retrieved.
    */
   public function delete($item_id) {
@@ -208,7 +226,7 @@ class PodioItem {
       return TRUE;
     }
   }
-  
+
   /**
    * Returns the values for a specified field on an item
    */
@@ -217,7 +235,7 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Update the item values for a specific field.
    */
@@ -231,10 +249,10 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Performs a calculation on the given app. The calculation is made up 
-   * of 4 parts; aggreation, formula, grouping and filtering. See the API 
+   * Performs a calculation on the given app. The calculation is made up
+   * of 4 parts; aggreation, formula, grouping and filtering. See the API
    * documentation for detals.
    */
   public function calculate($app_id, $attributes = array()) {
@@ -242,7 +260,7 @@ class PodioItem {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Returns a XLSX file of items
    */
