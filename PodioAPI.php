@@ -194,7 +194,7 @@ class Podio {
     }
 
     // Add access token to request
-    if (isset($this->oauth) && !empty($this->oauth->access_token)) {
+    if (isset($this->oauth) && !empty($this->oauth->access_token) && !(isset($options['oauth_request']) && $options['oauth_request'] == true)) {
       $this->headers['Authorization'] = "OAuth2 {$this->oauth->access_token}";
     }
     else {
