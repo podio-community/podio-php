@@ -150,6 +150,7 @@ class Podio {
 
   public function request($method, $url, $attributes = array(), $options = array()) {
     unset($this->headers['Content-length']);
+    $original_url = $url;
     switch ($method) {
       case self::GET:
         curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, self::GET);
@@ -248,7 +249,7 @@ class Podio {
             // Access token is expired. Try to refresh it.
             if ($this->authenticate('refresh_token', array('refresh_token' => $this->oauth->refresh_token))) {
               // Try the original request again.
-              return $this->request($method, $url, $attributes);
+              return $this->request($method, $original_url, $attributes);
             }
             else {
               $this->oauth = new PodioOAuth();
