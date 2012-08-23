@@ -1,9 +1,9 @@
 <?php
 
 /**
- * A notification is an information about an event that occured in Podio. 
- * A notification is directed against a single user, and can have a status 
- * of either unread or viewed. Notifications have a reference to the action 
+ * A notification is an information about an event that occured in Podio.
+ * A notification is directed against a single user, and can have a status
+ * of either unread or viewed. Notifications have a reference to the action
  * that caused the notification.
  */
 class PodioNotification {
@@ -16,22 +16,12 @@ class PodioNotification {
   }
 
   /**
-   * Returns a single notification from an id. The notification will contain 
-   * the bare data, but will have a reference to the object that caused 
+   * Returns a single notification from an id. The notification will contain
+   * the bare data, but will have a reference to the object that caused
    * the notification.
    */
   public function get($notification_id) {
     if ($response = $this->podio->get('/notification/'.$notification_id)) {
-      return json_decode($response->getBody(), TRUE);
-    }
-  }
-
-  /**
-   * Returns a list of notifications that have not yet been viewed. 
-   * The notifications will be sorted descending by the time of creation.
-   */
-  public function getNew($attributes = array()) {
-    if ($response = $this->podio->get('/notification/inbox/new', $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
@@ -44,10 +34,10 @@ class PodioNotification {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Returns the notifications in the inbox that has already been viewed. 
-   * The notifications are sorted in descending order, either by viewed time 
+   * Returns the notifications in the inbox that has already been viewed.
+   * The notifications are sorted in descending order, either by viewed time
    * or creation time.
    */
   public function getViewed($attributes = array()) {
@@ -55,9 +45,9 @@ class PodioNotification {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Returns a list of notifications based on the query parameters. 
+   * Returns a list of notifications based on the query parameters.
    * The notifications will be grouped based on their context.
    */
   public function getNotifications($attributes = array()) {
@@ -65,7 +55,7 @@ class PodioNotification {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Return the top filter options for the inbox viewed.
    */
@@ -74,7 +64,7 @@ class PodioNotification {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Mark the notification as viewed.
    */
@@ -92,7 +82,7 @@ class PodioNotification {
       return TRUE;
     }
   }
-  
+
   /**
    * Star the given notification to move it to the star list.
    */
@@ -113,23 +103,6 @@ class PodioNotification {
   public function markAllViewed() {
     $response = $this->podio->post('/notification/viewed');
   }
-  
-  /**
-   * Returns the notification settings for the active user
-   */
-  public function getSettings() {
-    if ($response = $this->podio->get('/notification/settings')) {
-      return json_decode($response->getBody(), TRUE);
-    }
-  }
 
-  /**
-   * Updates the notification settings for the user
-   */
-  public function updateSettings($attributes = array()) {
-    if ($response = $this->podio->put('/notification/settings', $attributes)){
-      return TRUE;
-    }
-  }
 }
 

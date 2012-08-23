@@ -29,7 +29,7 @@ class PodioTask {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Returns the task with the given id.
    */
@@ -38,7 +38,7 @@ class PodioTask {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Get a list of tasks.
    */
@@ -47,18 +47,7 @@ class PodioTask {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
-  /**
-   * Gets a list of tasks with a reference to the given object. This will 
-   * return both active and completed tasks. The reference will not be 
-   * set on the individual tasks.
-   */
-  public function getByRef($ref_type, $ref_id) {
-    if ($response = $this->podio->get('/task/'.$ref_type.'/'.$ref_id.'/')) {
-      return json_decode($response->getBody(), TRUE);
-    }
-  }
-  
+
   /**
    * Returns the task summary for the active user
    */
@@ -96,7 +85,7 @@ class PodioTask {
   }
 
   /**
-   * Returns the tasks summary for personal tasks and tasks on 
+   * Returns the tasks summary for personal tasks and tasks on
    * personal spaces and sub-orgs.
    */
   public function getPersonalSummary() {
@@ -104,7 +93,7 @@ class PodioTask {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Update the private flag on the given task.
    */
@@ -122,7 +111,7 @@ class PodioTask {
       return TRUE;
     }
   }
-  
+
   /**
    * Updates the due date of the task to the given value
    */
@@ -142,7 +131,7 @@ class PodioTask {
   }
 
   /**
-   * Attached this task to an object. This is only valid for tasks that 
+   * Attached this task to an object. This is only valid for tasks that
    * are not currently attached to any object.
    */
   public function updateReference($task_id, $attributes = array()) {
@@ -150,7 +139,7 @@ class PodioTask {
       return TRUE;
     }
   }
-  
+
   /**
    * Updates the task with new labels
    */
@@ -159,9 +148,9 @@ class PodioTask {
       return TRUE;
     }
   }
-  
+
   /**
-   * Assigns the task to another user. This makes the user responsible for 
+   * Assigns the task to another user. This makes the user responsible for
    * the task and its completion.
    */
   public function assign($task_id, $attributes = array()) {
@@ -169,10 +158,10 @@ class PodioTask {
       return TRUE;
     }
   }
-  
+
   /**
-   * Returns the active tasks of the user. This is the tasks where the user 
-   * is responsible. The tasks will be sorted by due date and creation time, 
+   * Returns the active tasks of the user. This is the tasks where the user
+   * is responsible. The tasks will be sorted by due date and creation time,
    * and grouped by their due date status.
    */
   public function getActive() {
@@ -180,7 +169,7 @@ class PodioTask {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Returns the total task count for the active user.
    */
@@ -189,9 +178,9 @@ class PodioTask {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Returns the tasks that are started and where the active user 
+   * Returns the tasks that are started and where the active user
    * is the responsible.
    */
   public function getStarted() {
@@ -201,7 +190,7 @@ class PodioTask {
   }
 
   /**
-   * Returns the tasks that is completed and where the active user 
+   * Returns the tasks that is completed and where the active user
    * is responsible.
    */
   public function getCompleted() {
@@ -227,10 +216,10 @@ class PodioTask {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Returns all the tasks that are related to the space. It includes tasks 
-   * with a direct reference to the space, and tasks with an indirect 
+   * Returns all the tasks that are related to the space. It includes tasks
+   * with a direct reference to the space, and tasks with an indirect
    * reference to the space (like items and status updates).
    */
   public function getBySpace($space_id, $attributes = array()) {
@@ -238,7 +227,7 @@ class PodioTask {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Mark the given task as completed.
    */
@@ -256,7 +245,7 @@ class PodioTask {
       return TRUE;
     }
   }
-  
+
   /**
    * This is used to delete a task.
    */
@@ -265,7 +254,7 @@ class PodioTask {
       return TRUE;
     }
   }
-  
+
   /**
    * Creates a new personal label for the user.
    */
@@ -283,7 +272,7 @@ class PodioTask {
       return TRUE;
     }
   }
-  
+
   /**
    * Returns the users task labels.
    */
@@ -292,7 +281,7 @@ class PodioTask {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Updates the label of the task to the given value
    */
@@ -301,7 +290,7 @@ class PodioTask {
       return TRUE;
     }
   }
-  
+
   /**
    * Rank tasks.
    */

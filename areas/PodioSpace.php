@@ -1,8 +1,8 @@
 <?php
 
 /**
- * A space is a work area. Apps with their items, status updates and other 
- * things are done on a space. A user can be a member of a space with a 
+ * A space is a work area. Apps with their items, status updates and other
+ * things are done on a space. A user can be a member of a space with a
  * certain role, which dictates his rights.
  */
 class PodioSpace {
@@ -13,7 +13,7 @@ class PodioSpace {
   public function __construct() {
     $this->podio = Podio::instance();
   }
-  
+
   /**
    * Returns the top spaces for the user
    */
@@ -24,7 +24,7 @@ class PodioSpace {
   }
 
   /**
-   * Returns the available spaces for the given space. This is spaces 
+   * Returns the available spaces for the given space. This is spaces
    * that are open and available for the user to join.
    */
   public function available($org_id) {
@@ -32,7 +32,7 @@ class PodioSpace {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Add a new space to an organization.
    */
@@ -41,7 +41,7 @@ class PodioSpace {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Updates the space with the given id
    */
@@ -50,17 +50,7 @@ class PodioSpace {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
-  /**
-   * Deletes the space with the given id. This will also end all memberships 
-   * of the space and cancel any space invites still outstanding.
-   */
-  public function delete($space_id) {
-    if ($response = $this->podio->delete('/space/'.$space_id)) {
-      return TRUE;
-    }
-  }
-  
+
   /**
    * Get the space with the given id
    */
@@ -69,7 +59,7 @@ class PodioSpace {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Returns the space and organization with the given full URL.
    */
@@ -87,13 +77,5 @@ class PodioSpace {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
-  /**
-   * Validates that the URL label is valid and not in use for the given org.
-   */
-  public function validate($org_id) {
-    if ($response = $this->podio->post('/space/org/'.$org_id.'/url/validate')) {
-      return json_decode($response->getBody(), TRUE);
-    }
-  }
+
 }

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Files have a name, a mime-type, a size and a location. When adding files, 
- * the file should first be uploaded through the file gateway, and the 
- * location of the file should then be passed to the API. Files can be 
+ * Files have a name, a mime-type, a size and a location. When adding files,
+ * the file should first be uploaded through the file gateway, and the
+ * location of the file should then be passed to the API. Files can be
  * replaced by newer revisions.
  */
 class PodioFile {
@@ -14,7 +14,7 @@ class PodioFile {
   public function __construct() {
     $this->podio = Podio::instance();
   }
-  
+
   /**
    * Upload a file
    */
@@ -23,7 +23,7 @@ class PodioFile {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
    * Returns all the files on the space, order by the file name.
    */
@@ -43,27 +43,7 @@ class PodioFile {
   }
 
   /**
-   * Returns the latest files on the space order descending by the date the 
-   * file was uploaded.
-   */
-  public function getRecentOnSpace($space_id, $attributes = array()) {
-    if ($response = $this->podio->get('/file/space/'.$space_id.'/latest/', $attributes)) {
-      return json_decode($response->getBody(), TRUE);
-    }
-  }
-
-  /**
-   * Returns the latest files added to the app sorted descending by 
-   * the time the file was uploaded.
-   */
-  public function getRecentOnApp($app_id, $attributes = array()) {
-    if ($response = $this->podio->get('/file/app/'.$app_id.'/latest/', $attributes)) {
-      return json_decode($response->getBody(), TRUE);
-    }
-  }
-
-  /**
-   * Returns the name, mimetype and location of the file. 
+   * Returns the name, mimetype and location of the file.
    */
   public function get($file_id) {
     if ($response = $this->podio->get('/file/'.$file_id)) {
@@ -90,10 +70,10 @@ class PodioFile {
   }
 
   /**
-   * Attaches the uploaded file to the given object. 
+   * Attaches the uploaded file to the given object.
    * Valid objects are "status", "item" and "comment".
    */
-  public function attach($file_id, $attributes = array()) {	
+  public function attach($file_id, $attributes = array()) {
     if ($response = $this->podio->post('/file/'.$file_id.'/attach', $attributes)) {
       return TRUE;
     }
@@ -102,7 +82,7 @@ class PodioFile {
   /**
    * Copies the file, which makes it available for attaching to another object.
    */
-  public function copy($file_id) {	
+  public function copy($file_id) {
     if ($response = $this->podio->post('/file/'.$file_id.'/copy')) {
       return json_decode($response->getBody(), TRUE);
     }
@@ -111,16 +91,16 @@ class PodioFile {
   /**
    * Used to update the description of the file.
    */
-  public function update($file_id, $attributes = array()) {	
+  public function update($file_id, $attributes = array()) {
     if ($response = $this->podio->put('/file/'.$file_id, $attributes)) {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Upload a new temporary file. After upload the file can either be attached 
-   * directly to a file using the attach operation, used to replace an 
-   * existing file using the replace operation or used as file id when 
+   * Upload a new temporary file. After upload the file can either be attached
+   * directly to a file using the attach operation, used to replace an
+   * existing file using the replace operation or used as file id when
    * posting a new object.
    */
   public function create($attributes = array()) {
@@ -128,9 +108,9 @@ class PodioFile {
       return json_decode($response->getBody(), TRUE);
     }
   }
-  
+
   /**
-   * Marks the current file as an replacement for the old file. Only files 
+   * Marks the current file as an replacement for the old file. Only files
    * with type of "attachment" can be replaced.
    */
   public function replace($new_file_id, $attributes = array()) {
