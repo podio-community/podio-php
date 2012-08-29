@@ -3,6 +3,7 @@
 require_once 'PodioResponse.php';
 require_once 'PodioOAuth.php';
 require_once 'PodioError.php';
+require_once 'PodioObject.php';
 require_once 'areas/PodioAction.php';
 require_once 'areas/PodioApp.php';
 require_once 'areas/PodioAppStore.php';
@@ -16,7 +17,8 @@ require_once 'areas/PodioEmbed.php';
 require_once 'areas/PodioFile.php';
 require_once 'areas/PodioFilter.php';
 require_once 'areas/PodioForm.php';
-require_once 'areas/PodioHook.php';
+// require_once 'areas/PodioHook.php';
+require_once 'models/PodioHook.php';
 require_once 'areas/PodioImporter.php';
 require_once 'areas/PodioIntegration.php';
 require_once 'areas/PodioItem.php';
