@@ -2,13 +2,12 @@
 
 class PodioHook extends PodioObject {
   public function __construct($attributes = array()) {
-
-    print "Hook constructor called\n";
-
     $this->property('hook_id', 'integer');
     $this->property('status', 'string');
     $this->property('type', 'string');
     $this->property('url', 'string');
+
+    $this->has_one('created_by', 'PodioByLine');
 
     $this->init($attributes);
   }

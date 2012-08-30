@@ -1,23 +1,48 @@
 <?php
 
 class PodioObject {
-  private $attributes;
-  private $properties;
+  protected $attributes;
+  protected $properties;
+  protected $relationships;
   protected $podio;
 
   public function init($attributes = array()) {
-    print "Parent constructor called\n";
-
     // Create object instance from attributes
     foreach ($this->properties as $name => $type) {
       if (array_key_exists($name, $attributes)) {
-        $this->$name = $attributes[$name];
+        $this->set_attribute($name, $attributes[$name]);
+      }
+    }
+    if ($this->relationships) {
+      foreach ($this->relationships as $name => $type) {
+        if (array_key_exists($name, $attributes)) {
+          // TODO: instance should have a 'belongs_to' property pointing to $this
+          $class_name = $this->properties[$name];
+          $this->set_attribute($name, new $class_name($attributes[$name]));
+        }
       }
     }
   }
   public function __set($name, $value) {
-    // Make sure that $name is a property
-    // TODO: Make sure type is correct
+    return $this->set_attribute($name, $value);
+  }
+  public function __get($name) {
+    if (array_key_exists($name, $this->attributes)) {
+      return $this->attributes[$name];
+    }
+  }
+  public function __isset($name) {
+    return isset($this->attributes[$name]);
+  }
+  public function __unset($name) {
+    unset($this->attributes[$name]);
+  }
+
+  public static function podio() {
+    return Podio::instance();
+  }
+
+  protected function set_attribute($name, $value) {
     if (array_key_exists($name, $this->properties)) {
 
       switch($this->properties[$name]) {
@@ -52,33 +77,37 @@ class PodioObject {
     }
     throw new Exception("Attribute cannot be assigned. Property doesn't exist.");
   }
-  public function __get($name) {
-    if (array_key_exists($name, $this->attributes)) {
-      return $this->attributes[$name];
-    }
-  }
-  public function __isset($name) {
-    return isset($this->attributes[$name]);
-  }
-  public function __unset($name) {
-    unset($this->attributes[$name]);
-  }
-
-  public static function podio() {
-    return Podio::instance();
-  }
 
   public static function listing($body) {
     $list = array();
     foreach ($body as $attributes) {
-      $class = get_called_class();
-      $list[] = new $class($attributes);
+      $class_name = get_called_class();
+      $list[] = new $class_name($attributes);
     }
     return $list;
   }
 
   // Define a property on this object
   public function property($name, $type) {
-    $this->properties[$name] = $type;
+    if (!$this->properties) {
+      $this->properties = array();
+    }
+    if (!array_key_exists($name, $this->properties)) {
+      $this->properties[$name] = $type;
+    }
   }
+
+  public function has_one($name, $class_name) {
+    $this->property($name, $class_name);
+    if (!$this->relationships) {
+      $this->relationships = array();
+    }
+    if (!array_key_exists($name, $this->relationships)) {
+      $this->relationships[$name] = 'single';
+    }
+  }
+
+  // TODO: has_many, member, collection, datetime/date/time properties
+
+
 }

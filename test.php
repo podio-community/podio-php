@@ -17,7 +17,7 @@ try {
 
   $list = PodioHook::get('app', 233463);
 
-  var_dump($list);
+  var_dump($list[0]);
 
 }
 catch (PodioError $e) {
