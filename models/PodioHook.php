@@ -8,6 +8,7 @@ class PodioHook extends PodioObject {
     $this->property('url', 'string');
 
     $this->has_one('created_by', 'PodioByLine');
+    $this->has_one('created_via', 'PodioVia');
 
     $this->init($attributes);
   }

@@ -3,6 +3,7 @@
 require_once 'PodioObject.php';
 require_once 'models/PodioHook.php';
 require_once 'models/PodioByLine.php';
+require_once 'models/PodioVia.php';
 
 require_once 'PodioResponse.php';
 require_once 'PodioOAuth.php';
