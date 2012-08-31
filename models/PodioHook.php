@@ -1,14 +1,16 @@
 <?php
+namespace Podio;
 
-class PodioHook extends PodioObject {
+class Hook extends Object {
   public function __construct($attributes = array()) {
     $this->property('hook_id', 'integer');
     $this->property('status', 'string');
     $this->property('type', 'string');
     $this->property('url', 'string');
+    $this->property('created_on', 'datetime');
 
-    $this->has_one('created_by', 'PodioByLine');
-    $this->has_one('created_via', 'PodioVia');
+    $this->has_one('created_by', 'ByLine');
+    $this->has_one('created_via', 'Via');
 
     $this->init($attributes);
   }

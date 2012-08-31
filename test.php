@@ -15,7 +15,7 @@ try {
   $api->authenticate('password', array('username' => USERNAME, 'password' => PASSWORD));
   print "You have been authenticated. Wee!\n";
 
-  $list = PodioHook::get('app', 233463);
+  $list = Podio\Hook::get('app', 233463);
 
   var_dump($list[0]);
 

@@ -93,7 +93,7 @@ class Podio {
       self::$instance->file = new PodioFile();
       self::$instance->filter = new PodioFilter();
       self::$instance->form = new PodioForm();
-      self::$instance->hook = new PodioHook();
+      // self::$instance->hook = new PodioHook();
       self::$instance->importer = new PodioImporter();
       self::$instance->integration = new PodioIntegration();
       self::$instance->item = new PodioItem();

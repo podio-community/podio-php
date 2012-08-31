@@ -1,6 +1,7 @@
 <?php
+namespace Podio;
 
-class PodioObject {
+class Object {
   protected $attributes;
   protected $properties;
   protected $relationships;
@@ -17,7 +18,7 @@ class PodioObject {
       foreach ($this->relationships as $name => $type) {
         if (array_key_exists($name, $attributes)) {
           // TODO: instance should have a 'belongs_to' property pointing to $this
-          $class_name = $this->properties[$name];
+          $class_name = __NAMESPACE__.'\\'.$this->properties[$name];
           $this->set_attribute($name, new $class_name($attributes[$name]));
         }
       }
@@ -39,7 +40,7 @@ class PodioObject {
   }
 
   public static function podio() {
-    return Podio::instance();
+    return \Podio::instance();
   }
 
   protected function set_attribute($name, $value) {
@@ -50,17 +51,29 @@ class PodioObject {
           $this->attributes[$name] = $value ? (int)$value : null;
           break;
         case 'boolean':
+          $this->attributes[$name] = null;
           if ($value === true || $value === false) {
             $this->attributes[$name] = $value;
           }
           elseif ($value) {
             $this->attributes[$name] = in_array(trim(strtolower($value)), array('true', 1, 'yes'));
           }
-          $this->attributes[$name] = null;
           break;
-        // case 'datetime':
-
-        //   break;
+        case 'datetime':
+          $this->attributes[$name] = null;
+          if (is_a($value, 'DateTime')) {
+            $this->attributes[$name] = $value;
+          }
+          elseif ($value) {
+            // Handle task and item date fields where datetime is supplied
+            // in the users local timezone
+            $tz = date_default_timezone_get();
+            date_default_timezone_set('UTC');
+            $timestamp = strtotime($value);
+            $this->attributes[$name] = new \DateTime("@{$timestamp}");
+            date_default_timezone_set($tz);
+          }
+          break;
         // case 'date':
 
         //   break;
@@ -87,6 +100,11 @@ class PodioObject {
     return $list;
   }
 
+  public static function member($body) {
+    $class_name = get_called_class();
+    return new $class_name($body);
+  }
+
   // Define a property on this object
   public function property($name, $type) {
     if (!$this->properties) {
@@ -107,7 +125,7 @@ class PodioObject {
     }
   }
 
-  // TODO: has_many, member, collection, datetime/date/time properties
+  // TODO: has_many, collection, date/time properties
 
 
 }
