@@ -39,10 +39,6 @@ class Object {
     unset($this->attributes[$name]);
   }
 
-  public static function podio() {
-    return \Podio::instance();
-  }
-
   protected function set_attribute($name, $value) {
     if (array_key_exists($name, $this->properties)) {
 
@@ -91,18 +87,23 @@ class Object {
     throw new Exception("Attribute cannot be assigned. Property doesn't exist.");
   }
 
-  public static function listing($body) {
-    $list = array();
-    foreach ($body as $attributes) {
-      $class_name = get_called_class();
-      $list[] = new $class_name($attributes);
+  public static function listing($response) {
+    if ($response) {
+      $body = $response->json_body();
+      $list = array();
+      foreach ($body as $attributes) {
+        $class_name = get_called_class();
+        $list[] = new $class_name($attributes);
+      }
+      return $list;
     }
-    return $list;
   }
 
-  public static function member($body) {
-    $class_name = get_called_class();
-    return new $class_name($body);
+  public static function member($response) {
+    if ($response) {
+      $class_name = get_called_class();
+      return new $class_name($response->json_body());
+    }
   }
 
   // Define a property on this object

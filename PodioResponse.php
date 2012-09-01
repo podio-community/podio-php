@@ -3,10 +3,7 @@
 class PodioResponse {
   public $body;
   public $status;
-  public function getBody() {
-    return $this->body;
-  }
-  public function getStatus() {
-    return $this->status;
+  public function json_body() {
+    return json_decode($this->body, TRUE);
   }
 }

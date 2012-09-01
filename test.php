@@ -5,14 +5,14 @@ require_once 'PodioAPI.php';
 
 // Setup the API client reference. Client ID and Client Secrets are defined
 // as constants in config.php
-$api = Podio::instance(CLIENT_ID, CLIENT_SECRET);
+Podio::setup(CLIENT_ID, CLIENT_SECRET);
 
 // Authenticate using your username and password. Both are defined as constants
 // in config.php
 
 // We wrap the authentication attempt in a try...catch block to catch any problems
 try {
-  $api->authenticate('password', array('username' => USERNAME, 'password' => PASSWORD));
+  Podio::authenticate('password', array('username' => USERNAME, 'password' => PASSWORD));
   print "You have been authenticated. Wee!\n";
 
   $list = Podio\Hook::get('app', 233463);

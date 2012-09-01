@@ -22,9 +22,7 @@ class Hook extends Object {
    * @see https://developers.podio.com/doc/hooks/get-hooks-215285
    */
   public static function get($ref_type, $ref_id) {
-    if ($response = self::podio()->get('/hook/'.$ref_type.'/'.$ref_id.'/')) {
-      return self::listing(json_decode($response->getBody(), TRUE));
-    }
+    return self::listing(\Podio::get('/hook/'.$ref_type.'/'.$ref_id.'/'));
   }
 
 }
