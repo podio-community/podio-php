@@ -124,7 +124,7 @@ class PodioObject {
     }
   }
 
-  // TODO: has_many, collection, date/time properties
+  // TODO: has_many, collection, date/time properties, alias so e.g. hook_id can be accessed as just 'id'
 
 
 }

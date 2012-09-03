@@ -19,7 +19,7 @@ class PodioHook extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/hooks/get-hooks-215285
    */
-  public static function get($ref_type, $ref_id) {
+  public static function get_for($ref_type, $ref_id) {
     return self::listing(Podio::get("/hook/{$ref_type}/{$ref_id}/"));
   }
 
