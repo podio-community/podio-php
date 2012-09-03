@@ -8,7 +8,9 @@ require_once 'models/PodioAction.php';
 require_once 'models/PodioComment.php';
 require_once 'models/PodioEmbed.php';
 require_once 'models/PodioHook.php';
+
 require_once 'models/PodioByLine.php';
+require_once 'models/PodioReference.php';
 require_once 'models/PodioVia.php';
 
 class Podio {
