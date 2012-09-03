@@ -1,10 +1,8 @@
 <?php
-namespace Podio;
-
 /**
  * @see https://developers.podio.com/doc/hooks
  */
-class Hook extends Object {
+class PodioHook extends PodioObject {
   public function __construct($attributes = array()) {
     $this->property('hook_id', 'integer');
     $this->property('status', 'string');
@@ -22,7 +20,36 @@ class Hook extends Object {
    * @see https://developers.podio.com/doc/hooks/get-hooks-215285
    */
   public static function get($ref_type, $ref_id) {
-    return self::listing(\Podio::get('/hook/'.$ref_type.'/'.$ref_id.'/'));
+    return self::listing(Podio::get("/hook/{$ref_type}/{$ref_id}/"));
+  }
+
+  /**
+   * @see https://developers.podio.com/doc/hooks/create-hook-215056
+   */
+  public static function create($ref_type, $ref_id, $attributes = array()) {
+    $body = Podio::post("/hook/{$ref_type}/{$ref_id}/", $attributes)->json_body();
+    return $body['hook_id'];
+  }
+
+  /**
+   * @see https://developers.podio.com/doc/hooks/request-hook-verification-215232
+   */
+  public static function verify($hook_id) {
+    return Podio::post("/hook/{$hook_id}/verify/request")->json_body();
+  }
+
+  /**
+   * @see https://developers.podio.com/doc/hooks/validate-hook-verification-215241
+   */
+  public static function validate($hook_id, $attributes = array()) {
+    return Podio::post("/hook/{$hook_id}/verify/validate", $attributes)->json_body();
+  }
+
+  /**
+   * @see https://developers.podio.com/doc/hooks/delete-hook-215291
+   */
+  public static function delete($hook_id) {
+    return Podio::delete("/hook/{$hook_id}");
   }
 
 }

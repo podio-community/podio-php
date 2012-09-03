@@ -1,7 +1,5 @@
 <?php
-namespace Podio;
-
-class Object {
+class PodioObject {
   protected $attributes;
   protected $properties;
   protected $relationships;
@@ -18,7 +16,7 @@ class Object {
       foreach ($this->relationships as $name => $type) {
         if (array_key_exists($name, $attributes)) {
           // TODO: instance should have a 'belongs_to' property pointing to $this
-          $class_name = __NAMESPACE__.'\\'.$this->properties[$name];
+          $class_name = 'Podio'.$this->properties[$name];
           $this->set_attribute($name, new $class_name($attributes[$name]));
         }
       }

@@ -1,7 +1,5 @@
 <?php
-namespace Podio;
-
-class Via extends Object {
+class PodioVia extends PodioObject {
   public function __construct($attributes = array()) {
     $this->property('id', 'integer');
     $this->property('name', 'string');

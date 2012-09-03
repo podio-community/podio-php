@@ -15,9 +15,13 @@ try {
   Podio::authenticate('password', array('username' => USERNAME, 'password' => PASSWORD));
   print "You have been authenticated. Wee!\n";
 
-  $list = Podio\Hook::get('app', 233463);
+  // $my_hooks = PodioHook::get('app', 233463);
+  // $hook_id = PodioHook::create('app', 233463, array('url' => 'http://example.com/', 'type' => 'item.create'));
+  // print "Created {$hook_id}\n";
+  // PodioHook::delete(14303);
 
-  var_dump($list[0]);
+
+  // var_dump($my_hooks[0]);
 
 }
 catch (PodioError $e) {

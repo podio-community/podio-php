@@ -1,7 +1,5 @@
 <?php
-namespace Podio;
-
-class ByLine extends Object {
+class PodioByLine extends PodioObject {
   public function __construct($attributes = array()) {
     $this->property('type', 'string');
     $this->property('id', 'integer');
