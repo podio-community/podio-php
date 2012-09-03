@@ -4,6 +4,8 @@ require_once 'PodioResponse.php';
 require_once 'PodioOAuth.php';
 require_once 'PodioError.php';
 require_once 'PodioObject.php';
+require_once 'models/PodioAction.php';
+require_once 'models/PodioEmbed.php';
 require_once 'models/PodioHook.php';
 require_once 'models/PodioByLine.php';
 require_once 'models/PodioVia.php';
