@@ -117,18 +117,6 @@ class PodioItem extends PodioObject {
   }
 
   /**
-   * @see https://developers.podio.com/doc/items/update-item-field-values-22367
-   */
-  public static function update_field_value($item_id, $field_id, $attributes = array()) {
-    $url = "/item/{$item_id}/value/{$field_id}";
-    if (isset($attributes['silent']) && $attributes['silent'] == 1) {
-      $url .= '?silent=1';
-      unset($attributes['silent']);
-    }
-    return Podio::put($url, $attributes)->json_body();
-  }
-
-  /**
    * @see https://developers.podio.com/doc/items/update-item-reference-7421495
    */
   public static function update_reference($item_id, $attributes = array()) {
