@@ -12,6 +12,7 @@ require_once 'models/PodioItem.php';
 require_once 'models/PodioItemField.php';
 require_once 'models/PodioItemRevision.php';
 require_once 'models/PodioItemDiff.php';
+require_once 'models/PodioLinkedAccountData.php';
 
 require_once 'models/PodioByLine.php';
 require_once 'models/PodioReference.php';
