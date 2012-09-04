@@ -218,8 +218,7 @@ class PodioItem extends PodioObject {
    * @see https://developers.podio.com/doc/items/set-participation-7156154
    */
   public static function participation($item_id, $attributes = array()) {
-    $body = Podio::put("/item/{$item_id}/participation", $attributes)->json_body();
-    return $body['status'];
+    return Podio::put("/item/{$item_id}/participation", $attributes)->json_body();
   }
 
 }
