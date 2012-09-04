@@ -23,8 +23,15 @@ class PodioRecurrence extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/recurrence/create-or-update-recurrence-3349957
    */
+  public static function create($ref_type, $ref_id, $attributes = array()) {
+    return Podio::put("/recurrence/{$ref_type}/{$ref_id}", $attributes);
+  }
+
+  /**
+   * @see https://developers.podio.com/doc/recurrence/create-or-update-recurrence-3349957
+   */
   public static function update($ref_type, $ref_id, $attributes = array()) {
-    return Podio::update("/recurrence/{$ref_type}/{$ref_id}", $attributes);
+    return Podio::put("/recurrence/{$ref_type}/{$ref_id}", $attributes);
   }
 
   /**

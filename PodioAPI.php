@@ -14,6 +14,7 @@ require_once 'models/PodioItemRevision.php';
 require_once 'models/PodioItemDiff.php';
 require_once 'models/PodioLinkedAccountData.php';
 require_once 'models/PodioRecurrence.php';
+require_once 'models/PodioReminder.php';
 
 require_once 'models/PodioByLine.php';
 require_once 'models/PodioReference.php';
