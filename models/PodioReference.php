@@ -17,7 +17,7 @@ class PodioReference extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/reference/get-reference-10661022
    */
-  public static function get_for($ref_type, $ref_id, $attributes) {
+  public static function get_for($ref_type, $ref_id, $attributes = array()) {
     return self::member(Podio::get("/reference/{$ref_type}/{$ref_id}", $attributes));
   }
 
