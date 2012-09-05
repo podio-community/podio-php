@@ -6,7 +6,7 @@ class PodioItem extends PodioObject {
   public function __construct($attributes = array()) {
 
     # Basic item
-    $this->property('item_id', 'integer');
+    $this->property('item_id', 'integer', array('id' => true));
     $this->property('app', 'hash');
     $this->property('external_id', 'string');
     $this->property('title', 'string');

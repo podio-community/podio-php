@@ -4,7 +4,7 @@
  */
 class PodioRecurrence extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('recurrence_id', 'integer');
+    $this->property('recurrence_id', 'integer', array('id' => true));
     $this->property('name', 'string');
     $this->property('config', 'hash');
     $this->property('step', 'integer');

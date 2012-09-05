@@ -4,7 +4,7 @@
  */
 class PodioHook extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('hook_id', 'integer');
+    $this->property('hook_id', 'integer', array('id' => true));
     $this->property('status', 'string');
     $this->property('type', 'string');
     $this->property('url', 'string');

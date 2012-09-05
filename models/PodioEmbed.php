@@ -4,7 +4,7 @@
  */
 class PodioEmbed extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('embed_id', 'integer');
+    $this->property('embed_id', 'integer', array('id' => true));
     $this->property('original_url', 'string');
     $this->property('resolved_url', 'string');
     $this->property('type', 'string');

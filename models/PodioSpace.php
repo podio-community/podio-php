@@ -4,7 +4,7 @@
  */
 class PodioSpace extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('space_id', 'integer');
+    $this->property('space_id', 'integer', array('id' => true));
     $this->property('name', 'string');
     $this->property('url', 'string');
     $this->property('url_label', 'string');

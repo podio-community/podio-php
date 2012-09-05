@@ -20,9 +20,9 @@ try {
   // print "Created {$hook_id}\n";
   // PodioHook::delete(14303);
 
-  $search = PodioSearch::search(array('query' => 'password'));
+  $file = PodioFile::get(20863656);
 
-  var_dump($search);
+  var_dump($file->id);
 
 }
 catch (PodioError $e) {

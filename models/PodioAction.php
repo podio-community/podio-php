@@ -4,7 +4,7 @@
  */
 class PodioAction extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('action_id', 'integer');
+    $this->property('action_id', 'integer', array('id' => true));
     $this->property('type', 'string');
     $this->property('data', 'hash');
     $this->property('text', 'string');

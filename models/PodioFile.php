@@ -4,7 +4,7 @@
  */
 class PodioFile extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('file_id', 'integer');
+    $this->property('file_id', 'integer', array('id' => true));
     $this->property('link', 'string');
     $this->property('perma_link', 'string');
     $this->property('thumbnail_link', 'string');

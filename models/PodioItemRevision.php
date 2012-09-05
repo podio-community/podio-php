@@ -4,7 +4,7 @@
  */
 class PodioItemRevision extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('revision', 'integer');
+    $this->property('revision', 'integer', array('id' => true));
     $this->property('app_revision', 'integer');
     $this->property('created_on', 'datetime');
 

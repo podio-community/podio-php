@@ -4,7 +4,7 @@
  */
 class PodioItemField extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('field_id', 'integer');
+    $this->property('field_id', 'integer', array('id' => true));
     $this->property('type', 'string');
     $this->property('external_id', 'string');
     $this->property('label', 'string');

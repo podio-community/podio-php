@@ -4,7 +4,7 @@
  */
 class PodioComment extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('comment_id', 'integer');
+    $this->property('comment_id', 'integer', array('id' => true));
     $this->property('value', 'string');
     $this->property('rich_value', 'string');
     $this->property('external_id', 'integer');

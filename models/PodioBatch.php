@@ -4,7 +4,7 @@
  */
 class PodioBatch extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('batch_id', 'integer');
+    $this->property('batch_id', 'integer', array('id' => true));
     $this->property('name', 'string');
     $this->property('plugin', 'string');
     $this->property('status', 'string');
