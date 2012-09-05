@@ -79,11 +79,4 @@ class PodioSpace extends PodioObject {
     return Podio::put("/space/{$space_id}", $attributes);
   }
 
-  /**
-   * @see https://developers.podio.com/doc/spaces/create-space-22390
-   */
-  public static function update($space_id, $attributes) {
-    return Podio::put("/space/{$space_id}", $attributes);
-  }
-
 }

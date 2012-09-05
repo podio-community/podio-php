@@ -8,6 +8,7 @@ require_once 'models/PodioAction.php';
 require_once 'models/PodioBatch.php';
 require_once 'models/PodioComment.php';
 require_once 'models/PodioEmbed.php';
+require_once 'models/PodioFile.php';
 require_once 'models/PodioHook.php';
 require_once 'models/PodioItem.php';
 require_once 'models/PodioItemField.php';
