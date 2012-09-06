@@ -2,7 +2,7 @@
 /**
  * @see https://developers.podio.com/doc/search
  */
-class PodioSearch extends PodioObject {
+class PodioSearchResult extends PodioObject {
   public function __construct($attributes = array()) {
     $this->property('id', 'integer');
     $this->property('type', 'string');
