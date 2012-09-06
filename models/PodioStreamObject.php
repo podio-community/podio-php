@@ -32,7 +32,7 @@ class PodioStreamObject extends PodioObject {
    * @see https://developers.podio.com/doc/stream/get-global-stream-80012
    */
   public static function get($attributes) {
-    return self::listing(Podio::get("/stream/v2/", $attributes));
+    return self::listing(Podio::get("/stream/", $attributes));
   }
 
   /**
