@@ -36,7 +36,7 @@ class PodioItem extends PodioObject {
     $this->has_many('revisions', 'ItemRevision');
     $this->has_many('files', 'File');
     $this->has_many('tasks', 'Task');
-    $this->has_many('shares', 'AppStoreShare');
+    $this->has_many('shares', 'AppMarketShare');
     $this->has_many('linked_account_data', 'LinkedAccountData');
 
     # For creating items
