@@ -30,6 +30,13 @@ class PodioBatch extends PodioObject {
   }
 
   /**
+   * @see https://developers.podio.com/doc/batch/get-running-batches-15856178
+   */
+  public static function get_for($ref_type, $ref_id, $plugin) {
+    return self::listing(Podio::get("/batch/{$ref_type}/{$ref_id}/{$plugin}/running/"));
+  }
+
+  /**
    * @see https://developers.podio.com/doc/batch/get-batches-6078877
    */
   public static function get_all($attributes) {
