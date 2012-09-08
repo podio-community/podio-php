@@ -41,7 +41,7 @@ class PodioAppMarketShare extends PodioObject {
    * @see https://developers.podio.com/doc/app-market/install-share-22499
    */
   public static function install($share_id, $attributes) {
-    return Podio::get("/app_store/{$share_id}/install", $attributes)->json_body();
+    return Podio::post("/app_store/{$share_id}/install", $attributes)->json_body();
   }
 
 }
