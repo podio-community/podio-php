@@ -32,7 +32,7 @@ class PodioIntegration extends PodioObject {
    * @see https://developers.podio.com/doc/integrations/get-integration-86821
    */
   public static function get($app_id) {
-    return self::member(Podio::get("/integration/{$app_id}", $attributes));
+    return self::member(Podio::get("/integration/{$app_id}"));
   }
 
   /**

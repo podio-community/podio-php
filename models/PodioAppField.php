@@ -25,7 +25,7 @@ class PodioAppfield extends PodioObject {
    * @see https://developers.podio.com/doc/applications/get-app-field-22353
    */
   public static function get($app_id, $field_id) {
-    return self::member(Podio::get("/app/{$app_id}/field/{$field_id}", $attributes));
+    return self::member(Podio::get("/app/{$app_id}/field/{$field_id}"));
   }
 
   /**
