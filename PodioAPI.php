@@ -18,6 +18,7 @@ require_once 'models/PodioEmbed.php';
 require_once 'models/PodioFile.php';
 require_once 'models/PodioHook.php';
 require_once 'models/PodioImporter.php';
+require_once 'models/PodioIntegration.php';
 require_once 'models/PodioItem.php';
 require_once 'models/PodioItemField.php';
 require_once 'models/PodioItemRevision.php';
