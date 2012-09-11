@@ -46,21 +46,21 @@ class PodioConversation extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/conversations/create-conversation-22441
    */
-  public static function create($attributes) {
+  public static function create($attributes = array()) {
     return Podio::post("/conversation/", $attributes)->json_body();
   }
 
   /**
    * @see https://developers.podio.com/doc/conversations/create-conversation-on-object-22442
    */
-  public static function create_for($ref_type, $ref_id, $attributes) {
+  public static function create_for($ref_type, $ref_id, $attributes = array()) {
     return Podio::post("/conversation/{$ref_type}/{$ref_id}/", $attributes)->json_body();
   }
 
   /**
    * @see https://developers.podio.com/doc/conversations/reply-to-conversation-22444
    */
-  public static function create_reply($conversation_id, $attributes) {
+  public static function create_reply($conversation_id, $attributes = array()) {
     $body = Podio::post("/conversation/{$conversation_id}/reply", $attributes)->json_body();
     return $body['message_id'];
   }
@@ -68,7 +68,7 @@ class PodioConversation extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/conversations/add-participants-384261
    */
-  public static function add_participant($conversation_id, $attributes) {
+  public static function add_participant($conversation_id, $attributes = array()) {
     return Podio::post("/conversation/{$conversation_id}/participant/", $attributes)->json_body();
   }
 

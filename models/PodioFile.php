@@ -49,28 +49,28 @@ class PodioFile extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/files/get-files-on-app-22472
    */
-  public static function get_for_app($app_id, $attributes) {
+  public static function get_for_app($app_id, $attributes = array()) {
     return self::listing(Podio::get("/file/app/{$app_id}/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/files/get-files-on-space-22471
    */
-  public static function get_for_space($space_id, $attributes) {
+  public static function get_for_space($space_id, $attributes = array()) {
     return self::listing(Podio::get("/file/space/{$space_id}/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/files/attach-file-22518
    */
-  public static function attach($file_id, $attributes) {
+  public static function attach($file_id, $attributes = array()) {
     return Podio::post("/file/{$file_id}/attach", $attributes);
   }
 
   /**
    * @see https://developers.podio.com/doc/files/replace-file-22450
    */
-  public static function replace($file_id, $attributes) {
+  public static function replace($file_id, $attributes = array()) {
     return Podio::post("/file/{$file_id}/replace", $attributes);
   }
 
@@ -85,7 +85,7 @@ class PodioFile extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/files/get-files-4497983
    */
-  public static function get_all($attributes) {
+  public static function get_all($attributes = array()) {
     return self::listing(Podio::get("/file/", $attributes));
   }
 

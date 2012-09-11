@@ -31,42 +31,42 @@ class PodioStreamObject extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/stream/get-global-stream-80012
    */
-  public static function get($attributes) {
+  public static function get($attributes = array()) {
     return self::listing(Podio::get("/stream/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/stream/get-organization-stream-80038
    */
-  public static function get_for_org($org_id, $attributes) {
+  public static function get_for_org($org_id, $attributes = array()) {
     return self::listing(Podio::get("/stream/org/{$org_id}/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/stream/get-space-stream-80039
    */
-  public static function get_for_space($space_id, $attributes) {
+  public static function get_for_space($space_id, $attributes = array()) {
     return self::listing(Podio::get("/stream/space/{$space_id}/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/stream/get-app-stream-264673
    */
-  public static function get_for_app($app_id, $attributes) {
+  public static function get_for_app($app_id, $attributes = array()) {
     return self::listing(Podio::get("/stream/app/{$app_id}/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/stream/get-user-stream-1289318
    */
-  public static function get_for_user($user_id, $attributes) {
+  public static function get_for_user($user_id, $attributes = array()) {
     return self::listing(Podio::get("/stream/user/{$user_id}/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/stream/get-app-stream-264673
    */
-  public static function personal($attributes) {
+  public static function personal($attributes = array()) {
     return self::listing(Podio::get("/stream/personal/", $attributes));
   }
 

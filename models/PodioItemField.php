@@ -30,7 +30,7 @@ class PodioItemField extends PodioObject {
    * @see https://developers.podio.com/doc/calendar/get-item-field-calendar-as-ical-10195681
    */
   public static function ical($item_id, $field_id) {
-    return Podio::get("/calendar/item/{$item_id}/field/{$field_id}/ics/", $attributes)->body;
+    return Podio::get("/calendar/item/{$item_id}/field/{$field_id}/ics/")->body;
   }
 
 }

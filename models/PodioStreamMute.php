@@ -18,7 +18,7 @@ class PodioStreamMute extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/stream/get-mutes-in-global-stream-62742
    */
-  public static function get_all() {
+  public static function get_all($attributes = array()) {
     return self::listing(Podio::get("/stream/mute/v2/", $attributes));
   }
 

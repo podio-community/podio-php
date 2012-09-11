@@ -6,6 +6,8 @@ require_once 'PodioError.php';
 require_once 'PodioObject.php';
 require_once 'models/PodioAction.php';
 require_once 'models/PodioActivity.php';
+require_once 'models/PodioApp.php';
+require_once 'models/PodioAppField.php';
 require_once 'models/PodioAppMarketShare.php';
 require_once 'models/PodioBatch.php';
 require_once 'models/PodioComment.php';

@@ -47,7 +47,7 @@ class PodioSpace extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/spaces/get-space-by-url-22481
    */
-  public static function get_by_url($attributes) {
+  public static function get_by_url($attributes = array()) {
     return self::member(Podio::get("/space/url", $attributes));
   }
 
@@ -68,14 +68,14 @@ class PodioSpace extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/spaces/create-space-22390
    */
-  public static function create($attributes) {
+  public static function create($attributes = array()) {
     return Podio::post("/space/url", $attributes)->json_body();
   }
 
   /**
    * @see https://developers.podio.com/doc/spaces/create-space-22390
    */
-  public static function update($space_id, $attributes) {
+  public static function update($space_id, $attributes = array()) {
     return Podio::put("/space/{$space_id}", $attributes);
   }
 

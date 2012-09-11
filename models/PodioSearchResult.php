@@ -22,28 +22,28 @@ class PodioSearchResult extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/search/search-in-app-4234651
    */
-  public static function app($app_id, $attributes) {
+  public static function app($app_id, $attributes = array()) {
     return self::listing(Podio::post("/search/app/{$app_id}/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/search/search-in-space-22479
    */
-  public static function space($space_id, $attributes) {
+  public static function space($space_id, $attributes = array()) {
     return self::listing(Podio::post("/search/space/{$space_id}/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/search/search-in-organization-22487
    */
-  public static function org($org_id, $attributes) {
+  public static function org($org_id, $attributes = array()) {
     return self::listing(Podio::post("/search/org/{$org_id}/", $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/search/search-globally-22488
    */
-  public static function search($attributes) {
+  public static function search($attributes = array()) {
     return self::listing(Podio::post("/search/", $attributes));
   }
 

@@ -39,7 +39,7 @@ class PodioBatch extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/batch/get-batches-6078877
    */
-  public static function get_all($attributes) {
+  public static function get_all($attributes = array()) {
     return self::listing(Podio::get("/batch/", $attributes));
   }
 
