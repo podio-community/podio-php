@@ -37,6 +37,7 @@ require_once 'models/PodioTagSearch.php';
 require_once 'models/PodioUser.php';
 require_once 'models/PodioUserMail.php';
 require_once 'models/PodioUserStatus.php';
+require_once 'models/PodioView.php';
 
 require_once 'models/PodioByLine.php';
 require_once 'models/PodioReference.php';
