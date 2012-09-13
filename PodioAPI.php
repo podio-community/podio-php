@@ -34,6 +34,9 @@ require_once 'models/PodioStreamObject.php';
 require_once 'models/PodioSubscription.php';
 require_once 'models/PodioTag.php';
 require_once 'models/PodioTagSearch.php';
+require_once 'models/PodioUser.php';
+require_once 'models/PodioUserMail.php';
+require_once 'models/PodioUserStatus.php';
 
 require_once 'models/PodioByLine.php';
 require_once 'models/PodioReference.php';
