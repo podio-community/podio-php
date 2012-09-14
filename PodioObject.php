@@ -93,9 +93,6 @@ class PodioObject {
         // case 'time':
 
         //   break;
-        // case 'array':
-
-        //   break;
         default:
           $this->attributes[$name] = $value;
       }
@@ -120,6 +117,23 @@ class PodioObject {
     if ($response) {
       $class_name = get_called_class();
       return new $class_name($response->json_body());
+    }
+  }
+
+  public static function collection($response) {
+    if ($response) {
+      $body = $response->json_body();
+      $list = array();
+      foreach ($body['items'] as $attributes) {
+        $class_name = get_called_class();
+        $list[] = new $class_name($attributes);
+      }
+      $collection = array(
+        'items' => $list,
+        'filtered' => $body['filtered'],
+        'total' => $body['total'],
+      );
+      return $collection;
     }
   }
 
@@ -153,7 +167,9 @@ class PodioObject {
     }
   }
 
-  // TODO: collection, date/time properties, alias so e.g. hook_id can be accessed as just 'id'
+  // TODO: date/time properties, delegate, delegate_to_hash
+  // TODO: as_json() so we can do $item_instance->create()
+  // TODO: belongs_to for relationships
 
 
 }
