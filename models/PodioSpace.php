@@ -47,7 +47,7 @@ class PodioSpace extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/spaces/get-space-by-url-22481
    */
-  public static function get_by_url($attributes = array()) {
+  public static function get_for_url($attributes = array()) {
     return self::member(Podio::get("/space/url", $attributes));
   }
 

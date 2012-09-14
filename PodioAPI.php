@@ -30,6 +30,8 @@ require_once 'models/PodioLinkedAccountData.php';
 require_once 'models/PodioNotification.php';
 require_once 'models/PodioNotificationContext.php';
 require_once 'models/PodioNotificationGroup.php';
+require_once 'models/PodioOrganization.php';
+require_once 'models/PodioOrganizationMember.php';
 require_once 'models/PodioRecurrence.php';
 require_once 'models/PodioReminder.php';
 require_once 'models/PodioSearchResult.php';
