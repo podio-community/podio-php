@@ -126,6 +126,13 @@ class PodioTask extends PodioObject {
   }
 
   /**
+   * @see https://developers.podio.com/doc/calendar/get-task-calendar-as-ical-10195650
+   */
+  public static function ical($task_id) {
+    return Podio::get("/calendar/task/{$task_id}/ics/")->body;
+  }
+
+  /**
    * @see https://developers.podio.com/doc/tasks/get-task-summary-1612017
    */
   public static function get_summary($attributes = array()) {

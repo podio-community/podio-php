@@ -10,6 +10,8 @@ require_once 'models/PodioApp.php';
 require_once 'models/PodioAppField.php';
 require_once 'models/PodioAppMarketShare.php';
 require_once 'models/PodioBatch.php';
+require_once 'models/PodioCalendarEvent.php';
+require_once 'models/PodioCalendarMute.php';
 require_once 'models/PodioComment.php';
 require_once 'models/PodioContact.php';
 require_once 'models/PodioConversation.php';
