@@ -45,6 +45,11 @@ class PodioObject {
       return $this->attributes[$this->id_column];
     }
     if (array_key_exists($name, $this->attributes)) {
+      // Create DateTime object if necessary
+      if (array_key_exists($name, $this->properties) && ($this->properties[$name]['type'] == 'datetime' || $this->properties[$name]['type'] == 'date')) {
+        return DateTime::createFromFormat($this->date_format_for_property($name), $this->attributes[$name], $tz);
+      }
+
       return $this->attributes[$name];
     }
   }
@@ -53,6 +58,17 @@ class PodioObject {
   }
   public function __unset($name) {
     unset($this->attributes[$name]);
+  }
+
+  public function date_format_for_property($name) {
+    if (array_key_exists($name, $this->properties)) {
+      if ($this->properties[$name]['type'] == 'datetime') {
+        return 'Y-m-d H:i:s';
+      }
+      elseif ($this->properties[$name]['type'] == 'date') {
+        return 'Y-m-d';
+      }
+    }
   }
 
   protected function set_attribute($name, $value) {
@@ -73,26 +89,14 @@ class PodioObject {
           }
           break;
         case 'datetime':
-          $this->attributes[$name] = null;
+        case 'date':
           if (is_a($value, 'DateTime')) {
+            $this->attributes[$name] = $value->format($this->date_format_for_property($name));
+          }
+          else {
             $this->attributes[$name] = $value;
           }
-          elseif ($value) {
-            // Handle task and item date fields where datetime is supplied
-            // in the users local timezone
-            $tz = date_default_timezone_get();
-            date_default_timezone_set('UTC');
-            $timestamp = strtotime($value);
-            $this->attributes[$name] = new \DateTime("@{$timestamp}");
-            date_default_timezone_set($tz);
-          }
           break;
-        // case 'date':
-
-        //   break;
-        // case 'time':
-
-        //   break;
         default:
           $this->attributes[$name] = $value;
       }
@@ -167,9 +171,10 @@ class PodioObject {
     }
   }
 
-  // TODO: date/time properties, delegate, delegate_to_hash
+  // TODO: timezone handling for date fields & task due dates
+  // TODO: delegate, delegate_to_hash
   // TODO: as_json() so we can do $item_instance->create()
   // TODO: belongs_to for relationships
-
+  // Improve debug mode
 
 }
