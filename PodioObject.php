@@ -1,16 +1,16 @@
 <?php
 class PodioObject {
-  protected $attributes;
+  public $attributes;
   protected $properties;
   protected $relationships;
   protected $podio;
   protected $id_column;
 
-  public function init($attributes = array()) {
+  public function init($default_attributes = array()) {
     // Create object instance from attributes
     foreach ($this->properties as $name => $property) {
-      if (array_key_exists($name, $attributes)) {
-        $this->set_attribute($name, $attributes[$name]);
+      if (array_key_exists($name, $default_attributes)) {
+        $this->set_attribute($name, $default_attributes[$name]);
         if (isset($property['options']['id'])) {
           $this->id_column = $name;
         }
@@ -18,18 +18,18 @@ class PodioObject {
     }
     if ($this->relationships) {
       foreach ($this->relationships as $name => $type) {
-        if (array_key_exists($name, $attributes)) {
+        if (array_key_exists($name, $default_attributes)) {
           // TODO: instance should have a 'belongs_to' property pointing to $this
           $property = $this->properties[$name];
           $class_name = 'Podio'.$property['type'];
 
           if ($type == 'single') {
-            $this->set_attribute($name, new $class_name($attributes[$name]));
+            $this->set_attribute($name, new $class_name($default_attributes[$name]));
           }
-          elseif ($type == 'multiple' && is_array($attributes[$name])) {
+          elseif ($type == 'multiple' && is_array($default_attributes[$name])) {
             $values = array();
-            foreach ($attributes[$name] as $value) {
-              $values[] = new $class_name($attributes[$name]);
+            foreach ($default_attributes[$name] as $value) {
+              $values[] = new $class_name($default_attributes[$name]);
             }
             $this->set_attribute($name, $values);
           }
@@ -47,6 +47,7 @@ class PodioObject {
     if (array_key_exists($name, $this->attributes)) {
       // Create DateTime object if necessary
       if (array_key_exists($name, $this->properties) && ($this->properties[$name]['type'] == 'datetime' || $this->properties[$name]['type'] == 'date')) {
+        $tz = new DateTimeZone('UTC');
         return DateTime::createFromFormat($this->date_format_for_property($name), $this->attributes[$name], $tz);
       }
 

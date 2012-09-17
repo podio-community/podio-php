@@ -168,7 +168,7 @@ class PodioTask extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/tasks/get-task-summary-for-space-1612130
    */
-  public static function get_summary_for_org($space_id, $attributes = array()) {
+  public static function get_summary_for_space($space_id, $attributes = array()) {
     $result = Podio::get("/task/space/{$space_id}/summary", $attributes)->json_body();
     $result['overdue']['tasks'] = self::listing($result['overdue']['tasks']);
     $result['today']['tasks'] = self::listing($result['today']['tasks']);

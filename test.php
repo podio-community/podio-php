@@ -20,9 +20,10 @@ try {
   // print "Created {$hook_id}\n";
   // PodioHook::delete(14303);
 
-  $file = PodioFile::get(20863656);
+  $status = PodioStatus::get(882832);
 
-  var_dump($file->id);
+  var_dump($status->attributes['created_on']);
+  var_dump($status->created_on);
 
 }
 catch (PodioError $e) {

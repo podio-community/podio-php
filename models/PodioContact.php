@@ -164,7 +164,7 @@ class PodioContact extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/contacts/update-contact-field-60558
    */
-  public static function update($profile_id, $key, $attributes = array()) {
+  public static function update_field($profile_id, $key, $attributes = array()) {
     return Podio::update("/contact/{$profile_id}/{$key}", $attributes);
   }
 
