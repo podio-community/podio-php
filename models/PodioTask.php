@@ -10,7 +10,9 @@ class PodioTask extends PodioObject {
     $this->property('text', 'string');
     $this->property('description', 'string');
     $this->property('private', 'boolean');
-    $this->property('due_on', 'datetime'); // TODO: convert_incoming_local_datetime_to_utc
+    $this->property('due_on', 'datetime');
+    $this->property('due_date', 'string');
+    $this->property('due_time', 'string');
     $this->property('space_id', 'integer');
     $this->property('link', 'string');
     $this->property('created_on', 'datetime');

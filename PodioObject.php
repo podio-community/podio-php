@@ -7,6 +7,9 @@ class PodioObject {
   protected $id_column;
 
   public function init($default_attributes = array()) {
+    if (!is_array($default_attributes)) {
+      $default_attributes = array();
+    }
     // Create object instance from attributes
     foreach ($this->properties as $name => $property) {
       if (array_key_exists($name, $default_attributes)) {

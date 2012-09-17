@@ -6,6 +6,7 @@ require_once 'PodioAPI.php';
 // Setup the API client reference. Client ID and Client Secrets are defined
 // as constants in config.php
 Podio::setup(CLIENT_ID, CLIENT_SECRET);
+Podio::$debug = true;
 
 // Authenticate using your username and password. Both are defined as constants
 // in config.php
@@ -20,10 +21,12 @@ try {
   // print "Created {$hook_id}\n";
   // PodioHook::delete(14303);
 
-  $status = PodioStatus::get(882832);
+  $task = PodioTask::get(4001230);
 
-  var_dump($status->attributes['created_on']);
-  var_dump($status->created_on);
+  var_dump($task->attributes['due_date']);
+  var_dump($task->due_date);
+  var_dump($task->attributes['due_time']);
+  var_dump($task->due_time);
 
 }
 catch (PodioError $e) {
