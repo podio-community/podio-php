@@ -44,12 +44,6 @@ function build_example($className, $method) {
   }
 }
 
-/*
-
-TODO: How to handle removed methods?
-
-*/
-
 // Global list of operations to update
 $operations = array();
 
