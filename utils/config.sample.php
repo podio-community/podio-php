@@ -2,8 +2,8 @@
 
 define("CLIENT_ID", "");
 define("CLIENT_SECRET", "");
-define("USERNAME", "");
-define("PASSWORD", "");
+define("APP_ID", "");
+define("APP_TOKEN", "");
 
 define('FIELD_ID', 0);
 

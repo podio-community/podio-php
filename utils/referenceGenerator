@@ -94,7 +94,7 @@ if ($update_api) {
 
   Podio::setup(CLIENT_ID, CLIENT_SECRET);
 
-  Podio::authenticate('password', array('username' => USERNAME, 'password' => PASSWORD));
+  Podio::authenticate('app', array('app_id' => APP_ID, 'app_token' => APP_TOKEN));
   print "You have been authenticated. Wee!\n";
 
   foreach ($operations as $item_id => $op) {
