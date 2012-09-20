@@ -50,9 +50,9 @@ class PodioObject {
     if ($name == 'id' && !empty($this->id_column)) {
       return $this->attributes[$this->id_column];
     }
-    if (array_key_exists($name, $this->attributes)) {
+    if ($this->has_attribute($name)) {
       // Create DateTime object if necessary
-      if (array_key_exists($name, $this->properties) && ($this->properties[$name]['type'] == 'datetime' || $this->properties[$name]['type'] == 'date')) {
+      if ($this->has_property($name) && ($this->properties[$name]['type'] == 'datetime' || $this->properties[$name]['type'] == 'date')) {
         $tz = new DateTimeZone('UTC');
         return DateTime::createFromFormat($this->date_format_for_property($name), $this->attributes[$name], $tz);
       }
@@ -71,7 +71,7 @@ class PodioObject {
   }
 
   public function date_format_for_property($name) {
-    if (array_key_exists($name, $this->properties)) {
+    if ($this->has_property($name)) {
       if ($this->properties[$name]['type'] == 'datetime') {
         return 'Y-m-d H:i:s';
       }
@@ -82,7 +82,7 @@ class PodioObject {
   }
 
   protected function set_attribute($name, $value) {
-    if (array_key_exists($name, $this->properties)) {
+    if ($this->has_property($name)) {
 
       $property = $this->properties[$name];
       switch($property['type']) {
@@ -151,12 +151,24 @@ class PodioObject {
     }
   }
 
+  public function has_attribute($name) {
+    return array_key_exists($name, $this->attributes);
+  }
+
+  public function has_property($name) {
+    return array_key_exists($name, $this->properties);
+  }
+
+  public function has_relationship($name) {
+    return array_key_exists($name, $this->relationships);
+  }
+
   // Define a property on this object
   public function property($name, $type, $options = array()) {
     if (!$this->properties) {
       $this->properties = array();
     }
-    if (!array_key_exists($name, $this->properties)) {
+    if (!$this->has_property($name)) {
       $this->properties[$name] = array('type' => $type, 'options' => $options);
     }
   }
@@ -166,7 +178,7 @@ class PodioObject {
     if (!$this->relationships) {
       $this->relationships = array();
     }
-    if (!array_key_exists($name, $this->relationships)) {
+    if (!$this->has_relationship($name)) {
       $this->relationships[$name] = 'single';
     }
   }
@@ -176,7 +188,7 @@ class PodioObject {
     if (!$this->relationships) {
       $this->relationships = array();
     }
-    if (!array_key_exists($name, $this->relationships)) {
+    if (!$this->has_relationship($name)) {
       $this->relationships[$name] = 'multiple';
     }
   }
