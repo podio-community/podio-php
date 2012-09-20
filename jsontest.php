@@ -6,5 +6,8 @@ require_once 'PodioAPI.php';
 $task = new PodioTask();
 $task->id = 123;
 
+$item = new PodioItem();
+$item->id = 123;
+$item->rights = array('update', 'delete');
 
-print $task;
+var_dump($task->can('asd'));

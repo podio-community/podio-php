@@ -151,6 +151,13 @@ class PodioObject {
     }
   }
 
+  public function can($right) {
+    if ($this->has_property('rights')) {
+      return $this->has_attribute('rights') && in_array($right, $this->rights);
+    }
+    return null;
+  }
+
   public function has_attribute($name) {
     return array_key_exists($name, $this->attributes);
   }
