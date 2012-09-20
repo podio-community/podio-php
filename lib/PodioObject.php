@@ -12,11 +12,11 @@ class PodioObject {
     }
     // Create object instance from attributes
     foreach ($this->properties as $name => $property) {
+      if (isset($property['options']['id'])) {
+        $this->id_column = $name;
+      }
       if (array_key_exists($name, $default_attributes)) {
         $this->set_attribute($name, $default_attributes[$name]);
-        if (isset($property['options']['id'])) {
-          $this->id_column = $name;
-        }
       }
     }
     if ($this->relationships) {
@@ -41,6 +41,9 @@ class PodioObject {
     }
   }
   public function __set($name, $value) {
+    if ($name == 'id' && !empty($this->id_column)) {
+      return $this->set_attribute($this->id_column, $value);
+    }
     return $this->set_attribute($name, $value);
   }
   public function __get($name) {
@@ -62,6 +65,9 @@ class PodioObject {
   }
   public function __unset($name) {
     unset($this->attributes[$name]);
+  }
+  public function __toString() {
+    return print_r($this->attributes, true);
   }
 
   public function date_format_for_property($name) {
@@ -175,7 +181,6 @@ class PodioObject {
     }
   }
 
-  // TODO: timezone handling for date fields & task due dates
   // TODO: delegate, delegate_to_hash
   // TODO: as_json() so we can do $item_instance->create()
   // TODO: belongs_to for relationships
