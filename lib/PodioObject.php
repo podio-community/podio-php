@@ -1,6 +1,7 @@
 <?php
 class PodioObject {
   public $attributes;
+  public $belongs_to;
   protected $properties;
   protected $relationships;
   protected $podio;
@@ -26,10 +27,12 @@ class PodioObject {
           $property = $this->properties[$name];
           $class_name = 'Podio'.$property['type'];
 
-          if ($type == 'single') {
-            $this->set_attribute($name, new $class_name($default_attributes[$name]));
+          if ($type == 'has_one') {
+            $child = new $class_name($default_attributes[$name]);
+            $child->belongs_to = array('property' => $name, 'instance' => $this);
+            $this->set_attribute($name, $child);
           }
-          elseif ($type == 'multiple' && is_array($default_attributes[$name])) {
+          elseif ($type == 'has_many' && is_array($default_attributes[$name])) {
             $values = array();
             foreach ($default_attributes[$name] as $value) {
               $values[] = new $class_name($default_attributes[$name]);
@@ -112,7 +115,7 @@ class PodioObject {
       }
       return true;
     }
-    throw new Exception("Attribute cannot be assigned. Property doesn't exist.");
+    throw new Exception("Attribute cannot be assigned. Property '{$name}' doesn't exist.");
   }
 
   public static function listing($response) {
@@ -186,7 +189,7 @@ class PodioObject {
       $this->relationships = array();
     }
     if (!$this->has_relationship($name)) {
-      $this->relationships[$name] = 'single';
+      $this->relationships[$name] = 'has_one';
     }
   }
 
@@ -196,7 +199,7 @@ class PodioObject {
       $this->relationships = array();
     }
     if (!$this->has_relationship($name)) {
-      $this->relationships[$name] = 'multiple';
+      $this->relationships[$name] = 'has_many';
     }
   }
 
