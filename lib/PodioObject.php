@@ -23,7 +23,6 @@ class PodioObject {
     if ($this->relationships) {
       foreach ($this->relationships as $name => $type) {
         if (array_key_exists($name, $default_attributes)) {
-          // TODO: instance should have a 'belongs_to' property pointing to $this
           $property = $this->properties[$name];
           $class_name = 'Podio'.$property['type'];
 
@@ -203,9 +202,13 @@ class PodioObject {
     }
   }
 
-  // TODO: delegate, delegate_to_hash
+  public function as_json() {
+    // Loop over attributes
+    // Loop over relationships, recursively
+  }
+
+  // TODO: delegate_to_hash
   // TODO: as_json() so we can do $item_instance->create()
-  // TODO: belongs_to for relationships
   // Improve debug mode
 
 }

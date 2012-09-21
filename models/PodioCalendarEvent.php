@@ -12,8 +12,8 @@ class PodioCalendarEvent extends PodioObject {
     $this->property('location', 'string');
     $this->property('status', 'string');
     $this->property('link', 'string');
-    $this->property('start', 'datetime'); // TODO: Don't convert timezone
-    $this->property('end', 'datetime'); // TODO: Don't convert timezone
+    $this->property('start', 'datetime');
+    $this->property('end', 'datetime');
 
     $this->init($attributes);
   }

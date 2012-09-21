@@ -143,20 +143,18 @@ class PodioApp extends PodioObject {
    * @see https://developers.podio.com/doc/applications/get-app-dependencies-39159
    */
   public static function dependencies($app_id) {
-
-    // TODO: Collect instances of PodioApp from result
-
-    return Podio::get("/app/{$app_id}/dependencies/")->json_body();
+    $result = Podio::get("/app/{$app_id}/dependencies/")->json_body();
+    $result['apps'] = self::listing($result['apps']);
+    return $result;
   }
 
   /**
    * @see https://developers.podio.com/doc/applications/get-space-app-dependencies-45779
    */
   public static function dependencies_space($space_id) {
-
-    // TODO: Collect instances of PodioApp from result
-
-    return Podio::get("/app/space/{$space_id}/dependencies/")->json_body();
+    $result = Podio::get("/app/space/{$space_id}/dependencies/")->json_body();
+    $result['apps'] = self::listing($result['apps']);
+    return $result;
   }
 
   /**
