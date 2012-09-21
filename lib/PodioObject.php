@@ -203,7 +203,7 @@ class PodioObject {
   }
 
   public function as_json() {
-    // Loop over attributes
+    // Loop over properties/attributes
     // Loop over relationships, recursively
   }
 
