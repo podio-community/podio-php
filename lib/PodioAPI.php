@@ -1,7 +1,7 @@
 <?php
 
 class Podio {
-  public static $oauth, $debug;
+  public static $oauth, $debug, $logger;
   protected static $url, $client_id, $client_secret, $secret, $ch, $headers;
 
   const GET = 'GET';
@@ -63,6 +63,7 @@ class Podio {
   public static function request($method, $url, $attributes = array(), $options = array()) {
     unset(self::$headers['Content-length']);
     $original_url = $url;
+    $encoded_attributes = null;
     switch ($method) {
       case self::GET:
         curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::GET);
@@ -117,9 +118,7 @@ class Podio {
       unset(self::$headers['Authorization']);
     }
 
-    // TODO: Debug, remove
     curl_setopt(self::$ch, CURLINFO_HEADER_OUT, true);
-
     curl_setopt(self::$ch, CURLOPT_HTTPHEADER, self::curl_headers());
     curl_setopt(self::$ch, CURLOPT_URL, self::$url.$url);
 
@@ -127,15 +126,12 @@ class Podio {
     $response->body = curl_exec(self::$ch);
     $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
 
-    if (self::$debug) {
-      error_log("[PODIO] {$response->status} {$method} {$url}");
-      if (!empty($encoded_attributes)) {
-        error_log("[PODIO] Request body: ".$encoded_attributes);
+    if (self::$debug && !isset($options['oauth_request'])) {
+      if (!self::$logger) {
+        self::$logger = new PodioLogger();
       }
-      error_log("[PODIO] Reponse: {$response->body}");
-
-      // TODO: Debug, remove
-      error_log(curl_getinfo(self::$ch, CURLINFO_HEADER_OUT));
+      $curl_info = curl_getinfo(self::$ch, CURLINFO_HEADER_OUT);
+      self::$logger->log_request($method, $url, $encoded_attributes, $response, $curl_info);
     }
 
     switch ($response->status) {

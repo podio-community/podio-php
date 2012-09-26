@@ -2,3 +2,4 @@
 docs/*
 examples/config.php
 utils/config.php
+log/*
