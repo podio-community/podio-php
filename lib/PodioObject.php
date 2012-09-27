@@ -1,9 +1,9 @@
 <?php
 class PodioObject {
-  public $attributes;
+  public $attributes = array();
   public $belongs_to;
-  protected $properties;
-  protected $relationships;
+  protected $properties = array();
+  protected $relationships = array();
   protected $podio;
   protected $id_column;
 
@@ -174,9 +174,6 @@ class PodioObject {
 
   // Define a property on this object
   public function property($name, $type, $options = array()) {
-    if (!$this->properties) {
-      $this->properties = array();
-    }
     if (!$this->has_property($name)) {
       $this->properties[$name] = array('type' => $type, 'options' => $options);
     }
@@ -184,9 +181,6 @@ class PodioObject {
 
   public function has_one($name, $class_name) {
     $this->property($name, $class_name);
-    if (!$this->relationships) {
-      $this->relationships = array();
-    }
     if (!$this->has_relationship($name)) {
       $this->relationships[$name] = 'has_one';
     }
@@ -194,21 +188,51 @@ class PodioObject {
 
   public function has_many($name, $class_name) {
     $this->property($name, $class_name);
-    if (!$this->relationships) {
-      $this->relationships = array();
-    }
     if (!$this->has_relationship($name)) {
       $this->relationships[$name] = 'has_many';
     }
   }
 
-  public function as_json() {
-    // Loop over properties/attributes
-    // Loop over relationships, recursively
-  }
+  public function as_json($encoded = true) {
 
-  // TODO: delegate_to_hash
-  // TODO: as_json() so we can do $item_instance->create()
-  // Improve debug mode
+
+    // TODO: Handle datetime objects
+    // TODO: Handle case where API sends one value when reading, but expects different value when writing
+
+
+
+    $result = array();
+    foreach ($this->properties as $name => $property) {
+      if (!$this->has_relationship($name) && $this->has_attribute($name) && !is_null($this->attributes[$name])) {
+        $result[$name] = $this->attributes[$name];
+      }
+    }
+    foreach ($this->relationships as $name => $type) {
+      if ($type == 'has_one') {
+        if ($this->has_attribute($name)) {
+          $child = $this->attributes[$name]->as_json(false);
+          if ($child) {
+            $result[$name] = $child;
+          }
+        }
+      }
+      elseif ($type == 'has_many') {
+        if ($this->has_attribute($name)) {
+          $list = array();
+          foreach ($this->attributes[$name] as $item) {
+            $list[] = $item->as_json(false);
+          }
+          if ($list) {
+            $result[$name] = $list;
+          }
+        }
+      }
+    }
+
+    if ($result) {
+      return $encoded ? json_encode($result) : $result;
+    }
+    return null;
+  }
 
 }

@@ -40,6 +40,15 @@ class PodioTask extends PodioObject {
     $this->init($attributes);
   }
 
+  public function save() {
+    if ($this->id) {
+      self::update($this->id, $this);
+    }
+    else {
+      $this->id = self::create($this);
+    }
+  }
+
   /**
    * @see https://developers.podio.com/doc/tasks/create-task-22419
    */

@@ -64,6 +64,11 @@ class Podio {
     unset(self::$headers['Content-length']);
     $original_url = $url;
     $encoded_attributes = null;
+
+    if (is_object($attributes)) {
+      $attributes = $attributes->as_json(false);
+    }
+
     switch ($method) {
       case self::GET:
         curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::GET);
