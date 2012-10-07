@@ -30,8 +30,7 @@ class PodioSubscription extends PodioObject {
    * @see https://developers.podio.com/doc/subscriptions/subscribe-22409
    */
   public static function create($ref_type, $ref_id) {
-    $body = Podio::post("/subscription/{$ref_type}/{$ref_id}")->json_body();
-    return $body['subscription_id'];
+    return Podio::post("/subscription/{$ref_type}/{$ref_id}")->json_body();
   }
 
   /**
