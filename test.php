@@ -33,9 +33,11 @@ try {
 
   // print $task->as_json();
 
-  $task->text = 'updated: '.gmmktime();
+  // $task->text = 'updated: '.gmmktime();
 
-  $task->save();
+  // $task->save();
+
+  $task->incompleted();
 
   print "\n\n";
 
