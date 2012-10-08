@@ -21,18 +21,23 @@ try {
   // print "Created {$hook_id}\n";
   // PodioHook::delete(14303);
 
-  $task = PodioTask::get(4001230);
+  $task = PodioTask::get(4379662);
 
   // var_dump($task->attributes['due_date']);
   // var_dump($task->due_date);
   // var_dump($task->attributes['due_time']);
   // var_dump($task->due_time);
 
+  // var_dump($task->attributes['files'][0]->file_id);
+
+
   // print $task->as_json();
 
   $task->text = 'updated: '.gmmktime();
 
   $task->save();
+
+  print "\n\n";
 
 }
 catch (PodioError $e) {

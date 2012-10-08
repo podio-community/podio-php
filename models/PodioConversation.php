@@ -10,19 +10,15 @@ class PodioConversation extends PodioObject {
     // Creating conversations
     $this->property('text', 'string');
     $this->property('participants', 'array');
-    $this->property('file_ids', 'array');
-    $this->property('embed_id', 'integer');
-    $this->property('embed_file_id', 'integer');
-
 
     // Getting conversations
     $this->property('created_on', 'datetime');
 
     $this->has_one('ref', 'Reference');
-    $this->has_one('embed', 'Embed');
-    $this->has_one('embed_file', 'File');
+    $this->has_one('embed', 'Embed', array('json_value' => 'embed_id', 'json_target' => 'embed_id'));
+    $this->has_one('embed_file', 'File', array('json_value' => 'file_id', 'json_target' => 'embed_file_id'));
     $this->has_one('created_by', 'ByLine');
-    $this->has_many('files', 'File');
+    $this->has_many('files', 'File', array('json_value' => 'file_id', 'json_target' => 'file_ids'));
     $this->has_many('messages', 'ConversationMessage');
     $this->has_many('participants_full', 'ConversationParticipant');
 

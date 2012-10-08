@@ -19,22 +19,17 @@ class PodioTask extends PodioObject {
     $this->property('completed_on', 'datetime');
     $this->property('external_id', 'string');
 
-    // For creating tasks
-    $this->property('file_ids', 'array');
-    $this->property('label_ids', 'array');
-    $this->property('labels', 'array');
-
     $this->has_one('ref', 'Reference');
     $this->has_one('created_by', 'ByLine');
     $this->has_one('completed_by', 'ByLine');
     $this->has_one('created_via', 'Via');
     $this->has_one('deleted_via', 'Via');
     $this->has_one('completed_via', 'Via');
-    $this->has_one('responsible', 'User');
+    $this->has_one('responsible', 'User', array('json_value' => 'user_id'));
     $this->has_one('reminder', 'Reminder');
     $this->has_one('recurrence', 'Recurrence');
-    $this->has_many('labels', 'TaskLabel');
-    $this->has_many('files', 'File');
+    $this->has_many('labels', 'TaskLabel', array('json_value' => 'label_id', 'json_target' => 'label_ids'));
+    $this->has_many('files', 'File', array('json_value' => 'file_id', 'json_target' => 'file_ids'));
     $this->has_many('comments', 'Comment');
 
     $this->init($attributes);

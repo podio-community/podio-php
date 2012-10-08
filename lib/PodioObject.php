@@ -2,8 +2,8 @@
 class PodioObject {
   public $attributes = array();
   public $belongs_to;
-  protected $properties = array();
-  protected $relationships = array();
+  public $properties = array();
+  public $relationships = array();
   protected $podio;
   protected $id_column;
 
@@ -34,7 +34,7 @@ class PodioObject {
           elseif ($type == 'has_many' && is_array($default_attributes[$name])) {
             $values = array();
             foreach ($default_attributes[$name] as $value) {
-              $values[] = new $class_name($default_attributes[$name]);
+              $values[] = new $class_name($value);
             }
             $this->set_attribute($name, $values);
           }
@@ -179,28 +179,21 @@ class PodioObject {
     }
   }
 
-  public function has_one($name, $class_name) {
-    $this->property($name, $class_name);
+  public function has_one($name, $class_name, $options = array()) {
+    $this->property($name, $class_name, $options);
     if (!$this->has_relationship($name)) {
       $this->relationships[$name] = 'has_one';
     }
   }
 
-  public function has_many($name, $class_name) {
-    $this->property($name, $class_name);
+  public function has_many($name, $class_name, $options = array()) {
+    $this->property($name, $class_name, $options);
     if (!$this->has_relationship($name)) {
       $this->relationships[$name] = 'has_many';
     }
   }
 
   public function as_json($encoded = true) {
-
-
-    // TODO: Handle datetime objects
-    // TODO: Handle case where API sends one value when reading, but expects different value when writing
-
-
-
     $result = array();
     foreach ($this->properties as $name => $property) {
       if (!$this->has_relationship($name) && $this->has_attribute($name) && !is_null($this->attributes[$name])) {
@@ -209,10 +202,24 @@ class PodioObject {
     }
     foreach ($this->relationships as $name => $type) {
       if ($type == 'has_one') {
+        $target_name = $name;
+        if ($this->properties[$name]['options']['json_target']) {
+          $target_name = $this->properties[$name]['options']['json_target'];
+        }
+
         if ($this->has_attribute($name)) {
-          $child = $this->attributes[$name]->as_json(false);
-          if ($child) {
-            $result[$name] = $child;
+          if ($this->properties[$name]['options']['json_value']) {
+            $result[$target_name] = $this->attributes[$name]->{$this->properties[$name]['options']['json_value']};
+          }
+          elseif (is_object($this->attributes[$name]) && get_class($this->attributes[$name]) == 'PodioReference') {
+            $result['ref_type'] = $this->attributes[$name]->type;
+            $result['ref_id'] = $this->attributes[$name]->id;
+          }
+          else {
+            $child = $this->attributes[$name]->as_json(false);
+            if ($child) {
+              $result[$target_name] = $child;
+            }
           }
         }
       }
@@ -220,10 +227,20 @@ class PodioObject {
         if ($this->has_attribute($name)) {
           $list = array();
           foreach ($this->attributes[$name] as $item) {
-            $list[] = $item->as_json(false);
+            if ($this->properties[$name]['options']['json_value']) {
+              $list[] = $item->{$this->properties[$name]['options']['json_value']};
+            }
+            else {
+              $list[] = $item->as_json(false);
+            }
           }
           if ($list) {
-            $result[$name] = $list;
+            if ($this->properties[$name]['options']['json_target']) {
+              $result[$this->properties[$name]['options']['json_target']] = join(',', $list);
+            }
+            else {
+              $result[$name] = $list;
+            }
           }
         }
       }

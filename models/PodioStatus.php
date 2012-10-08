@@ -13,20 +13,15 @@ class PodioStatus extends PodioObject {
     $this->property('user_ratings', 'hash');
     $this->property('created_on', 'datetime');
 
-    // Properties for creating
-    $this->property('file_ids', 'array');
-    $this->property('embed_id', 'integer');
-    $this->property('embed_file_id', 'integer');
-
     $this->has_one('created_by', 'ByLine');
     $this->has_one('created_via', 'Via');
-    $this->has_one('embed', 'Embed');
-    $this->has_one('embed_file', 'File');
+    $this->has_one('embed', 'Embed', array('json_value' => 'embed_id', 'json_target' => 'embed_id'));
+    $this->has_one('embed_file', 'File', array('json_value' => 'file_id', 'json_target' => 'embed_file_id'));
     $this->has_many('comments', 'Comment');
     $this->has_many('conversations', 'Conversation');
     $this->has_many('tasks', 'Task');
     $this->has_many('shares', 'AppMarketShare');
-    $this->has_many('files', 'File');
+    $this->has_many('files', 'File', array('json_value' => 'file_id', 'json_target' => 'file_ids'));
     $this->has_many('questions', 'Question');
 
     $this->init($attributes);

@@ -34,13 +34,10 @@ class PodioItem extends PodioObject {
     $this->has_one('recurrence', 'Recurrence');
     $this->has_many('comments', 'Comment');
     $this->has_many('revisions', 'ItemRevision');
-    $this->has_many('files', 'File');
+    $this->has_many('files', 'File', array('json_value' => 'file_id', 'json_target' => 'file_ids'));
     $this->has_many('tasks', 'Task');
     $this->has_many('shares', 'AppMarketShare');
     $this->has_many('linked_account_data', 'LinkedAccountData');
-
-    # For creating items
-    $this->property('file_ids', 'array');
 
     # When getting item collection
     $this->property('comment_count', 'integer');

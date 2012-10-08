@@ -10,17 +10,14 @@ class PodioComment extends PodioObject {
     $this->property('external_id', 'integer');
     $this->property('space_id', 'integer');
     $this->property('created_on', 'datetime');
-    $this->property('file_ids', 'array'); // When creating comments
-    $this->property('embed_id', 'integer'); // When creating comments
-    $this->property('embed_file_id', 'integer'); // When creating comments
 
     $this->has_one('created_by', 'ByLine');
     $this->has_one('created_via', 'Via');
-    $this->has_one('embed', 'Embed');
-    $this->has_one('embed_file', 'File');
     $this->has_one('ref', 'Reference');
 
-    $this->has_many('files', 'File');
+    $this->has_one('embed', 'Embed', array('json_value' => 'embed_id', 'json_target' => 'embed_id'));
+    $this->has_one('embed_file', 'File', array('json_value' => 'file_id', 'json_target' => 'embed_file_id'));
+    $this->has_many('files', 'File', array('json_value' => 'file_id', 'json_target' => 'file_ids'));
     $this->has_many('questions', 'Question');
 
     $this->init($attributes);
