@@ -14,6 +14,40 @@ class PodioItemField extends PodioObject {
     $this->init($attributes);
   }
 
+  public function api_friendly_values() {
+    if (!$this->values) {
+      return null;
+    }
+    switch ($this->type) {
+      case 'contact':
+      case 'app':
+      case 'image':
+      case 'question':
+      case 'category':
+      case 'video':
+      case 'file':
+        // Array of ints
+        $list = array();
+        foreach ($this->values as $value) {
+
+        }
+        break;
+      case 'embed':
+        break;
+      case 'text':
+      case 'number':
+      case 'money':
+      case 'date':
+      case 'progress':
+      case 'state':
+      case 'duration':
+      case 'location':
+      default:
+        return $this->values[0];
+        break;
+    }
+  }
+
   /**
    * @see https://developers.podio.com/doc/items/update-item-field-values-22367
    */
