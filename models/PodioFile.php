@@ -64,7 +64,12 @@ class PodioFile extends PodioObject {
    * @see https://developers.podio.com/doc/files/attach-file-22518
    */
   public static function attach($file_id, $attributes = array()) {
-    return Podio::post("/file/{$file_id}/attach", $attributes);
+    $url = "/file/{$file_id}/attach";
+    if (isset($attributes['silent']) && $attributes['silent'] == 1) {
+      $url .= '?silent=1';
+      unset($attributes['silent']);
+    }
+    return Podio::post($url, $attributes);
   }
 
   /**
