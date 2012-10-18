@@ -49,8 +49,15 @@ class PodioItem extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/items/get-item-22360
    */
-  public static function get($item_id, $attributes = array()) {
-    return self::member(Podio::get("/item/{$item_id}", $attributes));
+  public static function get($item_id) {
+    return self::member(Podio::get("/item/{$item_id}"));
+  }
+
+  /**
+   * @see https://developers.podio.com/doc/items/get-item-by-external-id-19556702
+   */
+  public static function get_by_external_id($app_id, $external_id) {
+    return self::member(Podio::get("/item/app/{$app_id}/external_id/{$external_id}"));
   }
 
   /**
