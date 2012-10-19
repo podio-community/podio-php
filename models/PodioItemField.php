@@ -14,25 +14,51 @@ class PodioItemField extends PodioObject {
     $this->init($attributes);
   }
 
+  /**
+   * Returns API friendly values for item field for use when saving item
+   */
   public function api_friendly_values() {
     if (!$this->values) {
       return null;
     }
     switch ($this->type) {
-      case 'contact':
-      case 'app':
-      case 'image':
-      case 'question':
-      case 'category':
-      case 'video':
-      case 'file':
-        // Array of ints
+      case 'contact': // profile_id
+      case 'app': // item_id
+      case 'question': // id
+      case 'category': //id
+      case 'image': // file_id
+      case 'video': // file_id
+      case 'file': // file_id
         $list = array();
         foreach ($this->values as $value) {
-
+          if (!empty($value['value']['id'])) {
+            $list[] = $value['value']['id'];
+          }
+          elseif (!empty($value['value']['file_id'])) {
+            $list[] = $value['value']['file_id'];
+          }
+          elseif (!empty($value['value']['item_id'])) {
+            $list[] = $value['value']['item_id'];
+          }
+          elseif (!empty($value['value']['profile_id'])) {
+            $list[] = $value['value']['profile_id'];
+          }
         }
+        return $list;
         break;
       case 'embed':
+        $list = array();
+        foreach ($this->values as $value) {
+          $list[] = array('embed' => $value['embed']['embed_id'], 'file' => $value['file']['file_id']);
+        }
+        return $list;
+        break;
+      case 'location':
+        $list = array();
+        foreach ($this->values as $value) {
+          $list[] = $value['value'];
+        }
+        return $list;
         break;
       case 'text':
       case 'number':
@@ -41,9 +67,8 @@ class PodioItemField extends PodioObject {
       case 'progress':
       case 'state':
       case 'duration':
-      case 'location':
       default:
-        return $this->values[0];
+        return $this->values[0]['value'];
         break;
     }
   }

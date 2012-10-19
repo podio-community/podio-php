@@ -2,7 +2,7 @@
 /**
  * @see https://developers.podio.com/doc/applications
  */
-class PodioApp extends PodioObject {
+class PodioApp extends PodioSuperApp {
   public function __construct($attributes = array()) {
     $this->property('app_id', 'integer', array('id' => true));
     $this->property('original', 'integer');

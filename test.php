@@ -16,28 +16,11 @@ try {
   Podio::authenticate('password', array('username' => USERNAME, 'password' => PASSWORD));
   print "You have been authenticated. Wee!\n";
 
-  // $my_hooks = PodioHook::get('app', 233463);
-  // $hook_id = PodioHook::create('app', 233463, array('url' => 'http://example.com/', 'type' => 'item.create'));
-  // print "Created {$hook_id}\n";
-  // PodioHook::delete(14303);
+  // $item = PodioItem::get(20109397);
+  // print $item->field('varighed');
 
-  $task = PodioTask::get(4379662);
-
-  // var_dump($task->attributes['due_date']);
-  // var_dump($task->due_date);
-  // var_dump($task->attributes['due_time']);
-  // var_dump($task->due_time);
-
-  // var_dump($task->attributes['files'][0]->file_id);
-
-
-  // print $task->as_json();
-
-  // $task->text = 'updated: '.gmmktime();
-
-  // $task->save();
-
-  $task->incompleted();
+  $app = PodioApp::get(2395065);
+  print_r($app->fields_of_type('progress'));
 
   print "\n\n";
 
