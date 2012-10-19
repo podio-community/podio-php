@@ -32,18 +32,37 @@ class PodioItem extends PodioSuperApp {
     $this->has_one('ref', 'Reference');
     $this->has_one('reminder', 'Reminder');
     $this->has_one('recurrence', 'Recurrence');
+    $this->has_one('linked_account_data', 'LinkedAccountData');
     $this->has_many('comments', 'Comment');
     $this->has_many('revisions', 'ItemRevision');
     $this->has_many('files', 'File', array('json_value' => 'file_id', 'json_target' => 'file_ids'));
     $this->has_many('tasks', 'Task');
     $this->has_many('shares', 'AppMarketShare');
-    $this->has_many('linked_account_data', 'LinkedAccountData');
 
     # When getting item collection
     $this->property('comment_count', 'integer');
     $this->property('task_count', 'integer');
 
     $this->init($attributes);
+  }
+
+  /**
+   * Create or updates an item
+   */
+  public function save() {
+    if ($this->id) {
+      return self::update($this->id, $this);
+    }
+    else {
+      return $this->id = self::create($this);
+    }
+  }
+
+  /**
+   * Call for generating json for item fields.
+   */
+  public function fields_json($encoded = true) {
+    return array('FIELDS_JSON');
   }
 
   /**

@@ -16,11 +16,12 @@ try {
   Podio::authenticate('password', array('username' => USERNAME, 'password' => PASSWORD));
   print "You have been authenticated. Wee!\n";
 
-  // $item = PodioItem::get(20109397);
-  // print $item->field('varighed');
+  $item = PodioItem::get(20109397);
+  $item->field('kategori')->save(true);
 
-  $app = PodioApp::get(2395065);
-  print_r($app->fields_of_type('progress'));
+
+  // $app = PodioApp::get(2395065);
+  // print_r($app->fields_of_type('progress'));
 
   print "\n\n";
 

@@ -34,7 +34,9 @@ class PodioObject {
           elseif ($type == 'has_many' && is_array($default_attributes[$name])) {
             $values = array();
             foreach ($default_attributes[$name] as $value) {
-              $values[] = new $class_name($value);
+              $child = new $class_name($value);
+              $child->belongs_to = array('property' => $name, 'instance' => $this);
+              $values[] = $child;
             }
             $this->set_attribute($name, $values);
           }
@@ -203,12 +205,12 @@ class PodioObject {
     foreach ($this->relationships as $name => $type) {
       if ($type == 'has_one') {
         $target_name = $name;
-        if ($this->properties[$name]['options']['json_target']) {
+        if (!empty($this->properties[$name]['options']['json_target'])) {
           $target_name = $this->properties[$name]['options']['json_target'];
         }
 
         if ($this->has_attribute($name)) {
-          if ($this->properties[$name]['options']['json_value']) {
+          if (!empty($this->properties[$name]['options']['json_value'])) {
             $result[$target_name] = $this->attributes[$name]->{$this->properties[$name]['options']['json_value']};
           }
           elseif (is_object($this->attributes[$name]) && get_class($this->attributes[$name]) == 'PodioReference') {
@@ -226,20 +228,31 @@ class PodioObject {
       elseif ($type == 'has_many') {
         if ($this->has_attribute($name)) {
           $list = array();
-          foreach ($this->attributes[$name] as $item) {
-            if ($this->properties[$name]['options']['json_value']) {
-              $list[] = $item->{$this->properties[$name]['options']['json_value']};
+
+          // ItemField is a special case.
+          if ($this->properties[$name]['type'] == 'ItemField') {
+            foreach ($this->attributes[$name] as $item) {
+              $key = $item->external_id ? $item->external_id : $item->id;
+              $list[$key] = $item->as_json(false);
             }
-            else {
-              $list[] = $item->as_json(false);
-            }
+            $result[$name] = $list;
           }
-          if ($list) {
-            if ($this->properties[$name]['options']['json_target']) {
-              $result[$this->properties[$name]['options']['json_target']] = join(',', $list);
+          else {
+            foreach ($this->attributes[$name] as $item) {
+              if (!empty($this->properties[$name]['options']['json_value'])) {
+                $list[] = $item->{$this->properties[$name]['options']['json_value']};
+              }
+              else {
+                $list[] = $item->as_json(false);
+              }
             }
-            else {
-              $result[$name] = $list;
+            if ($list) {
+              if (!empty($this->properties[$name]['options']['json_target'])) {
+                $result[$this->properties[$name]['options']['json_target']] = join(',', $list);
+              }
+              else {
+                $result[$name] = $list;
+              }
             }
           }
         }

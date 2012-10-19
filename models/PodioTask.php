@@ -35,6 +35,9 @@ class PodioTask extends PodioObject {
     $this->init($attributes);
   }
 
+  /**
+   * Creates or updates a task
+   */
   public function save() {
     if ($this->id) {
       return self::update($this->id, $this);
@@ -44,14 +47,23 @@ class PodioTask extends PodioObject {
     }
   }
 
+  /**
+   * Complete a task
+   */
   public function completed() {
     return self::complete($this->id);
   }
 
+  /**
+   * Incomplete a task
+   */
   public function incompleted() {
     return self::incomplete($this->id);
   }
 
+  /**
+   * Delete a task
+   */
   public function destroy() {
     return self::delete($this->id);
   }
