@@ -89,7 +89,6 @@ All unsuccessful responses returned by the API (everything that has a 4xx or 5xx
     Podio::authenticate('password', array('username' => $username, 'password' => $password));
 
     // Upload file
-    $file = $api->file->upload('/path/to/myimage.png', 'myimage.png');
     $file_id = PodioFile::upload('/path/to/myimage.png', 'myimage.png');
 
     // Post status message
