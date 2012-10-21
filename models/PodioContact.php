@@ -4,7 +4,7 @@
  */
 class PodioContact extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('profile_id');
+    $this->property('profile_id', 'integer');
     $this->property('user_id', 'integer');
     $this->property('name', 'string');
     $this->property('avatar', 'integer');
