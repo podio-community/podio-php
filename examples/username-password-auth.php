@@ -23,22 +23,23 @@ configuration and then run this file in your browser.
 
   // Setup the API client reference. Client ID and Client Secrets are defined
   // as constants in config.php
-  $api = Podio::instance(CLIENT_ID, CLIENT_SECRET);
+  Podio::setup(CLIENT_ID, CLIENT_SECRET);
 
   // Authenticate using your username and password. Both are defined as constants
   // in config.php
 
   // We wrap the authentication attempt in a try...catch block to catch any problems
   try {
-    $api->authenticate('password', array('username' => USERNAME, 'password' => PASSWORD));
+    Podio::authenticate('password', array('username' => USERNAME, 'password' => PASSWORD));
     print "You have been authenticated. Wee!<br>";
-    print "Your access token is {$api->oauth->access_token}<br><br>";
+    $access_token = Podio::$oauth->access_token;
+    print "Your access token is {$access_token}<br><br>";
     print "Hang onto this access token along with the refresh token (store them in a session or similar) so you don't have to re-authenticate for every request.<br><br>";
 
     // Now you can start making API calls. E.g. get your user status
-    $status = $api->user->getStatus();
+    $status = PodioUserStatus::get();
+    print "Your user id is <b>{$status->user->id}</b> and you have <b>{$status->inbox_new}</b> unread messages in your inbox.<br><br>";
 
-    print "Your user id is <b>{$status['user']['user_id']}</b> and you have <b>{$status['inbox_new']}</b> unread messages in your inbox.<br><br>";
   }
   catch (PodioError $e) {
     print "There was an error. The API responded with the error type <b>{$e->body['error']}</b> and the message <b>{$e->body['error_description']}</b><br>";
