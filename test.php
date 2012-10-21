@@ -17,7 +17,8 @@ try {
   print "You have been authenticated. Wee!\n";
 
   $item = PodioItem::get(20109397);
-  $item->field('kategori')->save(true);
+  print $item->field('datovaelger')->humanized_value();
+  print "\n";
 
 
   // $app = PodioApp::get(2395065);

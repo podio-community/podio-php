@@ -111,6 +111,7 @@ class PodioItemField extends PodioObject {
         case 'progress':
         case 'state':
         case 'duration':
+        case 'calculation':
         default:
           $this->attributes['values'] = array(array('value' => $values));
           break;
@@ -173,8 +174,125 @@ class PodioItemField extends PodioObject {
       case 'progress':
       case 'state':
       case 'duration':
+      case 'calculation':
       default:
         return $this->values;
+        break;
+    }
+  }
+
+  /**
+   * Displays a human-friendly value for the field
+   */
+  public function humanized_value() {
+    if (!$this->values || sizeof($this->values) == 0) {
+      return '';
+    }
+    switch ($this->type) {
+      case 'question':
+      case 'category':
+        return join('; ', array_map(function($value){
+            return $value['value']['text'];
+          }, $this->attributes['values']));
+        break;
+      case 'image':
+      case 'video':
+      case 'file':
+      case 'contact':
+        return join('; ', array_map(function($value){
+          return $value['value']['name'];
+        }, $this->attributes['values']));
+        break;
+      case 'app':
+        return join('; ', array_map(function($value){
+          return $value['value']['title'];
+        }, $this->attributes['values']));
+        break;
+      case 'embed':
+        return join('; ', array_map(function($value){
+          return $value['embed']['original_url'];
+        }, $this->attributes['values']));
+        break;
+      case 'location':
+        return join('; ', array_map(function($value){
+                  return $value['value'];
+                }, $this->attributes['values']));
+        break;
+      case 'date':
+        $value = $this->attributes['values'][0];
+        // Remove seconds from start and end times since they are always '00' anyway.
+        if (!empty($value['start_time'])) {
+          $value['start_time'] = substr($value['start_time'], 0, strrpos($value['start_time'], ':'));
+        }
+        if (!empty($value['end_time'])) {
+          $value['end_time'] = substr($value['end_time'], 0, strrpos($value['end_time'], ':'));
+        }
+        // Variants:
+
+        // Same date
+        // 2012-12-12
+        // 2012-12-12 14:00
+        // 2012-12-12 14:00 - 15:00
+
+        // Different dates
+        // 2012-12-12 - 2012-12-14
+        // 2012-12-12 14:00 - 2012-12-14
+        // 2012-12-12 14:00 - 2012-12-12 15:00
+
+        if (empty($value['end_date']) || $value['start_date'] == $value['end_date']) {
+          if (!empty($value['start_time']) && !empty($value['end_time']) && $value['start_time'] != $value['end_time']) {
+            return "{$value['start_date']} {$value['start_time']}-{$value['end_time']}";
+          }
+          elseif (!empty($value['start_time']) && (empty($value['end_time']) || $value['start_time'] == $value['end_time'])) {
+            return "{$value['start_date']} {$value['start_time']}";
+          }
+          else {
+            return "{$value['start_date']}";
+          }
+        }
+        else {
+          if (!empty($value['start_time']) && !empty($value['end_time']) && $value['end_time'] != '00:00') {
+            return "{$value['start_date']} {$value['start_time']} - {$value['end_date']} {$value['end_time']}";
+          }
+          elseif (!empty($value['end_time']) || $value['end_time'] == '00:00') {
+            return "{$value['start_date']} {$value['start_time']} - {$value['end_date']}";
+          }
+          else {
+            return "{$value['start_date']} - {$value['end_date']}";
+          }
+        }
+        break;
+      case 'progress':
+        return $this->attributes['values'][0]['value'].'%';
+        break;
+      case 'money':
+        $amount = number_format($this->attributes['values'][0]['value'], 2, '.', '');
+          switch ($this->attributes['values'][0]['currency']) {
+            case 'USD':
+              $currency = '$';
+            case 'EUR':
+              $currency = '€';
+              break;
+            case 'GBP':
+              $currency = '£';
+              break;
+            default:
+              $currency = $this->attributes['values'][0]['currency'].' ';
+              break;
+          }
+          return $currency.$amount;
+        break;
+      case 'number':
+      case 'calculation':
+        return rtrim(rtrim(number_format($this->attributes['values'][0]['value'], 4, '.', ''), '0'), '.');
+        break;
+      case 'text':
+        return strip_tags($this->attributes['values'][0]['value']);
+        break;
+      case 'state':
+      case 'duration':
+      default:
+        return $this->attributes['values'][0]['value'];
         break;
     }
   }
