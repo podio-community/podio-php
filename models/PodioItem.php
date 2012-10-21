@@ -59,13 +59,6 @@ class PodioItem extends PodioSuperApp {
   }
 
   /**
-   * Call for generating json for item fields.
-   */
-  public function fields_json($encoded = true) {
-    return array('FIELDS_JSON');
-  }
-
-  /**
    * @see https://developers.podio.com/doc/items/get-item-22360
    */
   public static function get($item_id) {
