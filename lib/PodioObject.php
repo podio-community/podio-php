@@ -34,9 +34,20 @@ class PodioObject {
           elseif ($type == 'has_many' && is_array($default_attributes[$name])) {
             $values = array();
             foreach ($default_attributes[$name] as $value) {
+
+              // ItemField has special handling since we want to create objects of the sub-types.
+              if ($class_name == 'PodioItemField') {
+                $class_name_alternate = 'Podio'.ucfirst($value['type']).'ItemField';
+                if (class_exists($class_name_alternate)) {
+                  $class_name = $class_name_alternate;
+                }
+              }
+
               $child = new $class_name($value);
               $child->belongs_to = array('property' => $name, 'instance' => $this);
               $values[] = $child;
+
+              $class_name = 'PodioItemField';
             }
             $this->set_attribute($name, $values);
           }

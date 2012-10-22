@@ -17,12 +17,15 @@ try {
   print "You have been authenticated. Wee!\n";
 
   $item = PodioItem::get(20109397);
-  print $item->field('datovaelger')->humanized_value();
+  print get_class($item->field('belob'));
   print "\n";
 
 
   // $app = PodioApp::get(2395065);
   // print_r($app->fields_of_type('progress'));
+
+  // $item = PodioItem::get(20109397);
+  // $item->field('titel')->set_value('My new title')->save();
 
   print "\n\n";
 

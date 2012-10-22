@@ -43,7 +43,7 @@ class PodioItemField extends PodioObject {
    */
   public function set_value($values) {
     if (!$values) {
-      $this->attributes['values'] = array();
+      $this->values = array();
     }
     else {
       switch ($this->type) {
@@ -78,16 +78,16 @@ class PodioItemField extends PodioObject {
               $list[] = array('value' => $value);
             }
           }
-          $this->attributes['values'] = $list;
+          $this->values = $list;
           break;
         case 'embed':
           if (!isset($values['embed'])) {
             // Multiple values
-            $this->attributes['values'] = $values;
+            $this->values = $values;
           }
           else {
             // Single value
-            $this->attributes['values'] = array($values);
+            $this->values = array($values);
           }
           break;
         case 'location':
@@ -95,14 +95,14 @@ class PodioItemField extends PodioObject {
             $formatted_values = array_map(function($value){
               return array('value' => $value);
             }, $values);
-            $this->attributes['values'] = $formatted_values;
+            $this->values = $formatted_values;
           }
           else {
-            $this->attributes['values'] = array(array('value' => $values));
+            $this->values = array(array('value' => $values));
           }
           break;
         case 'date':
-          $this->attributes['values'] = array($values);
+          $this->values = array($values);
           break;
         // Fields without multiple values
         case 'text':
@@ -113,7 +113,7 @@ class PodioItemField extends PodioObject {
         case 'duration':
         case 'calculation':
         default:
-          $this->attributes['values'] = array(array('value' => $values));
+          $this->values = array(array('value' => $values));
           break;
       }
     }
@@ -193,7 +193,7 @@ class PodioItemField extends PodioObject {
       case 'category':
         return join('; ', array_map(function($value){
             return $value['value']['text'];
-          }, $this->attributes['values']));
+          }, $this->values));
         break;
       case 'image':
       case 'video':
@@ -201,25 +201,25 @@ class PodioItemField extends PodioObject {
       case 'contact':
         return join('; ', array_map(function($value){
           return $value['value']['name'];
-        }, $this->attributes['values']));
+        }, $this->values));
         break;
       case 'app':
         return join('; ', array_map(function($value){
           return $value['value']['title'];
-        }, $this->attributes['values']));
+        }, $this->values));
         break;
       case 'embed':
         return join('; ', array_map(function($value){
           return $value['embed']['original_url'];
-        }, $this->attributes['values']));
+        }, $this->values));
         break;
       case 'location':
         return join('; ', array_map(function($value){
                   return $value['value'];
-                }, $this->attributes['values']));
+                }, $this->values));
         break;
       case 'date':
-        $value = $this->attributes['values'][0];
+        $value = $this->values[0];
         // Remove seconds from start and end times since they are always '00' anyway.
         if (!empty($value['start_time'])) {
           $value['start_time'] = substr($value['start_time'], 0, strrpos($value['start_time'], ':'));
@@ -263,11 +263,11 @@ class PodioItemField extends PodioObject {
         }
         break;
       case 'progress':
-        return $this->attributes['values'][0]['value'].'%';
+        return $this->values[0]['value'].'%';
         break;
       case 'money':
-        $amount = number_format($this->attributes['values'][0]['value'], 2, '.', '');
-          switch ($this->attributes['values'][0]['currency']) {
+        $amount = number_format($this->values[0]['value'], 2, '.', '');
+          switch ($this->values[0]['currency']) {
             case 'USD':
               $currency = '$';
             case 'EUR':
@@ -277,22 +277,22 @@ class PodioItemField extends PodioObject {
               $currency = '£';
               break;
             default:
-              $currency = $this->attributes['values'][0]['currency'].' ';
+              $currency = $this->values[0]['currency'].' ';
               break;
           }
           return $currency.$amount;
         break;
       case 'number':
       case 'calculation':
-        return rtrim(rtrim(number_format($this->attributes['values'][0]['value'], 4, '.', ''), '0'), '.');
+        return rtrim(rtrim(number_format($this->values[0]['value'], 4, '.', ''), '0'), '.');
         break;
       case 'text':
-        return strip_tags($this->attributes['values'][0]['value']);
+        return strip_tags($this->values[0]['value']);
         break;
       case 'state':
       case 'duration':
       default:
-        return $this->attributes['values'][0]['value'];
+        return $this->values[0]['value'];
         break;
     }
   }
@@ -323,4 +323,31 @@ class PodioItemField extends PodioObject {
     return Podio::get("/calendar/item/{$item_id}/field/{$field_id}/ics/")->body;
   }
 
+}
+
+class PodioTextItemField extends PodioItemField {}
+class PodioEmbedItemField extends PodioItemField {}
+class PodioLocationItemField extends PodioItemField {}
+class PodioDateItemField extends PodioItemField {}
+class PodioContactItemField extends PodioItemField {}
+class PodioAppItemField extends PodioItemField {}
+class PodioQuestionItemField extends PodioItemField {}
+class PodioCategoryItemField extends PodioItemField {}
+class PodioImageItemField extends PodioItemField {}
+class PodioVideoItemField extends PodioItemField {}
+class PodioFileItemField extends PodioItemField {}
+class PodioNumberItemField extends PodioItemField {}
+class PodioProgressItemField extends PodioItemField {}
+class PodioStateItemField extends PodioItemField {}
+class PodioDurationItemField extends PodioItemField {}
+class PodioCalculationItemField extends PodioItemField {}
+class PodioMoneyItemField extends PodioItemField {
+  public function currency() {
+    if (!empty($this->values)) {
+      return $this->values[0]['currency'];
+    }
+  }
+  public function set_currency($currency) {
+    $this->set_attribute('values', array(array('currency' => $currency, 'value' => $this->values[0]['value'])));
+  }
 }
