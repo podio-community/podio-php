@@ -17,9 +17,8 @@ try {
   print "You have been authenticated. Wee!\n";
 
   $item = PodioItem::get(20109397);
-  print get_class($item->field('belob'));
+  print $item->field('kontakt')->humanized_value();
   print "\n";
-
 
   // $app = PodioApp::get(2395065);
   // print_r($app->fields_of_type('progress'));
