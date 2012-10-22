@@ -1,7 +1,7 @@
 <?php
 
 class Podio {
-  public static $oauth, $debug, $logger;
+  public static $oauth, $debug, $logger, $session_manager;
   protected static $url, $client_id, $client_secret, $secret, $ch, $headers;
 
   const GET = 'GET';
@@ -9,10 +9,12 @@ class Podio {
   const PUT = 'PUT';
   const DELETE = 'DELETE';
 
-  public static function setup($client_id, $client_secret) {
+  public static function setup($client_id, $client_secret, $options = array('session_manager' => 'PodioSession')) {
+    // Setup client info
     self::$client_id = $client_id;
     self::$client_secret = $client_secret;
 
+    // Setup curl
     self::$url = 'https://api.podio.com:443';
     self::$debug = false;
     self::$ch = curl_init();
@@ -24,6 +26,13 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/2.0');
 
+    self::$session_manager = null;
+    if ($options['session_manager'] && class_exists($options['session_manager'])) {
+      self::$session_manager = new $options['session_manager'];
+      self::$oauth = self::$session_manager->get();
+    }
+
+    // Register shutdown function for debugging and session management
     register_shutdown_function('Podio::shutdown');
   }
 
@@ -247,6 +256,12 @@ class Podio {
   }
 
   public function shutdown() {
+    // Write any new access and refresh tokens to session.
+    if (self::$session_manager) {
+      self::$session_manager->set(self::$oauth);
+    }
+
+    // Log api call times if debugging
     if(self::$debug && self::$logger) {
       $timestamp = gmdate('Y-m-d H:i:s');
       $count = sizeof(self::$logger->call_log);

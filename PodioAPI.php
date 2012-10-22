@@ -5,6 +5,7 @@ require_once 'lib/PodioOAuth.php';
 require_once 'lib/PodioError.php';
 require_once 'lib/PodioObject.php';
 require_once 'lib/PodioLogger.php';
+require_once 'lib/PodioSession.php';
 
 require_once 'models/PodioSuperApp.php'; // Included first because other models inherit from this
 require_once 'models/PodioAction.php';
