@@ -325,21 +325,39 @@ class PodioItemField extends PodioObject {
 
 }
 
+// Move humanized value to these submodels
 class PodioTextItemField extends PodioItemField {}
-class PodioEmbedItemField extends PodioItemField {}
+class PodioEmbedItemField extends PodioItemField {
+  // Instances of PodioEmbed and PodioFile
+}
 class PodioLocationItemField extends PodioItemField {}
-class PodioDateItemField extends PodioItemField {}
-class PodioContactItemField extends PodioItemField {}
-class PodioAppItemField extends PodioItemField {}
-class PodioQuestionItemField extends PodioItemField {}
-class PodioCategoryItemField extends PodioItemField {}
+class PodioDateItemField extends PodioItemField {
+  // Set start and end date and times easily
+}
+class PodioContactItemField extends PodioItemField {
+  // Collection of PodioContact
+}
+class PodioAppItemField extends PodioItemField {
+  // Collection of PodioItem
+}
+class PodioQuestionItemField extends PodioItemField {
+  // Set value by label or by ID
+}
+class PodioCategoryItemField extends PodioItemField {
+  // Set value by label or by ID
+}
+class PodioAssetItemField extends PodioItemField {
+  // Collection of PodioFile
+}
 class PodioImageItemField extends PodioItemField {}
 class PodioVideoItemField extends PodioItemField {}
 class PodioFileItemField extends PodioItemField {}
 class PodioNumberItemField extends PodioItemField {}
 class PodioProgressItemField extends PodioItemField {}
 class PodioStateItemField extends PodioItemField {}
-class PodioDurationItemField extends PodioItemField {}
+class PodioDurationItemField extends PodioItemField {
+  // Break value into hours, minutes and seconds
+}
 class PodioCalculationItemField extends PodioItemField {}
 class PodioMoneyItemField extends PodioItemField {
   public function currency() {
