@@ -6,6 +6,7 @@
 class PodioLogger {
 
   protected $enabled = true;
+  public $call_log = array();
   public $file, $maxsize;
 
   public function __construct() {
@@ -21,16 +22,10 @@ class PodioLogger {
     $this->enabled = true;
   }
 
-  public function log_request($method, $url, $encoded_attributes, $response, $curl_info) {
+  public function log($text) {
     @mkdir(dirname($this->file));
-
     if ($fp = fopen($this->file, 'ab')) {
-      $timestamp = gmdate('Y-m-d H:i:s');
-      fwrite($fp, "{$timestamp} {$response->status} {$method} {$url}\n");
-      if (!empty($encoded_attributes)) {
-        fwrite($fp, "{$timestamp} Request body: ".$encoded_attributes."\n");
-      }
-      fwrite($fp, "{$timestamp} Reponse: {$response->body}\n\n");
+      fwrite($fp, $text);
       fclose($fp);
 
       // Trim log file by removing the first 50 lines
@@ -40,6 +35,17 @@ class PodioLogger {
         file_put_contents($this->file, join('', $file));
       }
     }
+  }
+
+  public function log_request($method, $url, $encoded_attributes, $response, $curl_info) {
+    $timestamp = gmdate('Y-m-d H:i:s');
+    $text = "{$timestamp} {$response->status} {$method} {$url}\n";
+    if (!empty($encoded_attributes)) {
+      $text .= "{$timestamp} Request body: ".$encoded_attributes."\n";
+    }
+    $text .= "{$timestamp} Reponse: {$response->body}\n\n";
+
+    $this->log($text);
   }
 
 }

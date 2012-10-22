@@ -23,6 +23,8 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/2.0');
+
+    register_shutdown_function('Podio::shutdown');
   }
 
   public static function authenticate($grant_type, $attributes) {
@@ -137,6 +139,8 @@ class Podio {
       }
       $curl_info = curl_getinfo(self::$ch, CURLINFO_HEADER_OUT);
       self::$logger->log_request($method, $url, $encoded_attributes, $response, $curl_info);
+
+      self::$logger->call_log[] = curl_getinfo(self::$ch, CURLINFO_TOTAL_TIME);
     }
 
     switch ($response->status) {
@@ -240,5 +244,17 @@ class Podio {
       $return[] = urlencode($key).'='.urlencode($value);
     }
     return join('&', $return);
+  }
+
+  public function shutdown() {
+    if(self::$debug && self::$logger) {
+      $timestamp = gmdate('Y-m-d H:i:s');
+      $count = sizeof(self::$logger->call_log);
+      $duration = 0;
+      foreach (self::$logger->call_log as $val) {
+        $duration += $val;
+      }
+      self::$logger->log("\n{$timestamp} Performed {$count} requests in {$duration} seconds\n");
+    }
   }
 }

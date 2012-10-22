@@ -17,17 +17,16 @@ try {
   print "You have been authenticated. Wee!\n";
 
   $item = PodioItem::get(20109397);
-  print $item->field('kontakt')->humanized_value();
+  print $item->field('billede')->humanized_value();
   print "\n";
 
-  // $app = PodioApp::get(2395065);
+  $app = PodioApp::get(2395065);
   // print_r($app->fields_of_type('progress'));
 
   // $item = PodioItem::get(20109397);
   // $item->field('titel')->set_value('My new title')->save();
 
   print "\n\n";
-
 }
 catch (PodioError $e) {
   print "There was an error. The API responded with the error type <b>{$e->body['error']}</b> and the message <b>{$e->body['error_description']}</b><br>";
