@@ -45,7 +45,6 @@ require_once 'models/PodioSearchResult.php';
 require_once 'models/PodioSpace.php';
 require_once 'models/PodioSpaceMember.php';
 require_once 'models/PodioStatus.php';
-require_once 'models/PodioStreamMute.php';
 require_once 'models/PodioStreamObject.php';
 require_once 'models/PodioSubscription.php';
 require_once 'models/PodioTag.php';
