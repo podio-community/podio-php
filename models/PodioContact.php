@@ -137,11 +137,11 @@ class PodioContact extends PodioObject {
    * @see https://developers.podio.com/doc/contacts/get-space-contacts-22414
    */
   public static function get_for_space($space_id, $attributes = array()) {
-    return self::listing(Podio::get("/contact/space/{$org_id}/", $attributes));
+    return self::listing(Podio::get("/contact/space/{$space_id}/", $attributes));
   }
 
   /**
-   * @see https://github.com/podio/podio-rb/blob/master/lib/podio/models/profile.rb
+   * @see https://developers.podio.com/doc/contacts/get-top-contacts-26302
    */
   public static function get_top($attributes = array()) {
     return self::listing(Podio::get("/contact/top/", $attributes));
