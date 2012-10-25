@@ -8,6 +8,11 @@ require_once '../lib/PodioResponse.php';
 require_once '../lib/PodioOAuth.php';
 require_once '../lib/PodioError.php';
 require_once '../lib/PodioObject.php';
+require_once '../lib/PodioLogger.php';
+require_once '../lib/PodioSession.php';
+
+
+require_once '../models/PodioSuperApp.php'; // Included manually because other models inherit from this
 
 $class_names = array();
 foreach (glob("../models/*.php") as $filename) {
@@ -74,7 +79,7 @@ foreach ($class_names as $className) {
     $item_id = substr($link, strrpos($link, '-')+1);
 
     // Add data to list
-    if ($item_id) {
+    if ($item_id && is_numeric($item_id)) {
       $operations[$item_id][] = array(
         'className' => $className,
         'method' => $method->getName(),
@@ -92,7 +97,8 @@ print "Processed ".count($class_names)." class(es) and found ".count($operations
 if ($update_api) {
   print "Updating Podio App values...\n";
 
-  Podio::setup(CLIENT_ID, CLIENT_SECRET);
+  Podio::setup(CLIENT_ID, CLIENT_SECRET, array());
+  // Podio::$debug = true;
 
   Podio::authenticate('app', array('app_id' => APP_ID, 'app_token' => APP_TOKEN));
   print "You have been authenticated. Wee!\n";
