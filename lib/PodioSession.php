@@ -16,7 +16,7 @@ class PodioSession {
     if (!empty($_SESSION['podio-php-session'])) {
       return new PodioOAuth($_SESSION['podio-php-session']['access_token'], $_SESSION['podio-php-session']['refresh_token'], $_SESSION['podio-php-session']['expires_in'], $_SESSION['podio-php-session']['ref']);
     }
-    return null;
+    return new PodioOAuth();
   }
 
   /**

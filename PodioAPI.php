@@ -1,4 +1,6 @@
 <?php
+define("PODIO_PHP_VERSION", "3.0");
+
 require_once 'lib/PodioAPI.php';
 require_once 'lib/PodioResponse.php';
 require_once 'lib/PodioOAuth.php';
