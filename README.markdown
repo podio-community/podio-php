@@ -95,3 +95,7 @@ All unsuccessful responses returned by the API (everything that has a 4xx or 5xx
     $space_id = MY_SPACE_ID;
     $file_ids = array((int)$file_id);
     $status = PodioStatus::create($space_id, array('value' => 'This has an image attached', 'file_ids' => $file_ids));
+
+# A note on versions
+This is the third revision of the Podio PHP Client and it is very different than previous versions. If you are familiar with older versions almost everything have changed. If you need the older version it is available as a download at [https://github.com/podio/podio-php/tags](https://github.com/podio/podio-php/tags). It will not be updated and bugs will not be fixed.
+
