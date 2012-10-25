@@ -27,7 +27,7 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/2.0');
 
     self::$session_manager = null;
-    if ($options['session_manager'] && class_exists($options['session_manager'])) {
+    if ($options && !empty($options['session_manager']) && class_exists($options['session_manager'])) {
       self::$session_manager = new $options['session_manager'];
       self::$oauth = self::$session_manager->get();
     }
