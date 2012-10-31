@@ -20,10 +20,11 @@ class PodioItemField extends PodioObject {
   public function save($silent = false) {
     if ($this->belongs_to) {
       $attributes = $this->as_json(false);
+      $options = array();
       if ($silent) {
-        $attributes['silent'] = true;
+        $options['silent'] = true;
       }
-      return self::update($this->belongs_to['instance']->id, $this->id, $attributes);
+      return self::update($this->belongs_to['instance']->id, $this->id, $attributes, $options);
     }
     else {
       throw new PodioMissingRelationshipError('{"error_description":"Field is missing relationship to item"}', null, null);
@@ -191,11 +192,10 @@ class PodioItemField extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/items/update-item-field-values-22367
    */
-  public static function update($item_id, $field_id, $attributes = array()) {
+  public static function update($item_id, $field_id, $attributes = array(), $options = array()) {
     $url = "/item/{$item_id}/value/{$field_id}";
-    if (isset($attributes['silent']) && $attributes['silent'] == 1) {
+    if (isset($options['silent']) && $options['silent'] == 1) {
       $url .= '?silent=1';
-      unset($attributes['silent']);
     }
     return Podio::put($url, $attributes)->json_body();
   }

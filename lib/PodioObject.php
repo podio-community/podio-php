@@ -15,9 +15,12 @@ class PodioObject {
     foreach ($this->properties as $name => $property) {
       if (isset($property['options']['id'])) {
         $this->id_column = $name;
+        if (array_key_exists('id', $default_attributes)) {
+          $this->id = $default_attributes['id'];
+        }
       }
       if (array_key_exists($name, $default_attributes)) {
-        $this->set_attribute($name, $default_attributes[$name]);
+        $this->$name = $default_attributes[$name];
       }
     }
     if ($this->relationships) {
@@ -27,27 +30,29 @@ class PodioObject {
           $class_name = 'Podio'.$property['type'];
 
           if ($type == 'has_one') {
-            $child = new $class_name($default_attributes[$name]);
+            $child = is_object($default_attributes[$name]) ? $default_attributes[$name] : new $class_name($default_attributes[$name]);
             $child->belongs_to = array('property' => $name, 'instance' => $this);
             $this->set_attribute($name, $child);
           }
           elseif ($type == 'has_many' && is_array($default_attributes[$name])) {
             $values = array();
             foreach ($default_attributes[$name] as $value) {
+              $old_class_name = $class_name;
 
               // ItemField has special handling since we want to create objects of the sub-types.
-              if ($class_name == 'PodioItemField') {
+              if ($class_name == 'PodioItemField' && !is_object($value)) {
                 $class_name_alternate = 'Podio'.ucfirst($value['type']).'ItemField';
                 if (class_exists($class_name_alternate)) {
+                  $old_class_name = 'PodioItemField';
                   $class_name = $class_name_alternate;
                 }
               }
 
-              $child = new $class_name($value);
+              $child = is_object($value) ? $value : new $class_name($value);
               $child->belongs_to = array('property' => $name, 'instance' => $this);
               $values[] = $child;
 
-              $class_name = 'PodioItemField';
+              $class_name = $old_class_name;
             }
             $this->set_attribute($name, $values);
           }
@@ -63,7 +68,7 @@ class PodioObject {
   }
   public function __get($name) {
     if ($name == 'id' && !empty($this->id_column)) {
-      return $this->attributes[$this->id_column];
+      return empty($this->attributes[$this->id_column]) ? null : $this->attributes[$this->id_column];
     }
     if ($this->has_attribute($name)) {
       // Create DateTime object if necessary

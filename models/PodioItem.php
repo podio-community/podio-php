@@ -7,7 +7,6 @@ class PodioItem extends PodioSuperApp {
 
     # Basic item
     $this->property('item_id', 'integer', array('id' => true));
-    $this->property('app', 'hash');
     $this->property('external_id', 'string');
     $this->property('title', 'string');
     $this->property('link', 'string');
@@ -29,6 +28,7 @@ class PodioItem extends PodioSuperApp {
     $this->property('subscribed', 'boolean');
     $this->property('invite', 'hash');
 
+    $this->has_one('app', 'App');
     $this->has_one('ref', 'Reference');
     $this->has_one('reminder', 'Reminder');
     $this->has_one('recurrence', 'Recurrence');
@@ -49,13 +49,17 @@ class PodioItem extends PodioSuperApp {
   /**
    * Create or updates an item
    */
-  public function save() {
+  public function save($silent = false) {
+    $options = array();
+    if ($silent) {
+      $options['silent'] = true;
+    }
     if ($this->id) {
-      return self::update($this->id, $this);
+      return self::update($this->id, $this, $options);
     }
     else {
-      if ($this->app && $this->app['app_id']) {
-        self::create($this->app['app_id'], $this);
+      if ($this->app && $this->app->id) {
+        self::create($this->app->id, $this, $options);
       }
       else {
         throw new PodioMissingRelationshipError('{"error_description":"Item is missing relationship to app"}', null, null);
@@ -115,11 +119,10 @@ class PodioItem extends PodioSuperApp {
   /**
    * @see https://developers.podio.com/doc/items/add-new-item-22362
    */
-  public static function create($app_id, $attributes = array()) {
+  public static function create($app_id, $attributes = array(), $options = array()) {
     $url = "/item/app/{$app_id}/";
-    if (isset($attributes['silent']) && $attributes['silent'] == 1) {
+    if (isset($options['silent']) && $options['silent'] == 1) {
       $url .= '?silent=1';
-      unset($attributes['silent']);
     }
     $body = Podio::post($url, $attributes)->json_body();
     return $body['item_id'];
@@ -128,11 +131,10 @@ class PodioItem extends PodioSuperApp {
   /**
    * @see https://developers.podio.com/doc/items/update-item-22363
    */
-  public static function update($item_id, $attributes = array()) {
+  public static function update($item_id, $attributes = array(), $options = array()) {
     $url = "/item/{$item_id}";
-    if (isset($attributes['silent']) && $attributes['silent'] == 1) {
+    if (isset($options['silent']) && $options['silent'] == 1) {
       $url .= '?silent=1';
-      unset($attributes['silent']);
     }
     return Podio::put($url, $attributes)->json_body();
   }
@@ -147,11 +149,10 @@ class PodioItem extends PodioSuperApp {
   /**
    * @see https://developers.podio.com/doc/items/update-item-values-22366
    */
-  public static function update_values($item_id, $attributes = array()) {
+  public static function update_values($item_id, $attributes = array(), $options = array()) {
     $url = "/item/{$item_id}/value";
-    if (isset($attributes['silent']) && $attributes['silent'] == 1) {
+    if (isset($options['silent']) && $options['silent'] == 1) {
       $url .= '?silent=1';
-      unset($attributes['silent']);
     }
     return Podio::put($url, $attributes)->json_body();
   }
