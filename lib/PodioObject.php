@@ -11,6 +11,9 @@ class PodioObject {
     if (is_int($default_attributes)) {
       $default_attributes = array('id' => $default_attributes);
     }
+    if (is_string($default_attributes)) {
+      $default_attributes = array('external_id' => $default_attributes);
+    }
     if (!is_array($default_attributes)) {
       $default_attributes = array();
     }
