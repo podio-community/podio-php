@@ -20,3 +20,4 @@ class PodioRateLimitError extends PodioError {}
 class PodioServerError extends PodioError {}
 class PodioUnavailableError extends PodioError {}
 class PodioMissingRelationshipError extends PodioError {}
+class PodioMissingSetupError extends PodioError {}

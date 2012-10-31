@@ -28,8 +28,7 @@ class PodioFile extends PodioObject {
    * @see https://developers.podio.com/doc/files/upload-file-1004361
    */
   public static function upload($file_path, $file_name) {
-    $body = Podio::post("/file/", array('source' => '@'.realpath($filepath), 'filename' => $filename), array('upload' => TRUE, 'filesize' => filesize($filepath)));
-    return $body['file_id'];
+    return self::member(Podio::post("/file/v2/", array('source' => '@'.realpath($file_path), 'filename' => $file_name), array('upload' => TRUE, 'filesize' => filesize($file_path))));
   }
 
   /**

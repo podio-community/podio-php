@@ -72,6 +72,10 @@ class Podio {
   }
 
   public static function request($method, $url, $attributes = array(), $options = array()) {
+    if (!self::$ch) {
+      throw new PodioMissingSetupError('{"error_description":"Client has not been setup with client id and client secret."}', null, null);
+    }
+
     unset(self::$headers['Content-length']);
     $original_url = $url;
     $encoded_attributes = null;

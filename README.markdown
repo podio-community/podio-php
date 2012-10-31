@@ -48,9 +48,9 @@ The PHP client automatically converts incoming data to instances of the relevant
 # Handling file uploads
 If you wish to upload a file, for example to status messages, comments, items, widgets etc., you will use the `upload` method on the `PodioFile` class:
 
-    $file_id = PodioFile::upload($path_to_file, $filename_to_display);
+    $file = PodioFile::upload($path_to_file, $filename_to_display);
 
-    print 'File uploaded. The file id is: '.$file_id;
+    print 'File uploaded. The file id is: '.$file->id;
 
 # Debugging & error handling
 It can be useful to log all HTTP requests made to the Podio API. To do so you can turn on debugging mode:
@@ -89,13 +89,13 @@ All unsuccessful responses returned by the API (everything that has a 4xx or 5xx
     Podio::authenticate('password', array('username' => $username, 'password' => $password));
 
     // Upload file
-    $file_id = PodioFile::upload('/path/to/myimage.png', 'myimage.png');
+    $file = PodioFile::upload('/path/to/myimage.png', 'myimage.png');
 
     // Post status message
     $space_id = MY_SPACE_ID;
-    $file_ids = array((int)$file_id);
+    $file_ids = array((int)$file->id);
     $status = PodioStatus::create($space_id, array('value' => 'This has an image attached', 'file_ids' => $file_ids));
 
 # A note on versions
-This is the third revision of the Podio PHP Client and it is very different than previous versions. If you are familiar with older versions almost everything have changed. If you need the older version it is available as a download at [https://github.com/podio/podio-php/tags](https://github.com/podio/podio-php/tags). It will not be updated and bugs will not be fixed.
+This is the third revision of the Podio PHP Client and it is very different than previous versions. If you are familiar with older versions almost everything have changed. If you need the older version it is available as a download at [https://github.com/podio/podio-php/zipball/v2](https://github.com/podio/podio-php/zipball/v2). It will not be updated and bugs will not be fixed.
 

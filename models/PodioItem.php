@@ -54,7 +54,7 @@ class PodioItem extends PodioSuperApp {
       return self::update($this->id, $this);
     }
     else {
-      return $this->id = self::create($this);
+      throw new PodioMissingRelationshipError('{"error_description":"Item is missing relationship to app"}', null, null);
     }
   }
 
