@@ -15,7 +15,7 @@ class Podio {
     self::$client_secret = $client_secret;
 
     // Setup curl
-    self::$url = 'https://api.podio.com:443';
+    self::$url = empty($options['api_url']) ? 'https://api.podio.com:443' : $options['api_url'];
     self::$debug = false;
     self::$ch = curl_init();
     self::$headers = array(
@@ -69,6 +69,12 @@ class Podio {
       return true;
     }
     return false;
+  }
+
+  public static function authorize_url($redirect_uri) {
+    $parsed_url = parse_url(self::$url);
+    $host = str_replace('api.', '', $parsed_url['host']);
+    return 'https://'.$host.'/oauth/authorize?response_type=code&client_id='.self::$client_id.'&redirect_uri='.rawurlencode($redirect_uri);
   }
 
   public static function is_authenticated() {

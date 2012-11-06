@@ -34,7 +34,7 @@ define("REDIRECT_URI", 'http://localhost/podio-php/examples/server-auth.php');
   // If $_GET['code'] is not set it means we are not trying to authenticate.
   // In that case just display a link to start the serv flow
   if (!isset($_GET['code'])) {
-    $auth_url = htmlentities('https://podio.com/oauth/authorize?response_type=code&client_id='.CLIENT_ID.'&redirect_uri='.rawurlencode(REDIRECT_URI));
+    $auth_url = htmlentities(Podio::authorize_url(REDIRECT_URI));
     print "<a href='{$auth_url}'>Start authenticating</a>";
   }
   else {
