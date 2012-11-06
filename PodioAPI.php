@@ -1,6 +1,10 @@
 <?php
 define("PODIO_PHP_VERSION", "3.0");
 
+if (!(version_compare(PHP_VERSION, "5.3") >= 0)) {
+  throw new Exception('Podio PHP library requires PHP 5.3 or higher.');
+}
+
 require_once 'lib/PodioAPI.php';
 require_once 'lib/PodioResponse.php';
 require_once 'lib/PodioOAuth.php';

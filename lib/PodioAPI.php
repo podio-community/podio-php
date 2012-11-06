@@ -71,9 +71,13 @@ class Podio {
     return false;
   }
 
+  public static function is_authenticated() {
+    return self::$oauth && self::$oauth->access_token;
+  }
+
   public static function request($method, $url, $attributes = array(), $options = array()) {
     if (!self::$ch) {
-      throw new PodioMissingSetupError('{"error_description":"Client has not been setup with client id and client secret."}', null, null);
+      throw new Exception('Client has not been setup with client id and client secret.');
     }
 
     unset(self::$headers['Content-length']);
