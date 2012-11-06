@@ -106,6 +106,6 @@ if ($update_api) {
   foreach ($operations as $item_id => $op) {
     $value = json_encode($op);
     print "Updating: {$item_id}\n";
-    PodioItemField::update($item_id, FIELD_ID, array('silent' => 1, array('value' => $value)));
+    PodioItemField::update($item_id, FIELD_ID, array(array('value' => $value)), array('silent' => 1));
   }
 }

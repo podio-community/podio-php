@@ -24,7 +24,7 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, false);
-    curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/'.PODIO_PHP_VERSION);
+    curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/3.0');
 
     self::$session_manager = null;
     if ($options && !empty($options['session_manager']) && class_exists($options['session_manager'])) {
