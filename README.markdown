@@ -31,7 +31,7 @@ Before you can make any API calls you must setup the client with your client ID 
 
     // Woohoo! Now it's time to make API calls!
 
-You can view full authentication examples in the `examples´ folder. Consult the README in that folder for instructions on how to get the examples running.
+You can view full authentication examples in the `examples´ folder.
 
 # Making API calls
 To make API calls you use static methods on the different classes in the `models` folder. Each class corresponds to an area of the Podio API. Open each file in your text editor to see the available methods and their arguments.
