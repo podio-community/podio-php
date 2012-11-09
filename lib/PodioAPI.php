@@ -90,7 +90,7 @@ class Podio {
     $original_url = $url;
     $encoded_attributes = null;
 
-    if (is_object($attributes)) {
+    if (is_object($attributes) && substr(get_class($attributes), 0, 5) == 'Podio') {
       $attributes = $attributes->as_json(false);
     }
 

@@ -92,7 +92,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/filter-items-4496747
    */
   public static function filter($app_id, $attributes = array()) {
-    return self::collection(Podio::post("/item/app/{$app_id}/filter/", $attributes));
+    return self::collection(Podio::post("/item/app/{$app_id}/filter/", $attributes ? $attributes : new StdClass()));
   }
 
   /**
