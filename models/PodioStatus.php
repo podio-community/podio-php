@@ -31,7 +31,7 @@ class PodioStatus extends PodioObject {
    * @see https://developers.podio.com/doc/status/add-new-status-message-22336
    */
   public static function create($space_id, $attributes = array()) {
-    return self::member(Podio::post("/status/space/{$space_id}", $attributes));
+    return self::member(Podio::post("/status/space/{$space_id}/", $attributes));
   }
 
   /**
