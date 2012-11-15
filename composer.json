@@ -1,6 +1,5 @@
 {
   "name": "podio/podio-php",
-  "version": "3.0.0",
   "description": "PHP Client for Podio API",
   "keywords": ["podio"],
   "homepage": "http://github.com/podio/podio-php",
