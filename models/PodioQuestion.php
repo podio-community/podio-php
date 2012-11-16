@@ -25,8 +25,8 @@ class PodioQuestion extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/questions/answer-question-887232
    */
-  public static function answer($question_id, $ref_type, $ref_id, $attributes = array()) {
-    return Podio::post("/question/{$question_id}/{$ref_type}/{$ref_id}/", $attributes);
+  public static function answer($question_id, $attributes = array()) {
+    return Podio::post("/question/{$question_id}/", $attributes);
   }
 
   /**
