@@ -71,7 +71,7 @@ class PodioApp extends PodioSuperApp {
    * @see https://developers.podio.com/doc/applications/get-apps-by-space-22478
    */
   public static function get_for_space($space_id, $attributes = array()) {
-    return self::member(Podio::get("/app/space/{$space_id}/", $attributes));
+    return self::listing(Podio::get("/app/space/{$space_id}/", $attributes));
   }
 
   /**
