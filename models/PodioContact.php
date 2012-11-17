@@ -130,7 +130,7 @@ class PodioContact extends PodioObject {
    * @see https://developers.podio.com/doc/contacts/get-organization-contacts-22401
    */
   public static function get_for_org($org_id, $attributes = array()) {
-    return self::listing(Podio::get("/contact/org/{$org_id}/", $attributes));
+    return self::listing(Podio::get("/contact/org/{$org_id}", $attributes));
   }
 
   /**
