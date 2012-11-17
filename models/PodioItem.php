@@ -176,7 +176,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/get-items-as-xlsx-63233
    */
   public static function xlsx($app_id, $attributes = array()) {
-    return Podio::post("/item/app/{$app_id}/xlsx/", $attributes)->body;
+    return Podio::get("/item/app/{$app_id}/xlsx/", $attributes)->body;
   }
 
   /**
