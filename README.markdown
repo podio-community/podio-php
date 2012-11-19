@@ -10,6 +10,8 @@ If you are using [Composer](http://getcomposer.org/) you can simply require podi
       "podio/podio-php": "dev-master"
     }
 
+There is an autoloader so you don't have to do anything other than make sure to use Composer's autolaoder.
+
 If you are not using Composer you must download a copy of the PHP client from GitHub: [https://github.com/podio/podio-php](https://github.com/podio/podio-php) and then include it manually:
 
     require_once '/path/to/podio-php/PodioAPI.php';
