@@ -4,7 +4,7 @@ This is a PHP Client for interacting with the Podio API. All parts of the Podio 
 # Installation
 The client library requires PHP 5.3 with [curl](http://php.net/manual/en/book.curl.php) and [openssl](http://php.net/manual/en/book.openssl.php) extensions enabled.
 
-If you are using [http://getcomposer.org/](Composer) you can simply require podio-php:
+If you are using [Composer](http://getcomposer.org/) you can simply require podio-php:
 
     "require": {
       "podio/podio-php": "dev-master"
