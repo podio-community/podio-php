@@ -1,16 +1,16 @@
 # About
 This is a PHP Client for interacting with the Podio API. All parts of the Podio API is covered in this client.
 
-# Getting the client and dependencies
-The first step is to download a copy of the PHP client from GitHub: [https://github.com/podio/podio-php](https://github.com/podio/podio-php).
+# Installation
+The client library requires PHP 5.3 with [curl](http://php.net/manual/en/book.curl.php) and [openssl](http://php.net/manual/en/book.openssl.php) extensions enabled.
 
-## Requirements
-* PHP 5.3
-* [curl](http://php.net/manual/en/book.curl.php)
-* [openssl](http://php.net/manual/en/book.openssl.php)
+If you are using [http://getcomposer.org/](Composer) you can simply require podio-php:
 
-# Including the client in your application
-All you need to get started is to include PodioAPI.php like so:
+    "require": {
+      "podio/podio-php": "dev-master"
+    }
+
+If you are not using Composer you must download a copy of the PHP client from GitHub: [https://github.com/podio/podio-php](https://github.com/podio/podio-php) and then include it manually:
 
     require_once '/path/to/podio-php/PodioAPI.php';
 
