@@ -25,7 +25,7 @@ class PodioEmbed extends PodioObject {
    * @see https://developers.podio.com/doc/embeds/add-an-embed-726483
    */
   public static function create($attributes = array()) {
-    return self::member(Podio::post("/hook/", $attributes));
+    return self::member(Podio::post("/embed/", $attributes));
   }
 
 }
