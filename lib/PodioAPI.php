@@ -269,7 +269,7 @@ class Podio {
     return join('&', $return);
   }
 
-  public function shutdown() {
+  public static function shutdown() {
     // Write any new access and refresh tokens to session.
     if (self::$session_manager) {
       self::$session_manager->set(self::$oauth);
