@@ -1,7 +1,7 @@
 <?php
 
 class Podio {
-  public static $oauth, $debug, $logger, $session_manager;
+  public static $oauth, $debug, $logger, $session_manager, $last_response;
   protected static $url, $client_id, $client_secret, $secret, $ch, $headers;
 
   const GET = 'GET';
@@ -25,6 +25,8 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/3.0');
+    curl_setopt(self::$ch, CURLOPT_HEADER, 1);
+    curl_setopt(self::$ch, CURLINFO_HEADER_OUT, true);
 
     self::$session_manager = null;
     if ($options && !empty($options['session_manager']) && class_exists($options['session_manager'])) {
@@ -148,13 +150,16 @@ class Podio {
       unset(self::$headers['Authorization']);
     }
 
-    curl_setopt(self::$ch, CURLINFO_HEADER_OUT, true);
     curl_setopt(self::$ch, CURLOPT_HTTPHEADER, self::curl_headers());
     curl_setopt(self::$ch, CURLOPT_URL, self::$url.$url);
 
     $response = new PodioResponse();
-    $response->body = curl_exec(self::$ch);
+    $raw_response = curl_exec(self::$ch);
+    $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
+    $response->body = substr($raw_response, $raw_headers_size);
     $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
+    $response->headers = self::parse_headers(substr($raw_response, 0, $raw_headers_size));
+    self::$last_response = $response;
 
     if (self::$debug && !isset($options['oauth_request'])) {
       if (!self::$logger) {
@@ -267,6 +272,24 @@ class Podio {
       $return[] = urlencode($key).'='.urlencode($value);
     }
     return join('&', $return);
+  }
+  public static function parse_headers($headers) {
+    $list = array();
+    $headers = str_replace("\r", "", $headers);
+    $headers = explode("\n", $headers);
+    foreach ($headers as $header) {
+      if (strstr($header, ':')) {
+        $name = strtolower(substr($header, 0, strpos($header, ':')));
+        $list[$name] = trim(substr($header, strpos($header, ':')+1));
+      }
+    }
+    return $list;
+  }
+  public static function rate_limit_remaining() {
+    return self::$last_response->headers['x-rate-limit-remaining'];
+  }
+  public static function rate_limit() {
+    return self::$last_response->headers['x-rate-limit-limit'];
   }
 
   public static function shutdown() {
