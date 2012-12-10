@@ -4,9 +4,7 @@
  */
 class PodioUserStatus extends PodioObject {
   public function __construct($attributes = array()) {
-    // Removed for now since the name clashes with an
-    // internal variable.
-    // $this->property('properties', 'hash');
+    $this->property('properties', 'hash');
     $this->property('inbox_new', 'integer');
     $this->property('calendar_code', 'string');
     $this->property('task_mail', 'string');

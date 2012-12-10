@@ -18,13 +18,13 @@ class PodioItemField extends PodioObject {
    * Saves the value of the field
    */
   public function save($silent = false) {
-    if ($this->belongs_to) {
+    if ($this->__belongs_to) {
       $attributes = $this->as_json(false);
       $options = array();
       if ($silent) {
         $options['silent'] = true;
       }
-      return self::update($this->belongs_to['instance']->id, $this->id, $attributes, $options);
+      return self::update($this->__belongs_to['instance']->id, $this->id, $attributes, $options);
     }
     else {
       throw new PodioMissingRelationshipError('{"error_description":"Field is missing relationship to item"}', null, null);
