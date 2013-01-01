@@ -2,7 +2,7 @@
 /**
  * @see https://developers.podio.com/doc/applications
  */
-class PodioAppfield extends PodioObject {
+class PodioAppField extends PodioObject {
   public function __construct($attributes = array()) {
     $this->property('field_id', 'integer', array('id' => true));
     $this->property('type', 'string');
