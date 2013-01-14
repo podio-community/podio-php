@@ -217,7 +217,7 @@ class Podio {
         }
         break;
       case 403 :
-        throw new PodioAuthorizationError($response->body, $response->status, $url);
+        throw new PodioForbiddenError($response->body, $response->status, $url);
         break;
       case 404 :
         throw new PodioNotFoundError($response->body, $response->status, $url);

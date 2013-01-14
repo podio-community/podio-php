@@ -17,6 +17,7 @@ class PodioError extends Exception {
 class PodioInvalidGrantError extends PodioError {}
 class PodioBadRequestError extends PodioError {}
 class PodioAuthorizationError extends PodioError {}
+class PodioForbiddenError extends PodioError {}
 class PodioNotFoundError extends PodioError {}
 class PodioConflictError extends PodioError {}
 class PodioGoneError extends PodioError {}
