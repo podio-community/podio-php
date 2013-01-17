@@ -74,7 +74,7 @@ class PodioCalendarEvent extends PodioObject {
    * @see https://developers.podio.com/doc/calendar/get-calendar-summary-for-personal-1657903
    */
   public static function get_summary_personal($attributes = array()) {
-    $result = Podio::get("/calendar/summary/personal", $attributes)->json_body();
+    $result = Podio::get("/calendar/personal/summary", $attributes)->json_body();
     $result['today']['events'] = self::listing($result['today']['events']);
     $result['upcoming']['events'] = self::listing($result['upcoming']['events']);
     return $result;
