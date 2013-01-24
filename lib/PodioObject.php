@@ -140,9 +140,14 @@ class PodioObject {
     throw new Exception("Attribute cannot be assigned. Property '{$name}' doesn't exist.");
   }
 
-  public static function listing($response) {
-    if ($response) {
-      $body = $response->json_body();
+  public static function listing($response_or_attributes) {
+    if ($response_or_attributes) {
+      if (is_object($response_or_attributes) && get_class($response_or_attributes) == 'PodioResponse') {
+        $body = $response_or_attributes->json_body();
+      }
+      else {
+        $body = $response_or_attributes;
+      }
       $list = array();
       foreach ($body as $attributes) {
         $class_name = get_called_class();
