@@ -274,7 +274,7 @@ class PodioObject {
             }
             if ($list) {
               if (!empty($this->__properties[$name]['options']['json_target'])) {
-                $result[$this->__properties[$name]['options']['json_target']] = join(',', $list);
+                $result[$this->__properties[$name]['options']['json_target']] = $list;
               }
               else {
                 $result[$name] = $list;
