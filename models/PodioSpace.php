@@ -62,7 +62,7 @@ class PodioSpace extends PodioObject {
    * @see https://developers.podio.com/doc/spaces/get-top-spaces-22477
    */
   public static function get_top() {
-    return self::listing(Podio::get("/space/url"));
+    return self::listing(Podio::get("/space/top/"));
   }
 
   /**
