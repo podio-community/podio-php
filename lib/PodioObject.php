@@ -92,7 +92,7 @@ class PodioObject {
     unset($this->__attributes[$name]);
   }
   public function __toString() {
-    return print_r($this->__attributes, true);
+    return print_r($this->as_json(false), true);
   }
 
   public function date_format_for_property($name) {
