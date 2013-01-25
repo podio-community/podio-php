@@ -96,6 +96,10 @@ class Podio {
       $attributes = $attributes->as_json(false);
     }
 
+    if (!is_array($attributes)) {
+      throw new Exception('Attributes must be an array');
+    }
+
     switch ($method) {
       case self::GET:
         curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::GET);
