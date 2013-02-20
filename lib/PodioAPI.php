@@ -96,7 +96,7 @@ class Podio {
       $attributes = $attributes->as_json(false);
     }
 
-    if (!is_array($attributes)) {
+    if (!is_array($attributes) && !is_object($attributes)) {
       throw new Exception('Attributes must be an array');
     }
 
