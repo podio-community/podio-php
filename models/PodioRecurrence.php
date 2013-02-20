@@ -14,7 +14,7 @@ class PodioRecurrence extends PodioObject {
   }
 
   /**
-   * @see https://developers.podio.com/doc/items/update-item-field-values-22367
+   * @see https://developers.podio.com/doc/recurrence/get-recurrence-3415545
    */
   public static function get_for($ref_type, $ref_id) {
     return self::member(Podio::get("/recurrence/{$ref_type}/{$ref_id}"));
