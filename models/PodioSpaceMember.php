@@ -51,4 +51,11 @@ class PodioSpaceMember extends PodioObject {
     return Podio::post("/space/{$space_id}/join");
   }
 
+  /**
+  * @see https://developers.podio.com/doc/space-members/add-member-to-space-1066259
+  */
+  public static function add($space_id, $attributes = array()) {
+    return Podio::post("/space/{$space_id}/member/");
+  }
+
 }
