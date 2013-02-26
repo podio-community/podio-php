@@ -168,7 +168,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/export-items-4235696
    */
   public static function export($app_id, $exporter, $attributes = array()) {
-    $body = Podio::post("/item/app/{$app_id}/export/{$exporter}", $attributes)->json_body();
+    $body = Podio::post("/item/app/{$app_id}/export/{$exporter}", $attributes ? $attributes : new StdClass())->json_body();
     return $body['batch_id'];
   }
 
