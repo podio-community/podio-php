@@ -41,7 +41,7 @@ class PodioSpaceMember extends PodioObject {
    * @see https://developers.podio.com/doc/space-members/update-space-memberships-22398
    */
   public static function update($space_id, $user_ids, $attributes = array()) {
-    return Podio::put("/space/{$space_id}/member/{$user_ids}");
+    return Podio::put("/space/{$space_id}/member/{$user_ids}", $attributes);
   }
 
   /**
@@ -55,7 +55,7 @@ class PodioSpaceMember extends PodioObject {
   * @see https://developers.podio.com/doc/space-members/add-member-to-space-1066259
   */
   public static function add($space_id, $attributes = array()) {
-    return Podio::post("/space/{$space_id}/member/");
+    return Podio::post("/space/{$space_id}/member/", $attributes);
   }
 
 }
