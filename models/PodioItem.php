@@ -110,6 +110,13 @@ class PodioItem extends PodioSuperApp {
   }
 
   /**
+   * @see https://developers.podio.com/doc/items/bulk-delete-items-19406111
+   */
+  public static function bulk_delete($app_id, $attributes = array()) {
+    return Podio::post("/item/app/{$app_id}/delete", $attributes);
+  }
+
+  /**
    * @see https://developers.podio.com/doc/items/delete-item-reference-7302326
    */
   public static function delete_reference($item_id) {
