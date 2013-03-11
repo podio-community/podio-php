@@ -136,6 +136,18 @@ class PodioItem extends PodioSuperApp {
   }
 
   /**
+   * @see https://developers.podio.com/doc/items/clone-item-37722742
+   */
+  public static function duplicate($item_id, $options = array()) {
+    $url = "/item/{$item_id}/clone";
+    if (isset($options['silent']) && $options['silent'] == 1) {
+      $url .= '?silent=1';
+    }
+    $body = Podio::post($url)->json_body();
+    return $body['item_id'];
+  }
+
+  /**
    * @see https://developers.podio.com/doc/items/update-item-22363
    */
   public static function update($item_id, $attributes = array(), $options = array()) {
