@@ -68,15 +68,19 @@ class PodioItemField extends PodioObject {
           }
 
           if (!is_array($values) || (is_array($values) && isset($values[$id_key]))) {
+            $values[$id_key] = (int)$values[$id_key];
             $values = array($values);
           }
           foreach ($values as $value) {
-            if (is_int($value)) {
-              $list[] = array('value' => array($id_key => $value));
-            }
-            elseif (is_array($value)) {
+            if (is_array($value)) {
               // We have a hash, just let it pass through
+              if (isset($value[$id_key])) {
+                $value[$id_key] = (int)$value[$id_key];
+              }
               $list[] = array('value' => $value);
+            }
+            else {
+              $list[] = array('value' => array($id_key => (int)$value));
             }
           }
           $this->values = $list;
@@ -105,16 +109,19 @@ class PodioItemField extends PodioObject {
         case 'date':
           $this->values = array($values);
           break;
-        // Fields without multiple values
+        // Single value fields with integer value
+        case 'progress':
+        case 'duration':
+          $this->values = is_array($values) ? array(array('value' => (int)$values[0])) : array(array('value' => (int)$values));
+          break;
+        // Single value fields with string value
         case 'text':
         case 'number':
         case 'money':
-        case 'progress':
         case 'state':
-        case 'duration':
         case 'calculation':
         default:
-          $this->values = array(array('value' => $values));
+          $this->values = is_array($values) ? array(array('value' => $values[0])) : array(array('value' => $values));
           break;
       }
     }
@@ -125,7 +132,7 @@ class PodioItemField extends PodioObject {
    */
   public function api_friendly_values() {
     if (!$this->values) {
-      return null;
+      return array();
     }
     switch ($this->type) {
       case 'contact': // profile_id
