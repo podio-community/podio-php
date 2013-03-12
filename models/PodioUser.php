@@ -65,4 +65,11 @@ class PodioUser extends PodioObject {
     return Podio::put("/user/profile/", $attributes);
   }
 
+  /**
+   * @see https://developers.podio.com/doc/users/get-profile-field-22380
+   */
+  public static function get_profile_field($field) {
+    return Podio::get("/user/profile/{$field}")->json_body();
+  }
+
 }
