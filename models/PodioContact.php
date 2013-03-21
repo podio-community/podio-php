@@ -158,14 +158,14 @@ class PodioContact extends PodioObject {
    * @see https://developers.podio.com/doc/contacts/update-contact-60556
    */
   public static function update($profile_id, $attributes = array()) {
-    return Podio::update("/contact/{$profile_id}", $attributes);
+    return Podio::put("/contact/{$profile_id}", $attributes);
   }
 
   /**
    * @see https://developers.podio.com/doc/contacts/update-contact-field-60558
    */
   public static function update_field($profile_id, $key, $attributes = array()) {
-    return Podio::update("/contact/{$profile_id}/{$key}", $attributes);
+    return Podio::put("/contact/{$profile_id}/{$key}", $attributes);
   }
 
 }
