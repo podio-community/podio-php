@@ -105,8 +105,12 @@ class PodioItem extends PodioSuperApp {
   /**
    * @see https://developers.podio.com/doc/items/delete-item-22364
    */
-  public static function delete($item_id, $attributes = array()) {
-    return Podio::delete("/item/{$item_id}", $attributes);
+  public static function delete($item_id, $attributes = array(), $options = array()) {
+    $url = "/item/{$item_id}";
+    if (isset($options['hook']) && !$options['hook']) {
+      $url .= '?hook=false';
+    }
+    return Podio::delete($url, $attributes);
   }
 
   /**
@@ -128,8 +132,11 @@ class PodioItem extends PodioSuperApp {
    */
   public static function create($app_id, $attributes = array(), $options = array()) {
     $url = "/item/app/{$app_id}/";
-    if (isset($options['silent']) && $options['silent'] == 1) {
+    if (isset($options['silent']) && $options['silent']) {
       $url .= '?silent=1';
+    }
+    if (isset($options['hook']) && !$options['hook']) {
+      $url .= '?hook=false';
     }
     $body = Podio::post($url, $attributes)->json_body();
     return $body['item_id'];
@@ -154,6 +161,9 @@ class PodioItem extends PodioSuperApp {
     $url = "/item/{$item_id}";
     if (isset($options['silent']) && $options['silent'] == 1) {
       $url .= '?silent=1';
+    }
+    if (isset($options['hook']) && !$options['hook']) {
+      $url .= '?hook=false';
     }
     return Podio::put($url, $attributes)->json_body();
   }
