@@ -158,8 +158,16 @@ class Podio {
       unset(self::$headers['Authorization']);
     }
 
+    // File downloads can be of any type
+    if (empty($options['file_download'])) {
+      self::$headers['Accept'] = 'application/json';
+    }
+    else {
+      self::$headers['Accept'] = '*/*';
+    }
+
     curl_setopt(self::$ch, CURLOPT_HTTPHEADER, self::curl_headers());
-    curl_setopt(self::$ch, CURLOPT_URL, self::$url.$url);
+    curl_setopt(self::$ch, CURLOPT_URL, empty($options['file_download']) ? self::$url.$url : $url);
 
     $response = new PodioResponse();
     $raw_response = curl_exec(self::$ch);
@@ -254,8 +262,8 @@ class Podio {
     return false;
   }
 
-  public static function get($url, $attributes = array()) {
-    return self::request(Podio::GET, $url, $attributes);
+  public static function get($url, $attributes = array(), $options = array()) {
+    return self::request(Podio::GET, $url, $attributes, $options);
   }
   public static function post($url, $attributes = array(), $options = array()) {
     return self::request(Podio::POST, $url, $attributes, $options);
