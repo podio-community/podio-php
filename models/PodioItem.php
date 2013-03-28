@@ -183,6 +183,9 @@ class PodioItem extends PodioSuperApp {
     if (isset($options['silent']) && $options['silent'] == 1) {
       $url .= '?silent=1';
     }
+    if (isset($options['hook']) && !$options['hook']) {
+      $url .= '?hook=false';
+    }
     return Podio::put($url, $attributes)->json_body();
   }
 
