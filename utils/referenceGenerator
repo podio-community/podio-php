@@ -1,6 +1,17 @@
 #!/usr/bin/php
 <?php
 
+/* Andreas, partly I am adding this comment to learn how to fork and do pull requests... 
+   But also, just wondering what the heck this 'referenceGenerator' is... looks like it is 
+   doing something cool... can you please add a comment here to describe what this is and
+   how it can be used?
+   
+   Also, I am thinking that all these requires below are no longer needed, right?
+   
+   If there is a better way to comment on a source file, let me know... thanks...
+   
+*/
+
 require_once 'config.php';
 
 require_once '../lib/PodioAPI.php';
