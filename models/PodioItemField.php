@@ -3,7 +3,7 @@
  * @see https://developers.podio.com/doc/items
  */
 class PodioItemField extends PodioObject {
-  public function __construct($attributes = array()) {
+  public function __construct($attributes = array(), $force_type = null) {
     $this->property('field_id', 'integer', array('id' => true));
     $this->property('type', 'string');
     $this->property('external_id', 'string');
@@ -12,6 +12,8 @@ class PodioItemField extends PodioObject {
     $this->property('config', 'hash');
 
     $this->init($attributes);
+
+    $this->set_type_from_class_name();
   }
 
   /**
@@ -224,6 +226,64 @@ class PodioItemField extends PodioObject {
     return Podio::get("/calendar/item/{$item_id}/field/{$field_id}/ics/")->body;
   }
 
+  public function set_type_from_class_name() {
+    switch (get_class($this)) {
+      case 'PodioTextItemField':
+        $this->type = 'text';
+        break;
+      case 'PodioEmbedItemField':
+        $this->type = 'embed';
+        break;
+      case 'PodioLocationItemField':
+        $this->type = 'location';
+        break;
+      case 'PodioDateItemField':
+        $this->type = 'date';
+        break;
+      case 'PodioContactItemField':
+        $this->type = 'contact';
+        break;
+      case 'PodioAppItemField':
+        $this->type = 'app';
+        break;
+      case 'PodioQuestionItemField':
+        $this->type = 'question';
+        break;
+      case 'PodioCategoryItemField':
+        $this->type = 'category';
+        break;
+      case 'PodioImageItemField':
+        $this->type = 'image';
+        break;
+      case 'PodioVideoItemField':
+        $this->type = 'video';
+        break;
+      case 'PodioFileItemField':
+        $this->type = 'file';
+        break;
+      case 'PodioNumberItemField':
+        $this->type = 'number';
+        break;
+      case 'PodioProgressItemField':
+        $this->type = 'progress';
+        break;
+      case 'PodioStateItemField':
+        $this->type = 'state';
+        break;
+      case 'PodioDurationItemField':
+        $this->type = 'duration';
+        break;
+      case 'PodioCalculationItemField':
+        $this->type = 'calculation';
+        break;
+      case 'PodioMoneyItemField':
+        $this->type = 'money';
+        break;
+      default:
+        break;
+    }
+  }
+
 }
 
 class PodioTextItemField extends PodioItemField {
@@ -259,6 +319,10 @@ class PodioLocationItemField extends PodioItemField {
   }
 }
 class PodioDateItemField extends PodioItemField {
+
+  public function __construct($attributes = array()) {
+    parent::__construct($attributes, 'date');
+  }
 
   public function humanized_value() {
     $value = $this->values[0];
