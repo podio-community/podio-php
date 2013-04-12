@@ -104,7 +104,7 @@ $item = new PodioItem(array(
 // We can add some fields to the item:
 $item->fields = array(
   new PodioTextItemField('title'),
-  new PodioTextItemField('image-field'),
+  new PodioImageItemField('image-field'),
 );
 
 // Notice how the external_id of the fields is being passed as the first argument to the constructor? When you create new instances of any of the Podio objects you can send three things to the constructor:
