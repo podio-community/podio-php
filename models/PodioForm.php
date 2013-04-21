@@ -4,13 +4,13 @@
  */
 class PodioForm extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('form_id', 'integer',array('id' => true));
+    $this->property('form_id', 'integer');
     $this->property('app_id', 'integer');
     $this->property('space_id', 'integer');
     $this->property('status', 'string');
     $this->property('settings', 'array');
     $this->property('domains', 'array');
-    $this->has_many('fields', 'Field');
+    $this->property('fields', 'array');
     $this->has_many('attachments', 'File');
 
     $this->init($attributes);
@@ -59,7 +59,7 @@ class PodioForm extends PodioObject {
    * @see https://developers.podio.com/doc/forms/get-forms-53771
    */
   public static function get_all_for_app($app_id) {
-    return self::listing(Podio::get("/form/app/{$form_id}"));
+    return self::listing(Podio::get("/form/app/{$app_id}/"));
   }
 
   /**
