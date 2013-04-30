@@ -72,4 +72,10 @@ class PodioUser extends PodioObject {
     return Podio::get("/user/profile/{$field}")->json_body();
   }
 
+  /* This appeared to be missing from the V2 api... */
+  public static function get_profile() {
+    return Podio::get("/user/profile/")->json_body();
+  }
+  
+
 }
