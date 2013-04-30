@@ -30,5 +30,12 @@ class PodioTag extends PodioObject {
   public static function delete($ref_type, $ref_id, $attributes = array()) {
     return Podio::delete("/tag/{$ref_type}/{$ref_id}/", $attributes);
   }
+  
+  /**
+   * @see https://developers.podio.com/doc/tags/get-tags-on-app-22467
+   */
+  public static function find_by_app($app_id, $attributes = array()) {
+    return Podio::get("/tag/app/{$app_id}/", $attributes)->json_body();
+  }
 
 }
