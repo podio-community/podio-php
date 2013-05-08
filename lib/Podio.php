@@ -227,7 +227,7 @@ class Podio {
           }
         }
         elseif (strstr($body['error'], 'invalid_request')) {
-          // Access token is invalid. Log the user out and try again.
+          // Access token is invalid.
           self::$oauth = new PodioOAuth();
           throw new PodioAuthorizationError($response->body, $response->status, $url);
         }
