@@ -4,7 +4,7 @@
  */
 class PodioForm extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('form_id', 'integer');
+    $this->property('form_id', 'integer', array('id' => true));
     $this->property('app_id', 'integer');
     $this->property('space_id', 'integer');
     $this->property('status', 'string');
@@ -64,4 +64,5 @@ class PodioForm extends PodioObject {
   public static function update($form_id, $attributes = array()) {
     return Podio::put("/form/{$form_id}", $attributes);
   }
+
 }
