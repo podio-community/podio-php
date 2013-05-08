@@ -82,8 +82,7 @@ class PodioFile extends PodioObject {
    * @see https://developers.podio.com/doc/files/copy-file-89977
    */
   public static function copy($file_id) {
-    $body = Podio::post("/file/{$file_id}/copy");
-    return $body['file_id'];
+    return self::member(Podio::post("/file/{$file_id}/copy"));
   }
 
   /**
