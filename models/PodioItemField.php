@@ -51,12 +51,18 @@ class PodioItemField extends PodioObject {
     else {
       switch ($this->type) {
         case 'contact': // profile_id
+          // TODO: Pass in Contact object (or array of)
         case 'app': // item_id
-        case 'question': // id
-        case 'category': // id
+          // TODO: Pass in Item object (or array of)
+
         case 'image': // file_id
         case 'video': // file_id
         case 'file': // file_id
+          // TODO: Pass in File object (or array of)
+
+        case 'question': // id
+        case 'category': // id
+
           $list = array();
           $id_key = 'file_id';
           if (in_array($this->type, array('category', 'question'))) {
@@ -86,16 +92,6 @@ class PodioItemField extends PodioObject {
             }
           }
           $this->values = $list;
-          break;
-        case 'embed':
-          if (!isset($values['embed'])) {
-            // Multiple values
-            $this->values = $values;
-          }
-          else {
-            // Single value
-            $this->values = array($values);
-          }
           break;
         case 'location':
           if (is_array($values)) {
@@ -310,6 +306,26 @@ class PodioEmbedItemField extends PodioItemField {
       return $value['embed']['original_url'];
     }, $this->values));
   }
+
+  public function set_value($values) {
+    if (!$values) {
+      $this->values = array();
+    }
+    else {
+      // Ensure that we have an array of values
+      if (is_object($values) || is_array($values) && !empty($values['embed'])) {
+        $values = array($values);
+      }
+
+      $this->values = array_map(function($value) {
+        if (is_object($value)) {
+          return array('embed' => array('embed_id' => $value->id), 'file' => array('file_id' => $value->files[0]->id));
+        }
+        return $value;
+      }, $values);
+    }
+  }
+
 }
 class PodioLocationItemField extends PodioItemField {
   public function humanized_value() {
