@@ -20,6 +20,28 @@ class PodioSuperApp extends PodioObject {
   }
 
   /**
+   * Adds a field. Will replace any current field with the same ID
+   */
+  public function add_field($field) {
+    if (!$field->id && !$field->external_id) {
+      throw new PodioDataIntegrityError('Field must have id or external_id set.');
+    }
+    $this->remove_field($field->id ? $field->id : $field->external_id);
+
+    $this->fields = array_merge($this->fields, array($field));
+
+  }
+
+  /**
+   * Removes a field.
+   */
+  public function remove_field($field_id_or_external_id) {
+    $this->fields = array_filter($this->fields, function($field) use ($field_id_or_external_id) {
+      return !($field->id == $field_id_or_external_id || $field->external_id == $field_id_or_external_id);
+    });
+  }
+
+  /**
    * Returns all fields of the given type on this item
    */
   public function fields_of_type($type) {

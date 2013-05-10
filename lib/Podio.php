@@ -101,7 +101,7 @@ class Podio {
     }
 
     if (!is_array($attributes) && !is_object($attributes)) {
-      throw new Exception('Attributes must be an array');
+      throw new PodioDataIntegrityError('Attributes must be an array');
     }
 
     switch ($method) {

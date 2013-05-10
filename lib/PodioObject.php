@@ -137,7 +137,7 @@ class PodioObject {
       }
       return true;
     }
-    throw new Exception("Attribute cannot be assigned. Property '{$name}' doesn't exist.");
+    throw new PodioDataIntegrityError("Attribute cannot be assigned. Property '{$name}' doesn't exist.");
   }
 
   public static function listing($response_or_attributes) {

@@ -107,6 +107,10 @@ $item->fields = array(
   new PodioImageItemField('image-field'),
 );
 
+// Or you can use add_field and remove_field methods to add/remove fields one at a time:
+$item->add_field(new PodioNumberItemField('number-field')); // Field object must have a field_id or an external_id
+$item->remove_field('number-field'); // Remove by field_id or external_id
+
 // Notice how the external_id of the fields is being passed as the first argument to the constructor? When you create new instances of any of the Podio objects you can send three things to the constructor:
 
 // 1. An associative array of properties. Like we did above when creating the item.
