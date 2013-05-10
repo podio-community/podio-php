@@ -54,7 +54,8 @@ $item->field('image-field')->set_value(array(1, 2, 3));
 
 // If you already have a PodioItem or a PodioItemField you can save any changes back to Podio by calling the 'save' method.
 // For example if you want to change the value of a single text field and then save the new field value:
-$item->field('title')->set_value('My new title')->save();
+$item->field('title')->set_value('My new title');
+$item->field('title')->save();
 
 // If you are making changes to multiple fields you can save the entire item in one go:
 $item->field('title')->set_value('My new title');
