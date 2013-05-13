@@ -51,15 +51,10 @@ class PodioItemField extends PodioObject {
     else {
       switch ($this->type) {
         case 'contact': // profile_id
-          // TODO: Pass in Contact object (or array of)
         case 'app': // item_id
-          // TODO: Pass in Item object (or array of)
-
         case 'image': // file_id
         case 'video': // file_id
         case 'file': // file_id
-          // TODO: Pass in File object (or array of)
-
         case 'question': // id
         case 'category': // id
 
@@ -75,37 +70,25 @@ class PodioItemField extends PodioObject {
             $id_key = 'profile_id';
           }
 
-          if (!is_array($values) || (is_array($values) && isset($values[$id_key]))) {
-            $values[$id_key] = (int)$values[$id_key];
+          // Ensure that we have an array of values
+          if (!is_array($values) || (is_array($values) && !empty($values[$id_key]))) {
+            print "Forcing value to be array\n";
             $values = array($values);
           }
-          foreach ($values as $value) {
-            if (is_array($value)) {
-              // We have a hash, just let it pass through
-              if (isset($value[$id_key])) {
-                $value[$id_key] = (int)$value[$id_key];
-              }
-              $list[] = array('value' => $value);
+
+          $this->values = array_map(function($value) use ($id_key) {
+            if (is_object($value)) {
+              print "Testing: \n";
+              print $value;
+              return array('value' => array($id_key => (int)$value->{$id_key}));
+            }
+            elseif (is_array($value)) {
+              return array('value' => array($id_key => (int)$value[$id_key]));
             }
             else {
-              $list[] = array('value' => array($id_key => (int)$value));
+              return array('value' => array($id_key => (int)$value));
             }
-          }
-          $this->values = $list;
-          break;
-        case 'location':
-          if (is_array($values)) {
-            $formatted_values = array_map(function($value){
-              return array('value' => $value);
-            }, $values);
-            $this->values = $formatted_values;
-          }
-          else {
-            $this->values = array(array('value' => $values));
-          }
-          break;
-        case 'date':
-          $this->values = array($values);
+          }, $values);
           break;
         // Single value fields with integer value
         case 'progress':
@@ -308,12 +291,10 @@ class PodioEmbedItemField extends PodioItemField {
   }
 
   public function set_value($values) {
-    if (!$values) {
-      $this->values = array();
-    }
-    else {
+    $this->values = array();
+    if ($values) {
       // Ensure that we have an array of values
-      if (is_object($values) || is_array($values) && !empty($values['embed'])) {
+      if (is_object($values) || (is_array($values) && !empty($values['embed']))) {
         $values = array($values);
       }
 
@@ -328,6 +309,22 @@ class PodioEmbedItemField extends PodioItemField {
 
 }
 class PodioLocationItemField extends PodioItemField {
+
+  public function set_value($values) {
+    $this->values = array();
+    if ($values) {
+      if (is_array($values)) {
+        $formatted_values = array_map(function($value){
+          return array('value' => $value);
+        }, $values);
+        $this->values = $formatted_values;
+      }
+      else {
+        $this->values = array(array('value' => $values));
+      }
+    }
+  }
+
   public function humanized_value() {
     return join('; ', array_map(function($value){
       return $value['value'];
@@ -338,6 +335,13 @@ class PodioDateItemField extends PodioItemField {
 
   public function __construct($attributes = array()) {
     parent::__construct($attributes, 'date');
+  }
+
+  public function set_value($values) {
+    $this->values = array();
+    if ($values) {
+      $this->values = array($values);
+    }
   }
 
   public function humanized_value() {
