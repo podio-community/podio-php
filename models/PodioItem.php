@@ -17,7 +17,7 @@ class PodioItem extends PodioSuperApp {
     $this->has_many('fields', 'ItemField');
 
     # Extra properties for full item
-    $this->property('ratings', 'hash');h
+    $this->property('ratings', 'hash');
     $this->property('user_ratings', 'hash');
     $this->property('last_event_on', 'datetime');
     $this->property('participants', 'hash');
