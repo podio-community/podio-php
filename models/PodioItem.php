@@ -17,7 +17,7 @@ class PodioItem extends PodioSuperApp {
     $this->has_many('fields', 'ItemField');
 
     # Extra properties for full item
-    $this->property('ratings', 'hash');
+    $this->property('ratings', 'hash');h
     $this->property('user_ratings', 'hash');
     $this->property('last_event_on', 'datetime');
     $this->property('participants', 'hash');
@@ -132,12 +132,20 @@ class PodioItem extends PodioSuperApp {
    */
   public static function create($app_id, $attributes = array(), $options = array()) {
     $url = "/item/app/{$app_id}/";
-    if (isset($options['silent']) && $options['silent']) {
-      $url .= '?silent=1';
+   
+    $parameters = array();
+    if (isset($options['silent']) && $options['silent'] == 1) {
+      $parameters[] = 'silent=1';
     }
     if (isset($options['hook']) && !$options['hook']) {
-      $url .= '?hook=false';
+      $parameters[] = 'hook=false';
     }
+    
+    if (count($parameters)
+    {
+      $url .= '?' . implode('&', $parameters);
+    }
+    
     $body = Podio::post($url, $attributes)->json_body();
     return $body['item_id'];
   }
@@ -159,12 +167,20 @@ class PodioItem extends PodioSuperApp {
    */
   public static function update($item_id, $attributes = array(), $options = array()) {
     $url = "/item/{$item_id}";
+    
+    $parameters = array();
     if (isset($options['silent']) && $options['silent'] == 1) {
-      $url .= '?silent=1';
+      $parameters[] = 'silent=1';
     }
     if (isset($options['hook']) && !$options['hook']) {
-      $url .= '?hook=false';
+      $parameters[] = 'hook=false';
     }
+    
+    if (count($parameters)
+    {
+      $url .= '?' . implode('&', $parameters);
+    }
+    
     return Podio::put($url, $attributes)->json_body();
   }
 
@@ -180,12 +196,20 @@ class PodioItem extends PodioSuperApp {
    */
   public static function update_values($item_id, $attributes = array(), $options = array()) {
     $url = "/item/{$item_id}/value";
+    
+    $parameters = array();
     if (isset($options['silent']) && $options['silent'] == 1) {
-      $url .= '?silent=1';
+      $parameters[] = 'silent=1';
     }
     if (isset($options['hook']) && !$options['hook']) {
-      $url .= '?hook=false';
+      $parameters[] = 'hook=false';
     }
+    
+    if (count($parameters)
+    {
+      $url .= '?' . implode('&', $parameters);
+    }
+    
     return Podio::put($url, $attributes)->json_body();
   }
 
