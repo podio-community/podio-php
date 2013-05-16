@@ -141,7 +141,7 @@ class PodioItem extends PodioSuperApp {
       $parameters[] = 'hook=false';
     }
     
-    if (count($parameters)
+    if (count($parameters))
     {
       $url .= '?' . implode('&', $parameters);
     }
@@ -176,7 +176,7 @@ class PodioItem extends PodioSuperApp {
       $parameters[] = 'hook=false';
     }
     
-    if (count($parameters)
+    if (count($parameters))
     {
       $url .= '?' . implode('&', $parameters);
     }
@@ -205,7 +205,7 @@ class PodioItem extends PodioSuperApp {
       $parameters[] = 'hook=false';
     }
     
-    if (count($parameters)
+    if (count($parameters))
     {
       $url .= '?' . implode('&', $parameters);
     }
