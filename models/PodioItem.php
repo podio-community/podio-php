@@ -205,14 +205,6 @@ class PodioItem extends PodioSuperApp {
   }
 
   /**
-   * @see https://developers.podio.com/doc/items/get-item-count-34819997
-   */
-  public static function get_count($app_id) {
-    $body = Podio::get("/item/app/{$app_id}/count")->json_body();
-    return $body['count'];
-  }
-
-  /**
    * @see https://developers.podio.com/doc/items/get-items-as-xlsx-63233
    */
   public static function xlsx($app_id, $attributes = array()) {
@@ -226,6 +218,14 @@ class PodioItem extends PodioSuperApp {
     return Podio::get("/item/field/{$field_id}/find", $attributes)->json_body();
   }
 
+  /**
+   * @see https://developers.podio.com/doc/items/get-item-count-34819997
+   */
+  public static function get_count($app_id) {
+    $body = Podio::get("/item/app/{$app_id}/count")->json_body();
+    return $body['count'];
+  }
+  
   /**
    * @see https://developers.podio.com/doc/items/get-app-values-22455
    */
