@@ -219,6 +219,14 @@ class PodioItem extends PodioSuperApp {
   }
 
   /**
+   * @see https://developers.podio.com/doc/items/get-item-count-34819997
+   */
+  public static function get_count($app_id) {
+    $body = Podio::get("/item/app/{$app_id}/count")->json_body();
+    return $body['count'];
+  }
+  
+  /**
    * @see https://developers.podio.com/doc/items/get-app-values-22455
    */
   public static function get_app_values($app_id) {
