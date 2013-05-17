@@ -289,6 +289,19 @@ class Podio {
     }
     return join('&', $return);
   }
+  public static function url_for_post_with_options($url, $options) {
+    $parameters = array();
+
+    if (isset($options['silent']) && $options['silent']) {
+      $parameters[] = 'silent=1';
+    }
+
+    if (isset($options['hook']) && !$options['hook']) {
+      $parameters[] = 'hook=false';
+    }
+
+    return $parameters ? $url.'?'.join('&', $parameters) : $url;
+  }
   public static function parse_headers($headers) {
     $list = array();
     $headers = str_replace("\r", "", $headers);

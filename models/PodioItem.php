@@ -49,11 +49,7 @@ class PodioItem extends PodioSuperApp {
   /**
    * Create or updates an item
    */
-  public function save($silent = false) {
-    $options = array();
-    if ($silent) {
-      $options['silent'] = true;
-    }
+  public function save($options = array()) {
     if ($this->id) {
       return self::update($this->id, $this, $options);
     }
@@ -106,10 +102,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/delete-item-22364
    */
   public static function delete($item_id, $attributes = array(), $options = array()) {
-    $url = "/item/{$item_id}";
-    if (isset($options['hook']) && !$options['hook']) {
-      $url .= '?hook=false';
-    }
+    $url = Podio::url_for_post_with_options("/item/{$item_id}", $options);
     return Podio::delete($url, $attributes);
   }
 
@@ -131,13 +124,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/add-new-item-22362
    */
   public static function create($app_id, $attributes = array(), $options = array()) {
-    $url = "/item/app/{$app_id}/";
-    if (isset($options['silent']) && $options['silent']) {
-      $url .= '?silent=1';
-    }
-    if (isset($options['hook']) && !$options['hook']) {
-      $url .= '?hook=false';
-    }
+    $url = Podio::url_for_post_with_options("/item/app/{$app_id}/", $options);
     $body = Podio::post($url, $attributes)->json_body();
     return $body['item_id'];
   }
@@ -146,10 +133,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/clone-item-37722742
    */
   public static function duplicate($item_id, $options = array()) {
-    $url = "/item/{$item_id}/clone";
-    if (isset($options['silent']) && $options['silent'] == 1) {
-      $url .= '?silent=1';
-    }
+    $url = Podio::url_for_post_with_options("/item/{$item_id}/clone", $options);
     $body = Podio::post($url)->json_body();
     return $body['item_id'];
   }
@@ -158,13 +142,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/update-item-22363
    */
   public static function update($item_id, $attributes = array(), $options = array()) {
-    $url = "/item/{$item_id}";
-    if (isset($options['silent']) && $options['silent'] == 1) {
-      $url .= '?silent=1';
-    }
-    if (isset($options['hook']) && !$options['hook']) {
-      $url .= '?hook=false';
-    }
+    $url = Podio::url_for_post_with_options("/item/{$item_id}", $options);
     return Podio::put($url, $attributes)->json_body();
   }
 
@@ -179,13 +157,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/update-item-values-22366
    */
   public static function update_values($item_id, $attributes = array(), $options = array()) {
-    $url = "/item/{$item_id}/value";
-    if (isset($options['silent']) && $options['silent'] == 1) {
-      $url .= '?silent=1';
-    }
-    if (isset($options['hook']) && !$options['hook']) {
-      $url .= '?hook=false';
-    }
+    $url = Podio::url_for_post_with_options("/item/{$item_id}/value", $options);
     return Podio::put($url, $attributes)->json_body();
   }
 

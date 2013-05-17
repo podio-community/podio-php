@@ -72,10 +72,7 @@ class PodioTask extends PodioObject {
    * @see https://developers.podio.com/doc/tasks/create-task-22419
    */
   public static function create($attributes = array(), $options = array()) {
-    $url = "/task/";
-    if (isset($options['silent']) && $options['silent'] == 1) {
-      $url .= '?silent=1';
-    }
+    $url = Podio::url_for_post_with_options("/task/", $options);
     return self::member(Podio::post($url, $attributes));
   }
 
@@ -83,10 +80,7 @@ class PodioTask extends PodioObject {
    * @see https://developers.podio.com/doc/tasks/create-task-with-reference-22420
    */
   public static function create_for($ref_type, $ref_id, $attributes = array(), $options = array()) {
-    $url = "/task/{$ref_type}/{$ref_id}/";
-    if (isset($options['silent']) && $options['silent'] == 1) {
-      $url .= '?silent=1';
-    }
+    $url = Podio::url_for_post_with_options("/task/{$ref_type}/{$ref_id}/", $options);
     return self::member(Podio::post($url, $attributes));
   }
 

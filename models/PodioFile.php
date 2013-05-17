@@ -64,10 +64,7 @@ class PodioFile extends PodioObject {
    * @see https://developers.podio.com/doc/files/attach-file-22518
    */
   public static function attach($file_id, $attributes = array(), $options = array()) {
-    $url = "/file/{$file_id}/attach";
-    if (isset($options['silent']) && $options['silent'] == 1) {
-      $url .= '?silent=1';
-    }
+    $url = Podio::url_for_post_with_options("/file/{$file_id}/attach", $options);
     return Podio::post($url, $attributes);
   }
 

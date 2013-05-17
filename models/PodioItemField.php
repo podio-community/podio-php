@@ -19,13 +19,9 @@ class PodioItemField extends PodioObject {
   /**
    * Saves the value of the field
    */
-  public function save($silent = false) {
+  public function save($options = array()) {
     if ($this->__belongs_to) {
       $attributes = $this->as_json(false);
-      $options = array();
-      if ($silent) {
-        $options['silent'] = true;
-      }
       return self::update($this->__belongs_to['instance']->id, $this->id, $attributes, $options);
     }
     else {
@@ -181,13 +177,7 @@ class PodioItemField extends PodioObject {
    * @see https://developers.podio.com/doc/items/update-item-field-values-22367
    */
   public static function update($item_id, $field_id, $attributes = array(), $options = array()) {
-    $url = "/item/{$item_id}/value/{$field_id}";
-    if (isset($options['silent']) && $options['silent'] == 1) {
-      $url .= '?silent=1';
-    }
-    if (isset($options['hook']) && !$options['hook']) {
-      $url .= '?hook=false';
-    }
+    $url = Podio::url_for_post_with_options("/item/{$item_id}/value/{$field_id}", $options);
     return Podio::put($url, $attributes)->json_body();
   }
 
