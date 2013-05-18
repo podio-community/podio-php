@@ -1,5 +1,5 @@
 # About
-This is a PHP Client for interacting with the Podio API. All parts of the Podio API is covered in this client.
+This is a PHP Client for interacting with the Podio API. All parts of the Podio API are covered in this client.
 
 # Installation
 The client library requires PHP 5.3 with [curl](http://php.net/manual/en/book.curl.php) and [openssl](http://php.net/manual/en/book.openssl.php) extensions enabled.
