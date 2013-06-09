@@ -14,6 +14,13 @@ class PodioAppField extends PodioObject {
   }
 
   /**
+   * Adds a relationship to an app.
+   */
+  function add_relationship($app) {
+    $this->__belongs_to = array('property' => 'fields', 'instance' => $app);
+  }
+
+  /**
    * @see https://developers.podio.com/doc/applications/add-new-app-field-22354
    */
   public static function create($app_id, $attributes = array()) {

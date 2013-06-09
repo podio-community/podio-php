@@ -30,6 +30,8 @@ class PodioSuperApp extends PodioObject {
     }
     $this->remove_field($field->id ? $field->id : $field->external_id);
 
+    $field->add_relationship($this);
+
     $this->fields = array_merge($this->fields, array($field));
 
   }

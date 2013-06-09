@@ -31,6 +31,13 @@ class PodioItemField extends PodioObject {
   }
 
   /**
+   * Adds a relationship to an item.
+   */
+  function add_relationship($item) {
+    $this->__belongs_to = array('property' => 'fields', 'instance' => $item);
+  }
+
+  /**
    * Overwrites normal as_json to use api_friendly_values
    */
   public function as_json($encoded = true) {
