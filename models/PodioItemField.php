@@ -20,13 +20,14 @@ class PodioItemField extends PodioObject {
    * Saves the value of the field
    */
   public function save($options = array()) {
-    if ($this->__belongs_to) {
-      $attributes = $this->as_json(false);
-      return self::update($this->__belongs_to['instance']->id, $this->id, $attributes, $options);
-    }
-    else {
+    if (!$this->__belongs_to) {
       throw new PodioMissingRelationshipError('{"error_description":"Field is missing relationship to item"}', null, null);
     }
+    if (!$this->id) {
+      throw new PodioDataIntegrityError('Field must have id set.');
+    }
+    $attributes = $this->as_json(false);
+    return self::update($this->__belongs_to['instance']->id, $this->id, $attributes, $options);
   }
 
   /**
