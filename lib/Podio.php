@@ -16,7 +16,7 @@ class Podio {
 
     // Setup curl
     self::$url = empty($options['api_url']) ? 'https://api.podio.com:443' : $options['api_url'];
-    self::$debug = false;
+    self::$debug = self::$debug ? self::$debug : false;
     self::$ch = curl_init();
     self::$headers = array(
       'Accept' => 'application/json',
