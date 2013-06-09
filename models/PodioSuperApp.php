@@ -23,6 +23,8 @@ class PodioSuperApp extends PodioObject {
    * Adds a field. Will replace any current field with the same ID
    */
   public function add_field($field) {
+    $this->fields = $this->fields ? $this->fields : array();
+
     if (!$field->id && !$field->external_id) {
       throw new PodioDataIntegrityError('Field must have id or external_id set.');
     }
@@ -36,6 +38,9 @@ class PodioSuperApp extends PodioObject {
    * Removes a field.
    */
   public function remove_field($field_id_or_external_id) {
+    if (!$this->fields) {
+      return true;
+    }
     $this->fields = array_filter($this->fields, function($field) use ($field_id_or_external_id) {
       return !($field->id == $field_id_or_external_id || $field->external_id == $field_id_or_external_id);
     });
