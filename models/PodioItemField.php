@@ -81,8 +81,6 @@ class PodioItemField extends PodioObject {
 
           $this->values = array_map(function($value) use ($id_key) {
             if (is_object($value)) {
-              print "Testing: \n";
-              print $value;
               return array('value' => array($id_key => (int)$value->{$id_key}));
             }
             elseif (is_array($value)) {
