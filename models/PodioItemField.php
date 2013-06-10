@@ -76,7 +76,6 @@ class PodioItemField extends PodioObject {
 
           // Ensure that we have an array of values
           if (!is_array($values) || (is_array($values) && !empty($values[$id_key]))) {
-            print "Forcing value to be array\n";
             $values = array($values);
           }
 
