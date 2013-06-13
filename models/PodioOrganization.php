@@ -37,7 +37,7 @@ class PodioOrganization extends PodioObject {
    * @see https://developers.podio.com/doc/organizations/get-organization-by-url-22384
    */
   public static function get_for_url($attributes = array()) {
-    return self::member(Podio::get("/org/", $attributes));
+    return self::member(Podio::get("/org/url", $attributes));
   }
 
   /**
