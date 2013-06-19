@@ -25,7 +25,7 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/3.0');
-    curl_setopt(self::$ch, CURLOPT_HEADER, 1);
+    curl_setopt(self::$ch, CURLOPT_HEADER, true);
     curl_setopt(self::$ch, CURLINFO_HEADER_OUT, true);
 
     if ($options && !empty($options['curl_options'])) {
@@ -92,6 +92,8 @@ class Podio {
       throw new Exception('Client has not been setup with client id and client secret.');
     }
 
+    // Reset attributes so we can reuse curl object
+    curl_setopt(self::$ch, CURLOPT_POSTFIELDS, null);
     unset(self::$headers['Content-length']);
     $original_url = $url;
     $encoded_attributes = null;
