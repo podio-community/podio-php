@@ -11,6 +11,9 @@ class PodioItem extends PodioSuperApp {
     $this->property('title', 'string');
     $this->property('link', 'string');
     $this->property('rights', 'array');
+    $this->property('created_on', 'datetime');
+
+    $this->has_one('created_by', 'Byline');
 
     $this->has_one('initial_revision', 'ItemRevision');
     $this->has_one('current_revision', 'ItemRevision');
@@ -197,7 +200,7 @@ class PodioItem extends PodioSuperApp {
     $body = Podio::get("/item/app/{$app_id}/count")->json_body();
     return $body['count'];
   }
-  
+
   /**
    * @see https://developers.podio.com/doc/items/get-app-values-22455
    */
