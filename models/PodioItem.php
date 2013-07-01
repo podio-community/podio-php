@@ -14,7 +14,7 @@ class PodioItem extends PodioSuperApp {
     $this->property('created_on', 'datetime');
 
     $this->has_one('created_by', 'Byline');
-    $this->property('created_via', 'hash');
+    $this->has_one('created_via', 'Via');
 
     $this->has_one('initial_revision', 'ItemRevision');
     $this->has_one('current_revision', 'ItemRevision');
