@@ -144,7 +144,7 @@ class PodioItemField extends PodioObject {
       case 'embed':
         $list = array();
         foreach ($this->values as $value) {
-          $list[] = array('embed' => $value['embed']['embed_id'], 'file' => $value['file']['file_id']);
+          $list[] = array('embed' => $value['embed']['embed_id'], 'file' => (!empty($value['file']) ? $value['file']['file_id'] : null) );
         }
         return $list;
         break;
