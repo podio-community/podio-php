@@ -295,7 +295,7 @@ class PodioEmbedItemField extends PodioItemField {
 
       $this->values = array_map(function($value) {
         if (is_object($value)) {
-          return array('embed' => array('embed_id' => $value->id), 'file' => array('file_id' => $value->files ? $value->files[0]->id : ''));
+          return array('embed' => array('embed_id' => $value->id), 'file' => array('file_id' => $value->files ? $value->files[0]->id : null));
         }
         return $value;
       }, $values);
