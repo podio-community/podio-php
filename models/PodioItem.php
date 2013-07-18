@@ -13,7 +13,7 @@ class PodioItem extends PodioSuperApp {
     $this->property('rights', 'array');
     $this->property('created_on', 'datetime');
 
-    $this->has_one('created_by', 'Byline');
+    $this->has_one('created_by', 'ByLine');
     $this->has_one('created_via', 'Via');
 
     $this->has_one('initial_revision', 'ItemRevision');
