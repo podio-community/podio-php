@@ -28,4 +28,11 @@ class PodioReference extends PodioObject {
     return Podio::post("/reference/search", $attributes)->json_body();
   }
 
+  /**
+   * @see https://developers.podio.com/doc/reference/resolve-url-66839423
+   */
+  public static function resolve($attributes = array()) {
+    return self::member(Podio::get("/reference/resolve", $attributes));
+  }
+
 }
