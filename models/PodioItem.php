@@ -75,6 +75,13 @@ class PodioItem extends PodioSuperApp {
   }
 
   /**
+   * @see https://developers.podio.com/doc/items/get-item-by-app-item-id-66506688
+   */
+  public static function get_by_app_item_id($app_id, $app_item_id) {
+    return self::member(Podio::get("/app/{$app_id}/item/{$app_item_id}"));
+  }
+
+  /**
    * @see https://developers.podio.com/doc/items/get-item-by-external-id-19556702
    */
   public static function get_by_external_id($app_id, $external_id) {
