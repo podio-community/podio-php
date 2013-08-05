@@ -3,7 +3,7 @@
 
 require_once 'config.php';
 
-require_once '../lib/PodioAPI.php';
+require_once '../lib/Podio.php';
 require_once '../lib/PodioResponse.php';
 require_once '../lib/PodioOAuth.php';
 require_once '../lib/PodioError.php';
