@@ -12,6 +12,8 @@ class PodioItem extends PodioSuperApp {
     $this->property('link', 'string');
     $this->property('rights', 'array');
     $this->property('created_on', 'datetime');
+    $this->property('app_item_id_formatted', 'string');
+    $this->property('app_item_id', 'integer');
 
     $this->has_one('created_by', 'ByLine');
     $this->has_one('created_via', 'Via');
