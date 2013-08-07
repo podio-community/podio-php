@@ -1,4 +1,7 @@
 <?php
+/**
+ * @see https://developers.podio.com/doc/reference
+ */
 class PodioReference extends PodioObject {
   public function __construct($attributes = array()) {
     $this->property('type', 'string');
