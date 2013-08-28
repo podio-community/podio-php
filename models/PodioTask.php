@@ -115,8 +115,9 @@ class PodioTask extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/tasks/update-task-10583674
    */
-  public static function update($task_id, $attributes = array()) {
-    return self::member(Podio::put("/task/{$task_id}", $attributes));
+  public static function update($task_id, $attributes = array(), $options = array()) {
+    $url = Podio::url_for_post_with_options("/task/{$task_id}", $options);
+    return self::member(Podio::put($url, $attributes));
   }
 
   /**
