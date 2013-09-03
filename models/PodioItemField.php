@@ -156,6 +156,9 @@ class PodioItemField extends PodioObject {
         return $list;
         break;
       case 'date':
+        if (empty($this->values[0]['end'])) {
+          return array('start' => $this->values[0]['start']);
+        }
         return array('start' => $this->values[0]['start'], 'end' => $this->values[0]['end']);
         break;
       case 'text':
