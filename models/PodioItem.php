@@ -108,7 +108,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/filter-items-by-view-4540284
    */
   public static function filter_by_view($app_id, $view_id, $attributes = array()) {
-    return self::collection(Podio::post("/item/app/{$app_id}/filter/{$view_id}/", $attributes));
+    return self::collection(Podio::post("/item/app/{$app_id}/filter/{$view_id}/", , $attributes ? $attributes : new StdClass()));
   }
 
   /**
