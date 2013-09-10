@@ -23,7 +23,7 @@ class PodioGrant extends PodioObject {
    * @see https://developers.podio.com/doc/grants/get-grants-on-object-16491464
    */
   public static function get_for($ref_type, $ref_id) {
-    return self::listing(Podio::get("/grant/{$ref_type}/{$ref_id}"));
+    return self::listing(Podio::get("/grant/{$ref_type}/{$ref_id}/"));
   }
 
   /**
@@ -37,14 +37,14 @@ class PodioGrant extends PodioObject {
    * @see https://developers.podio.com/doc/grants/get-own-grants-on-org-22330891
    */
   public static function get_own_on_org($org_id) {
-    return self::listing(Podio::get("/grant/org/{$org_id}/own"));
+    return self::listing(Podio::get("/grant/org/{$org_id}/own/"));
   }
 
   /**
    * @see https://developers.podio.com/doc/grants/get-grants-to-user-on-space-19389786
    */
   public static function get_for_user_on_space($space_id, $user_id) {
-    return self::listing(Podio::get("/grant/space/{$space_id}/user/{$user_id}"));
+    return self::listing(Podio::get("/grant/space/{$space_id}/user/{$user_id}/"));
   }
 
   /**
