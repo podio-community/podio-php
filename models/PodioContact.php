@@ -141,6 +141,13 @@ class PodioContact extends PodioObject {
   }
 
   /**
+   * @see https://developers.podio.com/doc/contacts/get-space-contacts-on-app-79475279
+   */
+  public static function get_for_app($app_id, $attributes = array()) {
+    return self::listing(Podio::get("/contact/app/{$app_id}/", $attributes));
+  }
+
+  /**
    * @see https://developers.podio.com/doc/contacts/get-top-contacts-26302
    */
   public static function get_top($attributes = array()) {
