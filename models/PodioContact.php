@@ -67,13 +67,6 @@ class PodioContact extends PodioObject {
   }
 
   /**
-   * @see https://developers.podio.com/doc/contacts/get-contact-field-60519
-   */
-  public static function get_field($profile_id, $key) {
-    return Podio::get("/contact/{$profile_id}/{$key}/v2")->json_body();
-  }
-
-  /**
    * @see https://developers.podio.com/doc/contacts/get-user-contact-field-22403
    */
   public static function get_field_for_user($user_id, $key) {
@@ -145,13 +138,6 @@ class PodioContact extends PodioObject {
    */
   public static function get_for_app($app_id, $attributes = array()) {
     return self::listing(Podio::get("/contact/app/{$app_id}/", $attributes));
-  }
-
-  /**
-   * @see https://developers.podio.com/doc/contacts/get-top-contacts-26302
-   */
-  public static function get_top($attributes = array()) {
-    return self::listing(Podio::get("/contact/top/", $attributes));
   }
 
   /**
