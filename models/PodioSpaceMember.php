@@ -24,6 +24,13 @@ class PodioSpaceMember extends PodioObject {
   }
 
   /**
+   * @see https://developers.podio.com/doc/space-members/get-active-members-of-space-22395
+   */
+  public static function get_all($space_id) {
+    return self::listing(Podio::get("/space/{$space_id}/member/"));
+  }
+
+  /**
    * @see https://developers.podio.com/doc/space-members/get-space-members-by-role-68043
    */
   public static function get_by_role($space_id, $role) {
