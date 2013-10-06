@@ -10,6 +10,7 @@ class PodioItemField extends PodioObject {
     $this->property('label', 'string');
     $this->property('values', 'array');
     $this->property('config', 'hash');
+    $this->property('status', 'string');
 
     $this->init($attributes);
 
