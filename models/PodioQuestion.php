@@ -29,18 +29,4 @@ class PodioQuestion extends PodioObject {
     return Podio::post("/question/{$question_id}/", $attributes);
   }
 
-  /**
-   * @see https://developers.podio.com/doc/questions/get-question-945740
-   */
-  public static function get($question_id) {
-    return self::member(Podio::get("/question/{$question_id}"));
-  }
-
-  /**
-   * @see https://developers.podio.com/doc/questions/get-questions-on-object-945736
-   */
-  public static function get_for($ref_type, $ref_id) {
-    return self::listing(Podio::get("/question/{$ref_type}/{$ref_id}/"));
-  }
-
 }
