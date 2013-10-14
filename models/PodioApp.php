@@ -157,11 +157,4 @@ class PodioApp extends PodioSuperApp {
     return $result;
   }
 
-  /**
-   * @see https://developers.podio.com/doc/applications/get-apps-available-for-space-29761
-   */
-  public static function available($space_id) {
-    return self::listing(Podio::get("/app/space/{$space_id}/available/"));
-  }
-
 }
