@@ -152,7 +152,7 @@ class PodioApp extends PodioSuperApp {
    * @see https://developers.podio.com/doc/applications/get-space-app-dependencies-45779
    */
   public static function dependencies_space($space_id) {
-    $result = Podio::get("/app/space/{$space_id}/dependencies/")->json_body();
+    $result = Podio::get("/space/{$space_id}/dependencies/")->json_body();
     $result['apps'] = self::listing($result['apps']);
     return $result;
   }
