@@ -398,7 +398,7 @@ class PodioContactItemField extends PodioItemField {
    */
   public function contacts() {
     return array_map(function($value){
-      return new PodioFile($value['value']);
+      return new PodioContact($value['value']);
     }, $this->values);
   }
 
@@ -448,7 +448,7 @@ class PodioAssetItemField extends PodioItemField {
    */
   public function files() {
     return array_map(function($value){
-      return new PodioContact($value['value']);
+      return new PodioFile($value['value']);
     }, $this->values);
   }
 }
