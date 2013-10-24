@@ -33,6 +33,13 @@ class PodioConversation extends PodioObject {
   }
 
   /**
+   * @see https://developers.podio.com/doc/conversations/get-conversations-34822801
+   */
+  public static function get_all($attributes = array()) {
+    return self::listing(Podio::get("/conversation/", $attributes));
+  }
+
+  /**
    * @see https://developers.podio.com/doc/conversations/get-conversations-on-object-22443
    */
   public static function get_for($ref_type, $ref_id, $plugin) {
