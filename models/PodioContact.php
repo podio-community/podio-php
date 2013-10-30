@@ -72,13 +72,20 @@ class PodioContact extends PodioObject {
   public static function get_field_for_user($user_id, $key) {
     return Podio::get("/contact/user/{$user_id}/{$key}")->json_body();
   }
-
+  
   /**
    * @see https://developers.podio.com/doc/contacts/get-contact-totals-60467
    */
   public static function get_totals() {
     return Podio::get("/contact/totals/")->json_body();
-  }
+  }   
+  
+  /**
+   * @see https://developers.podio.com/doc/contacts/get-contact-totals-v3-34629208
+   */
+  public static function get_totals_v3() {
+    return Podio::get("/contact/totals/v3/")->json_body();
+  }   
 
   /**
    * @see https://developers.podio.com/doc/contacts/get-space-contact-totals-67508
