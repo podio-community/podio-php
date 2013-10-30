@@ -74,9 +74,16 @@ class PodioContact extends PodioObject {
   }
   
   /**
-   * @see https://developers.podio.com/doc/contacts/get-contact-totals-v3-34629208
+   * @see https://developers.podio.com/doc/contacts/get-contact-totals-60467
    */
   public static function get_totals() {
+    return Podio::get("/contact/totals/")->json_body();
+  }   
+  
+  /**
+   * @see https://developers.podio.com/doc/contacts/get-contact-totals-v3-34629208
+   */
+  public static function get_totals_v3() {
     return Podio::get("/contact/totals/v3/")->json_body();
   }   
 
