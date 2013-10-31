@@ -213,20 +213,14 @@ class PodioTask extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/tasks/update-task-reference-170733
    */
-  public static function update_reference($task_id, $ref_type, $ref_id) {
-      $attributes = array(
-            'ref_type'  => $ref_type,
-            'ref_id'    => $ref_id
-      );
-      
-      return Podio::put("/task/{$task_id}/ref", $attributes)->body;
+  public static function update_reference($task_id, $attributes = array()) {
+    return Podio::put("/task/{$task_id}/ref", $attributes)->body;
   }
   
   /**
    * @see https://developers.podio.com/doc/tasks/get-task-count-38316458
    */
-  public static function count($ref_type, $ref_id)
-  {
-      return Podio::get("/task/{$ref_type}/{$ref_id}/count")->json_body();
+  public static function count($ref_type, $ref_id) {
+    return Podio::get("/task/{$ref_type}/{$ref_id}/count")->json_body();
   }
 }
