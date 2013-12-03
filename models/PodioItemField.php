@@ -50,7 +50,7 @@ class PodioItemField extends PodioObject {
    * Set the value of the field
    */
   public function set_value($values) {
-    if (!$values) {
+    if (is_null($values) || $values === false) {
       $this->values = array();
     }
     else {
