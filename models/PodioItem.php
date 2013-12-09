@@ -100,8 +100,9 @@ class PodioItem extends PodioSuperApp {
   /**
    * @see https://developers.podio.com/doc/items/filter-items-4496747
    */
-  public static function filter($app_id, $attributes = array()) {
-    return self::collection(Podio::post("/item/app/{$app_id}/filter/", $attributes ? $attributes : new StdClass()));
+  public static function filter($app_id, $attributes = array(), $options = array()) {
+    $url = Podio::url_with_options("/item/app/{$app_id}/filter/", $options);
+    return self::collection(Podio::post($url, $attributes ? $attributes : new StdClass()));
   }
 
   /**
@@ -115,7 +116,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/delete-item-22364
    */
   public static function delete($item_id, $attributes = array(), $options = array()) {
-    $url = Podio::url_for_post_with_options("/item/{$item_id}", $options);
+    $url = Podio::url_with_options("/item/{$item_id}", $options);
     return Podio::delete($url, $attributes);
   }
 
@@ -137,7 +138,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/add-new-item-22362
    */
   public static function create($app_id, $attributes = array(), $options = array()) {
-    $url = Podio::url_for_post_with_options("/item/app/{$app_id}/", $options);
+    $url = Podio::url_with_options("/item/app/{$app_id}/", $options);
     $body = Podio::post($url, $attributes)->json_body();
     return $body['item_id'];
   }
@@ -146,7 +147,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/clone-item-37722742
    */
   public static function duplicate($item_id, $options = array()) {
-    $url = Podio::url_for_post_with_options("/item/{$item_id}/clone", $options);
+    $url = Podio::url_with_options("/item/{$item_id}/clone", $options);
     $body = Podio::post($url)->json_body();
     return $body['item_id'];
   }
@@ -155,7 +156,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/update-item-22363
    */
   public static function update($item_id, $attributes = array(), $options = array()) {
-    $url = Podio::url_for_post_with_options("/item/{$item_id}", $options);
+    $url = Podio::url_with_options("/item/{$item_id}", $options);
     return Podio::put($url, $attributes)->json_body();
   }
 
@@ -170,7 +171,7 @@ class PodioItem extends PodioSuperApp {
    * @see https://developers.podio.com/doc/items/update-item-values-22366
    */
   public static function update_values($item_id, $attributes = array(), $options = array()) {
-    $url = Podio::url_for_post_with_options("/item/{$item_id}/value", $options);
+    $url = Podio::url_with_options("/item/{$item_id}/value", $options);
     return Podio::put($url, $attributes)->json_body();
   }
 

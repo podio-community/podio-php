@@ -48,7 +48,7 @@ class PodioComment extends PodioObject {
    * @see https://developers.podio.com/doc/comments/add-comment-to-object-22340
    */
   public static function create($ref_type, $ref_id, $attributes = array(), $options = array()) {
-    $url = Podio::url_for_post_with_options("/comment/{$ref_type}/{$ref_id}", $options);
+    $url = Podio::url_with_options("/comment/{$ref_type}/{$ref_id}", $options);
     $body = Podio::post($url, $attributes)->json_body();
     return $body['comment_id'];
   }

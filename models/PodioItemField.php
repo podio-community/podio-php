@@ -186,7 +186,7 @@ class PodioItemField extends PodioObject {
    * @see https://developers.podio.com/doc/items/update-item-field-values-22367
    */
   public static function update($item_id, $field_id, $attributes = array(), $options = array()) {
-    $url = Podio::url_for_post_with_options("/item/{$item_id}/value/{$field_id}", $options);
+    $url = Podio::url_with_options("/item/{$item_id}/value/{$field_id}", $options);
     return Podio::put($url, $attributes)->json_body();
   }
 

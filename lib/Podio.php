@@ -291,7 +291,7 @@ class Podio {
     }
     return join('&', $return);
   }
-  public static function url_for_post_with_options($url, $options) {
+  public static function url_with_options($url, $options) {
     $parameters = array();
 
     if (isset($options['silent']) && $options['silent']) {
@@ -300,6 +300,10 @@ class Podio {
 
     if (isset($options['hook']) && !$options['hook']) {
       $parameters[] = 'hook=false';
+    }
+
+    if (!empty($options['fields'])) {
+      $parameters[] = 'fields='.$options['fields'];
     }
 
     return $parameters ? $url.'?'.join('&', $parameters) : $url;
