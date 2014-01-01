@@ -42,6 +42,22 @@ class Podio {
     register_shutdown_function('Podio::shutdown');
   }
 
+  public static function authenticate_with_app($app_id, $app_token) {
+    return self::authenticate('app', array('app_id' => $app_id, 'app_token' => $app_token));
+  }
+
+  public static function authenticate_with_password($username, $password) {
+    return self::authenticate('username', array('username' => $username, 'password' => $password));
+  }
+
+  public static function authenticate_with_authorization_code($authorization_code, $redirect_uri) {
+    return self::authenticate('authorization_code', array('code' => $authorization_code, 'redirect_uri' => $redirect_uri));
+  }
+
+  public static function refresh_access_token() {
+    return self::authenticate('refresh_token', array('refresh_token' => self::$oauth->refresh_token));
+  }
+
   public static function authenticate($grant_type, $attributes) {
     $data = array();
     $data['client_id'] = self::$client_id;
