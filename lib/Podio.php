@@ -1,7 +1,7 @@
 <?php
 
 class Podio {
-  public static $oauth, $debug, $logger, $session_manager, $last_response;
+  public static $oauth, $debug, $logger, $session_manager, $last_response, $auth_type;
   protected static $url, $client_id, $client_secret, $secret, $ch, $headers;
 
   const GET = 'GET';
@@ -60,14 +60,15 @@ class Podio {
 
   public static function authenticate($grant_type, $attributes) {
     $data = array();
-    $data['client_id'] = self::$client_id;
-    $data['client_secret'] = self::$client_secret;
+    $auth_type = array('type' => $grant_type);
 
     switch ($grant_type) {
       case 'password':
         $data['grant_type'] = 'password';
         $data['username'] = $attributes['username'];
         $data['password'] = $attributes['password'];
+
+        $auth_type['identifier'] = $attributes['username'];
         break;
       case 'refresh_token':
         $data['grant_type'] = 'refresh_token';
@@ -82,12 +83,17 @@ class Podio {
         $data['grant_type'] = 'app';
         $data['app_id'] = $attributes['app_id'];
         $data['app_token'] = $attributes['app_token'];
+
+        $auth_type['identifier'] = $attributes['app_id'];
       default:
         break;
     }
-    if ($response = self::request(self::POST, '/oauth/token', $data, array('oauth_request' => true))) {
+
+    $request_data = array_merge($data, array('client_id' => self::$client_id, 'client_id' => self::$client_secret));
+    if ($response = self::request(self::POST, '/oauth/token', $request_data, array('oauth_request' => true))) {
       $body = $response->json_body();
       self::$oauth = new PodioOAuth($body['access_token'], $body['refresh_token'], $body['expires_in'], $body['ref']);
+      self::$auth_type = $auth_type;
       return true;
     }
     return false;
@@ -346,7 +352,7 @@ class Podio {
   public static function shutdown() {
     // Write any new access and refresh tokens to session.
     if (self::$session_manager) {
-      self::$session_manager->set(self::$oauth);
+      self::$session_manager->set(self::$oauth, self::$auth_type);
     }
 
     // Log api call times if debugging
