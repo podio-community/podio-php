@@ -89,7 +89,7 @@ class Podio {
         break;
     }
 
-    $request_data = array_merge($data, array('client_id' => self::$client_id, 'client_id' => self::$client_secret));
+    $request_data = array_merge($data, array('client_id' => self::$client_id, 'client_secret' => self::$client_secret));
     if ($response = self::request(self::POST, '/oauth/token', $request_data, array('oauth_request' => true))) {
       $body = $response->json_body();
       self::$oauth = new PodioOAuth($body['access_token'], $body['refresh_token'], $body['expires_in'], $body['ref']);
