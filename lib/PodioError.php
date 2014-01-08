@@ -20,7 +20,9 @@ class PodioError extends Exception {
     if (!empty($this->request['query_string'])) {
       $str .= '?'.$this->request['query_string'];
     }
-    $str .= "\nRequest Body: ".json_encode($this->request['body']);
+    if (!empty($this->request['body'])) {
+      $str .= "\nRequest Body: ".json_encode($this->request['body']);
+    }
 
     $str .= "\n\nStack Trace: \n".$this->getTraceAsString();
     return $str;
