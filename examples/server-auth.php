@@ -69,7 +69,8 @@ define("REDIRECT_URI", 'http://localhost/podio-php/examples/server-auth.php');
 
     }
     else {
-      print "There was a problem. The server said: {$_GET['error_description']}<br>";
+      $error_description = htmlspecialchars($_GET['error_description']);
+      print "There was a problem. The server said: {$error_description}<br>";
     }
   }
 ?>
