@@ -1,9 +1,9 @@
 <?php
 class PodioObject {
-  public $__attributes = array();
-  public $__belongs_to;
-  public $__properties = array();
-  public $__relationships = array();
+  private $__attributes = array();
+  private $__belongs_to;
+  private $__properties = array();
+  private $__relationships = array();
   protected $__id_column;
 
   public function init($default_attributes = array()) {
