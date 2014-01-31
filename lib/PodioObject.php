@@ -164,7 +164,7 @@ class PodioObject {
     }
   }
 
-  public static function collection($response) {
+  public static function collection($response, $collection_type = "PodioCollection") {
     if ($response) {
       $body = $response->json_body();
       $list = array();
@@ -172,12 +172,7 @@ class PodioObject {
         $class_name = get_called_class();
         $list[] = new $class_name($attributes);
       }
-      $collection = array(
-        'items' => $list,
-        'filtered' => $body['filtered'],
-        'total' => $body['total'],
-      );
-      return $collection;
+      return new $collection_type($list, $body['filtered'], $body['total']);
     }
   }
 

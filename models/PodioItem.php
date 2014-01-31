@@ -102,14 +102,14 @@ class PodioItem extends PodioSuperApp {
    */
   public static function filter($app_id, $attributes = array(), $options = array()) {
     $url = Podio::url_with_options("/item/app/{$app_id}/filter/", $options);
-    return self::collection(Podio::post($url, $attributes ? $attributes : new StdClass()));
+    return self::collection(Podio::post($url, $attributes ? $attributes : new StdClass()), "PodioItemCollection");
   }
 
   /**
    * @see https://developers.podio.com/doc/items/filter-items-by-view-4540284
    */
   public static function filter_by_view($app_id, $view_id, $attributes = array()) {
-    return self::collection(Podio::post("/item/app/{$app_id}/filter/{$view_id}/", $attributes ? $attributes : new StdClass()));
+    return self::collection(Podio::post("/item/app/{$app_id}/filter/{$view_id}/", $attributes ? $attributes : new StdClass()), "PodioItemCollection");
   }
 
   /**
