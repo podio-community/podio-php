@@ -23,11 +23,4 @@ class PodioItemCollection extends PodioCollection {
     parent::offsetSet($offset, $value);
   }
 
-  /**
-   * Get item from collection by item_id or external_id
-   */
-  public function get($item_id_or_external_id) {
-    // TODO: Do it
-  }
-
 }

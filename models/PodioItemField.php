@@ -21,21 +21,22 @@ class PodioItemField extends PodioObject {
    * Saves the value of the field
    */
   public function save($options = array()) {
-    if (!$this->__belongs_to) {
+    $relationship = $this->relationship();
+    if (!$relationship) {
       throw new PodioMissingRelationshipError('{"error_description":"Field is missing relationship to item"}', null, null);
     }
     if (!$this->id && !$this->external_id) {
       throw new PodioDataIntegrityError('Field must have id or external_id set.');
     }
     $attributes = $this->as_json(false);
-    return self::update($this->__belongs_to['instance']->id, $this->id ? $this->id : $this->external_id, $attributes, $options);
+    return self::update($relationship['instance']->id, $this->id ? $this->id : $this->external_id, $attributes, $options);
   }
 
   /**
-   * Adds a relationship to an item.
+   * Calling parent so we get all field attributes printed instead of only api_friendly_values
    */
-  function add_relationship($item) {
-    $this->__belongs_to = array('property' => 'fields', 'instance' => $item);
+  public function __toString() {
+    return print_r(parent::as_json(false), true);
   }
 
   /**

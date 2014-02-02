@@ -36,30 +36,32 @@ class PodioObject {
 
           if ($type == 'has_one') {
             $child = is_object($default_attributes[$name]) ? $default_attributes[$name] : new $class_name($default_attributes[$name]);
-            $child->__belongs_to = array('property' => $name, 'instance' => $this);
+            $child->add_relationship($this, $name);
             $this->set_attribute($name, $child);
           }
           elseif ($type == 'has_many' && is_array($default_attributes[$name])) {
-            $values = array();
-            foreach ($default_attributes[$name] as $value) {
-              $old_class_name = $class_name;
 
-              // ItemField has special handling since we want to create objects of the sub-types.
-              if ($class_name == 'PodioItemField' && !is_object($value)) {
-                $class_name_alternate = 'Podio'.ucfirst($value['type']).'ItemField';
-                if (class_exists($class_name_alternate)) {
-                  $old_class_name = 'PodioItemField';
-                  $class_name = $class_name_alternate;
-                }
-              }
-
-              $child = is_object($value) ? $value : new $class_name($value);
-              $child->__belongs_to = array('property' => $name, 'instance' => $this);
-              $values[] = $child;
-
-              $class_name = $old_class_name;
+            // Special handling for ItemField and AppField.
+            // We need to create collection of the right type
+            if ($class_name == 'PodioItemField') {
+              $collection_class = 'PodioItemFieldCollection';
+              $values = $default_attributes[$name];
             }
-            $this->set_attribute($name, $values);
+            elseif ($class_name == 'PodioAppField') {
+              $collection_class = 'PodioAppFieldCollection';
+              $values = $default_attributes[$name];
+            }
+            else {
+              $collection_class = 'PodioCollection';
+              $values = array();
+              foreach ($default_attributes[$name] as $value) {
+                $child = is_object($value) ? $value : new $class_name($value);
+                $values[] = $child;
+              }
+            }
+            $collection = new $collection_class($values);
+            $collection->add_relationship($this, $name);
+            $this->set_attribute($name, $collection);
           }
         }
       }
@@ -104,6 +106,14 @@ class PodioObject {
         return 'Y-m-d';
       }
     }
+  }
+
+  public function relationship() {
+    return $this->__belongs_to;
+  }
+
+  public function add_relationship($instance, $property = 'fields') {
+    $this->__belongs_to = array('property' => $property, 'instance' => $instance);
   }
 
   protected function set_attribute($name, $value) {
@@ -234,6 +244,14 @@ class PodioObject {
           if (!empty($this->__properties[$name]['options']['json_value'])) {
             $result[$target_name] = $this->__attributes[$name]->{$this->__properties[$name]['options']['json_value']};
           }
+          elseif (is_a($this->__attributes[$name], 'PodioFieldCollection')) {
+            foreach ($this->__attributes[$name] as $field) {
+              // Only use external_id for item fields
+              $key = $field->external_id && is_a($this->__attributes[$name], 'PodioItemFieldCollection') ? $field->external_id : $field->id;
+              $list[$key] = $field->as_json(false);
+            }
+            $result[$name] = $list;
+          }
           elseif (is_object($this->__attributes[$name]) && get_class($this->__attributes[$name]) == 'PodioReference') {
             $result['ref_type'] = $this->__attributes[$name]->type;
             $result['ref_id'] = $this->__attributes[$name]->id;
@@ -249,31 +267,20 @@ class PodioObject {
       elseif ($type == 'has_many') {
         if ($this->has_attribute($name)) {
           $list = array();
-
-          // ItemField is a special case.
-          if ($this->__properties[$name]['type'] == 'ItemField') {
-            foreach ($this->__attributes[$name] as $item) {
-              $key = $item->external_id ? $item->external_id : $item->id;
-              $list[$key] = $item->as_json(false);
+          foreach ($this->__attributes[$name] as $item) {
+            if (!empty($this->__properties[$name]['options']['json_value'])) {
+              $list[] = $item->{$this->__properties[$name]['options']['json_value']};
             }
-            $result[$name] = $list;
+            else {
+              $list[] = $item->as_json(false);
+            }
           }
-          else {
-            foreach ($this->__attributes[$name] as $item) {
-              if (!empty($this->__properties[$name]['options']['json_value'])) {
-                $list[] = $item->{$this->__properties[$name]['options']['json_value']};
-              }
-              else {
-                $list[] = $item->as_json(false);
-              }
+          if ($list) {
+            if (!empty($this->__properties[$name]['options']['json_target'])) {
+              $result[$this->__properties[$name]['options']['json_target']] = $list;
             }
-            if ($list) {
-              if (!empty($this->__properties[$name]['options']['json_target'])) {
-                $result[$this->__properties[$name]['options']['json_target']] = $list;
-              }
-              else {
-                $result[$name] = $list;
-              }
+            else {
+              $result[$name] = $list;
             }
           }
         }

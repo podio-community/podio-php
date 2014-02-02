@@ -2,7 +2,7 @@
 /**
  * @see https://developers.podio.com/doc/items
  */
-class PodioItem extends PodioSuperApp {
+class PodioItem extends PodioObject {
   public function __construct($attributes = array()) {
 
     # Basic item

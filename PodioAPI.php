@@ -13,11 +13,12 @@ require_once 'lib/PodioObject.php';
 require_once 'lib/PodioLogger.php';
 require_once 'lib/PodioSession.php';
 
-require_once 'models/PodioSuperApp.php'; // Included first because other models inherit from this
+require_once 'models/PodioFieldCollection.php'; // Included first because other models inherit from this
 require_once 'models/PodioAction.php';
 require_once 'models/PodioActivity.php';
 require_once 'models/PodioApp.php';
 require_once 'models/PodioAppField.php';
+require_once 'models/PodioAppFieldCollection.php';
 require_once 'models/PodioAppMarketShare.php';
 require_once 'models/PodioBatch.php';
 require_once 'models/PodioByLine.php';
@@ -29,7 +30,6 @@ require_once 'models/PodioConversation.php';
 require_once 'models/PodioConversationMessage.php';
 require_once 'models/PodioConversationParticipant.php';
 require_once 'models/PodioEmbed.php';
-require_once 'models/PodioFieldCollection.php';
 require_once 'models/PodioFile.php';
 require_once 'models/PodioForm.php';
 require_once 'models/PodioGrant.php';
@@ -40,6 +40,7 @@ require_once 'models/PodioItem.php';
 require_once 'models/PodioItemCollection.php';
 require_once 'models/PodioItemDiff.php';
 require_once 'models/PodioItemField.php';
+require_once 'models/PodioItemFieldCollection.php';
 require_once 'models/PodioItemRevision.php';
 require_once 'models/PodioLinkedAccountData.php';
 require_once 'models/PodioNotification.php';

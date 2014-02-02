@@ -12,7 +12,8 @@ require_once '../lib/PodioLogger.php';
 require_once '../lib/PodioSession.php';
 
 
-require_once '../models/PodioSuperApp.php'; // Included manually because other models inherit from this
+require_once '../models/PodioCollection.php'; // Included manually because other models inherit from this
+require_once '../models/PodioFieldCollection.php'; // Included manually because other models inherit from this
 
 $class_names = array();
 foreach (glob("../models/*.php") as $filename) {
