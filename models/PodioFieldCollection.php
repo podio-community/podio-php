@@ -49,19 +49,6 @@ class PodioFieldCollection extends PodioCollection {
   }
 
   /**
-   * Get all fields of a specific type.
-   */
-  public function fields_of_type($type) {
-    $list = array();
-    foreach ($this as $field) {
-      if ($field->type == $type) {
-        $list[] = $field;
-      }
-    }
-    return $list;
-  }
-
-  /**
    * Returns all external_ids in use on this item
    */
   public function external_ids() {

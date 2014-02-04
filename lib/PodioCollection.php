@@ -34,7 +34,7 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
   // Array access
   public function offsetSet($offset, $value) {
     if (!is_a($value, PodioObject)) {
-      throw new Exception("Objects in PodioCollection must be of class PodioObject");
+      throw new PodioDataIntegrityError("Objects in PodioCollection must be of class PodioObject");
     }
 
     // If the collection has a relationship with a parent, add it to the item as well.

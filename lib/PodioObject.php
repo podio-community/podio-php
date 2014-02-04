@@ -6,6 +6,11 @@ class PodioObject {
   private $__relationships = array();
   protected $__id_column;
 
+  public function __construct($default_attributes = array()) {
+    $this->property('id', 'integer');
+    $this->init($default_attributes);
+  }
+
   public function init($default_attributes = array()) {
     if (is_int($default_attributes)) {
       $default_attributes = array('id' => $default_attributes);
