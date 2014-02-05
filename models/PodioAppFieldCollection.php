@@ -28,8 +28,8 @@ class PodioAppFieldCollection extends PodioFieldCollection {
    */
   public function offsetSet($offset, $field) {
 
-    if (!is_a($field, PodioAppField)) {
-      throw new Exception("Objects in PodioAppFieldCollection must be of class PodioAppField");
+    if (!is_a($field, 'PodioAppField')) {
+      throw new PodioDataIntegrityError("Objects in PodioAppFieldCollection must be of class PodioAppField");
     }
 
     parent::offsetSet($offset, $field);

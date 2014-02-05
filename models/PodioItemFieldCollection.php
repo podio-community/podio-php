@@ -42,7 +42,7 @@ class PodioItemFieldCollection extends PodioFieldCollection {
   public function offsetSet($offset, $field) {
 
     if (!is_a($field, 'PodioItemField')) {
-      throw new Exception("Objects in PodioItemFieldCollection must be of class PodioItemField");
+      throw new PodioDataIntegrityError("Objects in PodioItemFieldCollection must be of class PodioItemField");
     }
 
     parent::offsetSet($offset, $field);

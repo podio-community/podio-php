@@ -7,7 +7,9 @@ class PodioObject {
   protected $__id_column;
 
   public function __construct($default_attributes = array()) {
+    // Only used for test fixtures
     $this->property('id', 'integer');
+    $this->property('external_id', 'string');
     $this->init($default_attributes);
   }
 

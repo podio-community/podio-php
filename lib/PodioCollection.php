@@ -124,9 +124,9 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
    */
   public function get($id_or_external_id) {
     $key = is_int($id_or_external_id) ? 'id' : 'external_id';
-    foreach ($this as $items) {
-      if ($items->{$key} == $id_or_external_id) {
-        return $items;
+    foreach ($this as $item) {
+      if ($item->{$key} === $id_or_external_id) {
+        return $item;
       }
     }
     return null;
