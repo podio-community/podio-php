@@ -41,8 +41,10 @@ class PodioObjectTest extends PHPUnit_Framework_TestCase {
   // public function test_can_check_attribute_existence() {
   // }
 
-  // public function test_can_check_property_existence() {
-  // }
+  public function test_can_check_property_existence() {
+    $this->assertEquals(true, $this->object->has_property('external_id'));
+    $this->assertEquals(false, $this->object->has_property('invalid_property_name'));
+  }
 
   // public function test_can_check_relationship_existence() {
   // }
