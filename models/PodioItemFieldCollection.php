@@ -1,6 +1,14 @@
 <?php
+
+/**
+ * Collection for managing a list of PodioItemField objects.
+ */
 class PodioItemFieldCollection extends PodioFieldCollection {
 
+  /**
+   * Constructor. Pass in either decoded JSON from an API request
+   * or an array of PodioItemField objects.
+   */
   public function __construct($attributes) {
 
     // Make default array into array of proper objects
@@ -28,6 +36,9 @@ class PodioItemFieldCollection extends PodioFieldCollection {
     parent::__construct($fields);
   }
 
+  /**
+   * Array access. Add field to collection.
+   */
   public function offsetSet($offset, $field) {
 
     if (!is_a($field, 'PodioItemField')) {

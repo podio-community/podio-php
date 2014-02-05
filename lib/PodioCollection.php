@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Provides a very simple iterator and array access interface to a collection
  * of PodioObject models.
@@ -7,12 +8,18 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
   private $__items = array();
   private $__belongs_to;
 
+  /**
+   * Constructor. Pass in an array of PodioObject objects.
+   */
   public function __construct($items = array()) {
     foreach ($items as $item) {
       $this->offsetSet(null, $item);
     }
   }
 
+  /**
+   * Convert collection to string
+   */
   public function __toString() {
     $items = array();
     foreach($this->__items as $item) {
@@ -21,17 +28,23 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
     return print_r($items, true);
   }
 
-  // Countable
+  /**
+   * Implements Countable
+   */
   public function count() {
     return count($this->__items);
   }
 
-  // Iterator
+  /**
+   * Implements IteratorAggregate
+   */
   public function getIterator() {
     return new ArrayIterator($this->__items);
   }
 
-  // Array access
+  /**
+   * Array access. Set item by offset, automatically adding relationship.
+   */
   public function offsetSet($offset, $value) {
     if (!is_a($value, 'PodioObject')) {
       throw new PodioDataIntegrityError("Objects in PodioCollection must be of class PodioObject");
@@ -50,28 +63,53 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
       $this->__items[$offset] = $value;
     }
   }
+
+  /**
+   * Array access. Check for existence.
+   */
   public function offsetExists($offset) {
     return isset($this->__items[$offset]);
   }
+
+  /**
+   * Array access. Unset.
+   */
   public function offsetUnset($offset) {
     unset($this->__items[$offset]);
   }
+
+  /**
+   * Array access. Get.
+   */
   public function offsetGet($offset) {
     return isset($this->__items[$offset]) ? $this->__items[$offset] : null;
   }
 
+  /**
+   * Return the raw array of objects. Internal use only.
+   */
   public function _get_items() {
     return $this->__items;
   }
 
+  /**
+   * Set the raw array of objects. Internal use only.
+   */
   public function _set_items($items) {
     $this->__items = $items;
   }
 
+  /**
+   * Return any relationship to a parent object.
+   */
   public function relationship() {
     return $this->__belongs_to;
   }
 
+  /**
+   * Add a new relationship to a parent object. Will also add relationship
+   * to all individual objects in the collection.
+   */
   public function add_relationship($instance, $property = 'fields') {
     $this->__belongs_to = array('property' => $property, 'instance' => $instance);
 
@@ -81,6 +119,9 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
     }
   }
 
+  /**
+   * Get object in the collection by id or external_id.
+   */
   public function get($id_or_external_id) {
     $key = is_int($id_or_external_id) ? 'id' : 'external_id';
     foreach ($this as $items) {
@@ -91,6 +132,9 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
     return null;
   }
 
+  /**
+   * Remove object from collection by id or external_id.
+   */
   public function remove($id_or_external_id) {
     if (count($this) === 0) {
       return true;
