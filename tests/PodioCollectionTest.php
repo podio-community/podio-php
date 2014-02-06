@@ -2,11 +2,20 @@
 class PodioCollectionTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
-    $this->collection = new PodioCollection(array(
-      new PodioObject(array('id' => 1, 'external_id' => 'a')),
-      new PodioObject(array('id' => 2, 'external_id' => 'b')),
-      new PodioObject(array('id' => 3, 'external_id' => 'c'))
-    ));
+    $this->collection = new PodioCollection();
+
+    $external_ids = array('a', 'b', 'c');
+    for ($i=1; $i<4; $i++) {
+      $item = new PodioItem();
+      $item->property('id', 'integer');
+      $item->property('external_id', 'string');
+      $item->init();
+
+      $item->id = $i;
+      $item->external_id = $external_ids[$i-1];
+
+      $this->collection[] = $item;
+    }
   }
 
   public function test_can_get_by_offset() {
@@ -72,6 +81,7 @@ class PodioCollectionTest extends PHPUnit_Framework_TestCase {
 
   public function test_can_add_relationship() {
     $instance = new PodioObject();
+
     $this->collection->add_relationship($instance, 'fields');
 
     $relationship = $this->collection->relationship();

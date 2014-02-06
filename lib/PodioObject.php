@@ -6,13 +6,6 @@ class PodioObject {
   private $__relationships = array();
   protected $__id_column;
 
-  public function __construct($default_attributes = array()) {
-    // Only used for test fixtures
-    $this->property('id', 'integer');
-    $this->property('external_id', 'string');
-    $this->init($default_attributes);
-  }
-
   public function init($default_attributes = array()) {
     if (is_int($default_attributes)) {
       $default_attributes = array('id' => $default_attributes);
@@ -120,6 +113,9 @@ class PodioObject {
   }
 
   public function add_relationship($instance, $property = 'fields') {
+    if (!$this->has_property($property)) {
+      throw new PodioDataIntegrityError('Cannot add relationship. Property does not exist.');
+    }
     $this->__belongs_to = array('property' => $property, 'instance' => $instance);
   }
 
@@ -148,6 +144,13 @@ class PodioObject {
           else {
             $this->__attributes[$name] = $value;
           }
+          break;
+        case 'string':
+          $this->__attributes[$name] = $value ? (string)$value : null;
+          break;
+        case 'array':
+        case 'hash':
+          $this->__attributes[$name] = $value ? (array)$value : array();
           break;
         default:
           $this->__attributes[$name] = $value;
@@ -197,7 +200,7 @@ class PodioObject {
     if ($this->has_property('rights')) {
       return $this->has_attribute('rights') && in_array($right, $this->rights);
     }
-    return null;
+    return false;
   }
 
   public function has_attribute($name) {

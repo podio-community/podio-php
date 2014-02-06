@@ -8,7 +8,7 @@ class PodioItemCollection extends PodioCollection {
    * @param $filtered Count of items in current selected
    * @param $total Total number of items if no filters were to apply
    */
-  public function __construct($items, $filtered, $total) {
+  public function __construct($items = array(), $filtered = null, $total = null) {
     $this->filtered = $filtered;
     $this->total = $total;
 
@@ -18,7 +18,7 @@ class PodioItemCollection extends PodioCollection {
   // Array access
   public function offsetSet($offset, $value) {
     if (!is_a($value, 'PodioItem')) {
-      throw new Exception("Objects in PodioItemCollection must be of class PodioItem");
+      throw new PodioDataIntegrityError("Objects in PodioItemCollection must be of class PodioItem");
     }
     parent::offsetSet($offset, $value);
   }

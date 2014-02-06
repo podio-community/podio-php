@@ -115,7 +115,9 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
 
     // Add relationship to all individual fields as well.
     foreach ($this as $item) {
-      $item->add_relationship($instance, $property);
+      if ($item->has_property($property)) {
+        $item->add_relationship($instance, $property);
+      }
     }
   }
 
