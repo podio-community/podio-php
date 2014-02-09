@@ -201,14 +201,9 @@ class Podio {
     $response->headers = self::parse_headers(substr($raw_response, 0, $raw_headers_size));
     self::$last_response = $response;
 
-    if (self::$debug && !isset($options['oauth_request'])) {
-      if (!self::$logger) {
-        self::$logger = new PodioLogger();
-      }
+    if (!isset($options['oauth_request'])) {
       $curl_info = curl_getinfo(self::$ch, CURLINFO_HEADER_OUT);
-      self::$logger->log_request($method, $url, $encoded_attributes, $response, $curl_info);
-
-      self::$logger->call_log[] = curl_getinfo(self::$ch, CURLINFO_TOTAL_TIME);
+      self::log_request($method, $url, $encoded_attributes, $response, $curl_info);
     }
 
     switch ($response->status) {
@@ -349,6 +344,49 @@ class Podio {
     return self::$last_response->headers['x-rate-limit-limit'];
   }
 
+  /**
+   * Set debug config
+   *
+   * @param $toggle True to enable debugging. False to disable
+   * @param $output Output mode. Can be "stdout" or "file". Default is "stdout"
+   */
+  public static function set_debug($toggle, $output = "stdout") {
+    if ($toggle) {
+      self::$debug = $output;
+    }
+    else {
+      self::$debug = false;
+    }
+  }
+
+  public static function log_request($method, $url, $encoded_attributes, $response, $curl_info) {
+    if (self::$debug) {
+      $timestamp = gmdate('Y-m-d H:i:s');
+      $text = "{$timestamp} {$response->status} {$method} {$url}\n";
+      if (!empty($encoded_attributes)) {
+        $text .= "{$timestamp} Request body: ".$encoded_attributes."\n";
+      }
+      $text .= "{$timestamp} Reponse: {$response->body}\n\n";
+
+      if (self::$debug === 'file') {
+        if (!self::$logger) {
+          self::$logger = new PodioLogger();
+        }
+        self::$logger->log($text);
+      }
+      elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
+        print $text;
+      }
+      elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
+        require_once 'vendor/kint/Kint.class.php';
+        Kint::dump("{$method} {$url}", $encoded_attributes, $response, $curl_info);
+      }
+
+      self::$logger->call_log[] = curl_getinfo(self::$ch, CURLINFO_TOTAL_TIME);
+    }
+
+  }
+
   public static function shutdown() {
     // Write any new access and refresh tokens to session.
     if (self::$session_manager) {
@@ -356,14 +394,24 @@ class Podio {
     }
 
     // Log api call times if debugging
-    if(self::$debug && self::$logger) {
+    if(self::$debug) {
       $timestamp = gmdate('Y-m-d H:i:s');
       $count = sizeof(self::$logger->call_log);
       $duration = 0;
       foreach (self::$logger->call_log as $val) {
         $duration += $val;
       }
-      self::$logger->log("\n{$timestamp} Performed {$count} requests in {$duration} seconds\n");
+
+      $text = "\n{$timestamp} Performed {$count} request(s) in {$duration} seconds\n";
+      if (self::$debug === 'file') {
+        if (!self::$logger) {
+          self::$logger = new PodioLogger();
+        }
+        self::$logger->log($text);
+      }
+      elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
+        print $text;
+      }
     }
   }
 }

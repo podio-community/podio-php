@@ -113,9 +113,6 @@ class PodioObject {
   }
 
   public function add_relationship($instance, $property = 'fields') {
-    if (!$this->has_property($property)) {
-      throw new PodioDataIntegrityError('Cannot add relationship. Property does not exist.');
-    }
     $this->__belongs_to = array('property' => $property, 'instance' => $instance);
   }
 

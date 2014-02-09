@@ -94,14 +94,6 @@ class PodioObjectTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('fields', $relationship['property']);
   }
 
-  /**
-    * @expectedException PodioDataIntegrityError
-    */
-  public function test_cannot_add_child_relationship_on_non_property() {
-    $instance = new PodioObject();
-    $this->object->add_relationship($instance, 'invalid_property_name');
-  }
-
   // public function test_can_convert_to_json() {
   // }
 

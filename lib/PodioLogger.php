@@ -37,15 +37,4 @@ class PodioLogger {
     }
   }
 
-  public function log_request($method, $url, $encoded_attributes, $response, $curl_info) {
-    $timestamp = gmdate('Y-m-d H:i:s');
-    $text = "{$timestamp} {$response->status} {$method} {$url}\n";
-    if (!empty($encoded_attributes)) {
-      $text .= "{$timestamp} Request body: ".$encoded_attributes."\n";
-    }
-    $text .= "{$timestamp} Reponse: {$response->body}\n\n";
-
-    $this->log($text);
-  }
-
 }
