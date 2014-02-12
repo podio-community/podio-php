@@ -1,0 +1,42 @@
+/* CODE BLOCK 1 */
+switch ($_POST['type']) {
+          case 'item.create':
+                // Do something. item_id is available in $_POST['item_id']
+                $item = $api->item->getBasic($_POST['item_id']);
+                $created_via = strtolower( $item['initial_revision']['created_via']['name'] );
+ 
+                //is it created via webform or mail?
+                if (in_array($created_via, array('webform','mail'))){
+                        $task = array(
+                                'text' => 'Task title goes here',
+                                'description' => 'Description of task goes here',
+                                'responsible' => USER_ID, // the assigned user
+                        );
+ 
+                        $result = $api->task->createWithReference('item',$_POST['item_id'],$task);
+                        $task_id = $result['task_id'];
+                }
+        break;
+       
+        /* CODE BLOCK 2 */
+        case 'item.update':
+                // get the current Value of the Candidate Stage field
+                $status = $api->item->getFieldValue($_POST['item_id'],APP_FIELD_ID); // field id set as a constant
+ 
+                // read first value of "applicant-stage", if "Rejected", create task
+                if ($status[0]['value'] == 'Rejected'){
+                       
+                        $task = array(
+                                'text' => 'Task title goes here',
+                                'description' => 'Description of task goes here',
+                                'responsible' => USER_ID, // the assigned user
+                        );
+                       
+                        $result = $api->task->createWithReference('item',$_POST['item_id'],$task);
+                        $task_id = $result['task_id'];
+                }
+        break;
+ 
+        /* END CODE BLOCK 2 */
+}
+/* END CODE BLOCK 1 */
