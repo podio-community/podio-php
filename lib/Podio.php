@@ -141,10 +141,10 @@ class Podio {
       case self::DELETE:
         curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::DELETE);
         self::$headers['Content-type'] = 'application/x-www-form-urlencoded';
-		if ($attributes) {
+        if ($attributes) {
           $query = self::encode_attributes($attributes);
           $url = $url.'?'.$query;
-		}
+        }
         self::$headers['Content-length'] = "0";
         break;
       case self::POST:
