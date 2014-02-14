@@ -132,17 +132,25 @@ class Podio {
       case self::GET:
         curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::GET);
         self::$headers['Content-type'] = 'application/x-www-form-urlencoded';
+
+        $separator = strpos($url, '?') ? '&' : '?';
         if ($attributes) {
           $query = self::encode_attributes($attributes);
-          $url = $url.'?'.$query;
+          $url = $url.$separator.$query;
         }
+
         self::$headers['Content-length'] = "0";
         break;
       case self::DELETE:
         curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::DELETE);
         self::$headers['Content-type'] = 'application/x-www-form-urlencoded';
-        $query = self::encode_attributes($attributes);
-        $url = $url.'?'.$query;
+
+        $separator = strpos($url, '?') ? '&' : '?';
+        if ($attributes) {
+          $query = self::encode_attributes($attributes);
+          $url = $url.$separator.$query;
+        }
+
         self::$headers['Content-length'] = "0";
         break;
       case self::POST:
