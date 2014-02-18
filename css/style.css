@@ -1,0 +1,107 @@
+body {
+  font-size:14px;
+  line-height:150%;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#444;
+}
+div.wrapper {
+  position:relative;
+  width:960px;
+  margin:60px auto 60px auto;
+}
+header {
+  position:fixed;
+  top:60px;
+  width:270px;
+}
+main {
+  width:600px;
+  margin-left:360px;
+}
+a {
+  color:#4A87B6;
+}
+a:hover {
+  color:#ACCDE0;
+}
+h1:first-child {
+  margin-top:0;
+}
+h1, h2, h3 {
+  margin:1.5em 0 0 0;
+}
+
+nav ul {
+  margin:0;
+  padding:0;
+}
+nav ul li {
+  margin:0;
+  padding:0;
+  list-style-type:none;
+  border-left:4px solid #ccc;
+}
+nav ul li a {
+  text-decoration:none;
+  color:inherit;
+  display:block;
+  padding:5px 5px 5px 10px;
+  background:#eee;
+  border-top:1px solid white;
+}
+nav ul li a:hover {
+  color:inherit;
+  background:#ddd;
+}
+nav ul li:first-child a {
+  border-top:none;
+}
+nav ul li.active {
+  border-left-color: #ACCDE0;
+  font-weight:bold;
+}
+nav ul li.active a {
+  background:#d2e4ec;
+}
+
+.highlight pre {
+  line-height:130%;
+  font-size:12px;
+  background:#f6f6f6;
+  border-radius:3px;
+  border:1px solid #ccc;
+  padding:10px;
+}
+
+.buttons {
+  margin:40px 0 0 0;
+  padding:0;
+  width:100%;
+  overflow:hidden;
+}
+.buttons li {
+  margin:0 5px;
+  width:80px;
+  display:block;
+  float:left;
+  list-style-type:none;
+  padding:0;
+  text-align:center;
+}
+.buttons li a {
+  color:white;
+  text-decoration:none;
+  display:block;
+  background:#ccc;
+  border-radius:4px;
+  padding:4px 0;
+}
+.buttons li a.download {
+  background:#55a61f;
+}
+.buttons li a.packagist {
+  background:#c98827;
+}
+.buttons li a.github {
+  background:#acacac;
+}
