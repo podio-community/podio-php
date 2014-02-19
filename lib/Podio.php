@@ -406,8 +406,10 @@ class Podio {
       $timestamp = gmdate('Y-m-d H:i:s');
       $count = sizeof(self::$logger->call_log);
       $duration = 0;
-      foreach (self::$logger->call_log as $val) {
-        $duration += $val;
+      if (self::$logger->call_log) {
+        foreach (self::$logger->call_log as $val) {
+          $duration += $val;
+        }
       }
 
       $text = "\n{$timestamp} Performed {$count} request(s) in {$duration} seconds\n";
