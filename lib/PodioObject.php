@@ -25,7 +25,7 @@ class PodioObject {
         }
       }
       if (array_key_exists($name, $default_attributes)) {
-        $this->$name = $default_attributes[$name];
+        $this->set_attribute($name, $default_attributes[$name]);
       }
     }
     if ($this->__relationships) {
