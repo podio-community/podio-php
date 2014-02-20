@@ -54,8 +54,8 @@ class PodioFieldCollectionTest extends PHPUnit_Framework_TestCase {
   }
 
   public function test_can_check_existence_by_external_id() {
-    $this->assertEquals(true, isset($this->collection["b"]));
-    $this->assertEquals(false, isset($this->collection["d"]));
+    $this->assertTrue(isset($this->collection["b"]));
+    $this->assertFalse(isset($this->collection["d"]));
   }
 
   public function test_can_list_external_ids() {
