@@ -6,7 +6,8 @@ class PodioObjectTest extends PHPUnit_Framework_TestCase {
     $this->object->property('id', 'integer');
     $this->object->property('external_id', 'string');
     $this->object->property('rights', 'array');
-    $this->object->has_many('fields', 'PodioObject');
+    $this->object->has_many('fields', 'Object');
+    $this->object->has_one('created_by', 'ByLine');
     $this->object->init(array(
       'id' => 1,
       'external_id' => 'a',
@@ -59,6 +60,23 @@ class PodioObjectTest extends PHPUnit_Framework_TestCase {
     foreach ($object->fields as $member) {
       $this->assertInstanceOf('PodioObject', $member);
     }
+  }
+
+  public function test_can_provide_properties() {
+    $this->assertEquals(array(
+      'id' => array('type' => 'integer', 'options' => array()),
+      'external_id' => array('type' => 'string', 'options' => array()),
+      'rights' => array('type' => 'array', 'options' => array()),
+      'fields' => array('type' => 'Object', 'options' => array()),
+      'created_by' => array('type' => 'ByLine', 'options' => array()),
+    ), $this->object->properties());
+  }
+
+  public function test_can_provide_relationships() {
+    $this->assertEquals(array(
+      'fields' => 'has_many',
+      'created_by' => 'has_one'
+    ), $this->object->relationships());
   }
 
   // public function test_can_convert_to_json() {

@@ -212,6 +212,14 @@ class PodioObject {
     return array_key_exists($name, $this->__relationships);
   }
 
+  public function properties() {
+    return $this->__properties;
+  }
+
+  public function relationships() {
+    return $this->__relationships;
+  }
+
   // Define a property on this object
   public function property($name, $type, $options = array()) {
     if (!$this->has_property($name)) {
