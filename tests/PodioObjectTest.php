@@ -79,6 +79,7 @@ class PodioObjectTest extends PHPUnit_Framework_TestCase {
     ), $this->object->relationships());
   }
 
+  // TODO:
   // public function test_can_convert_to_json() {
     // attributes of all types
     // has_one

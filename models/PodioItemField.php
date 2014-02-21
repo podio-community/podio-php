@@ -146,7 +146,7 @@ class PodioItemField extends PodioObject {
       case 'embed':
         $list = array();
         foreach ($this->values as $value) {
-          $list[] = array('embed' => $value['embed']['embed_id'], 'file' => (!empty($value['file']) ? $value['file']['file_id'] : null) );
+          $list[] = array('embed' => $value->embed_id, 'file' => ($value->files ? $value->files[0]->file_id : null) );
         }
         return $list;
         break;
@@ -271,23 +271,47 @@ class PodioTextItemField extends PodioItemField {
   }
 }
 class PodioEmbedItemField extends PodioItemField {
+
   /**
-   * Provides a list list of PodioEmbed and PodioFile objects for the field.
-   * This read-only. Changing the values of the PodioItem objects
-   * will not update the values of the PodioItemField.
+   * Override __set to use field specific method for setting values property
    */
-  public function embeds() {
-    $list = array();
-    foreach ($this->values as $delta => $value) {
-      $list[] = array('delta' => $delta, 'embed' => new PodioEmbed($value['embed']), 'file' => ($value['file'] ? new PodioFile($value['file']) : null));
+  public function __set($name, $value) {
+    if ($name == 'values' && $value !== null) {
+      return $this->set_value($value);
     }
-    return $list;
+    return parent::__set($name, $value);
+  }
+
+  /**
+   * Override __get to provide values as a PodioCollection of PodioEmbed objects
+   */
+  public function __get($name) {
+    $attribute = parent::__get($name);
+    if ($name == 'values' && $attribute) {
+      // Create PodioCollection from raw values
+      $embeds = new PodioCollection();
+      foreach ($attribute as $value) {
+        $embed = new PodioEmbed($value['embed']);
+        if ($value['file']) {
+          $embed->files = new PodioCollection(array(new PodioFile($value['file'])));
+        }
+        $embeds[] = $embed;
+      }
+      return $embeds;
+    }
+    return $attribute;
   }
 
   public function humanized_value() {
-    return join('; ', array_map(function($value){
-      return $value['embed']['original_url'];
-    }, $this->values));
+    if (!$this->values) {
+      return '';
+    }
+
+    $values = array();
+    foreach ($this->values as $value) {
+      $values[] = $value->original_url;
+    }
+    return join(';', $values);
   }
 
   public function set_value($values) {
@@ -298,13 +322,29 @@ class PodioEmbedItemField extends PodioItemField {
         $values = array($values);
       }
 
-      $this->values = array_map(function($value) {
+      $values = array_map(function($value) {
         if (is_object($value)) {
-          return array('embed' => array('embed_id' => $value->id), 'file' => array('file_id' => $value->files ? $value->files[0]->id : null));
+          $file = $value->files ? $value->files[0] : null;
+          unset($value->files);
+
+          return array('embed' => $value->as_json(false), 'file' => $file ? $file->as_json(false) : null);
         }
         return $value;
       }, $values);
+
+      parent::__set('values', $values);
     }
+  }
+
+  public function api_friendly_values() {
+    if (!$this->values) {
+      return array();
+    }
+    $list = array();
+    foreach ($this->values as $value) {
+      $list[] = array('embed' => $value->embed_id, 'file' => ($value->files ? $value->files[0]->file_id : null) );
+    }
+    return $list;
   }
 
 }

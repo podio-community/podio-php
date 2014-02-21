@@ -118,7 +118,6 @@ class PodioObject {
 
   protected function set_attribute($name, $value) {
     if ($this->has_property($name)) {
-
       $property = $this->__properties[$name];
       switch($property['type']) {
         case 'integer':
@@ -218,6 +217,13 @@ class PodioObject {
 
   public function relationships() {
     return $this->__relationships;
+  }
+
+  /**
+   * Raw access to attributes. Only used for unit testing. Do not use.
+   */
+  public function __attribute($name) {
+    return $this->__attributes[$name];
   }
 
   // Define a property on this object
