@@ -292,7 +292,7 @@ class PodioEmbedItemField extends PodioItemField {
       $embeds = new PodioCollection();
       foreach ($attribute as $value) {
         $embed = new PodioEmbed($value['embed']);
-        if ($value['file']) {
+        if (!empty($value['file'])) {
           $embed->files = new PodioCollection(array(new PodioFile($value['file'])));
         }
         $embeds[] = $embed;
