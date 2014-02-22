@@ -99,7 +99,6 @@ class PodioItemField extends PodioObject {
           $this->values = is_array($values) ? array(array('value' => (int)$values[0])) : array(array('value' => (int)$values));
           break;
         // Single value fields with string value
-        case 'text':
         case 'number':
         case 'money':
         case 'state':
@@ -143,13 +142,6 @@ class PodioItemField extends PodioObject {
         }
         return $list;
         break;
-      case 'embed':
-        $list = array();
-        foreach ($this->values as $value) {
-          $list[] = array('embed' => $value->embed_id, 'file' => ($value->files ? $value->files[0]->file_id : null) );
-        }
-        return $list;
-        break;
       case 'location':
         $list = array();
         foreach ($this->values as $value) {
@@ -163,7 +155,6 @@ class PodioItemField extends PodioObject {
         }
         return array('start' => $this->values[0]['start'], 'end' => $this->values[0]['end']);
         break;
-      case 'text':
       case 'number':
       case 'money':
       case 'progress':
@@ -265,11 +256,49 @@ class PodioItemField extends PodioObject {
 
 }
 
+/**
+ * Text field
+ */
 class PodioTextItemField extends PodioItemField {
-  public function humanized_value() {
-    return strip_tags($this->values[0]['value']);
+
+  /**
+   * Override __set to use field specific method for setting values property
+   */
+  public function __set($name, $value) {
+    if ($name == 'values' && $value !== null) {
+      return $this->set_value($value);
+    }
+    return parent::__set($name, $value);
   }
+
+  /**
+   * Override __get to provide values as a string
+   */
+  public function __get($name) {
+    $attribute = parent::__get($name);
+    if ($name == 'values' && $attribute) {
+      return $attribute[0]['value'];
+    }
+    return $attribute;
+  }
+
+  public function set_value($values) {
+    parent::__set('values', $values ? array(array('value' => $values)) : array());
+  }
+
+  public function humanized_value() {
+    return strip_tags($this->values);
+  }
+
+  public function api_friendly_values() {
+    return $this->values ? $this->values : null;
+  }
+
 }
+
+/**
+ * Embed field
+ */
 class PodioEmbedItemField extends PodioItemField {
 
   /**
