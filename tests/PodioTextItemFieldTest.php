@@ -21,7 +21,7 @@ class PodioTextItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function test_can_set_value() {
     $this->object->values = 'Baz';
-    $this->assertEquals('Baz', $this->object->values);
+    $this->assertEquals(array(array('value' => 'Baz')), $this->object->__attribute('values'));
   }
 
   public function test_can_humanize_value() {

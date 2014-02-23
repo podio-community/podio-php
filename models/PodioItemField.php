@@ -142,13 +142,6 @@ class PodioItemField extends PodioObject {
         }
         return $list;
         break;
-      case 'location':
-        $list = array();
-        foreach ($this->values as $value) {
-          $list[] = $value['value'];
-        }
-        return $list;
-        break;
       case 'date':
         if (empty($this->values[0]['end'])) {
           return array('start' => $this->values[0]['start']);
@@ -377,7 +370,40 @@ class PodioEmbedItemField extends PodioItemField {
   }
 
 }
+
+/**
+ * Location field
+ */
 class PodioLocationItemField extends PodioItemField {
+
+  /**
+   * Override __set to use field specific method for setting values property
+   */
+  public function __set($name, $value) {
+    if ($name == 'values' && $value !== null) {
+      return $this->set_value($value);
+    }
+    return parent::__set($name, $value);
+  }
+
+  /**
+   * Override __get to provide values as a string
+   */
+  public function __get($name) {
+    $attribute = parent::__get($name);
+    if ($name == 'values' && is_array($attribute)) {
+      $list = array();
+      foreach ($attribute as $value) {
+        $list[] = $value['value'];
+      }
+      return $list;
+    }
+    return $attribute;
+  }
+
+  public function api_friendly_values() {
+    return $this->values ? $this->values : null;
+  }
 
   public function set_value($values) {
     $this->values = array();
@@ -386,20 +412,36 @@ class PodioLocationItemField extends PodioItemField {
         $formatted_values = array_map(function($value){
           return array('value' => $value);
         }, $values);
-        $this->values = $formatted_values;
+        parent::__set('values', $formatted_values);
       }
       else {
-        $this->values = array(array('value' => $values));
+        parent::__set('values', array(array('value' => $values)));
       }
     }
   }
 
+  public function add_value($value) {
+    if (!$this->values) {
+      $this->set_value($value);
+    } else {
+      $values = $this->values;
+      $values[] = $value;
+      $this->set_value($values);
+    }
+  }
+
   public function humanized_value() {
-    return join('; ', array_map(function($value){
-      return $value['value'];
-    }, $this->values));
+    if (!$this->values) {
+      return '';
+    }
+
+    return join(';', $this->values);
   }
 }
+
+/**
+ * Date field
+ */
 class PodioDateItemField extends PodioItemField {
 
   public function __construct($attributes = array()) {
@@ -460,6 +502,10 @@ class PodioDateItemField extends PodioItemField {
 
   // TODO: Set start and end date and times easily
 }
+
+/**
+ * Contact field
+ */
 class PodioContactItemField extends PodioItemField {
   /**
    * Provides a list a PodioContact objects for the PodioItemField
@@ -478,6 +524,10 @@ class PodioContactItemField extends PodioItemField {
     }, $this->values));
   }
 }
+
+/**
+ * App reference field
+ */
 class PodioAppItemField extends PodioItemField {
   /**
    * Provides a list a PodioItem objects for the PodioItemField
@@ -496,6 +546,10 @@ class PodioAppItemField extends PodioItemField {
     }, $this->values));
   }
 }
+
+/**
+ * Question field
+ */
 class PodioQuestionItemField extends PodioItemField {
   public function humanized_value() {
     return join('; ', array_map(function($value){
@@ -503,6 +557,10 @@ class PodioQuestionItemField extends PodioItemField {
     }, $this->values));
   }
 }
+
+/**
+ * Category field
+ */
 class PodioCategoryItemField extends PodioItemField {
   public function humanized_value() {
     return join('; ', array_map(function($value){
@@ -510,6 +568,10 @@ class PodioCategoryItemField extends PodioItemField {
     }, $this->values));
   }
 }
+
+/**
+ * Asset field, super class for Image/Video/File fields
+ */
 class PodioAssetItemField extends PodioItemField {
   /**
    * Provides a list a PodioFile objects for the PodioItemField
@@ -522,6 +584,10 @@ class PodioAssetItemField extends PodioItemField {
     }, $this->values);
   }
 }
+
+/**
+ * Image field
+ */
 class PodioImageItemField extends PodioAssetItemField {
   public function humanized_value() {
     return join('; ', array_map(function($value){
@@ -529,6 +595,10 @@ class PodioImageItemField extends PodioAssetItemField {
     }, $this->values));
   }
 }
+
+/**
+ * Video field
+ */
 class PodioVideoItemField extends PodioAssetItemField {
   public function humanized_value() {
     return join('; ', array_map(function($value){
@@ -536,6 +606,10 @@ class PodioVideoItemField extends PodioAssetItemField {
     }, $this->values));
   }
 }
+
+/**
+ * File field
+ */
 class PodioFileItemField extends PodioAssetItemField {
   public function humanized_value() {
     return join('; ', array_map(function($value){
@@ -543,17 +617,33 @@ class PodioFileItemField extends PodioAssetItemField {
     }, $this->values));
   }
 }
+
+/**
+ * Number field
+ */
 class PodioNumberItemField extends PodioItemField {
   public function humanized_value() {
     return rtrim(rtrim(number_format($this->values[0]['value'], 4, '.', ''), '0'), '.');
   }
 }
+
+/**
+ * Progress field
+ */
 class PodioProgressItemField extends PodioItemField {
   public function humanized_value() {
     return $this->values[0]['value'].'%';
   }
 }
+
+/**
+ * State field
+ */
 class PodioStateItemField extends PodioItemField {}
+
+/**
+ * Duration field
+ */
 class PodioDurationItemField extends PodioItemField {
   /**
    * Duration in seconds
@@ -580,11 +670,19 @@ class PodioDurationItemField extends PodioItemField {
     return ($this->values[0]['value']%60);
   }
 }
+
+/**
+ * Calculation field
+ */
 class PodioCalculationItemField extends PodioItemField {
   public function humanized_value() {
     return rtrim(rtrim(number_format($this->values[0]['value'], 4, '.', ''), '0'), '.');
   }
 }
+
+/**
+ * Money field
+ */
 class PodioMoneyItemField extends PodioItemField {
   /**
    * Currency part of the value
