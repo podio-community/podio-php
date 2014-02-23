@@ -36,6 +36,14 @@ class PodioEmbedItemFieldTest extends PHPUnit_Framework_TestCase {
     ), $this->object->__attribute('values'));
   }
 
+  public function test_can_set_value_from_collection() {
+    $this->object->values = new PodioCollection(array(new PodioEmbed(array('embed_id' => 4, 'original_url' => 'http://example.net/'))));
+
+    $this->assertEquals(array(
+      array('embed' => array('embed_id' => 4, 'original_url' => 'http://example.net/'), 'file' => null)
+    ), $this->object->__attribute('values'));
+  }
+
   public function test_can_set_value_from_hash() {
     $this->object->values = array('embed' => array('embed_id' => 4), 'file' => array('file_id' => 12));
     $this->assertEquals(array(
