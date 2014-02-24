@@ -8,14 +8,11 @@ class PodioStateItemFieldTest extends PHPUnit_Framework_TestCase {
         array('value' => 'FooBar')
       )
     ));
+    $this->empty_values = new PodioStateItemField(array('field_id' => 1));
   }
 
   public function test_can_provide_value() {
-    // Empty values
-    $empty_values = new PodioStateItemField(array('field_id' => 1));
-    $this->assertNull($empty_values->values);
-
-    // Populated values
+    $this->assertNull($this->empty_values->values);
     $this->assertEquals('FooBar', $this->object->values);
   }
 
@@ -25,20 +22,12 @@ class PodioStateItemFieldTest extends PHPUnit_Framework_TestCase {
   }
 
   public function test_can_humanize_value() {
-    // Empty values
-    $empty_values = new PodioStateItemField(array('field_id' => 1));
-    $this->assertEquals('', $empty_values->humanized_value());
-
-    // Populated values
+    $this->assertEquals('', $this->empty_values->humanized_value());
     $this->assertEquals('FooBar', $this->object->humanized_value());
   }
 
   public function test_can_convert_to_api_friendly_json() {
-    // Empty values
-    $empty_values = new PodioStateItemField(array('field_id' => 1));
-    $this->assertEquals('null', $empty_values->as_json());
-
-    // Populated values
+    $this->assertEquals('null', $this->empty_values->as_json());
     $this->assertEquals('"FooBar"', $this->object->as_json());
   }
 
