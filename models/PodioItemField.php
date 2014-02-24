@@ -352,8 +352,46 @@ class PodioLocationItemField extends PodioItemField {
  */
 class PodioDateItemField extends PodioItemField {
 
-  public function __construct($attributes = array()) {
-    parent::__construct($attributes, 'date');
+  /**
+   * Override __set to use field specific method for setting values property
+   */
+  public function __set($name, $value) {
+    // if ($name == 'values' && $value !== null) {
+    //   return $this->set_value($value);
+    // }
+    // return parent::__set($name, $value);
+  }
+
+  /**
+   * Override __get to provide values as a string
+   */
+  public function __get($name) {
+    $attribute = parent::__get($name);
+
+    // When reading always provide UTC DateTime
+    if ($name == 'values' && is_array($attribute)) {
+
+      // We have to pick a timezone since PHP can't create a DateTime without one
+      // Never rely on it for anything as the datetimes from the API come in the user's
+      // local timezone.
+      $tz = new DateTimeZone('UTC');
+      $start = DateTime::createFromFormat('Y-m-d H:i:s', $attribute[0]['start_date'].' '.($attribute[0]['start_time'] ? $attribute[0]['start_time'] : '00:00:00'), $tz);
+      if ($attribute[0]['start_date'] == $attribute[0]['end_date'] && !$attribute[0]['end_time']) {
+        $end = null;
+      }
+      else {
+        $end = DateTime::createFromFormat('Y-m-d H:i:s', $attribute[0]['end_date'].' '.($attribute[0]['end_time'] ? $attribute[0]['end_time'] : '00:00:00'), $tz);
+      }
+
+      return array('start' => $start, 'end' => $end);
+    }
+    elseif ($name == 'start') {
+      return $this->values ? $this->values['start'] : null;
+    }
+    elseif ($name == 'end') {
+      return $this->values ? $this->values['end'] : null;
+    }
+    return $attribute;
   }
 
   public function set_value($values) {
