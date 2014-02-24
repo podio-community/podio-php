@@ -48,51 +48,6 @@ class PodioItemField extends PodioObject {
   }
 
   /**
-   * Set the value of the field
-   */
-  public function set_value($values) {
-    if (is_null($values) || $values === false) {
-      $this->values = array();
-    }
-    else {
-      switch ($this->type) {
-        case 'question': // id
-        case 'category': // id
-          // Ensure that we have an array of values
-          if (!is_array($values) || (is_array($values) && !empty($values['id']))) {
-            $values = array($values);
-          }
-
-          $this->values = array_map(function($value) use ($id_key) {
-            if (is_object($value)) {
-              return array('value' => array($id_key => (int)$value->{$id_key}));
-            }
-            elseif (is_array($value)) {
-              return array('value' => array($id_key => (int)$value[$id_key]));
-            }
-            else {
-              return array('value' => array($id_key => (int)$value));
-            }
-          }, $values);
-          break;
-        // Single value fields with integer value
-        case 'progress':
-        case 'duration':
-          $this->values = is_array($values) ? array(array('value' => (int)$values[0])) : array(array('value' => (int)$values));
-          break;
-        // Single value fields with string value
-        case 'number':
-        case 'money':
-        case 'state':
-        case 'calculation':
-        default:
-          $this->values = is_array($values) ? array(array('value' => $values[0])) : array(array('value' => $values));
-          break;
-      }
-    }
-  }
-
-  /**
    * Returns API friendly values for item field for use when saving item
    */
   public function api_friendly_values() {
@@ -100,28 +55,12 @@ class PodioItemField extends PodioObject {
       return array();
     }
     switch ($this->type) {
-      case 'question': // id
-      case 'category': //id
-        $list = array();
-        foreach ($this->values as $value) {
-          if (!empty($value['value']['id'])) {
-            $list[] = $value['value']['id'];
-          }
-        }
-        return $list;
-        break;
       case 'date':
         if (empty($this->values[0]['end'])) {
           return array('start' => $this->values[0]['start']);
         }
         return array('start' => $this->values[0]['start'], 'end' => $this->values[0]['end']);
         break;
-      case 'number':
-      case 'money':
-      case 'progress':
-      case 'state':
-      case 'duration':
-      case 'calculation':
       default:
         return $this->values;
         break;
@@ -869,7 +808,7 @@ class PodioProgressItemField extends PodioItemField {
   }
 
   public function set_value($values) {
-    parent::__set('values', $values ? array(array('value' => $values)) : array());
+    parent::__set('values', $values ? array(array('value' => (int)$values)) : array());
   }
 
   public function humanized_value() {
@@ -959,7 +898,7 @@ class PodioDurationItemField extends PodioItemField {
   }
 
   public function set_value($values) {
-    parent::__set('values', $values ? array(array('value' => $values)) : array());
+    parent::__set('values', $values ? array(array('value' => (int)$values)) : array());
   }
 
   public function humanized_value() {
@@ -1018,42 +957,62 @@ class PodioCalculationItemField extends PodioItemField {
  * Money field
  */
 class PodioMoneyItemField extends PodioItemField {
+
   /**
-   * Currency part of the value
+   * Override __set to use field specific method for setting values property
    */
-  public function currency() {
-    if (!empty($this->values)) {
-      return $this->values[0]['currency'];
+  public function __set($name, $value) {
+    if ($name == 'values' && $value !== null) {
+      return $this->set_value($value);
     }
-  }
-  /**
-   * Set the currency value.
-   */
-  public function set_currency($currency) {
-    $value = $this->values[0]['value'] ? $this->values[0]['value'] : 0;
-    $this->set_attribute('values', array(array('currency' => $currency, 'value' => $value)));
-  }
-  /**
-   * Amount part of the value
-   */
-  public function amount() {
-    if (!empty($this->values)) {
-      return $this->values[0]['value'];
+    elseif ($name == 'amount') {
+      if ($value === null) {
+        return parent::__set('values', null);
+      }
+      $currency = !empty($this->values['currency']) ? $this->values['currency'] : '';
+      return $this->set_value(array('currency' => $currency, 'value' => $value));
     }
+    elseif ($name == 'currency') {
+      if ($value === null) {
+        return parent::__set('values', null);
+      }
+      $amount = !empty($this->values['value']) ? $this->values['value'] : '0';
+      return $this->set_value(array('currency' => $value, 'value' => $amount));
+    }
+    return parent::__set($name, $value);
   }
+
   /**
-   * Set the amount.
+   * Override __get to provide values as an integer
    */
-  public function set_amount($amount) {
-    $currency = $this->values[0]['currency'] ? $this->values[0]['currency'] : '';
-    $this->set_attribute('values', array(array('currency' => $currency, 'value' => $amount)));
+  public function __get($name) {
+    $attribute = parent::__get($name);
+    if ($name == 'values' && $attribute) {
+      return $attribute[0];
+    }
+    elseif ($name == 'amount') {
+      return $this->values ? $this->values['value'] : null;
+    }
+    elseif ($name == 'currency') {
+      return $this->values ? $this->values['currency'] : null;
+    }
+    return $attribute;
+  }
+
+  public function set_value($values) {
+    parent::__set('values', $values ? array($values) : array());
   }
 
   public function humanized_value() {
-    $amount = number_format($this->values[0]['value'], 2, '.', '');
-    switch ($this->values[0]['currency']) {
+    if (!$this->values) {
+      return '';
+    }
+
+    $amount = number_format($this->values['value'], 2, '.', '');
+    switch ($this->values['currency']) {
       case 'USD':
         $currency = '$';
+        break;
       case 'EUR':
         $currency = '€';
         break;
@@ -1061,9 +1020,14 @@ class PodioMoneyItemField extends PodioItemField {
         $currency = '£';
         break;
       default:
-        $currency = $this->values[0]['currency'].' ';
+        $currency = $this->values['currency'].' ';
         break;
     }
     return $currency.$amount;
   }
+
+  public function api_friendly_values() {
+    return $this->values ? $this->values : null;
+  }
+
 }
