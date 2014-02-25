@@ -48,33 +48,6 @@ class PodioItemField extends PodioObject {
   }
 
   /**
-   * Returns API friendly values for item field for use when saving item
-   */
-  public function api_friendly_values() {
-    if (!$this->values) {
-      return array();
-    }
-    switch ($this->type) {
-      case 'date':
-        if (empty($this->values[0]['end'])) {
-          return array('start' => $this->values[0]['start']);
-        }
-        return array('start' => $this->values[0]['start'], 'end' => $this->values[0]['end']);
-        break;
-      default:
-        return $this->values;
-        break;
-    }
-  }
-
-  /**
-   * Displays a human-friendly value for the field
-   */
-  public function humanized_value() {
-    return $this->values[0]['value'];
-  }
-
-  /**
    * @see https://developers.podio.com/doc/items/update-item-field-values-22367
    */
   public static function update($item_id, $field_id, $attributes = array(), $options = array()) {
@@ -359,6 +332,15 @@ class PodioDateItemField extends PodioItemField {
     if ($name == 'values' && $value !== null) {
       return $this->set_value($value);
     }
+    elseif ($name == 'start') {
+      if ($value === null) {
+        return parent::__set('values', null);
+      }
+      return $this->set_value(array('start' => $value, 'end' => $this->end));
+    }
+    elseif ($name == 'end') {
+      return $this->set_value(array('start' => $this->start, 'end' => $value));
+    }
     return parent::__set($name, $value);
   }
 
@@ -435,28 +417,37 @@ class PodioDateItemField extends PodioItemField {
       'end_time' => null
     );
 
-    if (is_a($values['start'], 'DateTime')) {
-      $formatted_values['start_date'] = $values['start']->format('Y-m-d');
-      $formatted_values['start_time'] = $values['start']->format('H:i') == '00:00' ? null : $values['start']->format('H:i:s');
+    if (is_string($values['start'])) {
+      $values['start'] = $this->datetime_from_string($values['start']);
     }
-    else {
 
+    $formatted_values['start_date'] = $values['start']->format('Y-m-d');
+    $formatted_values['start_time'] = $values['start']->format('H:i') == '00:00' ? null : $values['start']->format('H:i:s');
+
+    if (!empty($values['end']) && is_string($values['end'])) {
+      $values['end'] = $this->datetime_from_string($values['end']);
     }
 
     if (empty($values['end'])) {
       $formatted_values['end_date'] = $values['start']->format('Y-m-d');
       $formatted_values['end_time'] = null;
     }
-    elseif (is_a($values['end'], 'DateTime')) {
+    else {
       $formatted_values['end_date'] = $values['end']->format('Y-m-d');
       $formatted_values['end_time'] = $values['end']->format('H:i') == '00:00' ? null : $values['end']->format('H:i:s');
     }
-    else {
-
-    }
 
     parent::__set('values', array($formatted_values));
+  }
 
+  public function datetime_from_string($string) {
+    $tz = new DateTimeZone('UTC');
+
+    $split = explode(' ', $string);
+    if (count($split) == 1) {
+      $split[] = '00:00:00';
+    }
+    return DateTime::createFromFormat('Y-m-d H:i:s', $split[0].' '.$split[1], $tz);
   }
 
   public function humanized_value() {
@@ -498,6 +489,16 @@ class PodioDateItemField extends PodioItemField {
         return $start->format('Y-m-d').' - '.$end->format('Y-m-d');
       }
     }
+  }
+
+  public function api_friendly_values() {
+    if (!$this->start) {
+      return array();
+    }
+    if ($this->end) {
+      return array('start' => $this->start->format('Y-m-d H:i:s'), 'end' => $this->end->format('Y-m-d H:i:s'));
+    }
+    return array('start' => $this->start->format('Y-m-d H:i:s'));
   }
 
 }

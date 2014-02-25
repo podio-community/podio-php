@@ -117,11 +117,71 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
   }
 
   public function test_can_set_value_from_strings() {
-    // $object = new PodioDateItemField(array('field_id' => 8));
-    // $object->values = array('start' => '2012-12-24 14:00:00', 'end' => '2012-12-25 15:00:00');
-    // $this->assertEquals(array(array('start' => '2012-12-24 14:00:00', 'end' => '2012-12-25 15:00:00')), $object->__attribute('values'));
+    $object = new PodioDateItemField(array('field_id' => 8));
 
+    $object->values = array(
+      'start' => '2012-12-24'
+    );
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-24',
+      'start_time' => null,
+      'end_date' => '2012-12-24',
+      'end_time' => null
+    )), $object->__attribute('values'));
 
+    $object->values = array(
+      'start' => '2012-12-24 14:00:00'
+    );
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-24',
+      'start_time' => '14:00:00',
+      'end_date' => '2012-12-24',
+      'end_time' => null
+    )), $object->__attribute('values'));
+
+    $object->values = array(
+      'start' => '2012-12-24 14:00:00',
+      'end' => '2012-12-24 15:00:00'
+    );
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-24',
+      'start_time' => '14:00:00',
+      'end_date' => '2012-12-24',
+      'end_time' => '15:00:00'
+    )), $object->__attribute('values'));
+
+    $object->values = array(
+      'start' => '2012-12-24',
+      'end' => '2012-12-25'
+    );
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-24',
+      'start_time' => null,
+      'end_date' => '2012-12-25',
+      'end_time' => null
+    )), $object->__attribute('values'));
+
+    $object->values = array(
+      'start' => '2012-12-24 14:00:00',
+      'end' => '2012-12-25'
+    );
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-24',
+      'start_time' => '14:00:00',
+      'end_date' => '2012-12-25',
+      'end_time' => null
+    )), $object->__attribute('values'));
+
+    $object->values = array(
+      'start' => '2012-12-24 14:00:00',
+      'end' => '2012-12-25 15:00:00'
+    );
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-24',
+      'start_time' => '14:00:00',
+      'end_date' => '2012-12-25',
+      'end_time' => '15:00:00'
+    )), $object->__attribute('values'));
 
   }
 
@@ -196,15 +256,47 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
   }
 
   public function test_can_set_start_from_string() {
+    $this->start_date->start = '2012-12-30 14:00:00';
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-30',
+      'start_time' => '14:00:00',
+      'end_date' => '2012-12-30',
+      'end_time' => null
+    )), $this->start_date->__attribute('values'));
   }
 
   public function test_can_set_start_from_object() {
+    $tz = new DateTimeZone('UTC');
+
+    $this->start_date->start = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-30',
+      'start_time' => '14:00:00',
+      'end_date' => '2012-12-30',
+      'end_time' => null
+    )), $this->start_date->__attribute('values'));
   }
 
   public function test_can_set_end_from_string() {
+    $this->start_date->end = '2012-12-30 14:00:00';
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => null,
+      'end_date' => '2012-12-30',
+      'end_time' => '14:00:00'
+    )), $this->start_date->__attribute('values'));
   }
 
   public function test_can_set_end_from_object() {
+    $tz = new DateTimeZone('UTC');
+
+    $this->start_date->end = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => null,
+      'end_date' => '2012-12-30',
+      'end_time' => '14:00:00'
+    )), $this->start_date->__attribute('values'));
   }
 
   public function test_can_humanize_value() {
@@ -217,8 +309,14 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('2011-05-31 14:00 - 2011-06-08 14:00', $this->start_datetime_end_datetime->humanized_value());
   }
 
-  // public function test_can_convert_to_api_friendly_json() {
-  //   $this->assertEquals('null', $this->empty_values->as_json());
-  // }
+  public function test_can_convert_to_api_friendly_json() {
+    $this->assertEquals('[]', $this->empty_values->as_json());
+    $this->assertEquals('{"start":"2011-05-31 00:00:00"}', $this->start_date->as_json());
+    $this->assertEquals('{"start":"2011-05-31 14:00:00"}', $this->start_datetime->as_json());
+    $this->assertEquals('{"start":"2011-05-31 14:00:00","end":"2011-05-31 15:00:00"}', $this->start_datetime_with_endtime_same_day->as_json());
+    $this->assertEquals('{"start":"2011-05-31 00:00:00","end":"2011-06-08 00:00:00"}', $this->start_date_end_date->as_json());
+    $this->assertEquals('{"start":"2011-05-31 14:00:00","end":"2011-06-08 00:00:00"}', $this->start_datetime_end_date->as_json());
+    $this->assertEquals('{"start":"2011-05-31 14:00:00","end":"2011-06-08 14:00:00"}', $this->start_datetime_end_datetime->as_json());
+  }
 
 }
