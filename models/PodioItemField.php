@@ -356,10 +356,10 @@ class PodioDateItemField extends PodioItemField {
    * Override __set to use field specific method for setting values property
    */
   public function __set($name, $value) {
-    // if ($name == 'values' && $value !== null) {
-    //   return $this->set_value($value);
-    // }
-    // return parent::__set($name, $value);
+    if ($name == 'values' && $value !== null) {
+      return $this->set_value($value);
+    }
+    return parent::__set($name, $value);
   }
 
   /**
@@ -422,21 +422,51 @@ class PodioDateItemField extends PodioItemField {
   }
 
   public function set_value($values) {
-    $this->values = array();
-    if ($values) {
-      $this->values = array($values);
+
+    // If a start date isn't provided all we can do it null the value
+    if (!$values['start']) {
+      return parent::__set('values', null);
     }
+
+    $formatted_values = array(
+      'start_date' => null,
+      'start_time' => null,
+      'end_date' => null,
+      'end_time' => null
+    );
+
+    if (is_a($values['start'], 'DateTime')) {
+      $formatted_values['start_date'] = $values['start']->format('Y-m-d');
+      $formatted_values['start_time'] = $values['start']->format('H:i') == '00:00' ? null : $values['start']->format('H:i:s');
+    }
+    else {
+
+    }
+
+    if (!$values['end']) {
+      $formatted_values['end_date'] = $values['start']->format('Y-m-d');
+      $formatted_values['end_time'] = null;
+    }
+    elseif (is_a($values['end'], 'DateTime')) {
+      $formatted_values['end_date'] = $values['end']->format('Y-m-d');
+      $formatted_values['end_time'] = $values['end']->format('H:i') == '00:00' ? null : $values['end']->format('H:i:s');
+    }
+    else {
+
+    }
+
+    parent::__set('values', array($formatted_values));
+
   }
 
   public function humanized_value() {
-    $value = $this->values[0];
-    // Remove seconds from start and end times since they are always '00' anyway.
-    if (!empty($value['start_time'])) {
-      $value['start_time'] = substr($value['start_time'], 0, strrpos($value['start_time'], ':'));
+    $start = $this->start;
+    $end = $this->end;
+
+    if (!$start) {
+      return '';
     }
-    if (!empty($value['end_time'])) {
-      $value['end_time'] = substr($value['end_time'], 0, strrpos($value['end_time'], ':'));
-    }
+
     // Variants:
 
     // Same date
@@ -449,31 +479,27 @@ class PodioDateItemField extends PodioItemField {
     // 2012-12-12 14:00 - 2012-12-14
     // 2012-12-12 14:00 - 2012-12-12 15:00
 
-    if (empty($value['end_date']) || $value['start_date'] == $value['end_date']) {
-      if (!empty($value['start_time']) && !empty($value['end_time']) && $value['start_time'] != $value['end_time']) {
-        return "{$value['start_date']} {$value['start_time']}-{$value['end_time']}";
-      }
-      elseif (!empty($value['start_time']) && (empty($value['end_time']) || $value['start_time'] == $value['end_time'])) {
-        return "{$value['start_date']} {$value['start_time']}";
+    if ($this->same_day()) {
+      if (!$end) {
+        return $start->format('H:i') == '00:00' ? $start->format('Y-m-d') : $start->format('Y-m-d H:i');
       }
       else {
-        return "{$value['start_date']}";
+        return $start->format('Y-m-d H:i').' - '.$end->format('H:i');
       }
     }
     else {
-      if (!empty($value['start_time']) && !empty($value['end_time']) && $value['end_time'] != '00:00') {
-        return "{$value['start_date']} {$value['start_time']} - {$value['end_date']} {$value['end_time']}";
+      if ($end->format('H:i') != '00:00') {
+        return $start->format('Y-m-d H:i').' - '.$end->format('Y-m-d H:i');
       }
-      elseif (!empty($value['end_time']) || $value['end_time'] == '00:00') {
-        return "{$value['start_date']} {$value['start_time']} - {$value['end_date']}";
+      elseif ($start->format('H:i') != '00:00' && $end->format('H:i') == '00:00') {
+        return $start->format('Y-m-d H:i').' - '.$end->format('Y-m-d');
       }
       else {
-        return "{$value['start_date']} - {$value['end_date']}";
+        return $start->format('Y-m-d').' - '.$end->format('Y-m-d');
       }
     }
   }
 
-  // TODO: Set start and end date and times easily
 }
 
 /**
