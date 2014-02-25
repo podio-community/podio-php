@@ -5,13 +5,22 @@ class PodioObjectTest extends PHPUnit_Framework_TestCase {
     $this->object = new PodioObject();
     $this->object->property('id', 'integer');
     $this->object->property('external_id', 'string');
+    $this->object->property('subscribed', 'boolean');
+    $this->object->property('date', 'date');
+    $this->object->property('created_on', 'datetime');
     $this->object->property('rights', 'array');
+    $this->object->property('data', 'hash');
     $this->object->has_many('fields', 'Object');
-    $this->object->has_one('created_by', 'ByLine');
+    $this->object->has_one('created_by', 'Object');
+    $this->object->has_one('reference_with_target', 'Object', array('json_target' => 'reference_target'));
     $this->object->init(array(
       'id' => 1,
       'external_id' => 'a',
-      'rights' => array('view', 'update')
+      'rights' => array('view', 'update'),
+      'subscribed' => true,
+      'date' => '2011-05-31',
+      'created_on' => '2012-12-24 14:00:00',
+      'data' => array('item' => 'value')
     ));
   }
 
@@ -66,26 +75,49 @@ class PodioObjectTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(array(
       'id' => array('type' => 'integer', 'options' => array()),
       'external_id' => array('type' => 'string', 'options' => array()),
+      'subscribed' => array('type' => 'boolean', 'options' => array()),
+      'date' => array('type' => 'date', 'options' => array()),
+      'created_on' => array('type' => 'datetime', 'options' => array()),
       'rights' => array('type' => 'array', 'options' => array()),
+      'data' => array('type' => 'hash', 'options' => array()),
       'fields' => array('type' => 'Object', 'options' => array()),
-      'created_by' => array('type' => 'ByLine', 'options' => array()),
+      'created_by' => array('type' => 'Object', 'options' => array()),
+      'reference_with_target' => array('type' => 'Object', 'options' => array('json_target' => 'reference_target')),
     ), $this->object->properties());
   }
 
   public function test_can_provide_relationships() {
     $this->assertEquals(array(
       'fields' => 'has_many',
-      'created_by' => 'has_one'
+      'created_by' => 'has_one',
+      'reference_with_target' => 'has_one'
     ), $this->object->relationships());
   }
 
-  // TODO:
-  // public function test_can_convert_to_json() {
-    // attributes of all types
-    // has_one
-    // has_many
-      // json_target
-  // }
+  public function test_can_convert_to_json() {
+    $created_by = new PodioObject();
+    $created_by->property('id', 'integer');
+    $created_by->property('name', 'string');
+    $created_by->init(array('id' => 4, 'name' => 'Captain Crunch'));
+    $this->object->created_by = $created_by;
+
+    $reference_with_target = new PodioObject();
+    $reference_with_target->property('id', 'integer');
+    $reference_with_target->property('name', 'string');
+    $reference_with_target->init(array('id' => 5, 'name' => 'Count Chocula'));
+    $this->object->reference_with_target = $reference_with_target;
+
+    $collection = new PodioCollection();
+    for ($i=0;$i<3;$i++) {
+      $field = new PodioObject();
+      $field->property('id', 'integer');
+      $field->init(array('id' => ($i+3)));
+      $collection[] = $field;
+    }
+    $this->object->fields = $collection;
+
+    $this->assertEquals('{"id":1,"external_id":"a","subscribed":true,"date":"2011-05-31","created_on":"2012-12-24 14:00:00","rights":["view","update"],"data":{"item":"value"},"fields":[{"id":3},{"id":4},{"id":5}],"created_by":{"id":4,"name":"Captain Crunch"},"reference_target":{"id":5,"name":"Count Chocula"}}', $this->object->as_json());
+  }
 
   public function test_can_unset_attribute() {
     $this->assertEquals(1, $this->object->id);
