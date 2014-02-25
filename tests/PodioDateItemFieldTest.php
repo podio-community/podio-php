@@ -96,13 +96,25 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->end);
   }
 
-  // public function test_can_provide_sameday() {
+  public function test_can_provide_sameday() {
+    $this->assertTrue($this->empty_values->same_day());
+    $this->assertTrue($this->start_date->same_day());
+    $this->assertTrue($this->start_datetime->same_day());
+    $this->assertTrue($this->start_datetime_with_endtime_same_day->same_day());
+    $this->assertFalse($this->start_date_end_date->same_day());
+    $this->assertFalse($this->start_datetime_end_date->same_day());
+    $this->assertFalse($this->start_datetime_end_datetime->same_day());
+  }
 
-  // }
-
-  // public function test_can_provide_allday() {
-
-  // }
+  public function test_can_provide_allday() {
+    $this->assertFalse($this->empty_values->all_day());
+    $this->assertTrue($this->start_date->all_day());
+    $this->assertFalse($this->start_datetime->all_day());
+    $this->assertFalse($this->start_datetime_with_endtime_same_day->all_day());
+    $this->assertTrue($this->start_date_end_date->all_day());
+    $this->assertFalse($this->start_datetime_end_date->all_day());
+    $this->assertFalse($this->start_datetime_end_datetime->all_day());
+  }
 
   // public function test_can_set_start() {
   // }

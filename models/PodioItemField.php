@@ -394,6 +394,33 @@ class PodioDateItemField extends PodioItemField {
     return $attribute;
   }
 
+  /**
+   * True if start and end are on the same day.
+   */
+  public function same_day() {
+    if (!$this->values || ($this->start && !$this->end)) {
+      return true;
+    }
+
+    if ($this->start->format('Y-m-d') == $this->end->format('Y-m-d')) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * True if this is an allday event (has no time component on both start and end)
+   */
+  public function all_day() {
+    if (!$this->values) {
+      return false;
+    }
+    if (($this->start->format('H:i:s') == '00:00:00' && (!$this->end || ($this->end && $this->end->format('H:i:s') == '00:00:00')))) {
+      return true;
+    }
+    return false;
+  }
+
   public function set_value($values) {
     $this->values = array();
     if ($values) {
