@@ -443,7 +443,7 @@ class PodioDateItemField extends PodioItemField {
 
     }
 
-    if (!$values['end']) {
+    if (empty($values['end'])) {
       $formatted_values['end_date'] = $values['start']->format('Y-m-d');
       $formatted_values['end_time'] = null;
     }
