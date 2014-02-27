@@ -4,4 +4,5 @@ active: sessions
 ---
 # Sessions management
 
-TODO
+$auth_type['type'] = $grant_type;
+$auth_type['identifier'] = username|app_id
