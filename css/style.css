@@ -28,7 +28,8 @@ h1:first-child {
   margin-top:0;
 }
 h1, h2, h3 {
-  margin:1.5em 0 0 0;
+  margin:1.2em 0 0 0;
+  line-height:140%;
 }
 
 nav ul {
@@ -96,12 +97,20 @@ nav ul li.active a {
   border-radius:4px;
   padding:4px 0;
 }
-.buttons li a.download {
+.buttons li .download {
   background:#55a61f;
 }
-.buttons li a.packagist {
+.buttons li .packagist {
   background:#c98827;
 }
-.buttons li a.github {
+.buttons li .github {
   background:#acacac;
+}
+
+.note {
+  border-radius:2px;
+  border:1px solid #e2e3c8;
+  background:#fffee0;
+  padding:8px;
+  display:inline-block;
 }
