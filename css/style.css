@@ -4,6 +4,12 @@ body {
   font-family:Arial, Helvetica, sans-serif;
   color:#444;
 }
+hr {
+  border:none;
+  border-top:1px solid #ddd;
+  width:80%;
+  margin:2em auto;
+}
 div.wrapper {
   position:relative;
   width:960px;
@@ -27,9 +33,15 @@ a:hover {
 h1:first-child {
   margin-top:0;
 }
-h1, h2, h3 {
+h1, h2, h3, h4 {
   margin:1.2em 0 0 0;
   line-height:140%;
+}
+h4 {
+  margin-bottom:0;
+}
+h4 + p {
+  margin-top:0;
 }
 
 nav ul {
