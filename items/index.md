@@ -8,7 +8,21 @@ active: items
 
 Apps and app items form the core of Podio and for that reason podio-php tries to make it as easy as possible to read and manipulate app items.
 
+## Individual items
+### Get item (basic)
+### Item fields
+#### Get field
+#### Add field
+#### Remove field
+#### Change field value
+### Create item
+### Update item
 
+## Item collections
+
+
+## Field reference
+Below you'll find examples for getting and setting field values for each of the fields available in Podio.
 
 ### App reference field
 
