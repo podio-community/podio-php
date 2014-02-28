@@ -112,5 +112,5 @@ nav ul li.active a {
   border:1px solid #e2e3c8;
   background:#fffee0;
   padding:8px;
-  display:inline-block;
+  display:block;
 }
