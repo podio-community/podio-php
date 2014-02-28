@@ -10,7 +10,7 @@ hr {
   width:80%;
   margin:2em auto;
 }
-div.wrapper {
+.wrapper {
   position:relative;
   width:960px;
   margin:60px auto 60px auto;
@@ -36,9 +36,6 @@ h1:first-child {
 h1, h2, h3, h4 {
   margin:1.2em 0 0 0;
   line-height:140%;
-}
-h4 {
-  margin-bottom:0;
 }
 h4 + p {
   margin-top:0;
