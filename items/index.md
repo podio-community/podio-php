@@ -15,6 +15,24 @@ Apps and app items form the core of Podio and for that reason podio-php tries to
 #### Add field
 #### Remove field
 #### Change field value
+The format varies a bit from field to field. You can see examples for all field types under [Item field examples]({{site.baseurl}}/fields). After you have changed the value of the field you must save your change back to the API. If you only change a single field you can save just that field, but if you are changing multiple fields it can perform better to save the entire item.
+
+{% highlight php startinline %}
+// Change a single field value and save.
+$item = PodioItem::get_basic(123); // Get item with item_id=123
+
+$field = $item->fields["sample-text-field"];
+$field->values = "New value for this field";
+$field->save();
+
+// If you change multiple values save the entire item.
+$item = PodioItem::get_basic(123); // Get item with item_id=123
+
+$item->fields["my-sample-text-field"] = "New value for this field";
+$item->fields["my-sample-progress-field"] = 75;
+$item->save();
+{% endhighlight %}
+
 ### Create item
 ### Update item
 
