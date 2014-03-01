@@ -34,6 +34,26 @@ $item->save();
 {% endhighlight %}
 
 ### Create item
+To create a new item from scratch you create a new `PodioItem` without an `item_id`, attach your fields and call the save method.
+{% highlight php startinline %}
+// Create a field collection with some fields.
+// Be sure to use the external_ids of your specific fields
+$fields = new PodioItemFieldCollection(array(
+  new PodioTextItemField(array("external_id" => "my-text-field", "values" => "FooBar")),
+  new PodioProgressItemField(array("external_id" => "my-number-field", "values" => 75))
+));
+
+// Create the item object with fields
+// Be sure to add an app or podio-php won't know where to create the item
+$item = new PodioItem(array(
+  'app' => new PodioApp(123), // Attach to app with app_id=123
+  'fields' => $fields
+));
+
+// Save the new item
+$item->save();
+{% endhighlight %}
+
 ### Update item
 
 ## Item collections
