@@ -9,7 +9,7 @@ class PodioItemFieldCollection extends PodioFieldCollection {
    * Constructor. Pass in either decoded JSON from an API request
    * or an array of PodioItemField objects.
    */
-  public function __construct($attributes) {
+  public function __construct($attributes, $__api_values = false) {
 
     // Make default array into array of proper objects
     $fields = array();
@@ -26,7 +26,7 @@ class PodioItemFieldCollection extends PodioFieldCollection {
         }
       }
 
-      $field = is_object($field_attributes) ? $field_attributes : new $class_name($field_attributes);
+      $field = is_object($field_attributes) ? $field_attributes : new $class_name(array_merge($field_attributes, array('__api_values' => $__api_values)));
       $fields[] = $field;
 
       $class_name = $old_class_name;

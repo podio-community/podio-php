@@ -3,48 +3,61 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->empty_values = new PodioDateItemField(array('field_id' => 1));
-    $this->start_date = new PodioDateItemField(array('field_id' => 2, 'values' => array(array(
+    $this->start_date = new PodioDateItemField(array('__api_values' => true, 'field_id' => 2, 'values' => array(array(
       "start_date" => "2011-05-31",
       "end_date" => "2011-05-31",
       "start_time" => null,
       "end_time" => null,
     ))));
 
-    $this->start_datetime = new PodioDateItemField(array('field_id' => 3, 'values' => array(array(
+    $this->start_datetime = new PodioDateItemField(array('__api_values' => true, 'field_id' => 3, 'values' => array(array(
       "start_date" => "2011-05-31",
       "end_date" => "2011-05-31",
       "start_time" => "14:00:00",
       "end_time" => null,
     ))));
 
-    $this->start_datetime_with_endtime_same_day = new PodioDateItemField(array('field_id' => 4, 'values' => array(array(
+    $this->start_datetime_with_endtime_same_day = new PodioDateItemField(array('__api_values' => true, 'field_id' => 4, 'values' => array(array(
       "start_date" => "2011-05-31",
       "end_date" => "2011-05-31",
       "start_time" => "14:00:00",
       "end_time" => "15:00:00",
     ))));
 
-    $this->start_date_end_date = new PodioDateItemField(array('field_id' => 5, 'values' => array(array(
+    $this->start_date_end_date = new PodioDateItemField(array('__api_values' => true, 'field_id' => 5, 'values' => array(array(
       "start_date" => "2011-05-31",
       "end_date" => "2011-06-08",
       "start_time" => null,
       "end_time" => null,
     ))));
 
-    $this->start_datetime_end_date = new PodioDateItemField(array('field_id' => 6, 'values' => array(array(
+    $this->start_datetime_end_date = new PodioDateItemField(array('__api_values' => true, 'field_id' => 6, 'values' => array(array(
       "start_date" => "2011-05-31",
       "end_date" => "2011-06-08",
       "start_time" => "14:00:00",
       "end_time" => null,
     ))));
 
-    $this->start_datetime_end_datetime = new PodioDateItemField(array('field_id' => 7, 'values' => array(array(
+    $this->start_datetime_end_datetime = new PodioDateItemField(array('__api_values' => true, 'field_id' => 7, 'values' => array(array(
       "start_date" => "2011-05-31",
       "end_date" => "2011-06-08",
       "start_time" => "14:00:00",
       "end_time" => "14:00:00",
     ))));
 
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioDateItemField(array(
+      'field_id' => 123,
+      'values' => array('start' => '2012-12-24')
+    ));
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-24',
+      'start_time' => null,
+      'end_date' => '2012-12-24',
+      'end_time' => null
+    )), $object->__attribute('values'));
   }
 
   public function test_can_provide_values() {

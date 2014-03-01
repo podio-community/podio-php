@@ -3,12 +3,21 @@ class PodioStateItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioStateItemField(array(
+      '__api_values' => true,
       'field_id' => 123,
       'values' => array(
         array('value' => 'FooBar')
       )
     ));
     $this->empty_values = new PodioStateItemField(array('field_id' => 1));
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioStateItemField(array(
+      'field_id' => 123,
+      'values' => 'FooBar'
+    ));
+    $this->assertEquals('FooBar', $object->values);
   }
 
   public function test_can_provide_value() {

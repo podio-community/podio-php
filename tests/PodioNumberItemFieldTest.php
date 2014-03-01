@@ -3,13 +3,22 @@ class PodioNumberItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioNumberItemField(array(
+      '__api_values' => true,
       'field_id' => 123,
       'values' => array(
         array('value' => '1234.5600')
       )
     ));
     $this->empty_values = new PodioNumberItemField(array('field_id' => 1));
-    $this->zero_value = new PodioNumberItemField(array('field_id' => 2, 'values' => array(array('value' => '0'))));
+    $this->zero_value = new PodioNumberItemField(array('__api_values' => true, 'field_id' => 2, 'values' => array(array('value' => '0'))));
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioNumberItemField(array(
+      'field_id' => 123,
+      'values' => '12.34'
+    ));
+    $this->assertEquals('12.34', $object->values);
   }
 
   public function test_can_provide_value() {

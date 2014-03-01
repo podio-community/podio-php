@@ -16,6 +16,9 @@ class PodioObject {
     if (!is_array($default_attributes)) {
       $default_attributes = array();
     }
+
+    $has_api_values = !empty($default_attributes['__api_values']);
+
     // Create object instance from attributes
     foreach ($this->__properties as $name => $property) {
       if (isset($property['options']['id'])) {
@@ -25,7 +28,16 @@ class PodioObject {
         }
       }
       if (array_key_exists($name, $default_attributes)) {
-        $this->set_attribute($name, $default_attributes[$name]);
+
+        // Special handling for PodioItemField values property so
+        // we can construct using both the API format when receiving responses
+        // and the much simpler podio-php format when constructing manually.
+        if ($name == 'values' && !$has_api_values) {
+          $this->values = $default_attributes[$name];
+        }
+        else {
+          $this->set_attribute($name, $default_attributes[$name]);
+        }
       }
     }
     if ($this->__relationships) {
@@ -46,10 +58,15 @@ class PodioObject {
             if ($class_name == 'PodioItemField') {
               $collection_class = 'PodioItemFieldCollection';
               $values = $default_attributes[$name];
+
+              // Make sure we pass along info on whether the values property
+              // contains API style values or not
+              $collection = new $collection_class($values, $has_api_values);
             }
             elseif ($class_name == 'PodioAppField') {
               $collection_class = 'PodioAppFieldCollection';
               $values = $default_attributes[$name];
+              $collection = new $collection_class($values);
             }
             else {
               $collection_class = 'PodioCollection';
@@ -58,8 +75,8 @@ class PodioObject {
                 $child = is_object($value) ? $value : new $class_name($value);
                 $values[] = $child;
               }
+              $collection = new $collection_class($values);
             }
-            $collection = new $collection_class($values);
             $collection->add_relationship($this, $name);
             $this->set_attribute($name, $collection);
           }
@@ -167,7 +184,7 @@ class PodioObject {
       $list = array();
       foreach ($body as $attributes) {
         $class_name = get_called_class();
-        $list[] = new $class_name($attributes);
+        $list[] = new $class_name(array_merge($attributes, array('__api_values' => true)));
       }
       return $list;
     }
@@ -176,7 +193,7 @@ class PodioObject {
   public static function member($response) {
     if ($response) {
       $class_name = get_called_class();
-      return new $class_name($response->json_body());
+      return new $class_name(array_merge($response->json_body(), array('__api_values' => true)));
     }
   }
 
@@ -186,7 +203,7 @@ class PodioObject {
       $list = array();
       foreach ($body['items'] as $attributes) {
         $class_name = get_called_class();
-        $list[] = new $class_name($attributes);
+        $list[] = new $class_name(array_merge($attributes, array('__api_values' => true)));
       }
       return new $collection_type($list, $body['filtered'], $body['total']);
     }

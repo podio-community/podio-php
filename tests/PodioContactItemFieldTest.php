@@ -3,12 +3,23 @@ class PodioContactItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioContactItemField(array(
+      '__api_values' => true,
       'values' => array(
         array('value' => array('profile_id' => 1, 'name' => 'Snap')),
         array('value' => array('profile_id' => 2, 'name' => 'Crackle')),
         array('value' => array('profile_id' => 3, 'name' => 'Pop')),
       )
     ));
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioContactItemField(array(
+      'field_id' => 123,
+      'values' => array('profile_id' => 4, 'name' => 'Captain Crunch')
+    ));
+    $this->assertEquals(array(
+      array('value' => array('profile_id' => 4, 'name' => 'Captain Crunch')),
+    ), $object->__attribute('values'));
   }
 
   public function test_can_provide_value() {

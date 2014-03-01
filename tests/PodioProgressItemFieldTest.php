@@ -3,13 +3,22 @@ class PodioProgressItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioProgressItemField(array(
+      '__api_values' => true,
       'field_id' => 123,
       'values' => array(
         array('value' => 55)
       )
     ));
     $this->empty_values = new PodioProgressItemField(array('field_id' => 1));
-    $this->zero_value = new PodioProgressItemField(array('field_id' => 2, 'values' => array(array('value' => 0))));
+    $this->zero_value = new PodioProgressItemField(array('__api_values' => true, 'field_id' => 2, 'values' => array(array('value' => 0))));
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioProgressItemField(array(
+      'field_id' => 123,
+      'values' => 75
+    ));
+    $this->assertEquals(75, $object->values);
   }
 
   public function test_can_provide_value() {

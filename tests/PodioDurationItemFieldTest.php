@@ -3,6 +3,7 @@ class PodioDurationItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioDurationItemField(array(
+      '__api_values' => true,
       'field_id' => 123,
       'values' => array(
         array('value' => 3723)
@@ -13,6 +14,14 @@ class PodioDurationItemFieldTest extends PHPUnit_Framework_TestCase {
       'field_id' => 456
     ));
 
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioDurationItemField(array(
+      'field_id' => 123,
+      'values' => 3600
+    ));
+    $this->assertEquals(3600, $object->values);
   }
 
   public function test_can_provide_value() {

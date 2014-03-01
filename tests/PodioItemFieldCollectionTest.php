@@ -9,9 +9,18 @@ class PodioItemFieldCollectionTest extends PHPUnit_Framework_TestCase {
     ));
   }
 
+  public function test_can_construct_with_api_values() {
+    $collection = new PodioItemFieldCollection(array(
+      array('field_id' => 1, 'type' => 'text', 'values' => array(array('value' => 'FooBar'))),
+    ), true);
+    $this->assertEquals(1, count($collection));
+    $this->assertEquals('PodioTextItemField', get_class($collection[0]));
+    $this->assertEquals('FooBar', $collection[0]->values);
+  }
+
   public function test_can_construct_from_array() {
     $collection = new PodioItemFieldCollection(array(
-      array('field_id' => 1, 'type' => 'text'),
+      array('field_id' => 1, 'type' => 'text', 'values' => 'FooBar'),
       array('field_id' => 2, 'type' => 'number'),
       array('field_id' => 3, 'type' => 'calculation'),
     ));
@@ -19,16 +28,18 @@ class PodioItemFieldCollectionTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('PodioTextItemField', get_class($collection[0]));
     $this->assertEquals('PodioNumberItemField', get_class($collection[1]));
     $this->assertEquals('PodioCalculationItemField', get_class($collection[2]));
+    $this->assertEquals('FooBar', $collection[0]->values);
   }
 
   public function test_can_construct_from_objects() {
     $collection = new PodioItemFieldCollection(array(
-      new PodioTextItemField(array('field_id' => 1, 'external_id' => 'a', 'type' => 'text')),
+      new PodioTextItemField(array('field_id' => 1, 'external_id' => 'a', 'type' => 'text', 'values' => 'FooBar')),
       new PodioNumberItemField(array('field_id' => 2, 'external_id' => 'b', 'type' => 'number')),
       new PodioCalculationItemField(array('field_id' => 3, 'external_id' => 'c', 'type' => 'calculation')),
     ));
 
     $this->assertEquals(3, count($collection));
+    $this->assertEquals('FooBar', $collection[0]->values);
   }
 
   public function test_can_add_unknown_type() {

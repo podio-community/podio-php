@@ -3,12 +3,23 @@ class PodioEmbedItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioEmbedItemField(array(
+      '__api_values' => true,
       'values' => array(
         array('embed' => array('embed_id' => 1, 'original_url' => 'http://example.com/'), 'file' => array('file_id' => 10)),
         array('embed' => array('embed_id' => 2)),
         array('embed' => array('embed_id' => 3, 'original_url' => 'http://example.org/'), 'file' => array('file_id' => 11)),
       )
     ));
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioEmbedItemField(array(
+      'field_id' => 123,
+      'values' => array('embed' => array('embed_id' => 4), 'file' => array('file_id' => 12))
+    ));
+    $this->assertEquals(array(
+      array('embed' => array('embed_id' => 4), 'file' => array('file_id' => 12)),
+    ), $object->__attribute('values'));
   }
 
   public function test_can_provide_value() {

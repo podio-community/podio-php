@@ -3,6 +3,7 @@ class PodioMoneyItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioMoneyItemField(array(
+      '__api_values' => true,
       'field_id' => 123,
       'values' => array(
         array('value' => '123.5568', 'currency' => 'USD')
@@ -14,12 +15,21 @@ class PodioMoneyItemFieldTest extends PHPUnit_Framework_TestCase {
     ));
 
     $this->zero_value = new PodioMoneyItemField(array(
+      '__api_values' => true,
       'field_id' => 789,
       'values' => array(
         array('value' => '0', 'currency' => 'USD')
       )
     ));
 
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioMoneyItemField(array(
+      'field_id' => 123,
+      'values' => array('value' => '456.67', 'currency' => 'BTC')
+    ));
+    $this->assertEquals(array(array('value' => '456.67', 'currency' => 'BTC')), $object->__attribute('values'));
   }
 
   public function test_can_provide_value() {

@@ -3,12 +3,23 @@ class PodioAppItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioAppItemField(array(
+      '__api_values' => true,
       'values' => array(
         array('value' => array('item_id' => 1, 'title' => 'Snap')),
         array('value' => array('item_id' => 2, 'title' => 'Crackle')),
         array('value' => array('item_id' => 3, 'title' => 'Pop')),
       )
     ));
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioAppItemField(array(
+      'field_id' => 123,
+      'values' => array('item_id' => 4, 'title' => 'Captain Crunch')
+    ));
+    $this->assertEquals(array(
+      array('value' => array('item_id' => 4, 'title' => 'Captain Crunch')),
+    ), $object->__attribute('values'));
   }
 
   public function test_can_provide_value() {

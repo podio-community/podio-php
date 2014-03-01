@@ -3,6 +3,7 @@ class PodioCategoryItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioCategoryItemField(array(
+      '__api_values' => true,
       'field_id' => 123,
       'values' => array(
         array('value' => array('id' => 1, 'text' => 'Snap')),
@@ -10,6 +11,14 @@ class PodioCategoryItemFieldTest extends PHPUnit_Framework_TestCase {
         array('value' => array('id' => 3, 'text' => 'Pop')),
       )
     ));
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioCategoryItemField(array(
+      'field_id' => 123,
+      'values' => 4
+    ));
+    $this->assertEquals(array(array('value' => array('id' => 4))), $object->__attribute('values'));
   }
 
   public function test_can_provide_value() {

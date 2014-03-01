@@ -3,12 +3,21 @@ class PodioLocationItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioLocationItemField(array(
+      '__api_values' => true,
       'field_id' => 123,
       'values' => array(
         array('value' => '650 Townsend St., San Francisco, CA 94103'),
         array('value' => 'Vesterbrogade 34, 1620 Copenhagen'),
       )
     ));
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioLocationItemField(array(
+      'field_id' => 123,
+      'values' => array('1600 Pennsylvania Ave NW, Washington, DC 20500')
+    ));
+    $this->assertEquals(array(array('value' => '1600 Pennsylvania Ave NW, Washington, DC 20500')), $object->__attribute('values'));
   }
 
   public function test_can_provide_value() {

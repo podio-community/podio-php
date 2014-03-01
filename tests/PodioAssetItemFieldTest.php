@@ -3,12 +3,23 @@ class PodioAssetItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->object = new PodioAssetItemField(array(
+      '__api_values' => true,
       'values' => array(
         array('value' => array('file_id' => 1, 'name' => 'doge.jpg')),
         array('value' => array('file_id' => 2, 'name' => 'trollface.jpg')),
         array('value' => array('file_id' => 3, 'name' => 'YUNO.jpg')),
       )
     ));
+  }
+
+  public function test_can_construct_from_simple_value() {
+    $object = new PodioAssetItemField(array(
+      'field_id' => 123,
+      'values' => array('file_id' => 4, 'name' => 'philosoraptor.jpg')
+    ));
+    $this->assertEquals(array(
+      array('value' => array('file_id' => 4, 'name' => 'philosoraptor.jpg')),
+    ), $object->__attribute('values'));
   }
 
   public function test_can_provide_value() {
