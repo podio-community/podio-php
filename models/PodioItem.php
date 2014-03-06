@@ -140,8 +140,7 @@ class PodioItem extends PodioObject {
    */
   public static function create($app_id, $attributes = array(), $options = array()) {
     $url = Podio::url_with_options("/item/app/{$app_id}/", $options);
-    $body = Podio::post($url, $attributes)->json_body();
-    return $body['item_id'];
+    return self::member(Podio::post($url, $attributes));
   }
 
   /**
