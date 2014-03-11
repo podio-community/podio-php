@@ -94,9 +94,22 @@ class Podio {
       $body = $response->json_body();
       self::$oauth = new PodioOAuth($body['access_token'], $body['refresh_token'], $body['expires_in'], $body['ref']);
       self::$auth_type = $auth_type;
+
+      if (self::$session_manager) {
+        self::$session_manager->set(self::$oauth, self::$auth_type);
+      }
+
       return true;
     }
     return false;
+  }
+
+  public static function clear_authentication() {
+    self::$oauth = new PodioOAuth();
+
+    if (self::$session_manager) {
+      self::$session_manager->set(self::$oauth, self::$auth_type);
+    }
   }
 
   public static function authorize_url($redirect_uri) {
@@ -225,7 +238,7 @@ class Podio {
         $body = $response->json_body();
         if (strstr($body['error'], 'invalid_grant')) {
           // Reset access token & refresh_token
-          self::$oauth = new PodioOAuth();
+          self::clear_authentication();
           throw new PodioInvalidGrantError($response->body, $response->status, $url);
           break;
         }
@@ -243,19 +256,19 @@ class Podio {
               return self::request($method, $original_url, $attributes);
             }
             else {
-              self::$oauth = new PodioOAuth();
+              self::clear_authentication();
               throw new PodioAuthorizationError($response->body, $response->status, $url);
             }
           }
           else {
             // We have tried in vain to get a new access token. Log the user out.
-            self::$oauth = new PodioOAuth();
+            self::clear_authentication();
             throw new PodioAuthorizationError($response->body, $response->status, $url);
           }
         }
         elseif (strstr($body['error'], 'invalid_request')) {
           // Access token is invalid.
-          self::$oauth = new PodioOAuth();
+          self::clear_authentication();
           throw new PodioAuthorizationError($response->body, $response->status, $url);
         }
         break;
