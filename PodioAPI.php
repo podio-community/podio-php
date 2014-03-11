@@ -11,7 +11,6 @@ require_once 'lib/PodioError.php';
 require_once 'lib/PodioCollection.php';
 require_once 'lib/PodioObject.php';
 require_once 'lib/PodioLogger.php';
-require_once 'lib/PodioSession.php';
 
 require_once 'models/PodioFieldCollection.php'; // Included first because other models inherit from this
 require_once 'models/PodioAction.php';
