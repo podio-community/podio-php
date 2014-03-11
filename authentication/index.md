@@ -29,7 +29,7 @@ The server-side flow requires you to redirect your users to a page on podio.com 
 The example below handles three cases:
 
 * The user has not authenticated and has not been redirected back to our page after authenticating.
-* The user has already authenticated and they have a session stored using the [session manager](/session).
+* The user has already authenticated and they have a session stored using the [session manager]({{site.baseurl}}/sessions).
 * The user is being redirected back to our page after authenticating.
 
 {% highlight php startinline %}
@@ -90,9 +90,9 @@ Podio::authenticate_with_password($username, $password);
 ## Refreshing access tokens
 Under the hood you receive two tokens upon authenticating. An access token is used to make API calls and a refresh token is used to get a new access/refresh token pair once the access token expires.
 
-You should **avoid authenticating every time your script runs**. It's highly inefficient and you risk running into rate limits quickly. Instead [use a session manager to store access/refresh tokens between script runs](/session) to re-use your tokens.
+You should **avoid authenticating every time your script runs**. It's highly inefficient and you risk running into rate limits quickly. Instead [use a session manager to store access/refresh tokens between script runs]({{site.baseurl}}/sessions) to re-use your tokens.
 
-Podio-php will automatically refresh tokens for you, but it's your responsibility to store the updated tokens after you're done making API calls. Otherwise you may be left with expired tokens. [Use a session manager to automate this process](/session).
+Podio-php will automatically refresh tokens for you, but it's your responsibility to store the updated tokens after you're done making API calls. Otherwise you may be left with expired tokens. [Use a session manager to automate this process]({{site.baseurl}}/sessions).
 
 ## Managing multiple authentications
 You can end up in a situation where you need to switch between multiple authentications. This usually happens if you are using app authentication and need to switch between multiple apps.
@@ -108,16 +108,4 @@ Podio::authenticate_with_app($second_app_id, $second_app_token);
 // Now you can make API calls against the second app
 {% endhighlight %}
 
-However, this simple approach will break the automatic refresh of access tokens. In the above example your API calls may have resulted in a refresh of your access/refresh tokens, but you no longer have a reference to those tokens. You will need to manually store your tokens before switching to a different authentication. This usually involves a [session manager](/session).
-
-{% highlight php startinline %}
-Podio::setup($client_id, $client_secret);
-Podio::authenticate_with_app($first_app_id, $first_app_token);
-// Here you can make API calls against the first app
-
-// Before switching we must store any refreshed tokens.
-// Manually update the session:
-Podio::$session_manager->set(Podio::$oauth, Podio::$auth_type);
-Podio::authenticate_with_app($second_app_id, $second_app_token);
-// Now you can make API calls against the second app
-{% endhighlight %}
+However, this simple approach will break the automatic refresh of access tokens. In the above example your API calls may have resulted in a refresh of your access/refresh tokens, but you no longer have a reference to those tokens. You will need to manually store your tokens before switching to a different authentication. This usually involves a [session manager]({{site.baseurl}}/sessions).

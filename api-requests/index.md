@@ -3,7 +3,7 @@ layout: default
 active: api
 ---
 # Making API requests
-Each of the classes in the `models/` folder has a collection of static functions. You use these whenever you want to make API calls. **Important note:** When you are working with Apps, Items, AppField or ItemField classes you can take advantage of powerful instance methods. This will make your life easier. Read more under [Working with Podio items](/items).
+Each of the classes in the `models/` folder has a collection of static functions. You use these whenever you want to make API calls. **Important note:** When you are working with Apps, Items, AppField or ItemField classes you can take advantage of powerful instance methods. This will make your life easier. Read more under [Working with apps & items]({{site.baseurl}}/items).
 
 ## Reading the API reference
 You can find API reference documentation at [https://developers.podio.com/doc](https://developers.podio.com/doc) it lists all available API operations possible. Almost all of them have been added to podio-php. If you need one added feel free to open a pull request on the [GitHub Project](https://github.com/podio/podio-php).

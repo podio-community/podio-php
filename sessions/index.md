@@ -176,39 +176,29 @@ Podio::setup($client_id, $client_secret, array(
 // So we must attempt to locate a session manually.
 Podio::$auth_type = array(
   "type" => "app",
-  "identifier" => 123 // app_id=123 for initial app
+  "identifier" => $app_id
 );
 Podio::$oauth = self::$session_manager->get(Podio::$auth_type);
 
 // Now we can check if anything could be found in the cache and
 // authenticate if it couldn't
-if (Podio::is_authenticated()) {
-  // The session manager found an existing authentication.
-  // No need to re-authenticate
-}
-else {
+if (!Podio::is_authenticated()) {
   // No authentication found in session manager.
   // You must re-authenticate here.
 
   Podio::authenticate_with_app($app_id, $app_token);
 }
 
-// We can safely switch to another app, but we must remember to save
-// the current authentication first.
-Podio::$session_manager->set(Podio::$oauth, Podio::$auth_type);
-
-// Switch to new authentication. First attempt to get authentication from cache
+// We can safely switch to another app now
+// First attempt to get authentication from cache
 // If that fails re-authenticate
 Podio::$auth_type = array(
   "type" => "app",
-  "identifier" => 123 // app_id=123 for initial app
+  "identifier" => $another_app_id
 );
 Podio::$oauth = self::$session_manager->get(Podio::$auth_type);
-if (Podio::is_authenticated()) {
-  // The session manager found an existing authentication.
-  // No need to re-authenticate
-}
-else {
+
+if (!Podio::is_authenticated()) {
   // No authentication found in session manager.
   // You must re-authenticate here.
 
