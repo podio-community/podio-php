@@ -9,7 +9,7 @@ class Podio {
   const PUT = 'PUT';
   const DELETE = 'DELETE';
 
-  public static function setup($client_id, $client_secret, $options = array('session_manager' => 'PodioSession', 'curl_options' => array())) {
+  public static function setup($client_id, $client_secret, $options = array('session_manager' => null, 'curl_options' => array())) {
     // Setup client info
     self::$client_id = $client_id;
     self::$client_secret = $client_secret;
