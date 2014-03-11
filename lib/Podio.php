@@ -93,7 +93,11 @@ class Podio {
     if ($response = self::request(self::POST, '/oauth/token', $request_data, array('oauth_request' => true))) {
       $body = $response->json_body();
       self::$oauth = new PodioOAuth($body['access_token'], $body['refresh_token'], $body['expires_in'], $body['ref']);
-      self::$auth_type = $auth_type;
+
+      // Don't touch auth_type if we are refreshing automatically as it'll be reset to null
+      if ($grant_type !== 'refresh_token') {
+        self::$auth_type = $auth_type;
+      }
 
       if (self::$session_manager) {
         self::$session_manager->set(self::$oauth, self::$auth_type);
