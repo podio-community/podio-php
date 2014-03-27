@@ -552,6 +552,7 @@ class PodioMoneyItemField extends PodioItemField {
     switch ($this->values[0]['currency']) {
       case 'USD':
         $currency = '$';
+        break;
       case 'EUR':
         $currency = '€';
         break;
