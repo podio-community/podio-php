@@ -78,8 +78,7 @@ class PodioApp extends PodioObject {
    * @see https://developers.podio.com/doc/applications/add-new-app-22351
    */
   public static function create($attributes = array()) {
-    $body = Podio::post("/app/", $attributes)->json_body();
-    return $body['app_id'];
+    return self::member(Podio::post("/app/", $attributes));
   }
 
   /**
