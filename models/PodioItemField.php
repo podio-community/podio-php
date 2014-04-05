@@ -332,14 +332,70 @@ class PodioDateItemField extends PodioItemField {
     if ($name == 'values' && $value !== null) {
       return $this->set_value($value);
     }
+    elseif ($name == 'start_date') {
+      if ($value === null) {
+        return parent::__set('values', null);
+      }
+
+      return $this->set_value(array(
+        'start_date' => $value,
+        'start_time' => $this->start_time,
+        'end_date' => $this->end_date,
+        'end_time' => $this->end_time
+      ));
+    }
+    elseif ($name == 'start_time') {
+      return $this->set_value(array(
+        'start_date' => $this->start_date,
+        'start_time' => $value,
+        'end_date' => $this->end_date,
+        'end_time' => $this->end_time
+      ));
+    }
+    elseif ($name == 'end_date') {
+      return $this->set_value(array(
+        'start_date' => $this->start_date,
+        'start_time' => $this->start_time,
+        'end_date' => $value,
+        'end_time' => $this->end_time
+      ));
+    }
+    elseif ($name == 'end_time') {
+      return $this->set_value(array(
+        'start_date' => $this->start_date,
+        'start_time' => $this->start_time,
+        'end_date' => $this->end_date,
+        'end_time' => $value
+      ));
+    }
     elseif ($name == 'start') {
       if ($value === null) {
         return parent::__set('values', null);
       }
-      return $this->set_value(array('start' => $value, 'end' => $this->end));
+
+      return $this->set_value(array(
+        'start_date' => is_string($value) ? $this->datetime_from_string($value) : $value,
+        'start_time' => is_string($value) ? $this->datetime_from_string($value) : $value,
+        'end_date' => $this->end_date,
+        'end_time' => $this->end_time
+      ));
     }
     elseif ($name == 'end') {
-      return $this->set_value(array('start' => $this->start, 'end' => $value));
+
+      if ($value && is_string($value)) {
+        $end = $this->datetime_from_string($value);
+      }
+      else {
+        $end = $value;
+      }
+
+      return $this->set_value(array(
+        'start_date' => $this->start_date,
+        'start_time' => $this->start_time,
+        'end_date' => $end,
+        'end_time' => $end,
+      ));
+
     }
     return parent::__set($name, $value);
   }
@@ -348,32 +404,35 @@ class PodioDateItemField extends PodioItemField {
    * Override __get to provide values as a string
    */
   public function __get($name) {
-    $attribute = parent::__get($name);
+    // We only work on UTC values
+    $tz = new DateTimeZone('UTC');
+    $values = parent::__get('values');
 
-    // When reading always provide UTC DateTime
-    if ($name == 'values' && is_array($attribute)) {
+    if ($name == 'values' && is_array($values)) {
 
-      // We have to pick a timezone since PHP can't create a DateTime without one
-      // Never rely on it for anything as the datetimes from the API come in the user's
-      // local timezone.
-      $tz = new DateTimeZone('UTC');
-      $start = DateTime::createFromFormat('Y-m-d H:i:s', $attribute[0]['start_date'].' '.($attribute[0]['start_time'] ? $attribute[0]['start_time'] : '00:00:00'), $tz);
-      if ($attribute[0]['start_date'] == $attribute[0]['end_date'] && !$attribute[0]['end_time']) {
+      $start = DateTime::createFromFormat('Y-m-d H:i:s', $values[0]['start_date'].' '.($values[0]['start_time'] ? $values[0]['start_time'] : '00:00:00'), $tz);
+      if ($values[0]['start_date'] == $values[0]['end_date'] && !$values[0]['end_time']) {
         $end = null;
       }
       else {
-        $end = DateTime::createFromFormat('Y-m-d H:i:s', $attribute[0]['end_date'].' '.($attribute[0]['end_time'] ? $attribute[0]['end_time'] : '00:00:00'), $tz);
+        $end = DateTime::createFromFormat('Y-m-d H:i:s', $values[0]['end_date'].' '.($values[0]['end_time'] ? $values[0]['end_time'] : '00:00:00'), $tz);
       }
 
       return array('start' => $start, 'end' => $end);
     }
-    elseif ($name == 'start') {
+    elseif ($name == 'start_time') {
+      return is_array($values) && $values[0]['start_date'] && $values[0]['start_time'] ? $this->values['start'] : null;
+    }
+    elseif ($name == 'end_time') {
+      return is_array($values) && $values[0]['end_date'] && $values[0]['end_time'] ? $this->values['end'] : null;
+    }
+    elseif ($name == 'start' || $name == 'start_date') {
       return $this->values ? $this->values['start'] : null;
     }
-    elseif ($name == 'end') {
+    elseif ($name == 'end' || $name == 'end_date') {
       return $this->values ? $this->values['end'] : null;
     }
-    return $attribute;
+    return parent::__get($name);
   }
 
   /**
@@ -405,8 +464,7 @@ class PodioDateItemField extends PodioItemField {
 
   public function set_value($values) {
 
-    // If a start date isn't provided all we can do it null the value
-    if (!$values['start']) {
+    if (!$values) {
       return parent::__set('values', null);
     }
 
@@ -417,24 +475,55 @@ class PodioDateItemField extends PodioItemField {
       'end_time' => null
     );
 
-    if (is_string($values['start'])) {
-      $values['start'] = $this->datetime_from_string($values['start']);
+    // Ensure DateTime objects for start values
+    if (isset($values['start'])) {
+      $values['start_date'] = $values['start'];
+      $values['start_time'] = $values['start'];
+      if (is_string($values['start'])) {
+        $components = explode(' ', $values['start']);
+        $values['start_time'] = count($components) === 1 ? null : $this->datetime_from_timestring($components[1]);
+      }
     }
 
-    $formatted_values['start_date'] = $values['start']->format('Y-m-d');
-    $formatted_values['start_time'] = $values['start']->format('H:i') == '00:00' ? null : $values['start']->format('H:i:s');
-
-    if (!empty($values['end']) && is_string($values['end'])) {
-      $values['end'] = $this->datetime_from_string($values['end']);
+    if (isset($values['end'])) {
+      $values['end_date'] = $values['end'];
+      $values['end_time'] = $values['end'];
+      if (is_string($values['end'])) {
+        $components = explode(' ', $values['end']);
+        $values['end_time'] = count($components) === 1 ? null : $this->datetime_from_timestring($components[1]);
+      }
     }
 
-    if (empty($values['end'])) {
-      $formatted_values['end_date'] = $values['start']->format('Y-m-d');
-      $formatted_values['end_time'] = null;
+    if (!empty($values['start_date']) && is_string($values['start_date'])) {
+      $values['start_date'] = $this->datetime_from_string($values['start_date']);
+    }
+
+    if (!empty($values['start_time']) && is_string($values['start_time'])) {
+      $values['start_time'] = $this->datetime_from_timestring($values['start_time']);
+    }
+
+    // Set values
+    $formatted_values['start_date'] = $values['start_date'] ? $values['start_date']->format('Y-m-d') : null;
+    $formatted_values['start_time'] = $values['start_time'] ? $values['start_time']->format('H:i:s') : null;
+
+    // Ensure DateTime objects for end values
+    if (!empty($values['end_date']) && is_string($values['end_date'])) {
+      $values['end_date'] = $this->datetime_from_string($values['end_date']);
+    }
+
+    if (!empty($values['end_time']) && is_string($values['end_time'])) {
+      $values['end_time'] = $this->datetime_from_timestring($values['end_time']);
+    }
+
+    // Set values
+    if (empty($values['end_date'])) {
+      $formatted_values['end_date'] = $values['start_date']->format('Y-m-d');
     }
     else {
-      $formatted_values['end_date'] = $values['end']->format('Y-m-d');
-      $formatted_values['end_time'] = $values['end']->format('H:i') == '00:00' ? null : $values['end']->format('H:i:s');
+      $formatted_values['end_date'] = $values['end_date'] ? $values['end_date']->format('Y-m-d') : null;
+    }
+    if (isset($values['end_time'])) {
+      $formatted_values['end_time'] = $values['end_time'] ? $values['end_time']->format('H:i:s') : null;
     }
 
     parent::__set('values', array($formatted_values));
@@ -448,6 +537,11 @@ class PodioDateItemField extends PodioItemField {
       $split[] = '00:00:00';
     }
     return DateTime::createFromFormat('Y-m-d H:i:s', $split[0].' '.$split[1], $tz);
+  }
+
+  public function datetime_from_timestring($string) {
+    $tz = new DateTimeZone('UTC');
+    return DateTime::createFromFormat('H:i:s', $string, $tz);
   }
 
   public function humanized_value() {

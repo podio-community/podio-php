@@ -99,6 +99,26 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->start);
   }
 
+  public function test_can_provide_start_date() {
+    $this->assertNull($this->empty_values->start_date);
+    $this->assertInstanceOf('DateTime', $this->start_date->start_date);
+    $this->assertInstanceOf('DateTime', $this->start_datetime->start_date);
+    $this->assertInstanceOf('DateTime', $this->start_datetime_with_endtime_same_day->start_date);
+    $this->assertInstanceOf('DateTime', $this->start_date_end_date->start_date);
+    $this->assertInstanceOf('DateTime', $this->start_datetime_end_date->start_date);
+    $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->start_date);
+  }
+
+  public function test_can_provide_start_time() {
+    $this->assertNull($this->empty_values->start_time);
+    $this->assertNull($this->start_date->start_time);
+    $this->assertEquals('14:00:00', $this->start_datetime->start_time->format('H:i:s'));
+    $this->assertEquals('14:00:00', $this->start_datetime_with_endtime_same_day->start_time->format('H:i:s'));
+    $this->assertNull($this->start_date_end_date->start_time);
+    $this->assertEquals('14:00:00', $this->start_datetime_end_date->start_time->format('H:i:s'));
+    $this->assertEquals('14:00:00', $this->start_datetime_end_datetime->start_time->format('H:i:s'));
+  }
+
   public function test_can_provide_end_datetime() {
     $this->assertNull($this->empty_values->end);
     $this->assertNull($this->start_date->end);
@@ -107,6 +127,26 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     $this->assertInstanceOf('DateTime', $this->start_date_end_date->end);
     $this->assertInstanceOf('DateTime', $this->start_datetime_end_date->end);
     $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->end);
+  }
+
+  public function test_can_provide_end_date() {
+    $this->assertNull($this->empty_values->end_date);
+    $this->assertNull($this->start_date->end_date);
+    $this->assertNull($this->start_datetime->end_date);
+    $this->assertInstanceOf('DateTime', $this->start_datetime_with_endtime_same_day->end_date);
+    $this->assertInstanceOf('DateTime', $this->start_date_end_date->end_date);
+    $this->assertInstanceOf('DateTime', $this->start_datetime_end_date->end_date);
+    $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->end_date);
+  }
+
+  public function test_can_provide_end_time() {
+    $this->assertNull($this->empty_values->end_time);
+    $this->assertNull($this->start_date->end_time);
+    $this->assertNull($this->start_datetime->end_time);
+    $this->assertEquals('15:00:00', $this->start_datetime_with_endtime_same_day->end_time->format('H:i:s'));
+    $this->assertNull($this->start_date_end_date->end_time);
+    $this->assertNull($this->start_datetime_end_date->end_time);
+    $this->assertEquals('14:00:00', $this->start_datetime_end_datetime->end_time->format('H:i:s'));
   }
 
   public function test_can_provide_sameday() {
@@ -207,7 +247,7 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     );
     $this->assertEquals(array(array(
       'start_date' => '2012-12-24',
-      'start_time' => null,
+      'start_time' => '00:00:00',
       'end_date' => '2012-12-24',
       'end_time' => null
     )), $object->__attribute('values'));
@@ -239,9 +279,9 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     );
     $this->assertEquals(array(array(
       'start_date' => '2012-12-24',
-      'start_time' => null,
+      'start_time' => '00:00:00',
       'end_date' => '2012-12-25',
-      'end_time' => null
+      'end_time' => '00:00:00'
     )), $object->__attribute('values'));
 
     $object->values = array(
@@ -252,7 +292,7 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
       'start_date' => '2012-12-24',
       'start_time' => '14:00:00',
       'end_date' => '2012-12-25',
-      'end_time' => null
+      'end_time' => '00:00:00'
     )), $object->__attribute('values'));
 
     $object->values = array(
@@ -278,6 +318,26 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     )), $this->start_date->__attribute('values'));
   }
 
+  public function test_can_set_start_date_from_string() {
+    $this->start_datetime->start_date = '2012-12-30';
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-30',
+      'start_time' => '14:00:00',
+      'end_date' => '2012-12-30',
+      'end_time' => null
+    )), $this->start_datetime->__attribute('values'));
+  }
+
+  public function test_can_set_start_time_from_string() {
+    $this->start_date->start_time = '14:00:00';
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => '14:00:00',
+      'end_date' => '2011-05-31',
+      'end_time' => null
+    )), $this->start_date->__attribute('values'));
+  }
+
   public function test_can_set_start_from_object() {
     $tz = new DateTimeZone('UTC');
 
@@ -286,6 +346,30 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
       'start_date' => '2012-12-30',
       'start_time' => '14:00:00',
       'end_date' => '2012-12-30',
+      'end_time' => null
+    )), $this->start_date->__attribute('values'));
+  }
+
+  public function test_can_set_start_date_from_object() {
+    $tz = new DateTimeZone('UTC');
+
+    $this->start_date->start_date = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
+    $this->assertEquals(array(array(
+      'start_date' => '2012-12-30',
+      'start_time' => null,
+      'end_date' => '2012-12-30',
+      'end_time' => null
+    )), $this->start_date->__attribute('values'));
+  }
+
+  public function test_can_set_start_time_from_object() {
+    $tz = new DateTimeZone('UTC');
+
+    $this->start_date->start_time = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => '14:00:00',
+      'end_date' => '2011-05-31',
       'end_time' => null
     )), $this->start_date->__attribute('values'));
   }
@@ -300,6 +384,26 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     )), $this->start_date->__attribute('values'));
   }
 
+  public function test_can_set_end_date_from_string() {
+    $this->start_datetime->end_date = '2012-12-31';
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => '14:00:00',
+      'end_date' => '2012-12-31',
+      'end_time' => null
+    )), $this->start_datetime->__attribute('values'));
+  }
+
+  public function test_can_set_end_time_from_string() {
+    $this->start_datetime->end_time = '15:00:00';
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => '14:00:00',
+      'end_date' => '2011-05-31',
+      'end_time' => '15:00:00'
+    )), $this->start_datetime->__attribute('values'));
+  }
+
   public function test_can_set_end_from_object() {
     $tz = new DateTimeZone('UTC');
 
@@ -310,6 +414,30 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
       'end_date' => '2012-12-30',
       'end_time' => '14:00:00'
     )), $this->start_date->__attribute('values'));
+  }
+
+  public function test_can_set_end_date_from_object() {
+    $tz = new DateTimeZone('UTC');
+
+    $this->start_date->end_date = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => null,
+      'end_date' => '2012-12-30',
+      'end_time' => null
+    )), $this->start_date->__attribute('values'));
+  }
+
+  public function test_can_set_end_time_from_object() {
+    $tz = new DateTimeZone('UTC');
+
+    $this->start_datetime->end_time = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 15:00:00', $tz);
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => '14:00:00',
+      'end_date' => '2011-05-31',
+      'end_time' => '15:00:00'
+    )), $this->start_datetime->__attribute('values'));
   }
 
   public function test_can_humanize_value() {
