@@ -176,18 +176,22 @@ $item->fields[$field_id]->values = array(
 
 ## Date field
 #### Getting values
-Date field values have two components: The start date and the end date. You can access these through special properties, both are PHP DateTime objects. Often you'll use `humanized_value()` which provides a formatted value.
+Date field values have two components: The start date and the end date. You can access these through special properties, both are PHP DateTime objects. You can also access date and time sections individually. This is often preferred as the time component will be null for events without time.
 {% highlight php startinline %}
 $item = PodioItem::get_basic(123);
 $field_id = 'date';
 
 print $item->fields[$field_id]->start; // E.g. DateTime or null
-print $item->fields[$field_id]->end; // E.g. DateTiem or null
+print $item->fields[$field_id]->start_date; // E.g. DateTime or null
+print $item->fields[$field_id]->start_time; // E.g. DateTime or null
+print $item->fields[$field_id]->end; // E.g. DateTime or null
+print $item->fields[$field_id]->end_date; // E.g. DateTime or null
+print $item->fields[$field_id]->end_time; // E.g. DateTime or null
 print $item->fields[$field_id]->humanized_value; E.g. "2014-02-14 14:00-15:00"
 {% endhighlight %}
 
 #### Setting values
-You can simply assign values to `start` and `end` properties to modify the value. Both DateTime objects and strings are accepted.
+You can simply assign values to the special properties to modify the field value. Both DateTime objects and strings are accepted. DateTime objects can be provided in any timezone and will be converted to UTC. String values **must** be provided as UTC values.
 {% highlight php startinline %}
 $item = PodioItem::get_basic(123);
 $field_id = 'date';
@@ -197,10 +201,35 @@ $item->fields[$field_id]->start = new DateTime(
   DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', new DateTimeZone("UTC"))
 );
 
+// Set dates and times individually.
+$item->fields[$field_id]->start_date = new DateTime(
+  DateTime::createFromFormat('Y-m-d', '2012-12-24', new DateTimeZone("UTC"))
+);
+
+$item->fields[$field_id]->start_time = new DateTime(
+  DateTime::createFromFormat('H:i:s', '14:00:00', new DateTimeZone("UTC"))
+);
+
+// Setting end date and end time
+$item->fields[$field_id]->end_date = new DateTime(
+  DateTime::createFromFormat('Y-m-d', '2012-12-24', new DateTimeZone("UTC"))
+);
+
+$item->fields[$field_id]->end_time = new DateTime(
+  DateTime::createFromFormat('H:i:s', '14:00:00', new DateTimeZone("UTC"))
+);
+
 // Set start date using strings in various forms
 $item->fields[$field_id]->start = "2012-12-24";
 
 $item->fields[$field_id]->start = "2012-12-24 14:00:00";
+
+// Remove values by setting their values to null
+$item->fields[$field_id]->start_date = null;
+$item->fields[$field_id]->start_time = null;
+$item->fields[$field_id]->end_date = null;
+$item->fields[$field_id]->end_time = null;
+
 {% endhighlight %}
 
 
