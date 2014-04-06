@@ -350,6 +350,26 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     )), $this->start_date->__attribute('values'));
   }
 
+  public function test_can_remove_start_time() {
+    $this->start_datetime->start_time = null;
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => null,
+      'end_date' => '2011-05-31',
+      'end_time' => null
+    )), $this->start_datetime->__attribute('values'));
+  }
+
+  public function test_can_remove_start_date() {
+    $this->start_datetime->start_date = null;
+    $this->assertEquals(array(array(
+      'start_date' => null,
+      'start_time' => '14:00:00',
+      'end_date' => null,
+      'end_time' => null
+    )), $this->start_datetime->__attribute('values'));
+  }
+
   public function test_can_set_start_date_from_object() {
     $tz = new DateTimeZone('UTC');
 
@@ -402,6 +422,26 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
       'end_date' => '2011-05-31',
       'end_time' => '15:00:00'
     )), $this->start_datetime->__attribute('values'));
+  }
+
+  public function test_can_remove_end_time() {
+    $this->start_datetime_end_datetime->end_time = null;
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => '14:00:00',
+      'end_date' => '2011-06-08',
+      'end_time' => null
+    )), $this->start_datetime_end_datetime->__attribute('values'));
+  }
+
+  public function test_can_remove_end_date() {
+    $this->start_datetime_end_datetime->end_date = null;
+    $this->assertEquals(array(array(
+      'start_date' => '2011-05-31',
+      'start_time' => '14:00:00',
+      'end_date' => '2011-05-31',
+      'end_time' => '14:00:00'
+    )), $this->start_datetime_end_datetime->__attribute('values'));
   }
 
   public function test_can_set_end_from_object() {

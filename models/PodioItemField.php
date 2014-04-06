@@ -333,10 +333,6 @@ class PodioDateItemField extends PodioItemField {
       return $this->set_value($value);
     }
     elseif ($name == 'start_date') {
-      if ($value === null) {
-        return parent::__set('values', null);
-      }
-
       return $this->set_value(array(
         'start_date' => $value,
         'start_time' => $this->start_time,
@@ -517,7 +513,7 @@ class PodioDateItemField extends PodioItemField {
 
     // Set values
     if (empty($values['end_date'])) {
-      $formatted_values['end_date'] = $values['start_date']->format('Y-m-d');
+      $formatted_values['end_date'] = $values['start_date'] ? $values['start_date']->format('Y-m-d') : null;
     }
     else {
       $formatted_values['end_date'] = $values['end_date'] ? $values['end_date']->format('Y-m-d') : null;
