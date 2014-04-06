@@ -334,34 +334,34 @@ class PodioDateItemField extends PodioItemField {
     }
     elseif ($name == 'start_date') {
       return $this->set_value(array(
-        'start_date' => $value,
-        'start_time' => $this->start_time,
-        'end_date' => $this->end_date,
-        'end_time' => $this->end_time
+        'start_date_utc' => $value,
+        'start_time_utc' => $this->start_time,
+        'end_date_utc' => $this->end_date,
+        'end_time_utc' => $this->end_time
       ));
     }
     elseif ($name == 'start_time') {
       return $this->set_value(array(
-        'start_date' => $this->start_date,
-        'start_time' => $value,
-        'end_date' => $this->end_date,
-        'end_time' => $this->end_time
+        'start_date_utc' => $this->start_date,
+        'start_time_utc' => $value,
+        'end_date_utc' => $this->end_date,
+        'end_time_utc' => $this->end_time
       ));
     }
     elseif ($name == 'end_date') {
       return $this->set_value(array(
-        'start_date' => $this->start_date,
-        'start_time' => $this->start_time,
-        'end_date' => $value,
-        'end_time' => $this->end_time
+        'start_date_utc' => $this->start_date,
+        'start_time_utc' => $this->start_time,
+        'end_date_utc' => $value,
+        'end_time_utc' => $this->end_time
       ));
     }
     elseif ($name == 'end_time') {
       return $this->set_value(array(
-        'start_date' => $this->start_date,
-        'start_time' => $this->start_time,
-        'end_date' => $this->end_date,
-        'end_time' => $value
+        'start_date_utc' => $this->start_date,
+        'start_time_utc' => $this->start_time,
+        'end_date_utc' => $this->end_date,
+        'end_time_utc' => $value
       ));
     }
     elseif ($name == 'start') {
@@ -370,10 +370,10 @@ class PodioDateItemField extends PodioItemField {
       }
 
       return $this->set_value(array(
-        'start_date' => is_string($value) ? $this->datetime_from_string($value) : $value,
-        'start_time' => is_string($value) ? $this->datetime_from_string($value) : $value,
-        'end_date' => $this->end_date,
-        'end_time' => $this->end_time
+        'start_date_utc' => is_string($value) ? $this->datetime_from_string($value) : $value,
+        'start_time_utc' => is_string($value) ? $this->datetime_from_string($value) : $value,
+        'end_date_utc' => $this->end_date,
+        'end_time_utc' => $this->end_time
       ));
     }
     elseif ($name == 'end') {
@@ -386,10 +386,10 @@ class PodioDateItemField extends PodioItemField {
       }
 
       return $this->set_value(array(
-        'start_date' => $this->start_date,
-        'start_time' => $this->start_time,
-        'end_date' => $end,
-        'end_time' => $end,
+        'start_date_utc' => $this->start_date,
+        'start_time_utc' => $this->start_time,
+        'end_date_utc' => $end,
+        'end_time_utc' => $end,
       ));
 
     }
@@ -406,21 +406,21 @@ class PodioDateItemField extends PodioItemField {
 
     if ($name == 'values' && is_array($values)) {
 
-      $start = DateTime::createFromFormat('Y-m-d H:i:s', $values[0]['start_date'].' '.($values[0]['start_time'] ? $values[0]['start_time'] : '00:00:00'), $tz);
-      if ($values[0]['start_date'] == $values[0]['end_date'] && !$values[0]['end_time']) {
+      $start = DateTime::createFromFormat('Y-m-d H:i:s', $values[0]['start_date_utc'].' '.($values[0]['start_time_utc'] ? $values[0]['start_time_utc'] : '00:00:00'), $tz);
+      if ($values[0]['start_date_utc'] == $values[0]['end_date_utc'] && !$values[0]['end_time_utc']) {
         $end = null;
       }
       else {
-        $end = DateTime::createFromFormat('Y-m-d H:i:s', $values[0]['end_date'].' '.($values[0]['end_time'] ? $values[0]['end_time'] : '00:00:00'), $tz);
+        $end = DateTime::createFromFormat('Y-m-d H:i:s', $values[0]['end_date_utc'].' '.($values[0]['end_time_utc'] ? $values[0]['end_time_utc'] : '00:00:00'), $tz);
       }
 
       return array('start' => $start, 'end' => $end);
     }
     elseif ($name == 'start_time') {
-      return is_array($values) && $values[0]['start_date'] && $values[0]['start_time'] ? $this->values['start'] : null;
+      return is_array($values) && $values[0]['start_date_utc'] && $values[0]['start_time_utc'] ? $this->values['start'] : null;
     }
     elseif ($name == 'end_time') {
-      return is_array($values) && $values[0]['end_date'] && $values[0]['end_time'] ? $this->values['end'] : null;
+      return is_array($values) && $values[0]['end_date_utc'] && $values[0]['end_time_utc'] ? $this->values['end'] : null;
     }
     elseif ($name == 'start' || $name == 'start_date') {
       return $this->values ? $this->values['start'] : null;
@@ -465,61 +465,77 @@ class PodioDateItemField extends PodioItemField {
     }
 
     $formatted_values = array(
-      'start_date' => null,
-      'start_time' => null,
-      'end_date' => null,
-      'end_time' => null
+      'start_date_utc' => null,
+      'start_time_utc' => null,
+      'end_date_utc' => null,
+      'end_time_utc' => null
     );
 
     // Ensure DateTime objects for start values
     if (isset($values['start'])) {
-      $values['start_date'] = $values['start'];
-      $values['start_time'] = $values['start'];
+      $values['start_date_utc'] = $values['start'];
+      $values['start_time_utc'] = $values['start'];
       if (is_string($values['start'])) {
         $components = explode(' ', $values['start']);
-        $values['start_time'] = count($components) === 1 ? null : $this->datetime_from_timestring($components[1]);
+        $values['start_time_utc'] = count($components) === 1 ? null : $this->datetime_from_timestring($components[1]);
       }
     }
 
     if (isset($values['end'])) {
-      $values['end_date'] = $values['end'];
-      $values['end_time'] = $values['end'];
+      $values['end_date_utc'] = $values['end'];
+      $values['end_time_utc'] = $values['end'];
       if (is_string($values['end'])) {
         $components = explode(' ', $values['end']);
-        $values['end_time'] = count($components) === 1 ? null : $this->datetime_from_timestring($components[1]);
+        $values['end_time_utc'] = count($components) === 1 ? null : $this->datetime_from_timestring($components[1]);
       }
     }
 
-    if (!empty($values['start_date']) && is_string($values['start_date'])) {
-      $values['start_date'] = $this->datetime_from_string($values['start_date']);
+    if (!empty($values['start_date_utc']) && is_string($values['start_date_utc'])) {
+      $values['start_date_utc'] = $this->datetime_from_string($values['start_date_utc']);
     }
 
-    if (!empty($values['start_time']) && is_string($values['start_time'])) {
-      $values['start_time'] = $this->datetime_from_timestring($values['start_time']);
+    if (!empty($values['start_time_utc']) && is_string($values['start_time_utc'])) {
+      $values['start_time_utc'] = $this->datetime_from_timestring($values['start_time_utc']);
+    }
+
+    // Ensure we're saving UTC values
+    if ($values['start_date_utc']) {
+      $values['start_date_utc']->setTimeZone(new DateTimeZone('UTC'));
+    }
+    if ($values['start_time_utc']) {
+      $values['start_time_utc']->setTimeZone(new DateTimeZone('UTC'));
     }
 
     // Set values
-    $formatted_values['start_date'] = $values['start_date'] ? $values['start_date']->format('Y-m-d') : null;
-    $formatted_values['start_time'] = $values['start_time'] ? $values['start_time']->format('H:i:s') : null;
+    $formatted_values['start_date_utc'] = $values['start_date_utc'] ? $values['start_date_utc']->format('Y-m-d') : null;
+    $formatted_values['start_time_utc'] = $values['start_time_utc'] ? $values['start_time_utc']->format('H:i:s') : null;
 
     // Ensure DateTime objects for end values
-    if (!empty($values['end_date']) && is_string($values['end_date'])) {
-      $values['end_date'] = $this->datetime_from_string($values['end_date']);
+    if (!empty($values['end_date_utc']) && is_string($values['end_date_utc'])) {
+      $values['end_date_utc'] = $this->datetime_from_string($values['end_date_utc']);
     }
 
-    if (!empty($values['end_time']) && is_string($values['end_time'])) {
-      $values['end_time'] = $this->datetime_from_timestring($values['end_time']);
+    if (!empty($values['end_time_utc']) && is_string($values['end_time_utc'])) {
+      $values['end_time_utc'] = $this->datetime_from_timestring($values['end_time_utc']);
+    }
+
+    // Ensure we're saving UTC values
+    if (!empty($values['end_date_utc'])) {
+      $values['end_date_utc']->setTimeZone(new DateTimeZone('UTC'));
+    }
+    if (!empty($values['end_time_utc'])) {
+      $values['end_time_utc']->setTimeZone(new DateTimeZone('UTC'));
     }
 
     // Set values
-    if (empty($values['end_date'])) {
-      $formatted_values['end_date'] = $values['start_date'] ? $values['start_date']->format('Y-m-d') : null;
+    if (empty($values['end_date_utc'])) {
+      $formatted_values['end_date_utc'] = $values['start_date_utc'] ? $values['start_date_utc']->format('Y-m-d') : null;
     }
     else {
-      $formatted_values['end_date'] = $values['end_date'] ? $values['end_date']->format('Y-m-d') : null;
+      $formatted_values['end_date_utc'] = $values['end_date_utc'] ? $values['end_date_utc']->format('Y-m-d') : null;
     }
-    if (isset($values['end_time'])) {
-      $formatted_values['end_time'] = $values['end_time'] ? $values['end_time']->format('H:i:s') : null;
+    if (isset($values['end_time_utc'])) {
+      $formatted_values['end_time_utc'] = $values['end_time_utc'] ? $values['end_time_utc']->format('H:i:s') : null;
     }
 
     parent::__set('values', array($formatted_values));
@@ -585,10 +601,13 @@ class PodioDateItemField extends PodioItemField {
     if (!$this->start) {
       return array();
     }
-    if ($this->end) {
-      return array('start' => $this->start->format('Y-m-d H:i:s'), 'end' => $this->end->format('Y-m-d H:i:s'));
-    }
-    return array('start' => $this->start->format('Y-m-d H:i:s'));
+
+    return array(
+      'start_date_utc' => $this->start_date ? $this->start_date->format('Y-m-d') : null,
+      'start_time_utc' => $this->start_time ? $this->start_time->format('H:i:s') : null,
+      'end_date_utc' => $this->end_date ? $this->end_date->format('Y-m-d') : null,
+      'end_time_utc' => $this->end_time ? $this->end_time->format('H:i:s') : null,
+    );
   }
 
 }
