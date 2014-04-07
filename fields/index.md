@@ -5,19 +5,19 @@ active: fields
 # Field reference
 Below you'll find examples for getting and setting field values for each of the fields available in Podio.
 
-* [App reference field](#app_reference_field)
-* [Calculation field](#calculation_field)
-* [Category & Question fields](#category_field__question_field)
-* [Contact field](#contact_field)
-* [Date field](#date_field)
-* [Duration field](#duration_field)
-* [Image field](#image_field)
-* [Link/embed field](#linkembed_field)
-* [Location/Google Maps field](#locationgoogle_maps_field)
-* [Money field](#money_field)
-* [Number field](#number_field)
-* [Progress field](#progress_field)
-* [Text field](#text_field)
+* [App reference field](#app-reference-field)
+* [Calculation field](#calculation-field)
+* [Category & Question fields](#category-field--question-field)
+* [Contact field](#contact-field)
+* [Date field](#date-field)
+* [Duration field](#duration-field)
+* [Image field](#image-field)
+* [Link/embed field](#linkembed-field)
+* [Location/Google Maps field](#locationgoogle-maps-field)
+* [Money field](#money-field)
+* [Number field](#number-field)
+* [Progress field](#progress-field)
+* [Text field](#text-field)
 
 ## App reference field
 
