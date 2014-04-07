@@ -70,6 +70,7 @@ $item->fields[$field_id]->values = array(
 ------------------------------------------------------------------------------
 
 ## Calculation field
+
 #### Getting values
 Value is provided as a string with four decimals. It's often nicer to use `humanized_value()` which formats the number:
 
@@ -86,6 +87,7 @@ Calculation fields are read-only. It's not possible to modify the value.
 ------------------------------------------------------------------------------
 
 ## Category field & Question field
+
 #### Getting values
 Category and Question fields function in the same manner. Values are provided as an array of options.
 
@@ -124,6 +126,7 @@ $item->fields[$field_id]->values = array(4,5,6); // option_ids: 4, 5 and 6
 ------------------------------------------------------------------------------
 
 ## Contact field
+
 #### Getting values
 
 Values are returned as a PodioCollection of PodioContact objects:
@@ -175,6 +178,7 @@ $item->fields[$field_id]->values = array(
 ------------------------------------------------------------------------------
 
 ## Date field
+
 #### Getting values
 Date field values have two components: The start date and the end date. You can access these through special properties, both are PHP DateTime objects. You can also access date and time sections individually. This is often preferred as the time component will be null for events without time.
 {% highlight php startinline %}
@@ -268,6 +272,7 @@ $item->fields[$field_id]->values = 75; // One minute and 15 seconds ((60*1)+15)
 ------------------------------------------------------------------------------
 
 ## Image field
+
 #### Getting values
 
 Values are returned as a PodioCollection of PodioFile objects:
