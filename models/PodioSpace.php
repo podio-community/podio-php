@@ -79,4 +79,10 @@ class PodioSpace extends PodioObject {
     return Podio::put("/space/{$space_id}", $attributes);
   }
 
+  /**
+   * @see https://developers.podio.com/doc/spaces/delete-space-22417
+   */
+  public static function delete($space_id, $attributes = array()) {
+    return Podio::delete("/space/{$space_id}");
+  }
 }
