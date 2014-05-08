@@ -309,6 +309,12 @@ class PodioObject {
             if (!empty($this->__properties[$name]['options']['json_value'])) {
               $list[] = $item->{$this->__properties[$name]['options']['json_value']};
             }
+            // TODO: This really should be moved to PodioCollection (should implement as_json)
+            //       and PodioItemFieldCollection for the special case
+            elseif (get_class($this->__attributes[$name]) === 'PodioItemFieldCollection') {
+              $key = $item->external_id ? $item->external_id : (string)$item->field_id;
+              $list[$key] = $item->as_json(false);
+            }
             else {
               $list[] = $item->as_json(false);
             }
