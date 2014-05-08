@@ -89,17 +89,11 @@ class PodioItemField extends PodioObject {
       case 'PodioAppItemField':
         $this->type = 'app';
         break;
-      case 'PodioQuestionItemField':
-        $this->type = 'question';
-        break;
       case 'PodioCategoryItemField':
         $this->type = 'category';
         break;
       case 'PodioImageItemField':
         $this->type = 'image';
-        break;
-      case 'PodioVideoItemField':
-        $this->type = 'video';
         break;
       case 'PodioFileItemField':
         $this->type = 'file';
@@ -109,9 +103,6 @@ class PodioItemField extends PodioObject {
         break;
       case 'PodioProgressItemField':
         $this->type = 'progress';
-        break;
-      case 'PodioStateItemField':
-        $this->type = 'state';
         break;
       case 'PodioDurationItemField':
         $this->type = 'duration';
@@ -845,12 +836,7 @@ class PodioCategoryItemField extends PodioItemField {
 }
 
 /**
- * Question field
- */
-class PodioQuestionItemField extends PodioCategoryItemField {}
-
-/**
- * Asset field, super class for Image/Video/File fields
+ * Asset field, super class for Image/File fields
  */
 class PodioAssetItemField extends PodioItemField {
   /**
@@ -929,11 +915,6 @@ class PodioAssetItemField extends PodioItemField {
  * Image field
  */
 class PodioImageItemField extends PodioAssetItemField {}
-
-/**
- * Video field
- */
-class PodioVideoItemField extends PodioAssetItemField {}
 
 /**
  * File field
@@ -1021,45 +1002,6 @@ class PodioProgressItemField extends PodioItemField {
 
   public function api_friendly_values() {
     return $this->values !== null ? $this->values : null;
-  }
-}
-
-/**
- * State field
- */
-class PodioStateItemField extends PodioItemField {
-
-  /**
-   * Override __set to use field specific method for setting values property
-   */
-  public function __set($name, $value) {
-    if ($name == 'values' && $value !== null) {
-      return $this->set_value($value);
-    }
-    return parent::__set($name, $value);
-  }
-
-  /**
-   * Override __get to provide values as a string
-   */
-  public function __get($name) {
-    $attribute = parent::__get($name);
-    if ($name == 'values' && $attribute) {
-      return $attribute[0]['value'];
-    }
-    return $attribute;
-  }
-
-  public function set_value($values) {
-    parent::__set('values', $values ? array(array('value' => $values)) : array());
-  }
-
-  public function humanized_value() {
-    return $this->values;
-  }
-
-  public function api_friendly_values() {
-    return $this->values ? $this->values : null;
   }
 }
 
