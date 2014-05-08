@@ -7,7 +7,7 @@ Below you'll find examples for getting and setting field values for each of the 
 
 * [App reference field](#app-reference-field)
 * [Calculation field](#calculation-field)
-* [Category & Question fields](#category-field--question-field)
+* [Category field](#category-field)
 * [Contact field](#contact-field)
 * [Date field](#date-field)
 * [Duration field](#duration-field)
@@ -86,7 +86,7 @@ Calculation fields are read-only. It's not possible to modify the value.
 
 ------------------------------------------------------------------------------
 
-## Category field & Question field
+## Category field
 
 #### Getting values
 Category and Question fields function in the same manner. Values are provided as an array of options.
@@ -201,27 +201,17 @@ $item = PodioItem::get_basic(123);
 $field_id = 'date';
 
 // Set start date using DateTime
-$item->fields[$field_id]->start = new DateTime(
-  DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', new DateTimeZone("UTC"))
-);
+$item->fields[$field_id]->start = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', new DateTimeZone("UTC"));
 
 // Set dates and times individually.
-$item->fields[$field_id]->start_date = new DateTime(
-  DateTime::createFromFormat('Y-m-d', '2012-12-24', new DateTimeZone("UTC"))
-);
+$item->fields[$field_id]->start_date = DateTime::createFromFormat('Y-m-d', '2012-12-24', new DateTimeZone("UTC"));
 
-$item->fields[$field_id]->start_time = new DateTime(
-  DateTime::createFromFormat('H:i:s', '14:00:00', new DateTimeZone("UTC"))
-);
+$item->fields[$field_id]->start_time = DateTime::createFromFormat('H:i:s', '14:00:00', new DateTimeZone("UTC"));
 
 // Setting end date and end time
-$item->fields[$field_id]->end_date = new DateTime(
-  DateTime::createFromFormat('Y-m-d', '2012-12-24', new DateTimeZone("UTC"))
-);
+$item->fields[$field_id]->end_date = DateTime::createFromFormat('Y-m-d', '2012-12-24', new DateTimeZone("UTC"));
 
-$item->fields[$field_id]->end_time = new DateTime(
-  DateTime::createFromFormat('H:i:s', '14:00:00', new DateTimeZone("UTC"))
-);
+$item->fields[$field_id]->end_time = DateTime::createFromFormat('H:i:s', '14:00:00', new DateTimeZone("UTC"));
 
 // Set start date using strings in various forms
 $item->fields[$field_id]->start = "2012-12-24";
