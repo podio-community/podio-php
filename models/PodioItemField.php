@@ -589,16 +589,27 @@ class PodioDateItemField extends PodioItemField {
   }
 
   public function api_friendly_values() {
+
     if (!$this->start) {
       return array();
     }
 
-    return array(
-      'start_date_utc' => $this->start_date ? $this->start_date->format('Y-m-d') : null,
-      'start_time_utc' => $this->start_time ? $this->start_time->format('H:i:s') : null,
-      'end_date_utc' => $this->end_date ? $this->end_date->format('Y-m-d') : null,
-      'end_time_utc' => $this->end_time ? $this->end_time->format('H:i:s') : null,
-    );
+    $result = array();
+    if ($this->start_date && $this->start_time) {
+      $result['start_utc'] = $this->start_date->format('Y-m-d') . ' ' . $this->start_time->format('H:i:s');
+    }
+    else {
+      $result['start_date'] = $this->start_date ? $this->start_date->format('Y-m-d') : null;
+    }
+
+    if ($this->end_date && $this->end_time) {
+      $result['end_utc'] = $this->end_date->format('Y-m-d') . ' ' . $this->end_time->format('H:i:s');
+    }
+    else {
+      $result['end_date'] = $this->end_date ? $this->end_date->format('Y-m-d') : null;
+    }
+
+    return $result;
   }
 
 }

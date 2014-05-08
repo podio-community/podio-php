@@ -516,12 +516,12 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function test_can_convert_to_api_friendly_json() {
     $this->assertEquals('[]', $this->empty_values->as_json());
-    $this->assertEquals('{"start_date_utc":"2011-05-31","start_time_utc":null,"end_date_utc":null,"end_time_utc":null}', $this->start_date->as_json());
-    $this->assertEquals('{"start_date_utc":"2011-05-31","start_time_utc":"14:00:00","end_date_utc":null,"end_time_utc":null}', $this->start_datetime->as_json());
-    $this->assertEquals('{"start_date_utc":"2011-05-31","start_time_utc":"14:00:00","end_date_utc":"2011-05-31","end_time_utc":"15:00:00"}', $this->start_datetime_with_endtime_same_day->as_json());
-    $this->assertEquals('{"start_date_utc":"2011-05-31","start_time_utc":null,"end_date_utc":"2011-06-08","end_time_utc":null}', $this->start_date_end_date->as_json());
-    $this->assertEquals('{"start_date_utc":"2011-05-31","start_time_utc":"14:00:00","end_date_utc":"2011-06-08","end_time_utc":null}', $this->start_datetime_end_date->as_json());
-    $this->assertEquals('{"start_date_utc":"2011-05-31","start_time_utc":"14:00:00","end_date_utc":"2011-06-08","end_time_utc":"14:00:00"}', $this->start_datetime_end_datetime->as_json());
+    $this->assertEquals('{"start_date":"2011-05-31","end_date":null}', $this->start_date->as_json());
+    $this->assertEquals('{"start_utc":"2011-05-31 14:00:00","end_date":null}', $this->start_datetime->as_json());
+    $this->assertEquals('{"start_utc":"2011-05-31 14:00:00","end_utc":"2011-05-31 15:00:00"}', $this->start_datetime_with_endtime_same_day->as_json());
+    $this->assertEquals('{"start_date":"2011-05-31","end_date":"2011-06-08"}', $this->start_date_end_date->as_json());
+    $this->assertEquals('{"start_utc":"2011-05-31 14:00:00","end_date":"2011-06-08"}', $this->start_datetime_end_date->as_json());
+    $this->assertEquals('{"start_utc":"2011-05-31 14:00:00","end_utc":"2011-06-08 14:00:00"}', $this->start_datetime_end_datetime->as_json());
   }
 
 }
