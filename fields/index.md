@@ -396,27 +396,33 @@ $item->fields[$field_id]->values = array(
 ## Location/Google Maps field
 
 #### Getting values
-Location fields return an array of strings (addresses)
+Location fields returns an array with location data
 {% highlight php startinline %}
 $item = PodioItem::get_basic(123);
 $field_id = 'location';
 
-foreach ($item->fields[$field_id]->values as $location) {
-  print "Location: " . $location;
-}
+print_r($item->fields[$field_id]->values);
+
+// Or just print the address:
+print $item->fields[$field_id]->text;
 {% endhighlight %}
 
 #### Setting values
-Set values using an array of locations
+Set values using an array of location data
 {% highlight php startinline %}
 $item = PodioItem::get_basic(123);
 $field_id = 'location';
 
-// Set using object
+// Set using array
 $item->fields[$field_id]->values = array(
-  "650 Townsend St., San Francisco, CA 94103",
-  "Vesterbrogade 34, 1620 Copenhagen, Denmark"
+  'value' => '650 Townsend St., San Francisco, CA 94103',
+  'lat' => 37.7710325,
+  'lng' => -122.4033069
 );
+
+// You can also set just the text part of the location:
+$item->fields[$field_id]->text = '650 Townsend St., San Francisco, CA 94103';
+
 {% endhighlight %}
 
 
