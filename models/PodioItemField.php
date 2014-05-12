@@ -889,7 +889,6 @@ class PodioAssetItemField extends PodioItemField {
   }
 
   public function set_value($values) {
-    $this->values = array();
     if ($values) {
       // Ensure that we have an array of values
       if (is_a($values, 'PodioCollection')) {
@@ -907,6 +906,9 @@ class PodioAssetItemField extends PodioItemField {
       }, $values);
 
       parent::__set('values', $values);
+    }
+    else {
+      parent::__set('values', array());
     }
   }
 
