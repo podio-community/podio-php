@@ -5,7 +5,7 @@ active: fields
 # Field reference
 Below you'll find examples for getting and setting field values for each of the fields available in Podio.
 
-* [App reference field](#app-reference-field)
+* [Relationship / App reference field](#relationshipapp-reference-field)
 * [Calculation field](#calculation-field)
 * [Category field](#category-field)
 * [Contact field](#contact-field)
@@ -19,7 +19,7 @@ Below you'll find examples for getting and setting field values for each of the 
 * [Progress field](#progress-field)
 * [Text field](#text-field)
 
-## App reference field
+## Relationship / App reference field
 
 #### Getting values
 Values are returned as a PodioCollection of PodioItem objects:
