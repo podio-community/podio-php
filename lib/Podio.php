@@ -26,7 +26,7 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, false);
-    curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/3.0');
+    curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/'.self::VERSION);
     curl_setopt(self::$ch, CURLOPT_HEADER, true);
     curl_setopt(self::$ch, CURLINFO_HEADER_OUT, true);
 
