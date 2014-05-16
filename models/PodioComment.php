@@ -33,8 +33,8 @@ class PodioComment extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/comments/get-comments-on-object-22371
    */
-  public static function get_for($ref_type, $ref_id) {
-    return self::listing(Podio::get("/comment/{$ref_type}/{$ref_id}/"));
+  public static function get_for($ref_type, $ref_id, $attributes = array()) {
+    return self::listing(Podio::get("/comment/{$ref_type}/{$ref_id}/", $attributes));
   }
 
   /**
