@@ -9,6 +9,7 @@ active: items
 Apps and app items form the core of Podio and for that reason podio-php tries to make it as easy as possible to read and manipulate app items.
 
 ## Individual items
+
 ### Get an item
 There are multiple ways to get a single item from the API. All result in a `PodioItem` object. Which one you should use depends on what data you have available and how much data you need returned.
 
@@ -61,11 +62,13 @@ $item = new PodioItem($reference->data);
 {% endhighlight %}
 
 ### Item fields
+
 The most interesting part of an item is the `fields` attribute. Here the values for the item are found. If you're doing any work with items it's likely that you're modifying fields in one way or another.
 
 Fields are a special kind of `PodioCollection` -- specifically a `PodioItemFieldCollection`. You can do all the thing you can do with a [PodioCollection]({{site.baseurl}}/objects) and then some.
 
 #### Iterating over all fields
+
 If you just want see all fields you can iterate over them.
 
 {% highlight php startinline %}
@@ -81,6 +84,7 @@ foreach ($item->fields as $field) {
 {% endhighlight %}
 
 #### Get field
+
 You can access individual fields either by `field_id` or more likely by the human-readable `external_id`. To use the `external_id` simply pretend the collection is an associative array:
 
 {% highlight php startinline %}
@@ -106,6 +110,7 @@ print "This field has the field_id: ".$field->field_id;
 {% endhighlight %}
 
 #### Add field
+
 You can add a field to the collection in the same way you add items to normal arrays. If you add a field that already exists the current one will be replaced.
 {% highlight php startinline %}
 // Create a new item
@@ -133,6 +138,7 @@ $item = new PodioItem(array('fields' =>
 {% endhighlight %}
 
 #### Remove field
+
 You remove a field either by `unset` (if you have the `external_id`) or by calling the `remove()` method.
 
 {% highlight php startinline %}
@@ -152,9 +158,11 @@ $item->fields->remove(456);
 {% endhighlight %}
 
 #### Getting field values
+
 See [Item field examples]({{site.baseurl}}/fields).
 
 #### Change field value
+
 The format varies a bit from field to field. You can see examples for all field types under [Item field examples]({{site.baseurl}}/fields). After you have changed the value of the field you must save your change back to the API. If you only change a single field you can save just that field, but if you are changing multiple fields it can perform better to save the entire item.
 
 {% highlight php startinline %}
@@ -176,6 +184,7 @@ $item->save();
 {% endhighlight %}
 
 ### Create item
+
 To create a new item from scratch you create a new `PodioItem` without an `item_id`, attach your fields and call the save method.
 {% highlight php startinline %}
 // Create a field collection with some fields.
@@ -197,6 +206,7 @@ $item->save();
 {% endhighlight %}
 
 ### Modifying items
+
 Updating items are handled exactly the same way as creating items. If an item's `item_id` is set it will be updated once you call the `save()` method.
 
 Often you will be fetching an existing item, making modifications and saving those changes:
@@ -225,6 +235,7 @@ $item->save();
 {% endhighlight %}
 
 ## Item collections
+
 One of the most common operations is getting a collection of items from an app, potentially with a filter applied. For this you can use [PodioItem::filter()](https://developers.podio.com/doc/items/filter-items-4496747). It returns a collection with two additional properties: filtered (total amount of items with the filter applied) and total (total amount of items in the app). You can iterate over this collection as normal.
 
 {% highlight php startinline %}
@@ -241,6 +252,7 @@ foreach ($collection as $item) {
 {% endhighlight %}
 
 ### Sorting items
+
 You can sort items by various properties. [See a full list in the API reference](https://developers.podio.com/doc/filters).
 {% highlight php startinline %}
 // Sort by last edit date for the items, descending
@@ -251,6 +263,7 @@ $collection = PodioItem::filter(123, array(
 {% endhighlight %}
 
 ### Filters
+
 <span class="note">**Important:** You can use both `field_id` and `external_id` when filtering items. The examples below all use `field_id` for brevity.</span>
 
 You can filter on most fields. Take a look at the [API reference for a full list of filter options](https://developers.podio.com/doc/filters). When filtering on app fields use the `field_id` or `external_id` as the key for your filter. Some examples below:
