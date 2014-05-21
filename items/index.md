@@ -70,7 +70,7 @@ If you just want see all fields you can iterate over them.
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_base(123); // Get item with item_id=123
+$item = PodioItem::get_basic(123); // Get item with item_id=123
 
 // Iterate over the field collection
 foreach ($item->fields as $field) {
@@ -85,7 +85,7 @@ You can access individual fields either by `field_id` or more likely by the huma
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_base(123); // Get item with item_id=123
+$item = PodioItem::get_basic(123); // Get item with item_id=123
 
 // Get the field with the external_id=sample-external-id
 $field = $item->fields["sample-external-id"];
@@ -97,7 +97,7 @@ If you only have a field_id use the `get()` method to get the field:
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_base(123); // Get item with item_id=123
+$item = PodioItem::get_basic(123); // Get item with item_id=123
 
 // Get the field with the field_id=456
 $field = $item->fields->get(456);
@@ -137,7 +137,7 @@ You remove a field either by `unset` (if you have the `external_id`) or by calli
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_base(123); // Get item with item_id=123
+$item = PodioItem::get_basic(123); // Get item with item_id=123
 
 // Remove the field with the external_id=sample-external-id
 unset($item->fields["sample-external-id"]);
@@ -145,7 +145,7 @@ unset($item->fields["sample-external-id"]);
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_base(123); // Get item with item_id=123
+$item = PodioItem::get_basic(123); // Get item with item_id=123
 
 // Remove the field with the field_id=456
 $item->fields->remove(456);
