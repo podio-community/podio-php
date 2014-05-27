@@ -201,9 +201,11 @@ class PodioObject {
     if ($response) {
       $body = $response->json_body();
       $list = array();
-      foreach ($body['items'] as $attributes) {
-        $class_name = get_called_class();
-        $list[] = new $class_name(array_merge($attributes, array('__api_values' => true)));
+      if (isset($body['items'])) {
+        foreach ($body['items'] as $attributes) {
+          $class_name = get_called_class();
+          $list[] = new $class_name(array_merge($attributes, array('__api_values' => true)));
+        }
       }
       return new $collection_type($list, $body['filtered'], $body['total']);
     }
