@@ -61,8 +61,8 @@ class PodioSpace extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/spaces/get-top-spaces-22477
    */
-  public static function get_top() {
-    return self::listing(Podio::get("/space/top/"));
+  public static function get_top($attributes = array()) {
+    return self::listing(Podio::get("/space/top/", $attributes));
   }
 
   /**
