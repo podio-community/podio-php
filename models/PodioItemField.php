@@ -383,8 +383,8 @@ class PodioDateItemField extends PodioItemField {
 
     if ($name == 'values' && is_array($values)) {
 
-      $start = DateTime::createFromFormat('Y-m-d H:i:s', $values[0]['start_date_utc'].' '.($values[0]['start_time_utc'] ? $values[0]['start_time_utc'] : '00:00:00'), $tz);
-      if ($values[0]['start_date_utc'] == $values[0]['end_date_utc'] && !$values[0]['end_time_utc']) {
+      $start = DateTime::createFromFormat('Y-m-d H:i:s', $values[0]['start_date_utc'].' '.(!empty($values[0]['start_time_utc']) ? $values[0]['start_time_utc'] : '00:00:00'), $tz);
+      if (!isset($values[0]['end_date_utc']) || ($values[0]['start_date_utc'] == $values[0]['end_date_utc'] && empty($values[0]['end_time_utc']))) {
         $end = null;
       }
       else {

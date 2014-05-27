@@ -3,6 +3,7 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
 
   public function setup() {
     $this->empty_values = new PodioDateItemField(array('field_id' => 1));
+
     $this->start_date = new PodioDateItemField(array('__api_values' => true, 'field_id' => 2, 'values' => array(array(
       "start_date_utc" => "2011-05-31",
       "end_date_utc" => "2011-05-31",
@@ -43,6 +44,10 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
       "end_date_utc" => "2011-06-08",
       "start_time_utc" => "14:00:00",
       "end_time_utc" => "14:00:00",
+    ))));
+
+    $this->start_date_omitted_end = new PodioDateItemField(array('__api_values' => true, 'field_id' => 8, 'values' => array(array(
+      "start_date_utc" => "2011-05-31"
     ))));
 
   }
@@ -86,6 +91,10 @@ class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue(is_array($this->start_datetime_end_datetime->values));
     $this->assertEquals('2011-05-31 14:00:00', $this->start_datetime_end_datetime->values['start']->format('Y-m-d H:i:s'));
     $this->assertEquals('2011-06-08 14:00:00', $this->start_datetime_end_datetime->values['end']->format('Y-m-d H:i:s'));
+
+    $this->assertTrue(is_array($this->start_date_omitted_end->values));
+    $this->assertEquals('2011-05-31 00:00:00', $this->start_date_omitted_end->values['start']->format('Y-m-d H:i:s'));
+    $this->assertNull($this->start_date_omitted_end->values['end']);
 
   }
 
