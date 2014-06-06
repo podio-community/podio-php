@@ -18,8 +18,12 @@ class PodioItemDiff extends PodioObject {
    * @see https://developers.podio.com/doc/items/revert-item-revision-953195
    */
   public static function revert($item_id, $revision_id) {
-    $body = Podio::delete("/item/{$item_id}/revision/{$revision_id}");
-    return $body['revision'];
+    $response = Podio::delete("/item/{$item_id}/revision/{$revision_id}");
+    if ($response->body) {
+      $json_body = $response->json_body();
+      return $json_body['revision'];
+    }
+    return null;
   }
 
   /**
