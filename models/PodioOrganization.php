@@ -9,6 +9,7 @@ class PodioOrganization extends PodioObject {
     $this->property('type', 'string');
     $this->property('logo', 'integer');
     $this->property('url', 'string');
+    $this->property('user_limit', 'integer');
     $this->property('url_label', 'string');
     $this->property('premium', 'boolean');
     $this->property('role', 'string');
