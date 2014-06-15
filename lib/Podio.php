@@ -49,7 +49,7 @@ class Podio {
   }
 
   public static function authenticate_with_password($username, $password) {
-    return self::authenticate('username', array('username' => $username, 'password' => $password));
+    return self::authenticate('password', array('username' => $username, 'password' => $password));
   }
 
   public static function authenticate_with_authorization_code($authorization_code, $redirect_uri) {
