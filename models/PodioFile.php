@@ -28,8 +28,9 @@ class PodioFile extends PodioObject {
    * Returns the raw bytes of a file. Beware: This is not a static method.
    * It can only be used after you have a PodioFile object.
    */
-  public function get_raw() {
-    return Podio::get($this->link, array(), array('file_download' => true))->body;
+  public function get_raw($size = null) {
+    $link = $size ? ($this->link + '/' + $size) : $this->link;
+    return Podio::get($link, array(), array('file_download' => true))->body;
   }
 
   /**
