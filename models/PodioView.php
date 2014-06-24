@@ -52,7 +52,7 @@ class PodioView extends PodioObject {
    * @see https://developers.podio.com/doc/views/update-last-view-5988251
    */
   public static function update_last($app_id, $attributes = array()) {
-    return Podio::put("/view/app/{$app_id}/last");
+    return Podio::put("/view/app/{$app_id}/last", $attributes);
   }
 
   /**
