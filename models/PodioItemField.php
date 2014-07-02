@@ -343,7 +343,11 @@ class PodioQuestionItemField extends PodioItemField {
 class PodioCategoryItemField extends PodioItemField {
   public function humanized_value() {
     return join('; ', array_map(function($value){
-      return $value['value']['text'];
+      foreach($this->config['settings']['options'] AS $option){
+            if ($value['value']['id'] == $option['id']){
+                return $option['text'];
+            }
+        }
     }, $this->values));
   }
 }
