@@ -421,7 +421,7 @@ class Podio {
     }
 
     // Log api call times if debugging
-    if(self::$debug) {
+    if(self::$debug && self::$logger) {
       $timestamp = gmdate('Y-m-d H:i:s');
       $count = sizeof(self::$logger->call_log);
       $duration = 0;
