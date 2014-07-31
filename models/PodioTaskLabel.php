@@ -28,7 +28,7 @@ class PodioTaskLabel extends PodioObject {
    * @see https://developers.podio.com/doc/tasks/get-labels-151534
    */
   public static function get_all() {
-    return self::listing(Podio::get("/task/'label"));
+    return self::listing(Podio::get("/task/label"));
   }
 
   /**
