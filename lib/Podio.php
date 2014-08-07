@@ -272,7 +272,7 @@ class Podio {
             throw new PodioAuthorizationError($response->body, $response->status, $url);
           }
         }
-        elseif (strstr($body['error'], 'invalid_request')) {
+        elseif (strstr($body['error'], 'invalid_request') || strstr($body['error'], 'unauthorized')) {
           // Access token is invalid.
           self::clear_authentication();
           throw new PodioAuthorizationError($response->body, $response->status, $url);
