@@ -56,17 +56,33 @@ class PodioItem extends PodioObject {
    * Create or updates an item
    */
   public function save($options = array()) {
+    $json_attributes = $this->as_json_without_readonly_fields();
+
     if ($this->id) {
-      return self::update($this->id, $this, $options);
+      return self::update($this->id, $json_attributes, $options);
     }
     else {
       if ($this->app && $this->app->id) {
-        return self::create($this->app->id, $this, $options);
+        return self::create($this->app->id, $json_attributes, $options);
       }
       else {
         throw new PodioMissingRelationshipError('{"error_description":"Item is missing relationship to app"}', null, null);
       }
     }
+  }
+
+  /**
+   * Return json representation without readonly fields. Used for saving items.
+   */
+  public function as_json_without_readonly_fields() {
+    $readonly_fields = $this->fields->readonly_fields()->external_ids();
+    $json_attributes = $this->as_json(false);
+    foreach ($this->fields->readonly_fields()->external_ids() as $external_id) {
+      if (isset($json_attributes['fields'][$external_id])) {
+        unset($json_attributes['fields'][$external_id]);
+      }
+    }
+    return $json_attributes;
   }
 
   /**

@@ -79,4 +79,17 @@ class PodioFieldCollection extends PodioCollection {
     }, $this->_get_items());
   }
 
+  /**
+   * Returns all readonly fields
+   */
+  public function readonly_fields() {
+    $fields = new PodioFieldCollection(array());
+    foreach ($this->_get_items() as $field) {
+      if ($field->type === 'calculation') {
+        $fields[] = $field;
+      }
+    }
+    return $fields;
+  }
+
 }

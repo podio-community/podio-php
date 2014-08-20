@@ -62,4 +62,12 @@ class PodioFieldCollectionTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(array("a", "b", "c"), $this->collection->external_ids());
   }
 
+  public function test_can_list_readonly_fields() {
+    $readonly = $this->collection->readonly_fields();
+
+    $this->assertInstanceOf('PodioFieldCollection', $readonly);
+    $this->assertEquals(count($readonly), 1);
+
+  }
+
 }
