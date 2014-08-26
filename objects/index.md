@@ -85,7 +85,7 @@ print $item->as_json();
 {% endhighlight %}
 
 ## PodioCollection
-A PodioCollection is as the na e implies a collection of Podio* objects. They behave in most ways the same way an array would. You can iterate over it and add/remove objects in the same way you would for arrays.
+A PodioCollection is as the name implies a collection of Podio* objects. They behave in most ways the same way an array would. You can iterate over it and add/remove objects in the same way you would for arrays.
 
 {% highlight php startinline %}
 // Get a PodioCollection of tasks
