@@ -438,7 +438,7 @@ $field_id = 'money';
 
 print $item->fields[$field_id]->currency; // E.g. "USD"
 print $item->fields[$field_id]->amount; // E.g. "123.5400"
-print $item->fields[$field_id]->humanized_value; E.g. "$123.54"
+print $item->fields[$field_id]->humanized_value(); E.g. "$123.54"
 
 {% endhighlight %}
 
