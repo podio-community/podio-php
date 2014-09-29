@@ -43,7 +43,9 @@ class PodioTask extends PodioObject {
       return self::update($this->id, $this);
     }
     else {
-      return $this->id = self::create($this);
+      $new = self::create($this);
+      $this->task_id = $new->task_id;
+      return $this;
     }
   }
 
