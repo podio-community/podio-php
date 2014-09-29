@@ -90,8 +90,9 @@ class PodioItem extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/items/get-item-22360
    */
-  public static function get($item_id) {
-    return self::member(Podio::get("/item/{$item_id}"));
+  public static function get($item_id, $options = array()) {
+    $url = Podio::url_with_options("/item/{$item_id}", $options);
+    return self::member(Podio::get($url));
   }
 
   /**
