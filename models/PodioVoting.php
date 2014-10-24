@@ -4,7 +4,6 @@
  */
 class PodioVoting extends PodioObject {
   public function __construct($attributes = array()) {
-    $this->property('count', 'integer');
     $this->init($attributes);
   }
   
@@ -12,7 +11,7 @@ class PodioVoting extends PodioObject {
    * @see https://developers.podio.com/doc/voting/get-result-of-voting-on-an-item-117727335
    */
   public static function get_result_for_item($item_id, $voting_id) {
-    return self::member(Podio::get("/voting/item/{$item_id}/voting/{$voting_id}/result"));    
+    return Podio::get("/voting/item/{$item_id}/voting/{$voting_id}/result")->json_body();    
   }
   
   /**
