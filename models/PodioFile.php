@@ -34,6 +34,18 @@ class PodioFile extends PodioObject {
   }
 
   /**
+   * Returns the raw bytes of a file. Beware: This is not a static method.
+   * It can only be used after you have a PodioFile object.
+   *
+   * In contrast to get_raw this method does use minimal memory (the result is stored in php://temp)
+   * @return resource pointing at start of body (use fseek($resource, 0) to get headers as well)
+   */
+  public function get_raw_as_resource($size = null) {
+    $link = $size ? ($this->link + '/' + $size) : $this->link;
+    return Podio::request(Podio::GET, $link, array(), array('file_download' => true), true);
+  }
+
+  /**
    * @see https://developers.podio.com/doc/files/upload-file-1004361
    */
   public static function upload($file_path, $file_name) {

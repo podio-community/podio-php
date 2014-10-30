@@ -128,7 +128,29 @@ class Podio {
     return self::$oauth && self::$oauth->access_token;
   }
 
-  public static function request($method, $url, $attributes = array(), $options = array()) {
+    /**
+     * @param $method
+     * @param $url
+     * @param array $attributes
+     * @param array $options
+     * @param bool $returnRawAsRescourceOnly if true the raw result is returned as a resource directly (no parsing).
+     *    The file pointer is at the beginning of the body (use fseek($resource, 0) to get headers as well).
+     * @return bool|string|resource
+     * @throws Exception
+     * @throws PodioAuthorizationError
+     * @throws PodioBadRequestError
+     * @throws PodioConflictError
+     * @throws PodioDataIntegrityError
+     * @throws PodioError
+     * @throws PodioForbiddenError
+     * @throws PodioGoneError
+     * @throws PodioInvalidGrantError
+     * @throws PodioNotFoundError
+     * @throws PodioRateLimitError
+     * @throws PodioServerError
+     * @throws PodioUnavailableError
+     */
+  public static function request($method, $url, $attributes = array(), $options = array(), $returnRawAsRescourceOnly = false) {
     if (!self::$ch) {
       throw new Exception('Client has not been setup with client id and client secret.');
     }
@@ -221,8 +243,21 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_URL, empty($options['file_download']) ? self::$url.$url : $url);
 
     $response = new PodioResponse();
+
+    if($returnRawAsRescourceOnly) {
+        $resultHandle = fopen('php://temp', 'w');
+        curl_setopt(self::$ch, CURLOPT_FILE, $resultHandle);
+        curl_exec(self::$ch);
+        curl_setopt(self::$ch, CURLOPT_FILE, fopen('php://stdout','w'));
+        curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
+        $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
+        fseek($resultHandle, $raw_headers_size);
+        return $resultHandle;
+    }
+
     $raw_response = curl_exec(self::$ch);
     $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
+
     $response->body = substr($raw_response, $raw_headers_size);
     $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
     $response->headers = self::parse_headers(substr($raw_response, 0, $raw_headers_size));
