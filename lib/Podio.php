@@ -251,7 +251,11 @@ class Podio {
         curl_setopt(self::$ch, CURLOPT_FILE, fopen('php://stdout','w'));
         curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
         $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
-        fseek($resultHandle, $raw_headers_size);
+
+        fseek($resultHandle, 0);
+        $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
+        $response->headers = self::parse_headers(fread($resultHandle, $raw_headers_size));
+        self::$last_response = $response;
         return $resultHandle;
     }
 
