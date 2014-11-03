@@ -4,6 +4,10 @@ active: changelog
 ---
 # Release notes
 
+## 4.0.2
+
+* Minor bugfixes
+
 ## 4.0.1
 
 * Minor bugfixes
