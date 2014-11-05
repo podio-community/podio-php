@@ -3,6 +3,7 @@
 class Podio {
   public static $oauth, $debug, $logger, $session_manager, $last_response, $auth_type;
   protected static $url, $client_id, $client_secret, $secret, $ch, $headers;
+  private static $stdout;
 
   const VERSION = '4.0.0';
 
@@ -245,18 +246,22 @@ class Podio {
     $response = new PodioResponse();
 
     if($returnRawAsRescourceOnly) {
-        $resultHandle = fopen('php://temp', 'w');
-        curl_setopt(self::$ch, CURLOPT_FILE, $resultHandle);
-        curl_exec(self::$ch);
-        curl_setopt(self::$ch, CURLOPT_FILE, fopen('php://stdout','w'));
-        curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
-        $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
+      $resultHandle = fopen('php://temp', 'w');
+      curl_setopt(self::$ch, CURLOPT_FILE, $resultHandle);
+      curl_exec(self::$ch);
+      if(isset(self::$stdout) && is_resource(self::$stdout)) {
+        fclose(self::$stdout);
+      }
+      self::$stdout = fopen('php://stdout','w');
+      curl_setopt(self::$ch, CURLOPT_FILE, self::$stdout);
+      curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
+      $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
 
-        fseek($resultHandle, 0);
-        $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
-        $response->headers = self::parse_headers(fread($resultHandle, $raw_headers_size));
-        self::$last_response = $response;
-        return $resultHandle;
+      fseek($resultHandle, 0);
+      $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
+      $response->headers = self::parse_headers(fread($resultHandle, $raw_headers_size));
+      self::$last_response = $response;
+      return $resultHandle;
     }
 
     $raw_response = curl_exec(self::$ch);
