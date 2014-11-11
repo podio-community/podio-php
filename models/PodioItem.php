@@ -33,6 +33,7 @@ class PodioItem extends PodioObject {
     $this->property('linked_account_id', 'integer');
     $this->property('subscribed', 'boolean');
     $this->property('invite', 'hash');
+    $this->property('votes', 'hash');
 
     $this->has_one('app', 'App');
     $this->has_one('ref', 'Reference');
