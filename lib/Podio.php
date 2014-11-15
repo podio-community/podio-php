@@ -129,29 +129,7 @@ class Podio {
     return self::$oauth && self::$oauth->access_token;
   }
 
-    /**
-     * @param $method
-     * @param $url
-     * @param array $attributes
-     * @param array $options
-     * @param bool $returnRawAsRescourceOnly if true the raw result is returned as a resource directly (no parsing).
-     *    The file pointer is at the beginning of the body (use fseek($resource, 0) to get headers as well).
-     * @return bool|string|resource
-     * @throws Exception
-     * @throws PodioAuthorizationError
-     * @throws PodioBadRequestError
-     * @throws PodioConflictError
-     * @throws PodioDataIntegrityError
-     * @throws PodioError
-     * @throws PodioForbiddenError
-     * @throws PodioGoneError
-     * @throws PodioInvalidGrantError
-     * @throws PodioNotFoundError
-     * @throws PodioRateLimitError
-     * @throws PodioServerError
-     * @throws PodioUnavailableError
-     */
-  public static function request($method, $url, $attributes = array(), $options = array(), $returnRawAsRescourceOnly = false) {
+  public static function request($method, $url, $attributes = array(), $options = array()) {
     if (!self::$ch) {
       throw new Exception('Client has not been setup with client id and client secret.');
     }
@@ -245,9 +223,9 @@ class Podio {
 
     $response = new PodioResponse();
 
-    if($returnRawAsRescourceOnly) {
-      $resultHandle = fopen('php://temp', 'w');
-      curl_setopt(self::$ch, CURLOPT_FILE, $resultHandle);
+    if(isset($options['return_raw_as_resource_only']) && $options['return_raw_as_resource_only'] == true) {
+      $result_handle = fopen('php://temp', 'w');
+      curl_setopt(self::$ch, CURLOPT_FILE, $result_handle);
       curl_exec(self::$ch);
       if(isset(self::$stdout) && is_resource(self::$stdout)) {
         fclose(self::$stdout);
@@ -257,11 +235,11 @@ class Podio {
       curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
       $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
 
-      fseek($resultHandle, 0);
+      fseek($result_handle, 0);
       $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
-      $response->headers = self::parse_headers(fread($resultHandle, $raw_headers_size));
+      $response->headers = self::parse_headers(fread($result_handle, $raw_headers_size));
       self::$last_response = $response;
-      return $resultHandle;
+      return $result_handle;
     }
 
     $raw_response = curl_exec(self::$ch);

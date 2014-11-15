@@ -24,13 +24,16 @@ class PodioFile extends PodioObject {
     $this->init($attributes);
   }
 
+  private function get_download_link($size = null) {
+    return $size ? ($this->link + '/' + $size) : $this->link;
+  }
+
   /**
    * Returns the raw bytes of a file. Beware: This is not a static method.
    * It can only be used after you have a PodioFile object.
    */
   public function get_raw($size = null) {
-    $link = $size ? ($this->link + '/' + $size) : $this->link;
-    return Podio::get($link, array(), array('file_download' => true))->body;
+    return Podio::get($this->get_download_link($size), array(), array('file_download' => true))->body;
   }
 
   /**
@@ -41,8 +44,7 @@ class PodioFile extends PodioObject {
    * @return resource pointing at start of body (use fseek($resource, 0) to get headers as well)
    */
   public function get_raw_as_resource($size = null) {
-    $link = $size ? ($this->link + '/' + $size) : $this->link;
-    return Podio::request(Podio::GET, $link, array(), array('file_download' => true), true);
+    return Podio::get($this->get_download_link($size), array(), array('file_download' => true, 'return_raw_as_resource_only' => true));
   }
 
   /**
