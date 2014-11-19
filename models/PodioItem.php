@@ -22,6 +22,9 @@ class PodioItem extends PodioObject {
     $this->has_one('current_revision', 'ItemRevision');
     $this->has_many('fields', 'ItemField');
 
+    $this->property('like_count', 'integer');
+    $this->property('is_liked', 'boolean');
+
     # Extra properties for full item
     $this->property('ratings', 'hash');
     $this->property('user_ratings', 'hash');
