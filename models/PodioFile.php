@@ -29,7 +29,7 @@ class PodioFile extends PodioObject {
    * It can only be used after you have a PodioFile object.
    */
   public function get_raw($size = null) {
-    $link = $size ? ($this->link + '/' + $size) : $this->link;
+    $link = $size ? ($this->link . '/' . $size) : $this->link;
     return Podio::get($link, array(), array('file_download' => true))->body;
   }
 
