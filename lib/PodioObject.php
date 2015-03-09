@@ -159,6 +159,10 @@ class PodioObject {
           }
           break;
         case 'string':
+          if (is_array($value)) {
+            $value = join(', ', $value);
+          }
+
           $this->__attributes[$name] = $value ? (string)$value : null;
           break;
         case 'array':
