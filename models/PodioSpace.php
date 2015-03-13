@@ -20,6 +20,7 @@ class PodioSpace extends PodioObject {
     $this->property('auto_join', 'boolean');
     $this->property('type', 'string');
     $this->property('premium', 'boolean');
+    $this->property('description', 'string');
 
     $this->property('created_on', 'datetime');
     $this->property('last_activity_on', 'datetime');
