@@ -156,4 +156,11 @@ class PodioApp extends PodioObject {
     return $result;
   }
 
+  /**
+   * Activate app in space. Only applicable to Platform
+   */
+  public static function activate_for_space($app_id, $space_id, $attributes = array()) {
+    return Podio::put("/app/{$app_id}/activate/{$space_id}", $attributes);
+  }
+
 }
