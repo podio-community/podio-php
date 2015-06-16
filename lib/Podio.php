@@ -4,7 +4,7 @@ class Podio {
   public static $oauth, $debug, $logger, $session_manager, $last_response, $auth_type;
   protected static $url, $client_id, $client_secret, $secret, $ch, $headers;
 
-  const VERSION = '4.0.3';
+  const VERSION = '4.1.0';
 
   const GET = 'GET';
   const POST = 'POST';
