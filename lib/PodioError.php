@@ -9,6 +9,7 @@ class PodioError extends Exception {
     $this->status = $status;
     $this->url = $url;
     $this->request = $this->body['request'];
+    parent::__construct(get_class($this), 1, null);
   }
 
   public function __toString() {
