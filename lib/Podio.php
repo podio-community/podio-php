@@ -223,6 +223,9 @@ class Podio {
 
     $response = new PodioResponse();
     $raw_response = curl_exec(self::$ch);
+    if($raw_response === false) {
+        throw new PodioConnectionError('Connection to Podio API failed: [' . curl_errno(self::$ch) . '] ' . curl_error(self::$ch), curl_errno(self::$ch));
+    }
     $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
     $response->body = substr($raw_response, $raw_headers_size);
     $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);

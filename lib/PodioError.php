@@ -41,4 +41,5 @@ class PodioServerError extends PodioError {}
 class PodioUnavailableError extends PodioError {}
 class PodioMissingRelationshipError extends PodioError {}
 
+class PodioConnectionError extends Exception {}
 class PodioDataIntegrityError extends Exception {}
