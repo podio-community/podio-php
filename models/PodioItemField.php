@@ -381,7 +381,7 @@ class PodioDateItemField extends PodioItemField {
     $tz = new DateTimeZone('UTC');
     $values = parent::__get('values');
 
-    if ($name == 'values' && is_array($values)) {
+    if ($name == 'values' && is_array($values) && !empty($values)) {
 
       $start = DateTime::createFromFormat('Y-m-d H:i:s', $values[0]['start_date_utc'].' '.(!empty($values[0]['start_time_utc']) ? $values[0]['start_time_utc'] : '00:00:00'), $tz);
       if (!isset($values[0]['end_date_utc']) || ($values[0]['start_date_utc'] == $values[0]['end_date_utc'] && empty($values[0]['end_time_utc']))) {
