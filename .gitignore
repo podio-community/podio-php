@@ -6,3 +6,4 @@ log/*
 Gemfile.lock
 .bundle
 _site
+.idea

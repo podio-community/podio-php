@@ -3,6 +3,7 @@
 class Podio {
   public static $oauth, $debug, $logger, $session_manager, $last_response, $auth_type;
   protected static $url, $client_id, $client_secret, $secret, $ch, $headers;
+  private static $stdout;
 
   const VERSION = '4.1.0';
 
@@ -227,11 +228,32 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_URL, empty($options['file_download']) ? self::$url.$url : $url);
 
     $response = new PodioResponse();
+
+    if(isset($options['return_raw_as_resource_only']) && $options['return_raw_as_resource_only'] == true) {
+      $result_handle = fopen('php://temp', 'w');
+      curl_setopt(self::$ch, CURLOPT_FILE, $result_handle);
+      curl_exec(self::$ch);
+      if(isset(self::$stdout) && is_resource(self::$stdout)) {
+        fclose(self::$stdout);
+      }
+      self::$stdout = fopen('php://stdout','w');
+      curl_setopt(self::$ch, CURLOPT_FILE, self::$stdout);
+      curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
+      $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
+
+      fseek($result_handle, 0);
+      $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
+      $response->headers = self::parse_headers(fread($result_handle, $raw_headers_size));
+      self::$last_response = $response;
+      return $result_handle;
+    }
+
     $raw_response = curl_exec(self::$ch);
     if($raw_response === false) {
         throw new PodioConnectionError('Connection to Podio API failed: [' . curl_errno(self::$ch) . '] ' . curl_error(self::$ch), curl_errno(self::$ch));
     }
     $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
+
     $response->body = substr($raw_response, $raw_headers_size);
     $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
     $response->headers = self::parse_headers(substr($raw_response, 0, $raw_headers_size));
