@@ -9,6 +9,7 @@ class PodioError extends Exception {
     $this->status = $status;
     $this->url = $url;
     $this->request = $this->body['request'];
+    parent::__construct(get_class($this), 1, null);
   }
 
   public function __toString() {
@@ -40,4 +41,5 @@ class PodioServerError extends PodioError {}
 class PodioUnavailableError extends PodioError {}
 class PodioMissingRelationshipError extends PodioError {}
 
+class PodioConnectionError extends Exception {}
 class PodioDataIntegrityError extends Exception {}
