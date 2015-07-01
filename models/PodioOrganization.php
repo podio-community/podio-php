@@ -90,6 +90,11 @@ class PodioOrganization extends PodioObject {
     return Podio::put("/org/{$org_id}", $attributes);
   }
 
-
+  /**
+   * Bootstrap organization. Only applicable on Podio Platform
+   */
+  public static function bootstrap($attributes = array()) {
+    return Podio::post("/org/bootstrap", $attributes);
+  }
 
 }

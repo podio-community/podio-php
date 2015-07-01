@@ -47,4 +47,11 @@ class PodioSearchResult extends PodioObject {
     return self::listing(Podio::post("/search/", $attributes));
   }
 
+  /**
+   * Search in app and space. Only applicable to platform
+   */
+  public static function search_app_and_space($space_id, $app_id, $attributes = array()) {
+    return self::listing(Podio::post("/search/app/{$app_id}/space/{$space_id}", $attributes));
+  }
+
 }

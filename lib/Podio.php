@@ -5,7 +5,7 @@ class Podio {
   protected static $url, $client_id, $client_secret, $secret, $ch, $headers;
   private static $stdout;
 
-  const VERSION = '4.0.0';
+  const VERSION = '4.1.0';
 
   const GET = 'GET';
   const POST = 'POST';
@@ -25,11 +25,16 @@ class Podio {
       'Accept' => 'application/json',
     );
     curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt(self::$ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt(self::$ch, CURLOPT_SSL_VERIFYPEER, 1);
+    curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, 2);
     curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/'.self::VERSION);
     curl_setopt(self::$ch, CURLOPT_HEADER, true);
     curl_setopt(self::$ch, CURLINFO_HEADER_OUT, true);
+
+    //Update CA root certificates - require: https://github.com/Kdyby/CurlCaBundle
+    if(class_exists('\\Kdyby\\CurlCaBundle\\CertificateHelper')) {
+      \Kdyby\CurlCaBundle\CertificateHelper::setCurlCaInfo(self::$ch);
+    }
 
     if ($options && !empty($options['curl_options'])) {
       curl_setopt_array(self::$ch, $options['curl_options']);
@@ -177,6 +182,7 @@ class Podio {
         curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::POST);
         if (!empty($options['upload'])) {
           curl_setopt(self::$ch, CURLOPT_POST, TRUE);
+          curl_setopt(self::$ch, CURLOPT_SAFE_UPLOAD, FALSE);
           curl_setopt(self::$ch, CURLOPT_POSTFIELDS, $attributes);
           self::$headers['Content-type'] = 'multipart/form-data';
         }
@@ -243,6 +249,9 @@ class Podio {
     }
 
     $raw_response = curl_exec(self::$ch);
+    if($raw_response === false) {
+        throw new PodioConnectionError('Connection to Podio API failed: [' . curl_errno(self::$ch) . '] ' . curl_error(self::$ch), curl_errno(self::$ch));
+    }
     $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
 
     $response->body = substr($raw_response, $raw_headers_size);

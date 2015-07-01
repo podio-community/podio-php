@@ -10,6 +10,8 @@ class PodioComment extends PodioObject {
     $this->property('external_id', 'integer');
     $this->property('space_id', 'integer');
     $this->property('created_on', 'datetime');
+    $this->property('like_count', 'integer');
+    $this->property('is_liked', 'boolean');
 
     $this->has_one('created_by', 'ByLine');
     $this->has_one('created_via', 'Via');

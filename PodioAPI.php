@@ -69,4 +69,5 @@ require_once 'models/PodioUserMail.php';
 require_once 'models/PodioUserStatus.php';
 require_once 'models/PodioVia.php';
 require_once 'models/PodioView.php';
+require_once 'models/PodioVoting.php';
 require_once 'models/PodioWidget.php';
