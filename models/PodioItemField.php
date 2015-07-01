@@ -272,7 +272,7 @@ class PodioLocationItemField extends PodioItemField {
    */
   public function __get($name) {
     $attribute = parent::__get($name);
-    if ($name == 'values' && is_array($attribute)) {
+    if ($name == 'values' && is_array($attribute) && !empty($attribute)) {
       return $attribute[0];
     }
     elseif ($name == 'text') {
