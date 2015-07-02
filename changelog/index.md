@@ -4,6 +4,26 @@ active: changelog
 ---
 # Release notes
 
+## 4.2.0
+
+* Add `update_reference` and `count` to `PodioTask`
+* Create `PodioVoting`
+* Add low memory file fetch
+* Verify TLS certificates
+* Minor bug fixes
+
+## 4.1.0
+
+* Fix `PodioFile` `get_raw` concatenation
+* Fix user model `mail` return value
+* Add votes property and support for options when getting item
+* Add missing properties to Comment model
+* Add description to space model
+* Make upload function compatible with `PHP 5.6`
+* Add activation method for platform
+* Add search method for platform
+* Add method for org bootstrap for platform
+
 ## 4.0.2
 
 * Minor bugfixes
