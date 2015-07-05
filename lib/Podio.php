@@ -40,17 +40,17 @@ class Podio {
       curl_setopt_array(self::$ch, $options['curl_options']);
     }
 
-      self::$session_manager = null;
-      if ($options && !empty($options['session_manager'])) {
-          if(is_string($options['session_manager']) && class_exists($options['session_manager'])) {
-              self::$session_manager = new $options['session_manager'];
-          } else if (is_object($options['session_manager']) && method_exists($options['session_manager'], 'get') && method_exists($options['session_manager'], 'get')) {
-              self::$session_manager = $options['session_manager'];
-          }
-          if(self::$session_manager) {
-              self::$oauth = self::$session_manager->get();
-          }
+    self::$session_manager = null;
+    if ($options && !empty($options['session_manager'])) {
+      if (is_string($options['session_manager']) && class_exists($options['session_manager'])) {
+        self::$session_manager = new $options['session_manager'];
+      } else if (is_object($options['session_manager']) && method_exists($options['session_manager'], 'get') && method_exists($options['session_manager'], 'get')) {
+        self::$session_manager = $options['session_manager'];
       }
+      if (self::$session_manager) {
+        self::$oauth = self::$session_manager->get();
+      }
+    }
 
     // Register shutdown function for debugging and session management
     register_shutdown_function('Podio::shutdown');
