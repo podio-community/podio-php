@@ -37,7 +37,7 @@ The example below handles three cases:
 define("REDIRECT_URI", 'http://example.com/path/to/your/script.php');
 Podio::setup($client_id, $client_secret);
 
-if (!isset($_GET['code']) && Podio::is_authenticated()) {
+if (!isset($_GET['code']) && !Podio::is_authenticated()) {
 
   // User is not being reidrected and does not have an active session
   // We just display a link to the authentication page on podio.com
@@ -62,7 +62,7 @@ elseif (isset($_GET['code'])) {
   }
   else {
     // Finalize authentication. Note that we must pass the REDIRECT_URI again.
-    Podio::authenticate_with_authorization_code($_GET['code'] REDIRECT_URI);
+    Podio::authenticate_with_authorization_code($_GET['code'], REDIRECT_URI);
     print "You have been authenticated. Wee!";
   }
 
