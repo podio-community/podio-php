@@ -113,6 +113,12 @@ class PodioItemField extends PodioObject {
       case 'PodioMoneyItemField':
         $this->type = 'money';
         break;
+      case 'PodioPhoneItemField':
+        $this->type = 'phone';
+        break;
+      case 'PodioEmailItemField':
+        $this->type = 'email';
+        break;
       default:
         break;
     }
@@ -598,6 +604,48 @@ class PodioDateItemField extends PodioItemField {
     return $result;
   }
 
+}
+
+/**
+ * phone field
+ */
+class PodioPhoneItemField extends PodioPhoneOrEmailItemField
+{
+
+}
+
+
+/**
+ * email field
+ */
+class PodioEmailItemField extends PodioPhoneOrEmailItemField
+{
+
+}
+
+/**
+ * phone ore email field
+ */
+abstract class PodioPhoneOrEmailItemField extends PodioItemField
+{
+
+  public function humanized_value()
+  {
+    if (!$this->values) {
+      return '';
+    }
+
+    $values = array();
+    foreach ($this->values as $value) {
+      $values[] = $value['type'] . ': ' . $value['value'];
+    }
+    return join(';', $values);
+  }
+
+  public function api_friendly_values()
+  {
+    return $this->values ? $this->values : array();
+  }
 }
 
 /**

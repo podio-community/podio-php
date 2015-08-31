@@ -292,4 +292,11 @@ class PodioItem extends PodioObject {
     return Podio::put("/item/{$item_id}/participation", $attributes)->json_body();
   }
 
+  /**
+   * @see https://developers.podio.com/doc/items/revert-to-revision-194362682
+   */
+  public static function revert_to_revision($item_id, $revision, $attributes = array()) {
+    return Podio::post("/item/{$item_id}/revision/{$revision}/revert_to", $attributes);
+  }
+
 }
