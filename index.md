@@ -25,6 +25,7 @@ To get started right away, use app authentication to work on a single Podio app.
 {% highlight php startinline %}
 require_once '/path/to/podio-php/PodioAPI.php';
 
+Podio::setup($client_id, $client_secret);
 Podio::authenticate_with_app($app_id, $app_token);
 $items = PodioItem::filter($app_id);
 
