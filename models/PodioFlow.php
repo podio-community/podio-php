@@ -17,7 +17,7 @@ class PodioFlow extends PodioObject {
    * @see https://developers.podio.com/doc/flows/get-flow-by-id-26312313
    */
   public static function get($flow_id) {
-    return Podio::get("/flow/{$flow_id}");
+    return Podio::get("/flow/{$flow_id}")->json_body();
   }
 
   /**
@@ -45,28 +45,28 @@ class PodioFlow extends PodioObject {
    * @see https://developers.podio.com/doc/flows/get-flows-26312304
    */
   public static function get_flows($ref_type, $ref_id) {
-    return Podio::get("/flow/{$ref_type}/{$ref_id}/");
+    return Podio::get("/flow/{$ref_type}/{$ref_id}/")->json_body();
   }
 
   /**
    * @see https://developers.podio.com/doc/flows/get-effect-attributes-239234961
    */
   public static function get_effect_attributes($ref_type, $ref_id) {
-    return Podio::post("/flow/{$ref_type}/{$ref_id}/effect/attributes");
+    return Podio::post("/flow/{$ref_type}/{$ref_id}/effect/attributes")->json_body();
   }
 
   /**
    * @see https://developers.podio.com/doc/flows/get-flow-context-26313659
    */
   public static function get_flow_context($flow_id) {
-    return Podio::get("/flow/{$flow_id}/context/");
+    return Podio::get("/flow/{$flow_id}/context/")->json_body();
   }
 
   /**
    * @see https://developers.podio.com/doc/flows/get-possible-attributes-33060379
    */
   public static function get_possible_attributes($ref_type, $ref_id) {
-    return Podio::post("/flow/{$ref_type}/{$ref_id}/attributes/");
+    return Podio::post("/flow/{$ref_type}/{$ref_id}/attributes/")->json_body();
   }
 
 }
