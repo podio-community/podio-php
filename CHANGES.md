@@ -1,3 +1,9 @@
+4.3.0 / 2015-09-30
+==================
+
+* Add support for Flows (https://developers.podio.com/doc/flows)
+
+
 4.2.0 / 2015-07-02
 ==================
 
