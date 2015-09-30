@@ -4,6 +4,10 @@ active: changelog
 ---
 # Release notes
 
+## 4.3.0
+
+* Add support for Flows (https://developers.podio.com/doc/flows)
+
 ## 4.2.0
 
 * Add `update_reference` and `count` to `PodioTask`
