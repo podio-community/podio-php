@@ -225,4 +225,13 @@ class PodioTask extends PodioObject {
   public static function count($ref_type, $ref_id) {
     return Podio::get("/task/{$ref_type}/{$ref_id}/count")->json_body();
   }
+
+  /**
+   * @see https://developers.podio.com/doc/tasks/update-task-private-22434
+   */
+  public function update_private($private_flag, $options = array())
+  {
+    $url = Podio::url_with_options("/task/{$this->id}/private", $options);
+    return Podio::put($url, array('private' => $private_flag))->body;
+  }
 }
