@@ -30,6 +30,7 @@ require_once 'models/PodioConversationMessage.php';
 require_once 'models/PodioConversationParticipant.php';
 require_once 'models/PodioEmbed.php';
 require_once 'models/PodioFile.php';
+require_once 'models/PodioFlow.php';
 require_once 'models/PodioForm.php';
 require_once 'models/PodioGrant.php';
 require_once 'models/PodioHook.php';

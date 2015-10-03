@@ -9,6 +9,7 @@ class PodioAppField extends PodioObject {
     $this->property('external_id', 'string');
     $this->property('config', 'hash');
     $this->property('status', 'string');
+    $this->property('label', 'string');
 
     $this->init($attributes);
   }

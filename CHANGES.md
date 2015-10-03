@@ -1,3 +1,19 @@
+4.3.0 / 2015-09-30
+==================
+
+* Add support for Flows (https://developers.podio.com/doc/flows)
+
+
+4.2.0 / 2015-07-02
+==================
+
+* Add `update_reference` and `count` to `PodioTask`
+* Create `PodioVoting`
+* Add low memory file fetch
+* Verify TLS certificates
+* Minor bug fixes
+
+
 4.1.0 / 2015-06-16
 ==================
 
