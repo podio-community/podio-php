@@ -188,7 +188,9 @@ class Podio {
         curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::POST);
         if (!empty($options['upload'])) {
           curl_setopt(self::$ch, CURLOPT_POST, TRUE);
-          curl_setopt(self::$ch, CURLOPT_SAFE_UPLOAD, FALSE);
+          if(defined('CURLOPT_SAFE_UPLOAD')) {
+            curl_setopt(self::$ch, CURLOPT_SAFE_UPLOAD, FALSE);
+          }
           curl_setopt(self::$ch, CURLOPT_POSTFIELDS, $attributes);
           self::$headers['Content-type'] = 'multipart/form-data';
         }
