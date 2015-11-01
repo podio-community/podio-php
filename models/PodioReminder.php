@@ -5,7 +5,7 @@
 class PodioReminder extends PodioObject {
   public function __construct($attributes = array()) {
     $this->property('reminder_id', 'integer', array('id' => true));
-    $this->property('reminder_delta', 'integer');
+    $this->property('remind_delta', 'integer');
 
     $this->init($attributes);
   }
