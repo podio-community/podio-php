@@ -130,10 +130,10 @@ class Podio {
     }
   }
 
-  public static function authorize_url($redirect_uri) {
+  public static function authorize_url($redirect_uri,$scope) {
     $parsed_url = parse_url(self::$url);
     $host = str_replace('api.', '', $parsed_url['host']);
-    return 'https://'.$host.'/oauth/authorize?response_type=code&client_id='.self::$client_id.'&redirect_uri='.rawurlencode($redirect_uri);
+    return 'https://'.$host.'/oauth/authorize?response_type=code&client_id='.self::$client_id.'&redirect_uri='.rawurlencode($redirect_uri).'&scope='.rawurlencode($scope);
   }
 
   public static function is_authenticated() {
