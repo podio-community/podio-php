@@ -130,10 +130,10 @@ class Podio {
     }
   }
 
-  public static function authorize_url($redirect_uri) {
+  public static function authorize_url($redirect_uri,$scope) {
     $parsed_url = parse_url(self::$url);
     $host = str_replace('api.', '', $parsed_url['host']);
-    return 'https://'.$host.'/oauth/authorize?response_type=code&client_id='.self::$client_id.'&redirect_uri='.rawurlencode($redirect_uri);
+    return 'https://'.$host.'/oauth/authorize?response_type=code&client_id='.self::$client_id.'&redirect_uri='.rawurlencode($redirect_uri).'&scope='.rawurlencode($scope);
   }
 
   public static function is_authenticated() {
@@ -404,10 +404,14 @@ class Podio {
     return $list;
   }
   public static function rate_limit_remaining() {
-    return self::$last_response->headers['x-rate-limit-remaining'];
+    if (isset($last_response->headers['x-rate-limit-remaining'])) {
+      return self::$last_response->headers['x-rate-limit-remaining'];
+   }
   }
   public static function rate_limit() {
-    return self::$last_response->headers['x-rate-limit-limit'];
+    if (isset($last_response->headers['x-rate-limit'])) {
+      return self::$last_response->headers['x-rate-limit'];
+   }
   }
 
   /**
