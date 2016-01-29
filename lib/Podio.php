@@ -57,19 +57,19 @@ class Podio {
   }
 
   public static function authenticate_with_app($app_id, $app_token) {
-    return self::authenticate('app', array('app_id' => $app_id, 'app_token' => $app_token));
+    return static::authenticate('app', array('app_id' => $app_id, 'app_token' => $app_token));
   }
 
   public static function authenticate_with_password($username, $password) {
-    return self::authenticate('password', array('username' => $username, 'password' => $password));
+    return static::authenticate('password', array('username' => $username, 'password' => $password));
   }
 
   public static function authenticate_with_authorization_code($authorization_code, $redirect_uri) {
-    return self::authenticate('authorization_code', array('code' => $authorization_code, 'redirect_uri' => $redirect_uri));
+    return static::authenticate('authorization_code', array('code' => $authorization_code, 'redirect_uri' => $redirect_uri));
   }
 
   public static function refresh_access_token() {
-    return self::authenticate('refresh_token', array('refresh_token' => self::$oauth->refresh_token));
+    return static::authenticate('refresh_token', array('refresh_token' => self::$oauth->refresh_token));
   }
 
   public static function authenticate($grant_type, $attributes) {
@@ -104,7 +104,7 @@ class Podio {
     }
 
     $request_data = array_merge($data, array('client_id' => self::$client_id, 'client_secret' => self::$client_secret));
-    if ($response = self::request(self::POST, '/oauth/token', $request_data, array('oauth_request' => true))) {
+    if ($response = static::request(self::POST, '/oauth/token', $request_data, array('oauth_request' => true))) {
       $body = $response->json_body();
       self::$oauth = new PodioOAuth($body['access_token'], $body['refresh_token'], $body['expires_in'], $body['ref'], $body['scope']);
 
@@ -166,7 +166,7 @@ class Podio {
 
         $separator = strpos($url, '?') ? '&' : '?';
         if ($attributes) {
-          $query = self::encode_attributes($attributes);
+          $query = static::encode_attributes($attributes);
           $url = $url.$separator.$query;
         }
 
@@ -178,7 +178,7 @@ class Podio {
 
         $separator = strpos($url, '?') ? '&' : '?';
         if ($attributes) {
-          $query = self::encode_attributes($attributes);
+          $query = static::encode_attributes($attributes);
           $url = $url.$separator.$query;
         }
 
@@ -202,7 +202,7 @@ class Podio {
         }
         else {
           // x-www-form-urlencoded
-          $encoded_attributes = self::encode_attributes($attributes);
+          $encoded_attributes = static::encode_attributes($attributes);
           curl_setopt(self::$ch, CURLOPT_POSTFIELDS, $encoded_attributes);
           self::$headers['Content-type'] = 'application/x-www-form-urlencoded';
         }
@@ -232,7 +232,7 @@ class Podio {
       self::$headers['Accept'] = '*/*';
     }
 
-    curl_setopt(self::$ch, CURLOPT_HTTPHEADER, self::curl_headers());
+    curl_setopt(self::$ch, CURLOPT_HTTPHEADER, static::curl_headers());
     curl_setopt(self::$ch, CURLOPT_URL, empty($options['file_download']) ? self::$url.$url : $url);
 
     $response = new PodioResponse();
@@ -251,7 +251,7 @@ class Podio {
 
       fseek($result_handle, 0);
       $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
-      $response->headers = self::parse_headers(fread($result_handle, $raw_headers_size));
+      $response->headers = static::parse_headers(fread($result_handle, $raw_headers_size));
       self::$last_response = $response;
       return $result_handle;
     }
@@ -264,12 +264,12 @@ class Podio {
 
     $response->body = substr($raw_response, $raw_headers_size);
     $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
-    $response->headers = self::parse_headers(substr($raw_response, 0, $raw_headers_size));
+    $response->headers = static::parse_headers(substr($raw_response, 0, $raw_headers_size));
     self::$last_response = $response;
 
     if (!isset($options['oauth_request'])) {
       $curl_info = curl_getinfo(self::$ch, CURLINFO_HEADER_OUT);
-      self::log_request($method, $url, $encoded_attributes, $response, $curl_info);
+      static::log_request($method, $url, $encoded_attributes, $response, $curl_info);
     }
 
     switch ($response->status) {
@@ -283,7 +283,7 @@ class Podio {
         $body = $response->json_body();
         if (strstr($body['error'], 'invalid_grant')) {
           // Reset access token & refresh_token
-          self::clear_authentication();
+          static::clear_authentication();
           throw new PodioInvalidGrantError($response->body, $response->status, $url);
           break;
         }
@@ -296,24 +296,24 @@ class Podio {
         if (strstr($body['error_description'], 'expired_token') || strstr($body['error'], 'invalid_token')) {
           if (self::$oauth->refresh_token) {
             // Access token is expired. Try to refresh it.
-            if (self::authenticate('refresh_token', array('refresh_token' => self::$oauth->refresh_token))) {
+            if (static::authenticate('refresh_token', array('refresh_token' => self::$oauth->refresh_token))) {
               // Try the original request again.
-              return self::request($method, $original_url, $attributes);
+              return static::request($method, $original_url, $attributes);
             }
             else {
-              self::clear_authentication();
+              static::clear_authentication();
               throw new PodioAuthorizationError($response->body, $response->status, $url);
             }
           }
           else {
             // We have tried in vain to get a new access token. Log the user out.
-            self::clear_authentication();
+            static::clear_authentication();
             throw new PodioAuthorizationError($response->body, $response->status, $url);
           }
         }
         elseif (strstr($body['error'], 'invalid_request') || strstr($body['error'], 'unauthorized')) {
           // Access token is invalid.
-          self::clear_authentication();
+          static::clear_authentication();
           throw new PodioAuthorizationError($response->body, $response->status, $url);
         }
         break;
@@ -348,16 +348,16 @@ class Podio {
   }
 
   public static function get($url, $attributes = array(), $options = array()) {
-    return self::request(Podio::GET, $url, $attributes, $options);
+    return static::request(Podio::GET, $url, $attributes, $options);
   }
   public static function post($url, $attributes = array(), $options = array()) {
-    return self::request(Podio::POST, $url, $attributes, $options);
+    return static::request(Podio::POST, $url, $attributes, $options);
   }
   public static function put($url, $attributes = array()) {
-    return self::request(Podio::PUT, $url, $attributes);
+    return static::request(Podio::PUT, $url, $attributes);
   }
   public static function delete($url, $attributes = array()) {
-    return self::request(Podio::DELETE, $url, $attributes);
+    return static::request(Podio::DELETE, $url, $attributes);
   }
 
   public static function curl_headers() {
