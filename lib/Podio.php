@@ -404,13 +404,13 @@ class Podio {
     return $list;
   }
   public static function rate_limit_remaining() {
-    if (isset($last_response->headers['x-rate-limit-remaining'])) {
+    if (isset(self::$last_response->headers['x-rate-limit-remaining'])) {
       return self::$last_response->headers['x-rate-limit-remaining'];
    }
   }
   public static function rate_limit() {
-    if (isset($last_response->headers['x-rate-limit'])) {
-      return self::$last_response->headers['x-rate-limit'];
+    if (isset(self::$last_response->headers['x-rate-limit-limit'])) {
+      return self::$last_response->headers['x-rate-limit-limit'];
    }
   }
 
