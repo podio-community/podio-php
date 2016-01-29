@@ -5,6 +5,7 @@
 * Add PodioTagItemField type
 * Adding filter API missing file_count parameter
 * Add scope to PodioOAuth
+* Bugfix: rate limit header parsing (#81)
 
 
 4.4.0 / 2019-06-02
