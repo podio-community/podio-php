@@ -296,7 +296,7 @@ class Podio {
         if (strstr($body['error_description'], 'expired_token') || strstr($body['error'], 'invalid_token')) {
           if (self::$oauth->refresh_token) {
             // Access token is expired. Try to refresh it.
-            if (static::authenticate('refresh_token', array('refresh_token' => self::$oauth->refresh_token))) {
+            if (static::refresh_access_token()) {
               // Try the original request again.
               return static::request($method, $original_url, $attributes);
             }
