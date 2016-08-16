@@ -1,6 +1,11 @@
 <?php
 class PodioCollectionTest extends PHPUnit_Framework_TestCase {
 
+  /**
+   * @var PodioCollection
+   */
+  protected $collection;
+
   public function setup() {
     $this->collection = new PodioCollection();
 
@@ -57,6 +62,14 @@ class PodioCollectionTest extends PHPUnit_Framework_TestCase {
     unset($this->collection[0]);
     $this->assertEquals(2, count($this->collection));
     $this->assertFalse(isset($this->collection[0]));
+  }
+
+  public function test_cannot_access_by_id_after_remove_by_offset() {
+    unset($this->collection[0]);
+    $this->assertEquals(2, count($this->collection));
+    $this->assertFalse(isset($this->collection[0]));
+    $this->assertNull($this->collection->get('a'));
+    $this->assertNull($this->collection->get(1));
   }
 
   public function test_can_remove_by_id() {
