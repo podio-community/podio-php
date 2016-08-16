@@ -6,6 +6,8 @@
  */
 class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
   private $__items = array();
+  private $__idToItems = array();
+  private $__extToItems = array();
   private $__belongs_to;
 
   /**
@@ -61,6 +63,12 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
     }
     else {
       $this->__items[$offset] = $value;
+    }
+    if($value->id) {
+      $this->__idToItems[strval($value->id)] = $value;
+    }
+    if($value->external_id) {
+      $this->__extToItems[$value->external_id] = $value;
     }
   }
 
@@ -125,13 +133,11 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
    * Get object in the collection by id or external_id.
    */
   public function get($id_or_external_id) {
-    $key = is_int($id_or_external_id) ? 'id' : 'external_id';
-    foreach ($this as $item) {
-      if ($item->{$key} === $id_or_external_id) {
-        return $item;
-      }
+    if(is_int($id_or_external_id)) {
+      return isset($this->__idToItems[strval($id_or_external_id)]) ? $this->__idToItems[strval($id_or_external_id)] : null;
+    } else {
+      return isset($this->__extToItems[$id_or_external_id]) ? $this->__extToItems[$id_or_external_id] : null;
     }
-    return null;
   }
 
   /**
@@ -141,9 +147,31 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable {
     if (count($this) === 0) {
       return true;
     }
-    $this->_set_items(array_filter($this->_get_items(), function($item) use ($id_or_external_id) {
-      return !($item->id == $id_or_external_id || $item->external_id == $id_or_external_id);
-    }));
+    $removedObject = null;
+    if(is_int($id_or_external_id)) {
+      if(isset($this->__idToItems[strval($id_or_external_id)])) {
+        $removedObject = $this->__idToItems[strval($id_or_external_id)];
+        if($removedObject->external_id && isset($this->__extToItems[$removedObject->external_id])) {
+          unset($this->__extToItems[$removedObject->external_id]);
+        }
+        unset($this->__idToItems[strval($id_or_external_id)]);
+      }
+    } else {
+      if(isset($this->__extToItems[$id_or_external_id])) {
+        $removedObject = $this->__extToItems[$id_or_external_id];
+        if($removedObject->id && isset($this->__idToItems[strval($removedObject->id)])) {
+          unset($this->__idToItems[strval($removedObject->id)]);
+        }
+        unset($this->__extToItems[$id_or_external_id]);
+      }
+    }
+
+    // this operation is expensive, hence only do it if necessary:
+    if($removedObject) {
+      $this->_set_items(array_filter($this->_get_items(), function($item) use ($id_or_external_id) {
+        return !($item->id == $id_or_external_id || $item->external_id == $id_or_external_id);
+      }));
+    }
   }
 
 
