@@ -77,22 +77,22 @@ class PodioApp extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/applications/add-new-app-22351
    */
-  public static function create($attributes = array()) {
-    return self::member(Podio::post("/app/", $attributes));
+  public static function create($attributes = array(), $silent = false) {
+    return self::member(Podio::post(Podio::url_with_options("/app/", array('silent' => $silent)), $attributes));
   }
 
   /**
    * @see https://developers.podio.com/doc/applications/update-app-22352
    */
-  public static function update($app_id, $attributes = array()) {
-    return Podio::put("/app/{$app_id}", $attributes);
+  public static function update($app_id, $attributes = array(), $silent = false) {
+    return Podio::put(Podio::url_with_options("/app/{$app_id}", array('silent' => $silent)), $attributes);
   }
 
   /**
    * @see https://developers.podio.com/doc/applications/delete-app-43693
    */
-  public static function delete($app_id) {
-    return Podio::delete("/app/{$app_id}");
+  public static function delete($app_id, $silent = false) {
+    return Podio::delete(Podio::url_with_options("/app/{$app_id}", array('silent' => $silent)));
   }
 
   /**
