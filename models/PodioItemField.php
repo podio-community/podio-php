@@ -1122,7 +1122,7 @@ class PodioCalculationItemField extends PodioItemField {
   public function __get($name) {
     $attribute = parent::__get($name);
     if ($name == 'values' && $attribute) {
-      return $attribute[0]['value'];
+      return (isset($attribute[0]['value'])) ? $attribute[0]['value'] : $attribute;
     }
     return $attribute;
   }
