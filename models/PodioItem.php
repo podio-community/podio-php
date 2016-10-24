@@ -60,6 +60,7 @@ class PodioItem extends PodioObject {
    * Create or updates an item
    */
   public function save($options = array()) {
+	$this->as_json_without_calculation_fields();
     $json_attributes = $this->as_json_without_readonly_fields();
 
     if ($this->id) {
@@ -299,5 +300,20 @@ class PodioItem extends PodioObject {
   public static function revert_to_revision($item_id, $revision, $attributes = array()) {
     return Podio::post("/item/{$item_id}/revision/{$revision}/revert_to", $attributes);
   }
+  
+	/**
+	 * Return json representation without calculation fields. Used for saving items.
+	 */
+	public function as_json_without_calculation_fields() {
+		$json_attributes = $this->as_json(false);
+		foreach ($this->fields as $key=>$values) {
+			$external_id = $values->external_id;
+			$type = $values->type;
+			//echo $external_id."==>"."type=".$type."id:".$this->id."exist or not:".$json_attributes['fields'][$external_id]."</br></br>";
+			if( $this->id && $type == "calculation" &&  isset($json_attributes['fields'][$external_id])) {
+				unset ($this->fields[$external_id]);
+			}
+		}
+	}
 
 }
