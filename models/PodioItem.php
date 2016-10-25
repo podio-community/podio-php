@@ -60,7 +60,7 @@ class PodioItem extends PodioObject {
    * Create or updates an item
    */
   public function save($options = array()) {
-	$this->as_json_without_calculation_fields();
+	$this->as_without_calculation_fields();
     $json_attributes = $this->as_json_without_readonly_fields();
 
     if ($this->id) {
@@ -302,9 +302,9 @@ class PodioItem extends PodioObject {
   }
   
 	/**
-	 * Return json representation without calculation fields. Used for saving items.
+	 * Return representation without calculation fields. Used for saving items.
 	 */
-	public function as_json_without_calculation_fields() {
+	public function as_without_calculation_fields() {
 		$json_attributes = $this->as_json(false);
 		foreach ($this->fields as $key=>$values) {
 			$external_id = $values->external_id;
