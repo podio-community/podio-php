@@ -1122,7 +1122,13 @@ class PodioCalculationItemField extends PodioItemField {
   public function __get($name) {
     $attribute = parent::__get($name);
     if ($name == 'values' && $attribute) {
-      return $attribute[0]['value'];
+      if(isset($attribute[0]['value'])) {
+        return $attribute[0]['value'];
+      }
+      // calc fields with return_type 'date':
+      if(isset($attribute[0]['start_utc'])) {
+        return $attribute[0]['start_utc'];
+      }
     }
     return $attribute;
   }
