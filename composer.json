@@ -12,7 +12,8 @@
     }
   ],
   "require": {
-    "php": ">=5.3.0"
+    "php": ">=5.3.0",
+    "guzzlehttp/guzzle": ">=6.2.0"
   },
   "suggest": {
     "kdyby/curl-ca-bundle": "Improve security through providing current CA ROOT certificates bundle"
