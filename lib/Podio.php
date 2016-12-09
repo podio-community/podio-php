@@ -243,14 +243,11 @@ class Podio {
         return implode(', ', $values);
       }, $http_response->getHeaders());
       self::$last_http_response = $http_response;
-      if(isset($options['return_raw_as_resource_only']) && $options['return_raw_as_resource_only'] == true) {
-        self::$last_response = $response;
-        return $http_response->getBody();
-      } else {
+      if(!isset($options['return_raw_as_resource_only']) || $options['return_raw_as_resource_only'] != true) {
       	$response->body = $http_response->getBody()->getContents();
-        self::$last_response = $response;
       }
-      
+      self::$last_response = $response;
+
     } catch(RequestException $requestException) {
     	throw new PodioConnectionError('Connection to Podio API failed: [' . get_class($requestException) . '] ' . $requestException->getMessage(), $requestException->getCode());
     }
@@ -263,6 +260,9 @@ class Podio {
       case 200 :
       case 201 :
       case 204 :
+        if(isset($options['return_raw_as_resource_only']) && $options['return_raw_as_resource_only'] == true) {
+          return $http_response->getBody();
+        }
         return $response;
         break;
       case 400 :
