@@ -25,7 +25,7 @@ class PodioFile extends PodioObject {
   }
 
   private function get_download_link($size = null) {
-    return $size ? ($this->link + '/' + $size) : $this->link;
+    return $size ? ($this->link . '/' . $size) : $this->link;
   }
 
   /**
@@ -41,7 +41,7 @@ class PodioFile extends PodioObject {
    * It can only be used after you have a PodioFile object.
    *
    * In contrast to get_raw this method does use minimal memory (the result is stored in php://temp)
-   * @return resource pointing at start of body (use fseek($resource, 0) to get headers as well)
+   * @return \Psr\Http\Message\StreamInterface
    */
   public function get_raw_as_resource($size = null) {
     return Podio::get($this->get_download_link($size), array(), array('file_download' => true, 'return_raw_as_resource_only' => true));
@@ -51,8 +51,7 @@ class PodioFile extends PodioObject {
    * @see https://developers.podio.com/doc/files/upload-file-1004361
    */
   public static function upload($file_path, $file_name) {
-    $source = defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 5 ? new CurlFile(realpath($file_path)) : '@'.realpath($file_path);
-    return self::member(Podio::post("/file/v2/", array('source' => $source, 'filename' => $file_name), array('upload' => TRUE, 'filesize' => filesize($file_path))));
+    return self::member(Podio::post("/file/v2/", array('filename' => $file_name), array('upload' => realpath($file_path), 'filesize' => filesize($file_path))));
   }
 
   /**
