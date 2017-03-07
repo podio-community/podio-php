@@ -94,6 +94,7 @@ class PodioObject {
     if ($name == 'id' && !empty($this->__id_column)) {
       return empty($this->__attributes[$this->__id_column]) ? null : $this->__attributes[$this->__id_column];
     }
+    $name = $this->hyphenize($name);
     if ($this->has_attribute($name)) {
       // Create DateTime object if necessary
       if ($this->has_property($name) && ($this->__properties[$name]['type'] == 'datetime' || $this->__properties[$name]['type'] == 'date')) {
@@ -105,9 +106,11 @@ class PodioObject {
     }
   }
   public function __isset($name) {
+    $name = $this->hyphenize($name);
     return isset($this->__attributes[$name]);
   }
   public function __unset($name) {
+    $name = $this->hyphenize($name);
     unset($this->__attributes[$name]);
   }
   public function __toString() {
@@ -343,4 +346,8 @@ class PodioObject {
     return null;
   }
 
+  private function hyphenize($name)
+  {
+    return str_replace('_', '-', $name);
+  }
 }
