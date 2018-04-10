@@ -25,8 +25,8 @@ class PodioOrganizationMember extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/organizations/get-organization-members-50661
    */
-  public static function get_for_org($org_id) {
-    return self::listing(Podio::get("/org/{$org_id}/member/"));
+  public static function get_for_org($org_id, $attributes = array()) {
+	  return self::listing(Podio::get("/org/{$org_id}/member/", $attributes));
   }
 
   /**
