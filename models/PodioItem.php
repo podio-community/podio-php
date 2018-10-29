@@ -51,6 +51,7 @@ class PodioItem extends PodioObject {
 
     # When getting item collection
     $this->property('comment_count', 'integer');
+    $this->property('file_count', 'integer');
     $this->property('task_count', 'integer');
 
     $this->init($attributes);
