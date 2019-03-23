@@ -1,5 +1,3 @@
-[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+This a community maintained PHP Client for interacting with the Podio API. It is the continuation of the former official Podio PHP Client. Most parts of the Podio API are covered in this client. See [podio-commmunity.github.io/podio-php](https://podio-community.github.io/podio-php) for documentation.
 
-This the official PHP Client for interacting with the Podio API. All parts of the Podio API are covered in this client. See [podio.github.io/podio-php](http://podio.github.io/podio-php) for documentation.
-
-[![Build Status](https://travis-ci.org/podio/podio-php.svg?branch=4.0.0)](https://travis-ci.org/podio/podio-php)
+[![Build Status](https://travis-ci.org/podio-community/podio-php.svg?branch=master)](https://travis-ci.org/podio-community/podio-php)
