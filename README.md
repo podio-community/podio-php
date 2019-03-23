@@ -4,4 +4,4 @@ This the non-official PHP Client for interacting with the Podio API maintained b
 
 To contribute, please read: [the contribution guide](https://github.com/podio-community/podio-php/blob/master/CONTRIBUTING.md).
 
-[![Build Status](https://travis-ci.org/podio-community/podio-php.svg?branch=4.0.0)](https://travis-ci.org/podio-community/podio-php)
+[![Build Status](https://travis-ci.org/podio-community/podio-php.svg?branch=master)](https://travis-ci.org/podio-community/podio-php)
