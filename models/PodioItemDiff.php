@@ -10,6 +10,7 @@ class PodioItemDiff extends PodioObject {
     $this->property('label', 'string');
     $this->property('from', 'array');
     $this->property('to', 'array');
+    $this->property('config', 'hash');
 
     $this->init($attributes);
   }
