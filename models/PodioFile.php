@@ -25,7 +25,7 @@ class PodioFile extends PodioObject {
   }
 
   private function get_download_link($size = null) {
-    return $size ? ($this->link + '/' + $size) : $this->link;
+    return $size ? ($this->link . '/' . $size) : $this->link;
   }
 
   /**
