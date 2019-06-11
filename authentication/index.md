@@ -32,16 +32,20 @@ The example below handles three cases:
 * The user has already authenticated and they have a session stored using the [session manager]({{site.baseurl}}/sessions).
 * The user is being redirected back to our page after authenticating.
 
+See [Scopes & Permissions](https://developers.podio.com/authentication/scopes) for details about the scope parameter to `Podio::authorize_url`
+
 {% highlight php startinline %}
 // Set up the REDIRECT_URI -- which is just the URL for this file.
 define("REDIRECT_URI", 'http://example.com/path/to/your/script.php');
+// Set up the scope string
+define("SCOPE", 'user:read user:delete space:all');
 Podio::setup($client_id, $client_secret);
 
 if (!isset($_GET['code']) && !Podio::is_authenticated()) {
 
-  // User is not being reidrected and does not have an active session
+  // User is not being redirected and does not have an active session
   // We just display a link to the authentication page on podio.com
-  $auth_url = htmlentities(Podio::authorize_url(REDIRECT_URI));
+  $auth_url = htmlentities(Podio::authorize_url(REDIRECT_URI, SCOPE));
   print "<a href='{$auth_url}'>Start authenticating</a>";
 
 } elseif (Podio::is_authenticated()) {
