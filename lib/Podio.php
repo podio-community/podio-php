@@ -448,7 +448,6 @@ class Podio {
         print $text;
       }
       elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
-        require_once 'vendor/kint/Kint.class.php';
         Kint::dump("{$method} {$url}", $encoded_attributes, $response, $curl_info);
       }
 

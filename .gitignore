@@ -7,3 +7,5 @@ Gemfile.lock
 .bundle
 _site
 .idea
+vendor
+composer.lock
