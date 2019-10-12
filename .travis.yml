@@ -7,7 +7,9 @@ php:
   - "5.5"
   - "5.4"
 
-script: phpunit --bootstrap PodioAPI.php tests
+before_script: composer install
+
+script: vendor/bin/phpunit --bootstrap vendor/autoload.php tests
 
 notifications:
   email: false

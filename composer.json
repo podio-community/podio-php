@@ -22,7 +22,7 @@
     "kdyby/curl-ca-bundle": "Improve security through providing current CA ROOT certificates bundle"
   },
   "autoload": {
-    "classmap": ["lib/", "models/"]
+    "classmap": ["lib/", "lib/error/", "models/", "models/field/"]
   },
   "require-dev": {
     "phpunit/phpunit": "^4.0"

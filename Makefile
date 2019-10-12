@@ -1,2 +1,2 @@
 test:
-	phpunit --bootstrap PodioAPI.php tests
+	phpunit --bootstrap vendor/autoload.php tests
