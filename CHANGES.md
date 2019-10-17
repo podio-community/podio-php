@@ -1,3 +1,20 @@
+5.0.0 / DRAFT
+==================
+
+* Using composer for Kint dependency instead of copied files
+* Add PodioTagItemField type
+* Adding filter API missing file_count parameter
+* Add scope to PodioOAuth
+
+
+4.4.0 / 2019-06-02
+==================
+
+* This is the first release under the new package name <strong>podio-community/podio-php</strong>.
+It contains several fixes and minor improvements and should generally be backwards compatible to podio/podio-php v4.3.0.
+* Several fixes and improvements: https://github.com/podio-community/podio-php/compare/4.3.0...v4.4.0
+
+
 4.3.0 / 2015-09-30
 ==================
 
