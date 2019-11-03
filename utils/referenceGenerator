@@ -6,12 +6,12 @@ require_once 'config.php';
 require_once '../lib/Podio.php';
 require_once '../lib/PodioResponse.php';
 require_once '../lib/PodioOAuth.php';
-require_once '../lib/PodioError.php';
+require_once '../lib/error/PodioError.php';
 require_once '../lib/PodioObject.php';
 require_once '../lib/PodioLogger.php';
 
 
-require_once '../models/PodioCollection.php'; // Included manually because other models inherit from this
+require_once '../lib/PodioCollection.php'; // Included manually because other models inherit from this
 require_once '../models/PodioFieldCollection.php'; // Included manually because other models inherit from this
 
 $class_names = array();

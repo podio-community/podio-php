@@ -197,7 +197,7 @@ class PodioObject {
   public static function member($response) {
     if ($response) {
       $class_name = get_called_class();
-      return new $class_name(array_merge($response->json_body(), array('__api_values' => true)));
+      return new $class_name(array_merge($response instanceof PodioResponse ? $response->json_body() : $response, array('__api_values' => true)));
     }
   }
 

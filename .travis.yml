@@ -1,13 +1,27 @@
 sudo: false
-dist: trusty
+dist: bionic
 
 language: php
 
-php:
-  - "5.5"
-  - "5.4"
+matrix:
+  include:
+    - php: 5.5
+      dist: trusty
+    - php: 5.6
+      dist: xenial
+    - php: 7.1
+    - php: 7.2
+    - php: 7.3
 
-script: phpunit --bootstrap PodioAPI.php tests
+install:
+  - composer install --no-interaction
+
+script:
+  - mkdir -p build/logs
+  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml --bootstrap vendor/autoload.php tests
+
+after_success:
+  - travis_retry php vendor/bin/php-coveralls
 
 notifications:
   email: false

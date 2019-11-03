@@ -29,17 +29,3 @@ class PodioError extends Exception {
     return $str;
   }
 }
-class PodioInvalidGrantError extends PodioError {}
-class PodioBadRequestError extends PodioError {}
-class PodioAuthorizationError extends PodioError {}
-class PodioForbiddenError extends PodioError {}
-class PodioNotFoundError extends PodioError {}
-class PodioConflictError extends PodioError {}
-class PodioGoneError extends PodioError {}
-class PodioRateLimitError extends PodioError {}
-class PodioServerError extends PodioError {}
-class PodioUnavailableError extends PodioError {}
-class PodioMissingRelationshipError extends PodioError {}
-
-class PodioConnectionError extends Exception {}
-class PodioDataIntegrityError extends Exception {}
