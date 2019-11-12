@@ -3,6 +3,7 @@
 
 * Using composer for Kint dependency instead of copied files
 * Add PodioTagItemField type
+* Feature: Constant time PodioCollection access
 * Adding filter API missing file_count parameter
 * Add scope to PodioOAuth
 * Bugfix: rate limit header parsing (#81)
