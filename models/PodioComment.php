@@ -7,7 +7,7 @@ class PodioComment extends PodioObject {
     $this->property('comment_id', 'integer', array('id' => true));
     $this->property('value', 'string');
     $this->property('rich_value', 'string');
-    $this->property('external_id', 'integer');
+    $this->property('external_id', 'string');
     $this->property('space_id', 'integer');
     $this->property('created_on', 'datetime');
     $this->property('like_count', 'integer');
