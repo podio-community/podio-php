@@ -11,9 +11,9 @@ You need PHP 5.3+ with curl and openssl extensions enabled. There are no externa
 There are many moving parts under the hood and you should be familiar with the basics of HTTP and Object-Oriented Programming (OOP) in PHP before diving in. If you are new to OOP there are some resources linked in [this answer on StackOverflow](http://stackoverflow.com/questions/5646356/php-oop-getting-started) to get you started. If you are not very familiar with PHP or the basics of HTTP a podio-php project will most likely be a poor beginners project. It would be best to seek out more basic PHP projects first.
 
 ## Installation
-If you are using [Composer](http://getcomposer.org/) there's [a package on Packagist](https://packagist.org/packages/podio/podio-php). There's an autoloader so you don't have to do anything else if you are using Composer's autoloader.
+If you are using [Composer](http://getcomposer.org/) there's [a package on Packagist](https://packagist.org/packages/podio-community/podio-php). There's an autoloader so you don't have to do anything else if you are using Composer's autoloader.
 
-If you are not using Composer you must [download a copy of podio-php](https://github.com/podio/podio-php/releases) and include it manually:
+If you are not using Composer you must [download a copy of podio-php](https://github.com/podio-community/podio-php/releases) and include it manually:
 
 {% highlight php startinline %}
 require_once '/path/to/podio-php/PodioAPI.php';

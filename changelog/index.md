@@ -4,9 +4,14 @@ active: changelog
 ---
 # Release notes
 
+## 4.4.0 
+
+* This is the first release under the new package name podio-community/podio-php. It contains several fixes and minor improvements and should generally be backwards compatible to podio/podio-php v4.3.0.
+* Several fixes and improvements: [See in repository](https://github.com/podio-community/podio-php/compare/4.3.0...v4.4.0)
+
 ## 4.3.0
 
-* Add support for Flows (https://developers.podio.com/doc/flows)
+* Add support for [Flows](https://developers.podio.com/doc/flows)
 
 ## 4.2.0
 

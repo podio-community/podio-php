@@ -6,7 +6,7 @@ active: debug
 
 <span class="note">Using debug mode can also be used to diagnose performance problems where you are making more requests than you intended.</span>
 
-Podio-php will throw exceptions when something goes predictably wrong. For example if you try to update something you don't have permissions to update, if you don't include required attributes, if you hit the rate limit etc. All exceptions extends `PodioError` and you can see a list in [`PodioError.php`](https://github.com/podio/podio-php/blob/master/lib/PodioError.php)
+Podio-php will throw exceptions when something goes predictably wrong. For example if you try to update something you don't have permissions to update, if you don't include required attributes, if you hit the rate limit etc. All exceptions extends `PodioError` and you can see a list in [`PodioError.php`](https://github.com/podio-community/podio-php/blob/master/lib/error)
 
 All these exceptions will end up in your PHP error log so if you just see a blank screen look there for them (or configure PHP to print errors to the screen).
 
