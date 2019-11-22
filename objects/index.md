@@ -10,7 +10,7 @@ Most API calls return a Podio object that matches the class you called a static 
 
 Once you have a Podio* object you might be tempted to simply `var_dump` it to see which properties are available. This would be a mistake. Due to the dynamic nature of the data structures returned from the Podio API Podio* objects use magic getters and setters. With a `var_dump` you will just see the internal data structure which is cumbersome to work with.
 
-To see which properties you can access on an object type open the class file and look at the constructor. The class files are all located in the [models folder](https://github.com/podio/podio-php/tree/master/models). As an example look at [PodioTask](https://github.com/podio/podio-php/blob/master/models/PodioTask.php). You can see three methods being called to setup the properties:
+To see which properties you can access on an object type open the class file and look at the constructor. The class files are all located in the [models folder](https://github.com/podio-community/podio-php/tree/master/models). As an example look at [PodioTask](https://github.com/podio-community/podio-php/blob/master/models/PodioTask.php). You can see three methods being called to setup the properties:
 
 * `$this->property()` declares a normal property.
 * `$this->has_one()` declares a one-to-one relationship to another Podio* object. E.g. PodioTask has a property `created_by` which contains a single `PodioByLine` object.

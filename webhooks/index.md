@@ -41,7 +41,7 @@ foreach ($hooks as $hook) {
 
 ## Troubleshooting webhooks
 When webhooks fail to show up it's typically for one of the following reasons:
-* Not a public URL. Webhooks must be available on the public internet. You can test them locally using tools like [localtunnel](http://progrium.com/localtunnel/) or [ProxyLocal](http://proxylocal.com/). For the same reason they cannot reside behind your corporate firewall.
+* Not a public URL. Webhooks must be available on the public internet. You can test them locally using tools like [RequestBin](https://requestbin.com/) or [Webhooks.site](https://webhook.site/). For the same reason they cannot reside behind your corporate firewall.
 * Not on a standard port. Webhooks must be served on port 80 for http and 443 for https.
 * Incoming requests blocked by firewall/hosting provider. Your IT department or hosting provider may be blocking webhooks.
 * Query string parameters will be converted to POST parameters. Because webhooks are POST requests any query string parameters will be converted to a POST parameter. If your URL is `http://example.com/hook?foo=bar` you will not be able to use `$_GET['foo']` - use `$_POST['foo']` instead.
