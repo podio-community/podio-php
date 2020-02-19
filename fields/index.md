@@ -191,7 +191,7 @@ $item->fields[$field_id]->start_time; // E.g. DateTime or null
 $item->fields[$field_id]->end; // E.g. DateTime or null
 $item->fields[$field_id]->end_date; // E.g. DateTime or null
 $item->fields[$field_id]->end_time; // E.g. DateTime or null
-$item->fields[$field_id]->humanized_value; E.g. "2014-02-14 14:00-15:00"
+$item->fields[$field_id]->humanized_value(); E.g. "2014-02-14 14:00-15:00"
 {% endhighlight %}
 
 #### Setting values
