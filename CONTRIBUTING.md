@@ -23,7 +23,7 @@ PRs can be be merged by any member of the [Podio Community](https://github.com/o
 
 ## Versioning
 
-Versioning generally follows: https://semver.org/. New versions should be cut as often as necessary. With each release `CHANGES.md` is updated.
+Visioning generally follows: https://semver.org/. New versions should be cut as often as necessary. With each release `CHANGES.md` is updated.
 
 ## Feature Requests / Issues
 

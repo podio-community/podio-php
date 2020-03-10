@@ -1,4 +1,8 @@
-5.0.0 / DRAFT
+5.1.0 / DRAFT
+==================
+* 
+
+5.0.0 / 2020-03-10
 ==================
 
 * Using composer for Kint dependency instead of copied files
