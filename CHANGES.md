@@ -1,6 +1,6 @@
 5.1.0 / DRAFT
 ==================
-* 
+* Bugfix: Assure Podio::set_debug(true) performs debug ouput (with Kint) in non-cli setting.
 
 5.0.0 / 2020-03-10
 ==================

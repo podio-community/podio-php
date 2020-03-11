@@ -447,7 +447,7 @@ class Podio {
       elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
         print $text;
       }
-      elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
+      elseif (self::$debug === 'stdout' && php_sapi_name() !== 'cli') {
         Kint::dump("{$method} {$url}", $encoded_attributes, $response, $curl_info);
       }
 
