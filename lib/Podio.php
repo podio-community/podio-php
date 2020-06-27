@@ -25,6 +25,7 @@ class Podio {
       'Accept' => 'application/json',
     );
     curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt(self::$ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYPEER, 1);
     curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, 2);
     curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/'.self::VERSION);
@@ -247,6 +248,7 @@ class Podio {
       self::$stdout = fopen('php://stdout','w');
       curl_setopt(self::$ch, CURLOPT_FILE, self::$stdout);
       curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt(self::$ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
       $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
 
       fseek($result_handle, 0);
