@@ -15,7 +15,7 @@ We use [EditorConfig](https://editorconfig.org) to maintain consistent coding st
 
 ## PR review
 
-PRs can be be merged by any member of the [Podio Community](https://github.com/orgs/podio-community) organization, when the following conditions are met:
+PRs can be merged by any member of the [Podio Community](https://github.com/orgs/podio-community) organization, when the following conditions are met:
 
 1. All build checks are passing.
 2. At least two members (different than the PR creator) reviewed the PR.
@@ -23,7 +23,7 @@ PRs can be be merged by any member of the [Podio Community](https://github.com/o
 
 ## Versioning
 
-Visioning generally follows: https://semver.org/. New versions should be cut as often as necessary. With each release `CHANGES.md` is updated.
+Versioning generally follows: https://semver.org/. New versions should be cut as often as necessary. With each release `CHANGES.md` is updated.
 
 ## Feature Requests / Issues
 
