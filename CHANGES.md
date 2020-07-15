@@ -1,4 +1,8 @@
-5.1.0 / DRAFT
+5.1.1 / DRAFT
+==================
+* 
+
+5.1.0 / 2020-07-15
 ==================
 * Bugfix: Assure Podio::set_debug(true) performs debug output (with Kint) in non-cli setting.
 * Doc: More thorough quick start guide in README.md (#190)
