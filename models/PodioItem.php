@@ -247,7 +247,7 @@ class PodioItem extends PodioObject {
    * @see https://developers.podio.com/doc/items/get-item-field-values-22368
    */
   public static function get_field_value($item_id, $field_id) {
-    return Podio::get("/item/{$item_id}/value/{$field_id}")->json_body();
+    return Podio::get("/item/{$item_id}/value/{$field_id}/v2")->json_body();
   }
 
   /**
