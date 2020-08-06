@@ -6,7 +6,7 @@ class PodioItemDiff extends PodioObject {
   public function __construct($attributes = array()) {
     $this->property('field_id', 'integer');
     $this->property('type', 'string');
-    $this->property('external_id', 'integer');
+    $this->property('external_id', 'string');
     $this->property('label', 'string');
     $this->property('from', 'array');
     $this->property('to', 'array');
