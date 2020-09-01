@@ -8,7 +8,7 @@ class PodioError extends Exception {
     $this->body = json_decode($body, TRUE);
     $this->status = $status;
     $this->url = $url;
-    $this->request = $this->body['request'];
+    $this->request = isset($this->body['request']) ? $this->body['request'] : array();
     parent::__construct(get_class($this), 1, null);
   }
 
@@ -17,7 +17,9 @@ class PodioError extends Exception {
     if (!empty($this->body['error_description'])) {
       $str .= ': "'.$this->body['error_description'].'"';
     }
-    $str .= "\nRequest URL: ".$this->request['url'];
+    if (!empty($this->request['url'])) {
+      $str .= "\nRequest URL: ".$this->request['url'];
+    }
     if (!empty($this->request['query_string'])) {
       $str .= '?'.$this->request['query_string'];
     }
