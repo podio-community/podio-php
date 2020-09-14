@@ -301,4 +301,9 @@ class PodioItem extends PodioObject {
     return Podio::post("/item/{$item_id}/revision/{$revision}/revert_to", $attributes);
   }
 
+  public static function get_item_values($item_id)
+  {
+    return Podio::get("/item/{$item_id}/value")->json_body();
+  }
+
 }
