@@ -1,6 +1,12 @@
-5.1.0 / DRAFT
+5.1.1 / DRAFT
 ==================
-* Bugfix: Assure Podio::set_debug(true) performs debug ouput (with Kint) in non-cli setting.
+* 
+
+5.1.0 / 2020-07-15
+==================
+* Bugfix: Assure Podio::set_debug(true) performs debug output (with Kint) in non-cli setting.
+* Doc: More thorough quick start guide in README.md (#190)
+* Bugfix: Force HTTP 1.1 to prevent broken requests/file uploads (#191)
 
 5.0.0 / 2020-03-10
 ==================
