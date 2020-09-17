@@ -301,4 +301,12 @@ class PodioItem extends PodioObject {
     return Podio::post("/item/{$item_id}/revision/{$revision}/revert_to", $attributes);
   }
 
+  /**
+   * @see https://developers.podio.com/doc/items/get-item-values-22365
+   */
+  public static function get_item_values($item_id)
+  {
+    return Podio::get("/item/{$item_id}/value")->json_body();
+  }
+
 }
