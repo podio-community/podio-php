@@ -2,7 +2,7 @@
   "name": "podio-community/podio-php",
   "description": "PHP Client for Podio API",
   "keywords": ["podio"],
-  "homepage": "http://github.com/podio/podio-php",
+  "homepage": "http://github.com/podio-community/podio-php",
   "license": "MIT",
   "authors": [
     {
@@ -15,7 +15,7 @@
     }
   ],
   "require": {
-    "php": ">=5.5.0",
+    "php": ">=7.0",
     "kint-php/kint": "^3.2"
   },
   "suggest": {

@@ -6,6 +6,7 @@
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Test your changes to the best of your ability
 4. Commit your changes (`git commit -am 'Add some feature'`)
+   * Update the draft section of `CHANGES.md` with your change.
 5. Push to the branch (`git push origin my-new-feature`)
 6. Create a new Pull Request and await a review by at least two maintainers
 
