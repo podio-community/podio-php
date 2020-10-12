@@ -232,8 +232,9 @@ class PodioItem extends PodioObject {
   /**
    * @see https://developers.podio.com/doc/items/get-item-count-34819997
    */
-  public static function get_count($app_id) {
-    $body = Podio::get("/item/app/{$app_id}/count")->json_body();
+  public static function get_count($app_id, $view_id) {
+    $attributes = empty($view_id) ?  array() : array("view_id" => $view_id);
+    $body = Podio::get("/item/app/{$app_id}/count", $attributes)->json_body();
     return $body['count'];
   }
 
