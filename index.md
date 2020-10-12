@@ -6,7 +6,7 @@ active: index
 Podio-php is a PHP client for interacting with the Podio API. All parts of the Podio API are covered through a collection of classes. This gives you a solid abstraction for working with the Podio API without having to worry about the nuts and bolts.
 
 ## Requirements
-You need PHP 5.3+ with curl and openssl extensions enabled. There are no external dependencies.
+You need PHP 7.0+ with curl and openssl extensions enabled. There are no external dependencies.
 
 There are many moving parts under the hood and you should be familiar with the basics of HTTP and Object-Oriented Programming (OOP) in PHP before diving in. If you are new to OOP there are some resources linked in [this answer on StackOverflow](http://stackoverflow.com/questions/5646356/php-oop-getting-started) to get you started. If you are not very familiar with PHP or the basics of HTTP a podio-php project will most likely be a poor beginners project. It would be best to seek out more basic PHP projects first.
 
