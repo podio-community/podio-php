@@ -2,6 +2,7 @@
 ==================
 * BREAKING CHANGE: Drop support for PHP 5.x
 * Added get_item_values call (#193, thanks @dougblackjr)
+* Replace optional kdyby/curl-ca-bundle by composer/ca-bundle (#200)
 
 5.1.0 / 2020-07-15
 ==================
