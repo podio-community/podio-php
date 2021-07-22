@@ -32,9 +32,14 @@ class Podio {
     curl_setopt(self::$ch, CURLOPT_HEADER, true);
     curl_setopt(self::$ch, CURLINFO_HEADER_OUT, true);
 
-    //Update CA root certificates - require: https://github.com/Kdyby/CurlCaBundle
-    if(class_exists('\\Kdyby\\CurlCaBundle\\CertificateHelper')) {
-      \Kdyby\CurlCaBundle\CertificateHelper::setCurlCaInfo(self::$ch);
+    if (class_exists('\\Composer\\CaBundle\\CaBundle')) {
+      /** @noinspection PhpFullyQualifiedNameUsageInspection */
+      $caPathOrFile = \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
+      if (is_dir($caPathOrFile)) {
+        curl_setopt(self::$ch, CURLOPT_CAPATH, $caPathOrFile);
+      } else {
+        curl_setopt(self::$ch, CURLOPT_CAINFO, $caPathOrFile);
+      }
     }
 
     if ($options && !empty($options['curl_options'])) {

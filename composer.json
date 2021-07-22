@@ -16,10 +16,11 @@
   ],
   "require": {
     "php": ">=7.0",
-    "kint-php/kint": "^3.2"
+    "kint-php/kint": "^3.2",
+    "ext-curl": "*"
   },
   "suggest": {
-    "kdyby/curl-ca-bundle": "Improve security through providing current CA ROOT certificates bundle"
+    "composer/ca-bundle": "Improve security through providing current CA ROOT certificates bundle"
   },
   "autoload": {
     "classmap": ["lib/", "lib/error/", "models/", "models/field/"]
