@@ -2,8 +2,12 @@
   "name": "podio-community/podio-php",
   "description": "PHP Client for Podio API",
   "keywords": ["podio"],
-  "homepage": "http://github.com/podio-community/podio-php",
+  "homepage": "https://github.com/podio-community/podio-php",
   "license": "MIT",
+  "scripts": {
+    "test": "phpunit --coverage-clover clover.xml --bootstrap vendor/autoload.php tests",
+    "upload-coverage": "php-coveralls --coverage_clover=clover.xml -v"
+  },
   "authors": [
     {
       "name": "Daniel Schreiber",
