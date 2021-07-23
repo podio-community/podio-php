@@ -21,7 +21,8 @@
   "require": {
     "php": ">=7.0",
     "kint-php/kint": "^3.2",
-    "ext-curl": "*"
+    "guzzlehttp/guzzle": ">=6.2.0",
+    "ext-json": "*"
   },
   "suggest": {
     "composer/ca-bundle": "Improve security through providing current CA ROOT certificates bundle"

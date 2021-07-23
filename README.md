@@ -7,8 +7,6 @@ This is the non-official PHP Client for interacting with the Podio API maintaine
 [![Packagist Version](https://img.shields.io/packagist/v/podio-community/podio-php)](https://packagist.org/packages/podio-community/podio-php)
 
 ## Usage
-Prerequisites: `curl` and `openssl` extensions enabled.
-
 Install via [composer](https://getcomposer.org):
 ```bash
 composer require podio-community/podio-php
