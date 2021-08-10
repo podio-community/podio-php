@@ -1,7 +1,7 @@
 <?php
-class PodioAssetItemFieldTest extends PHPUnit_Framework_TestCase {
+class PodioAssetItemFieldTest extends \PHPUnit\Framework\TestCase {
 
-  public function setup() {
+  public function setUp() {
     $this->object = new PodioAssetItemField(array(
       '__api_values' => true,
       'values' => array(

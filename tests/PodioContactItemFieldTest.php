@@ -1,7 +1,7 @@
 <?php
-class PodioContactItemFieldTest extends PHPUnit_Framework_TestCase {
+class PodioContactItemFieldTest extends \PHPUnit\Framework\TestCase {
 
-  public function setup() {
+  public function setUp() {
     $this->object = new PodioContactItemField(array(
       '__api_values' => true,
       'values' => array(

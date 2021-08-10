@@ -1,9 +1,9 @@
 <?php
 
-class PodioPhoneItemFieldTest extends PHPUnit_Framework_TestCase
+class PodioPhoneItemFieldTest extends \PHPUnit\Framework\TestCase
 {
 
-  public function setup()
+  public function setUp()
   {
     $this->object = new PodioPhoneItemField(array(
       '__api_values' => true,

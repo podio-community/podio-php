@@ -1,7 +1,7 @@
 <?php
-class PodioDateItemFieldTest extends PHPUnit_Framework_TestCase {
+class PodioDateItemFieldTest extends \PHPUnit\Framework\TestCase {
 
-  public function setup() {
+  public function setUp() {
     $this->empty_values = new PodioDateItemField(array('field_id' => 1));
 
     $this->start_date = new PodioDateItemField(array('__api_values' => true, 'field_id' => 2, 'values' => array(array(

@@ -1,12 +1,12 @@
 <?php
-class PodioCollectionTest extends PHPUnit_Framework_TestCase {
+class PodioCollectionTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * @var PodioCollection
    */
   protected $collection;
 
-  public function setup() {
+  public function setUp() {
     $this->collection = new PodioCollection();
 
     $external_ids = array('a', 'b', 'c');

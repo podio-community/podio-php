@@ -1,7 +1,7 @@
 <?php
-class PodioTextItemFieldTest extends PHPUnit_Framework_TestCase {
+class PodioTextItemFieldTest extends \PHPUnit\Framework\TestCase {
 
-  public function setup() {
+  public function setUp() {
     $this->object = new PodioTextItemField(array(
       '__api_values' => true,
       'field_id' => 123,

@@ -1,5 +1,5 @@
 <?php
-class PodioItemCollectionTest extends PHPUnit_Framework_TestCase {
+class PodioItemCollectionTest extends \PHPUnit\Framework\TestCase {
 
   /**
     * @expectedException PodioDataIntegrityError

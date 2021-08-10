@@ -1,7 +1,7 @@
 <?php
-class PodioDurationItemFieldTest extends PHPUnit_Framework_TestCase {
+class PodioDurationItemFieldTest extends \PHPUnit\Framework\TestCase {
 
-  public function setup() {
+  public function setUp() {
     $this->object = new PodioDurationItemField(array(
       '__api_values' => true,
       'field_id' => 123,
