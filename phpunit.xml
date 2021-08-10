@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">./lib</directory>
+      <directory suffix=".php">./models</directory>
+    </whitelist>
+  </filter>
+</phpunit>
