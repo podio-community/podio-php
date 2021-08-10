@@ -1,11 +1,24 @@
 <?php
 
-class Podio {
-  public static $oauth, $debug, $logger, $session_manager, $last_response, $auth_type;
-  protected static $url, $client_id, $client_secret, $secret, $ch, $headers;
-  private static $stdout;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\MultipartStream;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\RequestOptions;
+use GuzzleHttp\TransferStats;
 
-  const VERSION = '5.0.0';
+class Podio
+{
+  public static $oauth, $debug, $logger, $session_manager, $last_response, $auth_type;
+  /** @var \GuzzleHttp\Client */
+  public static $http_client;
+  protected static $url, $client_id, $client_secret, $secret, $headers;
+  /** @var \Psr\Http\Message\ResponseInterface */
+  private static $last_http_response;
+
+  const VERSION = '6.0.0';
 
   const GET = 'GET';
   const POST = 'POST';
@@ -17,34 +30,24 @@ class Podio {
     self::$client_id = $client_id;
     self::$client_secret = $client_secret;
 
-    // Setup curl
     self::$url = empty($options['api_url']) ? 'https://api.podio.com:443' : $options['api_url'];
     self::$debug = self::$debug ? self::$debug : false;
-    self::$ch = curl_init();
-    self::$headers = array(
-      'Accept' => 'application/json',
-    );
-    curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt(self::$ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-    curl_setopt(self::$ch, CURLOPT_SSL_VERIFYPEER, 1);
-    curl_setopt(self::$ch, CURLOPT_SSL_VERIFYHOST, 2);
-    curl_setopt(self::$ch, CURLOPT_USERAGENT, 'Podio PHP Client/'.self::VERSION);
-    curl_setopt(self::$ch, CURLOPT_HEADER, true);
-    curl_setopt(self::$ch, CURLINFO_HEADER_OUT, true);
+    $client_config = [
+      'base_uri' => self::$url,
 
+      RequestOptions::HEADERS => [
+        'Accept' => 'application/json',
+        'User-Agent' => 'Podio PHP Client/' . self::VERSION . '-guzzle'
+      ]
+    ];
+    if ($options && !empty($options['curl_options'])) {
+      $client_config['curl'] = $options['curl_options'];
+    }
     if (class_exists('\\Composer\\CaBundle\\CaBundle')) {
       /** @noinspection PhpFullyQualifiedNameUsageInspection */
-      $caPathOrFile = \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
-      if (is_dir($caPathOrFile)) {
-        curl_setopt(self::$ch, CURLOPT_CAPATH, $caPathOrFile);
-      } else {
-        curl_setopt(self::$ch, CURLOPT_CAINFO, $caPathOrFile);
-      }
+      $client_config[RequestOptions::VERIFY] = \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
     }
-
-    if ($options && !empty($options['curl_options'])) {
-      curl_setopt_array(self::$ch, $options['curl_options']);
-    }
+    self::$http_client = new Client($client_config);
 
     self::$session_manager = null;
     if ($options && !empty($options['session_manager'])) {
@@ -105,6 +108,7 @@ class Podio {
         $data['app_token'] = $attributes['app_token'];
 
         $auth_type['identifier'] = $attributes['app_id'];
+        break;
       default:
         break;
     }
@@ -136,24 +140,37 @@ class Podio {
     }
   }
 
-  public static function authorize_url($redirect_uri,$scope) {
+  public static function authorize_url($redirect_uri, $scope) {
     $parsed_url = parse_url(self::$url);
     $host = str_replace('api.', '', $parsed_url['host']);
-    return 'https://'.$host.'/oauth/authorize?response_type=code&client_id='.self::$client_id.'&redirect_uri='.rawurlencode($redirect_uri).'&scope='.rawurlencode($scope);
+    return 'https://' . $host . '/oauth/authorize?response_type=code&client_id=' . self::$client_id . '&redirect_uri=' . rawurlencode($redirect_uri) . '&scope=' . rawurlencode($scope);
   }
 
   public static function is_authenticated() {
     return self::$oauth && self::$oauth->access_token;
   }
 
+  /**
+   * @throws PodioBadRequestError
+   * @throws PodioConflictError
+   * @throws PodioRateLimitError
+   * @throws PodioUnavailableError
+   * @throws PodioGoneError
+   * @throws PodioDataIntegrityError
+   * @throws PodioForbiddenError
+   * @throws PodioNotFoundError
+   * @throws PodioError
+   * @throws PodioInvalidGrantError
+   * @throws PodioAuthorizationError
+   * @throws PodioConnectionError
+   * @throws PodioServerError
+   * @throws Exception when client is not setup
+   */
   public static function request($method, $url, $attributes = array(), $options = array()) {
-    if (!self::$ch) {
+    if (!self::$http_client) {
       throw new Exception('Client has not been setup with client id and client secret.');
     }
 
-    // Reset attributes so we can reuse curl object
-    curl_setopt(self::$ch, CURLOPT_POSTFIELDS, null);
-    unset(self::$headers['Content-length']);
     $original_url = $url;
     $encoded_attributes = null;
 
@@ -165,126 +182,99 @@ class Podio {
       throw new PodioDataIntegrityError('Attributes must be an array');
     }
 
+    $request = new Request($method, $url);
     switch ($method) {
-      case self::GET:
-        curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::GET);
-        self::$headers['Content-type'] = 'application/x-www-form-urlencoded';
-
-        $separator = strpos($url, '?') ? '&' : '?';
-        if ($attributes) {
-          $query = static::encode_attributes($attributes);
-          $url = $url.$separator.$query;
-        }
-
-        self::$headers['Content-length'] = "0";
-        break;
       case self::DELETE:
-        curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::DELETE);
-        self::$headers['Content-type'] = 'application/x-www-form-urlencoded';
+      case self::GET:
+        $request = $request->withHeader('Content-type', 'application/x-www-form-urlencoded');
+        $request = $request->withHeader('Content-length', '0');
 
         $separator = strpos($url, '?') ? '&' : '?';
         if ($attributes) {
           $query = static::encode_attributes($attributes);
-          $url = $url.$separator.$query;
+          $request = $request->withUri(new Uri($url . $separator . $query));
         }
-
-        self::$headers['Content-length'] = "0";
         break;
       case self::POST:
-        curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::POST);
         if (!empty($options['upload'])) {
-          curl_setopt(self::$ch, CURLOPT_POST, TRUE);
-          if(!class_exists("\CURLFile") && defined('CURLOPT_SAFE_UPLOAD')) {
-            curl_setopt(self::$ch, CURLOPT_SAFE_UPLOAD, FALSE);
-          }
-          curl_setopt(self::$ch, CURLOPT_POSTFIELDS, $attributes);
-          self::$headers['Content-type'] = 'multipart/form-data';
-        }
-        elseif (empty($options['oauth_request'])) {
+          $request = $request->withBody(new MultipartStream([
+            [
+              'name' => 'source',
+              'contents' => fopen($options['upload'], 'r'),
+              'filename' => $options['upload']
+            ], [
+              'name' => 'filename',
+              'contents' => $attributes['filename']
+            ]
+          ]));
+        } elseif (empty($options['oauth_request'])) {
           // application/json
           $encoded_attributes = json_encode($attributes);
-          curl_setopt(self::$ch, CURLOPT_POSTFIELDS, $encoded_attributes);
-          self::$headers['Content-type'] = 'application/json';
-        }
-        else {
+          $request = $request->withBody(GuzzleHttp\Psr7\Utils::streamFor($encoded_attributes));
+          $request = $request->withHeader('Content-type', 'application/json');
+        } else {
           // x-www-form-urlencoded
           $encoded_attributes = static::encode_attributes($attributes);
-          curl_setopt(self::$ch, CURLOPT_POSTFIELDS, $encoded_attributes);
-          self::$headers['Content-type'] = 'application/x-www-form-urlencoded';
+          $request = $request->withBody(GuzzleHttp\Psr7\Utils::streamFor($encoded_attributes));
+          $request = $request->withHeader('Content-type', 'application/x-www-form-urlencoded');
         }
         break;
       case self::PUT:
         $encoded_attributes = json_encode($attributes);
-        curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, self::PUT);
-        curl_setopt(self::$ch, CURLOPT_POSTFIELDS, $encoded_attributes);
-        self::$headers['Content-type'] = 'application/json';
+        $request = $request->withBody(GuzzleHttp\Psr7\Utils::streamFor($encoded_attributes));
+        $request = $request->withHeader('Content-type', 'application/json');
         break;
     }
 
     // Add access token to request
     if (isset(self::$oauth) && !empty(self::$oauth->access_token) && !(isset($options['oauth_request']) && $options['oauth_request'] == true)) {
       $token = self::$oauth->access_token;
-      self::$headers['Authorization'] = "OAuth2 {$token}";
-    }
-    else {
-      unset(self::$headers['Authorization']);
+      $request = $request->withHeader('Authorization', "OAuth2 {$token}");
     }
 
     // File downloads can be of any type
-    if (empty($options['file_download'])) {
-      self::$headers['Accept'] = 'application/json';
+    if (!empty($options['file_download'])) {
+      $request = $request->withHeader('Accept', '*/*');
     }
-    else {
-      self::$headers['Accept'] = '*/*';
-    }
-
-    curl_setopt(self::$ch, CURLOPT_HTTPHEADER, static::curl_headers());
-    curl_setopt(self::$ch, CURLOPT_URL, empty($options['file_download']) ? self::$url.$url : $url);
 
     $response = new PodioResponse();
 
-    if(isset($options['return_raw_as_resource_only']) && $options['return_raw_as_resource_only'] == true) {
-      $result_handle = fopen('php://temp', 'w');
-      curl_setopt(self::$ch, CURLOPT_FILE, $result_handle);
-      curl_exec(self::$ch);
-      if(isset(self::$stdout) && is_resource(self::$stdout)) {
-        fclose(self::$stdout);
+    try {
+      $transferTime = 0;
+      /** \Psr\Http\Message\ResponseInterface */
+      $http_response = self::$http_client->send($request, [
+        RequestOptions::ON_STATS => function (TransferStats $stats) use (&$transferTime) {
+          $transferTime = $stats->getTransferTime();
+        }
+      ]);
+      $response->status = $http_response->getStatusCode();
+      $response->headers = array_map(function ($values) {
+        return implode(', ', $values);
+      }, $http_response->getHeaders());
+      self::$last_http_response = $http_response;
+      if (!isset($options['return_raw_as_resource_only']) || $options['return_raw_as_resource_only'] != true) {
+        $response->body = $http_response->getBody()->getContents();
       }
-      self::$stdout = fopen('php://stdout','w');
-      curl_setopt(self::$ch, CURLOPT_FILE, self::$stdout);
-      curl_setopt(self::$ch, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt(self::$ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-      $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
-
-      fseek($result_handle, 0);
-      $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
-      $response->headers = static::parse_headers(fread($result_handle, $raw_headers_size));
       self::$last_response = $response;
-      return $result_handle;
-    }
 
-    $raw_response = curl_exec(self::$ch);
-    if($raw_response === false) {
-        throw new PodioConnectionError('Connection to Podio API failed: [' . curl_errno(self::$ch) . '] ' . curl_error(self::$ch), curl_errno(self::$ch));
+    } catch (RequestException $requestException) {
+      throw new PodioConnectionError('Connection to Podio API failed: [' . get_class($requestException) . '] ' . $requestException->getMessage(), $requestException->getCode());
+    } catch (GuzzleException $e) { // this generally should not happen as RequestOptions::HTTP_ERRORS is set to `false`
+      throw new PodioConnectionError('Connection to Podio API failed: [' . get_class($e) . '] ' . $e->getMessage(), $e->getCode());
     }
-    $raw_headers_size = curl_getinfo(self::$ch, CURLINFO_HEADER_SIZE);
-
-    $response->body = substr($raw_response, $raw_headers_size);
-    $response->status = curl_getinfo(self::$ch, CURLINFO_HTTP_CODE);
-    $response->headers = static::parse_headers(substr($raw_response, 0, $raw_headers_size));
-    self::$last_response = $response;
 
     if (!isset($options['oauth_request'])) {
-      $curl_info = curl_getinfo(self::$ch, CURLINFO_HEADER_OUT);
-      static::log_request($method, $url, $encoded_attributes, $response, $curl_info);
+      static::log_request($method, $url, $encoded_attributes, $response, $transferTime);
     }
 
     switch ($response->status) {
       case 200 :
       case 201 :
       case 204 :
+        if (isset($options['return_raw_as_resource_only']) && $options['return_raw_as_resource_only'] === true) {
+          return $http_response->getBody();
+        }
         return $response;
-        break;
       case 400 :
         // invalid_grant_error or bad_request_error
         $body = $response->json_body();
@@ -292,12 +282,9 @@ class Podio {
           // Reset access token & refresh_token
           static::clear_authentication();
           throw new PodioInvalidGrantError($response->body, $response->status, $url);
-          break;
-        }
-        else {
+        } else {
           throw new PodioBadRequestError($response->body, $response->status, $url);
         }
-        break;
       case 401 :
         $body = $response->json_body();
         if (strstr($body['error_description'], 'expired_token') || strstr($body['error'], 'invalid_token')) {
@@ -306,19 +293,16 @@ class Podio {
             if (static::refresh_access_token()) {
               // Try the original request again.
               return static::request($method, $original_url, $attributes);
-            }
-            else {
+            } else {
               static::clear_authentication();
               throw new PodioAuthorizationError($response->body, $response->status, $url);
             }
-          }
-          else {
+          } else {
             // We have tried in vain to get a new access token. Log the user out.
             static::clear_authentication();
             throw new PodioAuthorizationError($response->body, $response->status, $url);
           }
-        }
-        elseif (strstr($body['error'], 'invalid_request') || strstr($body['error'], 'unauthorized')) {
+        } elseif (strstr($body['error'], 'invalid_request') || strstr($body['error'], 'unauthorized')) {
           // Access token is invalid.
           static::clear_authentication();
           throw new PodioAuthorizationError($response->body, $response->status, $url);
@@ -326,30 +310,22 @@ class Podio {
         break;
       case 403 :
         throw new PodioForbiddenError($response->body, $response->status, $url);
-        break;
       case 404 :
         throw new PodioNotFoundError($response->body, $response->status, $url);
-        break;
       case 409 :
         throw new PodioConflictError($response->body, $response->status, $url);
-        break;
       case 410 :
         throw new PodioGoneError($response->body, $response->status, $url);
-        break;
       case 420 :
         throw new PodioRateLimitError($response->body, $response->status, $url);
-        break;
       case 500 :
         throw new PodioServerError($response->body, $response->status, $url);
-        break;
       case 502 :
       case 503 :
       case 504 :
         throw new PodioUnavailableError($response->body, $response->status, $url);
-        break;
       default :
         throw new PodioError($response->body, $response->status, $url);
-        break;
     }
     return false;
   }
@@ -367,17 +343,10 @@ class Podio {
     return static::request(Podio::DELETE, $url, $attributes);
   }
 
-  public static function curl_headers() {
-    $headers = array();
-    foreach (self::$headers as $header => $value) {
-      $headers[] = "{$header}: {$value}";
-    }
-    return $headers;
-  }
   public static function encode_attributes($attributes) {
     $return = array();
     foreach ($attributes as $key => $value) {
-      $return[] = urlencode($key).'='.urlencode($value);
+      $return[] = urlencode($key) . '=' . urlencode($value);
     }
     return join('&', $return);
   }
@@ -393,55 +362,46 @@ class Podio {
     }
 
     if (!empty($options['fields'])) {
-      $parameters[] = 'fields='.$options['fields'];
+      $parameters[] = 'fields=' . $options['fields'];
     }
 
-    return $parameters ? $url.'?'.join('&', $parameters) : $url;
+    return $parameters ? $url . '?' . join('&', $parameters) : $url;
   }
-  public static function parse_headers($headers) {
-    $list = array();
-    $headers = str_replace("\r", "", $headers);
-    $headers = explode("\n", $headers);
-    foreach ($headers as $header) {
-      if (strstr($header, ':')) {
-        $name = strtolower(substr($header, 0, strpos($header, ':')));
-        $list[$name] = trim(substr($header, strpos($header, ':')+1));
-      }
-    }
-    return $list;
-  }
+
   public static function rate_limit_remaining() {
-    if (isset(self::$last_response->headers['x-rate-limit-remaining'])) {
-      return self::$last_response->headers['x-rate-limit-remaining'];
-   }
+    if (isset(self::$last_http_response)) {
+      return implode(self::$last_http_response->getHeader('x-rate-limit-remaining'));
+    }
+    return '-1';
   }
+
   public static function rate_limit() {
-    if (isset(self::$last_response->headers['x-rate-limit-limit'])) {
-      return self::$last_response->headers['x-rate-limit-limit'];
-   }
+    if (isset(self::$last_http_response)) {
+      return implode(self::$last_http_response->getHeader('x-rate-limit-limit'));
+    }
+    return '-1';
   }
 
   /**
    * Set debug config
    *
-   * @param $toggle True to enable debugging. False to disable
-   * @param $output Output mode. Can be "stdout" or "file". Default is "stdout"
+   * @param $toggle boolean True to enable debugging. False to disable
+   * @param $output string Output mode. Can be "stdout" or "file". Default is "stdout"
    */
   public static function set_debug($toggle, $output = "stdout") {
     if ($toggle) {
       self::$debug = $output;
-    }
-    else {
+    } else {
       self::$debug = false;
     }
   }
 
-  public static function log_request($method, $url, $encoded_attributes, $response, $curl_info) {
+  public static function log_request($method, $url, $encoded_attributes, $response, $transferTime) {
     if (self::$debug) {
       $timestamp = gmdate('Y-m-d H:i:s');
       $text = "{$timestamp} {$response->status} {$method} {$url}\n";
       if (!empty($encoded_attributes)) {
-        $text .= "{$timestamp} Request body: ".$encoded_attributes."\n";
+        $text .= "{$timestamp} Request body: " . $encoded_attributes . "\n";
       }
       $text .= "{$timestamp} Reponse: {$response->body}\n\n";
 
@@ -450,15 +410,14 @@ class Podio {
           self::$logger = new PodioLogger();
         }
         self::$logger->log($text);
-      }
-      elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
+      } elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
         print $text;
-      }
-      elseif (self::$debug === 'stdout' && php_sapi_name() !== 'cli') {
-        Kint::dump("{$method} {$url}", $encoded_attributes, $response, $curl_info);
+      } elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
+        require_once 'vendor/kint/Kint.class.php';
+        Kint::dump("{$method} {$url}", $encoded_attributes, $response);
       }
 
-      self::$logger->call_log[] = curl_getinfo(self::$ch, CURLINFO_TOTAL_TIME);
+      self::$logger->call_log[] = $transferTime;
     }
 
   }
@@ -470,7 +429,7 @@ class Podio {
     }
 
     // Log api call times if debugging
-    if(self::$debug && self::$logger) {
+    if (self::$debug && self::$logger) {
       $timestamp = gmdate('Y-m-d H:i:s');
       $count = sizeof(self::$logger->call_log);
       $duration = 0;
@@ -486,8 +445,7 @@ class Podio {
           self::$logger = new PodioLogger();
         }
         self::$logger->log($text);
-      }
-      elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
+      } elseif (self::$debug === 'stdout' && php_sapi_name() === 'cli') {
         print $text;
       }
     }
