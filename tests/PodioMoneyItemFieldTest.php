@@ -1,7 +1,7 @@
 <?php
 class PodioMoneyItemFieldTest extends \PHPUnit\Framework\TestCase {
 
-  public function setUp() {
+  public function setUp(): void {
     $this->object = new PodioMoneyItemField(array(
       '__api_values' => true,
       'field_id' => 123,

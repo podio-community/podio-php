@@ -1,7 +1,7 @@
 <?php
 class PodioProgressItemFieldTest extends \PHPUnit\Framework\TestCase {
 
-  public function setUp() {
+  public function setUp(): void {
     $this->object = new PodioProgressItemField(array(
       '__api_values' => true,
       'field_id' => 123,

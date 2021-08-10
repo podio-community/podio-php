@@ -6,7 +6,7 @@ class PodioCollectionTest extends \PHPUnit\Framework\TestCase {
    */
   protected $collection;
 
-  public function setUp() {
+  public function setUp(): void {
     $this->collection = new PodioCollection();
 
     $external_ids = array('a', 'b', 'c');

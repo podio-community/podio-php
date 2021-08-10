@@ -1,7 +1,7 @@
 <?php
 class PodioAppItemFieldTest extends \PHPUnit\Framework\TestCase {
 
-  public function setUp() {
+  public function setUp(): void {
     $this->object = new PodioAppItemField(array(
       '__api_values' => true,
       'values' => array(

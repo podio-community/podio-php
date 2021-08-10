@@ -1,7 +1,7 @@
 <?php
 class PodioItemFieldCollectionTest extends \PHPUnit\Framework\TestCase {
 
-  public function setUp() {
+  public function setUp(): void {
     $this->collection = new PodioItemFieldCollection(array(
       new PodioItemField(array('field_id' => 1, 'external_id' => 'a', 'type' => 'text')),
       new PodioItemField(array('field_id' => 2, 'external_id' => 'b', 'type' => 'number')),

@@ -1,6 +1,7 @@
 [6.0.0](#v6.0.0) / Unreleased
 ==================
-* BREAKING CHANGE: Drop support for PHP 5.x
+* BREAKING CHANGE: Drop support for PHP 5.x and 7.0/7.1
+* Support PHP 8.0
 * Use Guzzle HTTP client abstraction - now this falls back to PHP streams when curl is not available.
 * Added get_item_values call (#193, thanks @dougblackjr)
 * Replace optional kdyby/curl-ca-bundle by composer/ca-bundle (#200)
