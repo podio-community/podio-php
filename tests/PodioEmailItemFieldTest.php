@@ -3,7 +3,7 @@
 class PodioEmailItemFieldTest extends \PHPUnit\Framework\TestCase
 {
 
-  public function setUp()
+  public function setUp(): void
   {
     $this->object = new PodioEmailItemField(array(
       '__api_values' => true,

@@ -31,7 +31,7 @@
     "classmap": ["lib/", "lib/error/", "models/", "models/field/"]
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.5.8",
+    "phpunit/phpunit": "^8.5.19",
     "php-coveralls/php-coveralls": "^2.1"
   }
 }

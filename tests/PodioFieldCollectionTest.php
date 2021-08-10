@@ -31,10 +31,8 @@ class PodioFieldCollectionTest extends \PHPUnit\Framework\TestCase {
     $this->assertEquals($length+1, count($this->collection));
   }
 
-  /**
-    * @expectedException PodioDataIntegrityError
-    */
   public function test_cannot_add_object() {
+    $this->expectException('PodioDataIntegrityError');
     $this->collection[] = new PodioObject();
   }
 

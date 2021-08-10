@@ -1,10 +1,8 @@
 <?php
 class PodioItemCollectionTest extends \PHPUnit\Framework\TestCase {
 
-  /**
-    * @expectedException PodioDataIntegrityError
-    */
   public function test_cannot_add_object() {
+    $this->expectException('PodioDataIntegrityError');
     $collection = new PodioItemCollection();
     $collection[] = new PodioObject();
   }

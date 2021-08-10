@@ -44,10 +44,8 @@ class PodioCollectionTest extends \PHPUnit\Framework\TestCase {
     $this->assertFalse(isset($this->collection[3]));
   }
 
-  /**
-    * @expectedException PodioDataIntegrityError
-    */
   public function test_cannot_add_string() {
+    $this->expectException('PodioDataIntegrityError');
     $this->collection[] = 'Sample String';
   }
 
