@@ -1,4 +1,7 @@
-[6.0.0](#v6.0.0) / Unreleased
+[6.1.0](#v6.1.0) / Unreleased
+==================
+
+[6.0.0](#v6.0.0) / 2021-08-23
 ==================
 * BREAKING CHANGE: Drop support for PHP 5.x and 7.0/7.1/7.2
 * Support PHP 8.0
