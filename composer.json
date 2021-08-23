@@ -5,7 +5,10 @@
   "homepage": "https://github.com/podio-community/podio-php",
   "license": "MIT",
   "scripts": {
-    "test": "phpunit --coverage-clover clover.xml --bootstrap vendor/autoload.php tests",
+    "test": [
+      "@putenv XDEBUG_MODE=coverage",
+      "phpunit --coverage-clover clover.xml --bootstrap vendor/autoload.php tests"
+    ],
     "upload-coverage": "php-coveralls --coverage_clover=clover.xml -v"
   },
   "authors": [
@@ -19,7 +22,7 @@
     }
   ],
   "require": {
-    "php": ">=7.0",
+    "php": "^7.3 || ^8.0",
     "kint-php/kint": "^3.2",
     "guzzlehttp/guzzle": ">=6.2.0",
     "ext-json": "*"
@@ -31,7 +34,7 @@
     "classmap": ["lib/", "lib/error/", "models/", "models/field/"]
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.0",
+    "phpunit/phpunit": "^9.5.8",
     "php-coveralls/php-coveralls": "^2.1"
   }
 }

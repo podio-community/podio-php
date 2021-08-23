@@ -1,5 +1,5 @@
 <?php
-class PodioAppTest extends PHPUnit_Framework_TestCase {
+class PodioAppTest extends \PHPUnit\Framework\TestCase {
 
   public function test_performance_large_app() {
     $start = time();

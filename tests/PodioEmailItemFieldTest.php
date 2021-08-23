@@ -1,9 +1,9 @@
 <?php
 
-class PodioEmailItemFieldTest extends PHPUnit_Framework_TestCase
+class PodioEmailItemFieldTest extends \PHPUnit\Framework\TestCase
 {
 
-  public function setup()
+  public function setUp(): void
   {
     $this->object = new PodioEmailItemField(array(
       '__api_values' => true,

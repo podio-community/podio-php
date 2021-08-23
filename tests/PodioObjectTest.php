@@ -1,7 +1,7 @@
 <?php
-class PodioObjectTest extends PHPUnit_Framework_TestCase {
+class PodioObjectTest extends \PHPUnit\Framework\TestCase {
 
-  public function setup() {
+  public function setUp(): void {
     $this->object = new PodioObject();
     $this->object->property('id', 'integer');
     $this->object->property('external_id', 'string');

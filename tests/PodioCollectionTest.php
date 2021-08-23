@@ -1,12 +1,12 @@
 <?php
-class PodioCollectionTest extends PHPUnit_Framework_TestCase {
+class PodioCollectionTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * @var PodioCollection
    */
   protected $collection;
 
-  public function setup() {
+  public function setUp(): void {
     $this->collection = new PodioCollection();
 
     $external_ids = array('a', 'b', 'c');
@@ -44,10 +44,8 @@ class PodioCollectionTest extends PHPUnit_Framework_TestCase {
     $this->assertFalse(isset($this->collection[3]));
   }
 
-  /**
-    * @expectedException PodioDataIntegrityError
-    */
   public function test_cannot_add_string() {
+    $this->expectException('PodioDataIntegrityError');
     $this->collection[] = 'Sample String';
   }
 

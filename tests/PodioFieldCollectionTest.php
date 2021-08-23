@@ -1,7 +1,7 @@
 <?php
-class PodioFieldCollectionTest extends PHPUnit_Framework_TestCase {
+class PodioFieldCollectionTest extends \PHPUnit\Framework\TestCase {
 
-  public function setup() {
+  public function setUp(): void {
     $this->collection = new PodioFieldCollection(array(
       new PodioAppField(array('field_id' => 1, 'external_id' => 'a', 'type' => 'text')),
       new PodioAppField(array('field_id' => 2, 'external_id' => 'b', 'type' => 'number')),
@@ -31,10 +31,8 @@ class PodioFieldCollectionTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals($length+1, count($this->collection));
   }
 
-  /**
-    * @expectedException PodioDataIntegrityError
-    */
   public function test_cannot_add_object() {
+    $this->expectException('PodioDataIntegrityError');
     $this->collection[] = new PodioObject();
   }
 
