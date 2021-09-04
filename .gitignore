@@ -9,3 +9,4 @@ _site
 .idea
 vendor
 composer.lock
+.php-cs-fixer.cache
