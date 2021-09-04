@@ -5,20 +5,18 @@
  */
 class PodioTagItemField extends PodioItemField
 {
-
-  public function api_friendly_values()
-  {
-    return $this->values ? $this->values : array();
-  }
-
-  public function humanized_value()
-  {
-    if (!$this->values) {
-      return '';
+    public function api_friendly_values()
+    {
+        return $this->values ? $this->values : array();
     }
-    return join(';', array_map(function ($value) {
-      return $value['value'];
-    }, $this->values));
-  }
 
+    public function humanized_value()
+    {
+        if (!$this->values) {
+            return '';
+        }
+        return join(';', array_map(function ($value) {
+            return $value['value'];
+        }, $this->values));
+    }
 }
