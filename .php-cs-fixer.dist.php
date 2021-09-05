@@ -5,6 +5,7 @@ use PhpCsFixer\Finder;
 
 $rules = [
     '@PSR2' => true,
+    '@PSR12' => true,
 ];
 
 $finder = Finder::create()->in(__DIR__);
