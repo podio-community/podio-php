@@ -2,9 +2,9 @@
 
 class PodioCollectionTest extends \PHPUnit\Framework\TestCase
 {
-  /**
-   * @var PodioCollection
-   */
+    /**
+     * @var PodioCollection
+     */
     protected $collection;
 
     public function setUp(): void

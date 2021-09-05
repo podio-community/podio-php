@@ -5,9 +5,9 @@
  */
 class PodioEmbedItemField extends PodioItemField
 {
-  /**
-   * Override __set to use field specific method for setting values property
-   */
+    /**
+     * Override __set to use field specific method for setting values property
+     */
     public function __set($name, $value)
     {
         if ($name == 'values' && $value !== null) {

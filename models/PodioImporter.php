@@ -4,9 +4,9 @@
  */
 class PodioImporter extends PodioObject
 {
-  /**
-   * @see https://developers.podio.com/doc/importer/get-info-5929504
-   */
+    /**
+     * @see https://developers.podio.com/doc/importer/get-info-5929504
+     */
     public static function info($file_id)
     {
         return Podio::get("/importer/{$file_id}/info")->json_body();

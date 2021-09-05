@@ -5,10 +5,10 @@
  */
 class PodioItemFieldCollection extends PodioFieldCollection
 {
-  /**
-   * Constructor. Pass in either decoded JSON from an API request
-   * or an array of PodioItemField objects.
-   */
+    /**
+     * Constructor. Pass in either decoded JSON from an API request
+     * or an array of PodioItemField objects.
+     */
     public function __construct($attributes = array(), $__api_values = false)
     {
 
