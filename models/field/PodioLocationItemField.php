@@ -5,7 +5,6 @@
  */
 class PodioLocationItemField extends PodioItemField
 {
-
   /**
    * Override __set to use field specific method for setting values property
    */

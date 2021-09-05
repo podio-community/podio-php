@@ -27,12 +27,12 @@ class Podio
     /** @var \Psr\Http\Message\ResponseInterface */
     private static $last_http_response;
 
-    const VERSION = '6.0.0';
+    public const VERSION = '6.0.0';
 
-    const GET = 'GET';
-    const POST = 'POST';
-    const PUT = 'PUT';
-    const DELETE = 'DELETE';
+    public const GET = 'GET';
+    public const POST = 'POST';
+    public const PUT = 'PUT';
+    public const DELETE = 'DELETE';
 
     public static function setup($client_id, $client_secret, $options = array('session_manager' => null, 'curl_options' => array()))
     {
@@ -62,7 +62,7 @@ class Podio
         self::$session_manager = null;
         if ($options && !empty($options['session_manager'])) {
             if (is_string($options['session_manager']) && class_exists($options['session_manager'])) {
-                self::$session_manager = new $options['session_manager'];
+                self::$session_manager = new $options['session_manager']();
             } elseif (is_object($options['session_manager']) && method_exists($options['session_manager'], 'get') && method_exists($options['session_manager'], 'set')) {
                 self::$session_manager = $options['session_manager'];
             }

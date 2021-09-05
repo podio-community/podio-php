@@ -77,7 +77,7 @@ class PodioContact extends PodioObject
     {
         return Podio::get("/contact/user/{$user_id}/{$key}")->json_body();
     }
-  
+
     /**
      * @see https://developers.podio.com/doc/contacts/get-contact-totals-60467
      */
@@ -85,7 +85,7 @@ class PodioContact extends PodioObject
     {
         return Podio::get("/contact/totals/")->json_body();
     }
-  
+
     /**
      * @see https://developers.podio.com/doc/contacts/get-contact-totals-v3-34629208
      */

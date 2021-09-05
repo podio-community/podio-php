@@ -1,4 +1,5 @@
 <?php
+
 class PodioItemCollectionTest extends \PHPUnit\Framework\TestCase
 {
     public function test_cannot_add_object()

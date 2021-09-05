@@ -4,7 +4,6 @@
  */
 class PodioImporter extends PodioObject
 {
-
   /**
    * @see https://developers.podio.com/doc/importer/get-info-5929504
    */

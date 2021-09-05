@@ -1,7 +1,7 @@
 <?php
+
 class PodioCollectionTest extends \PHPUnit\Framework\TestCase
 {
-
   /**
    * @var PodioCollection
    */

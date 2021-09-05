@@ -233,7 +233,7 @@ class PodioTask extends PodioObject
         $result['other']['tasks'] = self::listing($result['other']['tasks']);
         return $result;
     }
-  
+
     /**
      * @see https://developers.podio.com/doc/tasks/update-task-reference-170733
      */
@@ -241,7 +241,7 @@ class PodioTask extends PodioObject
     {
         return Podio::put("/task/{$task_id}/ref", $attributes)->body;
     }
-  
+
     /**
      * @see https://developers.podio.com/doc/tasks/get-task-count-38316458
      */

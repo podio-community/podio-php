@@ -73,7 +73,7 @@ class PodioSpaceMember extends PodioObject
     {
         return Podio::post("/space/{$space_id}/member/", $attributes);
     }
-  
+
     /**
   * @see https://developers.podio.com/doc/space-members/request-space-membership-6146231
   */

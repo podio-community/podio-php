@@ -1,4 +1,5 @@
 <?php
+
 class PodioVia extends PodioObject
 {
     public function __construct($attributes = array())

@@ -4,7 +4,7 @@
  */
 class PodioTaskLabel extends PodioObject
 {
-    const DEFAULT_COLOR = 'E9E9E9';
+    public const DEFAULT_COLOR = 'E9E9E9';
 
     public function __construct($attributes = array())
     {

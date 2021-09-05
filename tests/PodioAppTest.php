@@ -1,4 +1,5 @@
 <?php
+
 class PodioAppTest extends \PHPUnit\Framework\TestCase
 {
     public function test_performance_large_app()

@@ -1,4 +1,5 @@
 <?php
+
 class PodioAppFieldCollectionTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

@@ -1,4 +1,5 @@
 <?php
+
 class PodioObject
 {
     private $__attributes = array();

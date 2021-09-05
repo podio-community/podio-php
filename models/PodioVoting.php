@@ -8,7 +8,7 @@ class PodioVoting extends PodioObject
     {
         $this->init($attributes);
     }
-  
+
     /**
      * @see https://developers.podio.com/doc/voting/get-result-of-voting-on-an-item-117727335
      */
@@ -16,7 +16,7 @@ class PodioVoting extends PodioObject
     {
         return Podio::get("/voting/item/{$item_id}/voting/{$voting_id}/result")->json_body();
     }
-  
+
     /**
      * @see https://developers.podio.com/doc/voting/get-app-votings-117689723
      */
@@ -24,7 +24,7 @@ class PodioVoting extends PodioObject
     {
         return Podio::get("/voting/app/{$app_id}/voting")->json_body();
     }
-  
+
     /**
      * @see https://developers.podio.com/doc/voting/get-list-of-users-with-votes-117729546
      */

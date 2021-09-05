@@ -1,4 +1,5 @@
 <?php
+
 class PodioItemCollection extends PodioCollection
 {
     public $filtered;

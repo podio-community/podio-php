@@ -1,4 +1,5 @@
 <?php
+
 class PodioObjectTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

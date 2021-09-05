@@ -5,7 +5,6 @@
  */
 class PodioAppFieldCollection extends PodioFieldCollection
 {
-
   /**
    * Constructor. Pass in either decoded JSON from an API request
    * or an array of PodioAppField objects.
