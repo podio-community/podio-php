@@ -9,6 +9,8 @@ class PodioPhoneItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->object = new PodioPhoneItemField([
             '__api_values' => true,
             'values' => [

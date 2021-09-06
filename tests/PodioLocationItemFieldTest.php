@@ -9,6 +9,8 @@ class PodioLocationItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->object = new PodioLocationItemField([
             '__api_values' => true,
             'field_id' => 123,

@@ -9,6 +9,8 @@ class PodioProgressItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->object = new PodioProgressItemField([
             '__api_values' => true,
             'field_id' => 123,

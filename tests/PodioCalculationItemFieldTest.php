@@ -9,6 +9,8 @@ class PodioCalculationItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->object = new PodioCalculationItemField([
             '__api_values' => true,
             'field_id' => 123,

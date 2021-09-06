@@ -9,6 +9,8 @@ class PodioEmailItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->object = new PodioEmailItemField([
             '__api_values' => true,
             'values' => [

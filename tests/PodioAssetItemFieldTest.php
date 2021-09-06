@@ -11,6 +11,8 @@ class PodioAssetItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->object = new PodioAssetItemField([
             '__api_values' => true,
             'values' => [

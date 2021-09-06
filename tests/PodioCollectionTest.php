@@ -16,6 +16,8 @@ class PodioCollectionTest extends TestCase
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->collection = new PodioCollection();
 
         $external_ids = ['a', 'b', 'c'];

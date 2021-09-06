@@ -12,6 +12,8 @@ class PodioObjectTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->object = new PodioObject();
         $this->object->property('id', 'integer');
         $this->object->property('external_id', 'string');

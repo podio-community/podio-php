@@ -11,6 +11,8 @@ class PodioEmbedItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->object = new PodioEmbedItemField([
             '__api_values' => true,
             'values' => [

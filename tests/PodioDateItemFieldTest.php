@@ -11,6 +11,8 @@ class PodioDateItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->empty_values = new PodioDateItemField(['field_id' => 1]);
 
         $this->start_date = new PodioDateItemField([

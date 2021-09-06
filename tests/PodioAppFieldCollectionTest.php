@@ -11,6 +11,8 @@ class PodioAppFieldCollectionTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->collection = new PodioAppFieldCollection([
             new PodioAppField(['field_id' => 1, 'external_id' => 'a', 'type' => 'text']),
             new PodioAppField(['field_id' => 2, 'external_id' => 'b', 'type' => 'number']),
