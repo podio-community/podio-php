@@ -156,23 +156,23 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_provide_start_datetime(): void
     {
         $this->assertNull($this->empty_values->start);
-        $this->assertInstanceOf('DateTime', $this->start_date->start);
-        $this->assertInstanceOf('DateTime', $this->start_datetime->start);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_with_endtime_same_day->start);
-        $this->assertInstanceOf('DateTime', $this->start_date_end_date->start);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_end_date->start);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->start);
+        $this->assertInstanceOf(DateTime::class, $this->start_date->start);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime->start);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_with_endtime_same_day->start);
+        $this->assertInstanceOf(DateTime::class, $this->start_date_end_date->start);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_end_date->start);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_end_datetime->start);
     }
 
     public function test_can_provide_start_date(): void
     {
         $this->assertNull($this->empty_values->start_date);
-        $this->assertInstanceOf('DateTime', $this->start_date->start_date);
-        $this->assertInstanceOf('DateTime', $this->start_datetime->start_date);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_with_endtime_same_day->start_date);
-        $this->assertInstanceOf('DateTime', $this->start_date_end_date->start_date);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_end_date->start_date);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->start_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_date->start_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime->start_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_with_endtime_same_day->start_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_date_end_date->start_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_end_date->start_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_end_datetime->start_date);
     }
 
     public function test_can_provide_start_time(): void
@@ -191,10 +191,10 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertNull($this->empty_values->end);
         $this->assertNull($this->start_date->end);
         $this->assertNull($this->start_datetime->end);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_with_endtime_same_day->end);
-        $this->assertInstanceOf('DateTime', $this->start_date_end_date->end);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_end_date->end);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->end);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_with_endtime_same_day->end);
+        $this->assertInstanceOf(DateTime::class, $this->start_date_end_date->end);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_end_date->end);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_end_datetime->end);
     }
 
     public function test_can_provide_end_date(): void
@@ -202,10 +202,10 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertNull($this->empty_values->end_date);
         $this->assertNull($this->start_date->end_date);
         $this->assertNull($this->start_datetime->end_date);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_with_endtime_same_day->end_date);
-        $this->assertInstanceOf('DateTime', $this->start_date_end_date->end_date);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_end_date->end_date);
-        $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->end_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_with_endtime_same_day->end_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_date_end_date->end_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_end_date->end_date);
+        $this->assertInstanceOf(DateTime::class, $this->start_datetime_end_datetime->end_date);
     }
 
     public function test_can_provide_end_time(): void

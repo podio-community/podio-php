@@ -73,7 +73,7 @@ class PodioObjectTest extends TestCase
         $object->has_one('field', 'Object');
         $object->init(['field' => ['id' => 1]]);
 
-        $this->assertInstanceOf('PodioObject', $object->field);
+        $this->assertInstanceOf(PodioObject::class, $object->field);
     }
 
     public function test_can_construct_one_to_many_relationship(): void
@@ -84,7 +84,7 @@ class PodioObjectTest extends TestCase
 
         $this->assertInstanceOf('PodioCollection', $object->fields);
         foreach ($object->fields as $member) {
-            $this->assertInstanceOf('PodioObject', $member);
+            $this->assertInstanceOf(PodioObject::class, $member);
         }
     }
 
@@ -206,7 +206,7 @@ class PodioObjectTest extends TestCase
         $object = new PodioObject();
         $object->property('date_property', 'date');
         $object->init(['date_property' => new DateTime('2014-01-01 12:00:00', $tz)]);
-        $this->assertInstanceOf('DateTime', $object->date_property);
+        $this->assertInstanceOf(DateTime::class, $object->date_property);
         $this->assertSame('2014-01-01', $object->date_property->format('Y-m-d'));
     }
 
@@ -217,7 +217,7 @@ class PodioObjectTest extends TestCase
         $object = new PodioObject();
         $object->property('date_property', 'date');
         $object->date_property = new DateTime('2014-01-02 14:00:00', $tz);
-        $this->assertInstanceOf('DateTime', $object->date_property);
+        $this->assertInstanceOf(DateTime::class, $object->date_property);
         $this->assertSame('2014-01-02', $object->date_property->format('Y-m-d'));
     }
 
@@ -228,7 +228,7 @@ class PodioObjectTest extends TestCase
         $object = new PodioObject();
         $object->property('date_property', 'date');
         $object->date_property = '2014-01-03';
-        $this->assertInstanceOf('DateTime', $object->date_property);
+        $this->assertInstanceOf(DateTime::class, $object->date_property);
         $this->assertSame('2014-01-03', $object->date_property->format('Y-m-d'));
     }
 
@@ -239,7 +239,7 @@ class PodioObjectTest extends TestCase
         $object = new PodioObject();
         $object->property('datetime_property', 'datetime');
         $object->init(['datetime_property' => new DateTime('2014-01-01 12:00:00', $tz)]);
-        $this->assertInstanceOf('DateTime', $object->datetime_property);
+        $this->assertInstanceOf(DateTime::class, $object->datetime_property);
         $this->assertSame('2014-01-01 12:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
 
@@ -250,7 +250,7 @@ class PodioObjectTest extends TestCase
         $object = new PodioObject();
         $object->property('datetime_property', 'datetime');
         $object->datetime_property = new DateTime('2014-01-02 14:00:00', $tz);
-        $this->assertInstanceOf('DateTime', $object->datetime_property);
+        $this->assertInstanceOf(DateTime::class, $object->datetime_property);
         $this->assertSame('2014-01-02 14:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
 
@@ -261,7 +261,7 @@ class PodioObjectTest extends TestCase
         $object = new PodioObject();
         $object->property('datetime_property', 'datetime');
         $object->datetime_property = '2014-01-03 14:00:00';
-        $this->assertInstanceOf('DateTime', $object->datetime_property);
+        $this->assertInstanceOf(DateTime::class, $object->datetime_property);
         $this->assertSame('2014-01-03 14:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
 
@@ -270,14 +270,14 @@ class PodioObjectTest extends TestCase
         $listing = PodioObject::listing([['id' => 1], ['id' => 2]]);
         $this->assertTrue(is_array($listing));
         foreach ($listing as $member) {
-            $this->assertInstanceOf('PodioObject', $member);
+            $this->assertInstanceOf(PodioObject::class, $member);
         }
     }
 
     public function test_can_create_member(): void
     {
         $member = PodioObject::member(['id' => 1]);
-        $this->assertInstanceOf('PodioObject', $member);
+        $this->assertInstanceOf(PodioObject::class, $member);
     }
 
     public function test_can_check_rights(): void

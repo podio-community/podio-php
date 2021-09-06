@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PodioCollection;
 use PodioEmbed;
 use PodioEmbedItemField;
+use PodioFile;
 
 class PodioEmbedItemFieldTest extends TestCase
 {
@@ -41,13 +42,13 @@ class PodioEmbedItemFieldTest extends TestCase
         $this->assertNull($empty_values->values);
 
         // Populated values
-        $this->assertInstanceOf('PodioCollection', $this->object->values);
+        $this->assertInstanceOf(PodioCollection::class, $this->object->values);
         $this->assertCount(3, $this->object->values);
         foreach ($this->object->values as $value) {
-            $this->assertInstanceOf('PodioEmbed', $value);
+            $this->assertInstanceOf(PodioEmbed::class, $value);
             if ($value->files) {
                 foreach ($value->files as $file) {
-                    $this->assertInstanceOf('PodioFile', $file);
+                    $this->assertInstanceOf(PodioFile::class, $file);
                 }
             }
         }

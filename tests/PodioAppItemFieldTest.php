@@ -41,10 +41,10 @@ class PodioAppItemFieldTest extends TestCase
         $this->assertNull($empty_values->values);
 
         // Populated values
-        $this->assertInstanceOf('PodioCollection', $this->object->values);
+        $this->assertInstanceOf(PodioCollection::class, $this->object->values);
         $this->assertCount(3, $this->object->values);
         foreach ($this->object->values as $value) {
-            $this->assertInstanceOf('PodioItem', $value);
+            $this->assertInstanceOf(PodioItem::class, $value);
         }
     }
 

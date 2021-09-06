@@ -84,7 +84,7 @@ class PodioFieldCollectionTest extends TestCase
     {
         $readonly = $this->collection->readonly_fields();
 
-        $this->assertInstanceOf('PodioFieldCollection', $readonly);
+        $this->assertInstanceOf(PodioFieldCollection::class, $readonly);
         $this->assertSame(count($readonly), 1);
     }
 }
