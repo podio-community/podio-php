@@ -18,7 +18,7 @@ class PodioPhoneItemFieldTest extends TestCase
         ]);
     }
 
-    public function test_can_provide_value()
+    public function test_can_provide_value(): void
     {
         // Empty values
         $empty_values = new PodioPhoneItemField();
@@ -31,7 +31,7 @@ class PodioPhoneItemFieldTest extends TestCase
         ], $this->object->values);
     }
 
-    public function test_can_set_value_from_hash()
+    public function test_can_set_value_from_hash(): void
     {
         $this->object->values = [
             ['type' => 'work', 'value' => '0123-999'],
@@ -43,7 +43,7 @@ class PodioPhoneItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
-    public function test_can_humanize_value()
+    public function test_can_humanize_value(): void
     {
         // Empty values
         $empty_values = new PodioPhoneItemField();
@@ -53,7 +53,7 @@ class PodioPhoneItemFieldTest extends TestCase
         $this->assertSame('work: 0123-1233333;other: 0232-123123', $this->object->humanized_value());
     }
 
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_convert_to_api_friendly_json(): void
     {
         // Empty values
         $empty_values = new PodioPhoneItemField();

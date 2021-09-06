@@ -18,7 +18,7 @@ class PodioEmailItemFieldTest extends TestCase
         ]);
     }
 
-    public function test_can_provide_value()
+    public function test_can_provide_value(): void
     {
         // Empty values
         $empty_values = new PodioEmailItemField();
@@ -31,7 +31,7 @@ class PodioEmailItemFieldTest extends TestCase
         ], $this->object->values);
     }
 
-    public function test_can_set_value_from_hash()
+    public function test_can_set_value_from_hash(): void
     {
         $this->object->values = [
             ['type' => 'work', 'value' => 'other@example.com'],
@@ -43,7 +43,7 @@ class PodioEmailItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
-    public function test_can_humanize_value()
+    public function test_can_humanize_value(): void
     {
         // Empty values
         $empty_values = new PodioEmailItemField();
@@ -53,7 +53,7 @@ class PodioEmailItemFieldTest extends TestCase
         $this->assertSame('work: mail@example.com;other: info@example.com', $this->object->humanized_value());
     }
 
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_convert_to_api_friendly_json(): void
     {
         // Empty values
         $empty_values = new PodioEmailItemField();

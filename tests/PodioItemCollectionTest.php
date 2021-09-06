@@ -9,14 +9,14 @@ use PodioObject;
 
 class PodioItemCollectionTest extends TestCase
 {
-    public function test_cannot_add_object()
+    public function test_cannot_add_object(): void
     {
         $this->expectException('PodioDataIntegrityError');
         $collection = new PodioItemCollection();
         $collection[] = new PodioObject();
     }
 
-    public function test_can_add_item()
+    public function test_can_add_item(): void
     {
         $collection = new PodioItemCollection();
         $length = count($collection);

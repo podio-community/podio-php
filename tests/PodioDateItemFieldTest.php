@@ -102,7 +102,7 @@ class PodioDateItemFieldTest extends TestCase
         ]);
     }
 
-    public function test_can_construct_from_simple_value()
+    public function test_can_construct_from_simple_value(): void
     {
         $object = new PodioDateItemField([
             'field_id' => 123,
@@ -118,7 +118,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $object->__attribute('values'));
     }
 
-    public function test_can_provide_values()
+    public function test_can_provide_values(): void
     {
         $this->assertNull($this->empty_values->values);
 
@@ -151,7 +151,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertNull($this->start_date_omitted_end->values['end']);
     }
 
-    public function test_can_provide_start_datetime()
+    public function test_can_provide_start_datetime(): void
     {
         $this->assertNull($this->empty_values->start);
         $this->assertInstanceOf('DateTime', $this->start_date->start);
@@ -162,7 +162,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->start);
     }
 
-    public function test_can_provide_start_date()
+    public function test_can_provide_start_date(): void
     {
         $this->assertNull($this->empty_values->start_date);
         $this->assertInstanceOf('DateTime', $this->start_date->start_date);
@@ -173,7 +173,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->start_date);
     }
 
-    public function test_can_provide_start_time()
+    public function test_can_provide_start_time(): void
     {
         $this->assertNull($this->empty_values->start_time);
         $this->assertNull($this->start_date->start_time);
@@ -184,7 +184,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertSame('14:00:00', $this->start_datetime_end_datetime->start_time->format('H:i:s'));
     }
 
-    public function test_can_provide_end_datetime()
+    public function test_can_provide_end_datetime(): void
     {
         $this->assertNull($this->empty_values->end);
         $this->assertNull($this->start_date->end);
@@ -195,7 +195,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->end);
     }
 
-    public function test_can_provide_end_date()
+    public function test_can_provide_end_date(): void
     {
         $this->assertNull($this->empty_values->end_date);
         $this->assertNull($this->start_date->end_date);
@@ -206,7 +206,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertInstanceOf('DateTime', $this->start_datetime_end_datetime->end_date);
     }
 
-    public function test_can_provide_end_time()
+    public function test_can_provide_end_time(): void
     {
         $this->assertNull($this->empty_values->end_time);
         $this->assertNull($this->start_date->end_time);
@@ -217,7 +217,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertSame('14:00:00', $this->start_datetime_end_datetime->end_time->format('H:i:s'));
     }
 
-    public function test_can_provide_sameday()
+    public function test_can_provide_sameday(): void
     {
         $this->assertTrue($this->empty_values->same_day());
         $this->assertTrue($this->start_date->same_day());
@@ -228,7 +228,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertFalse($this->start_datetime_end_datetime->same_day());
     }
 
-    public function test_can_provide_allday()
+    public function test_can_provide_allday(): void
     {
         $this->assertFalse($this->empty_values->all_day());
         $this->assertTrue($this->start_date->all_day());
@@ -239,7 +239,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertFalse($this->start_datetime_end_datetime->all_day());
     }
 
-    public function test_can_set_value_from_strings()
+    public function test_can_set_value_from_strings(): void
     {
         $object = new PodioDateItemField(['field_id' => 8]);
 
@@ -320,7 +320,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $object->__attribute('values'));
     }
 
-    public function test_can_set_value_from_objects()
+    public function test_can_set_value_from_objects(): void
     {
         $tz = new DateTimeZone('UTC');
         $object = new PodioDateItemField(['field_id' => 8]);
@@ -402,7 +402,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $object->__attribute('values'));
     }
 
-    public function test_can_set_start_from_string()
+    public function test_can_set_start_from_string(): void
     {
         $this->start_date->start = '2012-12-30 14:00:00';
         $this->assertSame([
@@ -415,7 +415,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_set_start_date_from_string()
+    public function test_can_set_start_date_from_string(): void
     {
         $this->start_datetime->start_date = '2012-12-30';
         $this->assertSame([
@@ -428,7 +428,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_datetime->__attribute('values'));
     }
 
-    public function test_can_set_start_time_from_string()
+    public function test_can_set_start_time_from_string(): void
     {
         $this->start_date->start_time = '14:00:00';
         $this->assertSame([
@@ -441,7 +441,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_set_start_from_object()
+    public function test_can_set_start_from_object(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -456,7 +456,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_set_start_from_object_in_timezone()
+    public function test_can_set_start_from_object_in_timezone(): void
     {
         $tz = new DateTimeZone('America/Los_Angeles');
 
@@ -471,7 +471,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_remove_start_time()
+    public function test_can_remove_start_time(): void
     {
         $this->start_datetime->start_time = null;
         $this->assertSame([
@@ -484,7 +484,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_datetime->__attribute('values'));
     }
 
-    public function test_can_remove_start_date()
+    public function test_can_remove_start_date(): void
     {
         $this->start_datetime->start_date = null;
         $this->assertSame([
@@ -497,7 +497,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_datetime->__attribute('values'));
     }
 
-    public function test_can_set_start_date_from_object()
+    public function test_can_set_start_date_from_object(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -512,7 +512,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_set_start_time_from_object()
+    public function test_can_set_start_time_from_object(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -527,7 +527,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_set_end_from_string()
+    public function test_can_set_end_from_string(): void
     {
         $this->start_date->end = '2012-12-30 14:00:00';
         $this->assertSame([
@@ -540,7 +540,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_set_end_date_from_string()
+    public function test_can_set_end_date_from_string(): void
     {
         $this->start_datetime->end_date = '2012-12-31';
         $this->assertSame([
@@ -553,7 +553,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_datetime->__attribute('values'));
     }
 
-    public function test_can_set_end_time_from_string()
+    public function test_can_set_end_time_from_string(): void
     {
         $this->start_datetime->end_time = '15:00:00';
         $this->assertSame([
@@ -566,7 +566,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_datetime->__attribute('values'));
     }
 
-    public function test_can_remove_end_time()
+    public function test_can_remove_end_time(): void
     {
         $this->start_datetime_end_datetime->end_time = null;
         $this->assertSame([
@@ -579,7 +579,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_datetime_end_datetime->__attribute('values'));
     }
 
-    public function test_can_remove_end_date()
+    public function test_can_remove_end_date(): void
     {
         $this->start_datetime_end_datetime->end_date = null;
         $this->assertSame([
@@ -592,7 +592,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_datetime_end_datetime->__attribute('values'));
     }
 
-    public function test_can_set_end_from_object()
+    public function test_can_set_end_from_object(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -607,7 +607,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_set_end_from_object_in_timezone()
+    public function test_can_set_end_from_object_in_timezone(): void
     {
         $tz = new DateTimeZone('America/Los_Angeles');
 
@@ -622,7 +622,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_set_end_date_from_object()
+    public function test_can_set_end_date_from_object(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -637,7 +637,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_date->__attribute('values'));
     }
 
-    public function test_can_set_end_time_from_object()
+    public function test_can_set_end_time_from_object(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -652,7 +652,7 @@ class PodioDateItemFieldTest extends TestCase
         ], $this->start_datetime->__attribute('values'));
     }
 
-    public function test_can_humanize_value()
+    public function test_can_humanize_value(): void
     {
         $this->assertSame('', $this->empty_values->humanized_value());
         $this->assertSame('2011-05-31', $this->start_date->humanized_value());
@@ -663,7 +663,7 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertSame('2011-05-31 14:00 - 2011-06-08 14:00', $this->start_datetime_end_datetime->humanized_value());
     }
 
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_convert_to_api_friendly_json(): void
     {
         $this->assertSame('[]', $this->empty_values->as_json());
         $this->assertSame('{"start_date":"2011-05-31","end_date":null}', $this->start_date->as_json());

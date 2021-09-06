@@ -21,7 +21,7 @@ class PodioAssetItemFieldTest extends TestCase
         ]);
     }
 
-    public function test_can_construct_from_simple_value()
+    public function test_can_construct_from_simple_value(): void
     {
         $object = new PodioAssetItemField([
             'field_id' => 123,
@@ -32,7 +32,7 @@ class PodioAssetItemFieldTest extends TestCase
         ], $object->__attribute('values'));
     }
 
-    public function test_can_provide_value()
+    public function test_can_provide_value(): void
     {
         // Empty values
         $empty_values = new PodioAssetItemField(['field_id' => 1]);
@@ -46,7 +46,7 @@ class PodioAssetItemFieldTest extends TestCase
         }
     }
 
-    public function test_can_set_value_from_object()
+    public function test_can_set_value_from_object(): void
     {
         $this->object->values = new PodioFile(['file_id' => 4, 'name' => 'philosoraptor.jpg']);
         $this->assertSame([
@@ -54,7 +54,7 @@ class PodioAssetItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
-    public function test_can_set_value_from_collection()
+    public function test_can_set_value_from_collection(): void
     {
         $this->object->values = new PodioCollection([new PodioFile(['file_id' => 4, 'name' => 'philosoraptor.jpg'])]);
 
@@ -63,7 +63,7 @@ class PodioAssetItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
-    public function test_can_set_value_from_hash()
+    public function test_can_set_value_from_hash(): void
     {
         $this->object->values = ['file_id' => 4, 'name' => 'philosoraptor.jpg'];
         $this->assertSame([
@@ -71,7 +71,7 @@ class PodioAssetItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
-    public function test_can_set_value_from_array_of_objects()
+    public function test_can_set_value_from_array_of_objects(): void
     {
         $this->object->values = [
             new PodioFile(['file_id' => 4, 'name' => 'philosoraptor.jpg']),
@@ -83,7 +83,7 @@ class PodioAssetItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
-    public function test_can_set_value_from_array_of_hashes()
+    public function test_can_set_value_from_array_of_hashes(): void
     {
         $this->object->values = [
             ['file_id' => 4, 'name' => 'philosoraptor.jpg'],
@@ -95,7 +95,7 @@ class PodioAssetItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
-    public function test_can_humanize_value()
+    public function test_can_humanize_value(): void
     {
         // Empty values
         $empty_values = new PodioAssetItemField(['field_id' => 1]);
@@ -105,7 +105,7 @@ class PodioAssetItemFieldTest extends TestCase
         $this->assertSame('doge.jpg;trollface.jpg;YUNO.jpg', $this->object->humanized_value());
     }
 
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_convert_to_api_friendly_json(): void
     {
         // Empty values
         $empty_values = new PodioAssetItemField(['field_id' => 1]);

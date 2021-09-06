@@ -34,7 +34,7 @@ class PodioObjectTest extends TestCase
         ]);
     }
 
-    public function test_can_construct_from_array()
+    public function test_can_construct_from_array(): void
     {
         $object = new PodioObject();
         $object->property('id', 'integer');
@@ -47,7 +47,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame('FooBar', $object->string_property);
     }
 
-    public function test_can_construct_from_id()
+    public function test_can_construct_from_id(): void
     {
         $object = new PodioObject();
         $object->property('id', 'integer');
@@ -56,7 +56,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame(1, $object->id);
     }
 
-    public function test_can_construct_from_external_id()
+    public function test_can_construct_from_external_id(): void
     {
         $object = new PodioObject();
         $object->property('external_id', 'string');
@@ -65,7 +65,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame('a', $object->external_id);
     }
 
-    public function test_can_construct_one_to_one_relationship()
+    public function test_can_construct_one_to_one_relationship(): void
     {
         $object = new PodioObject();
         $object->has_one('field', 'Object');
@@ -74,7 +74,7 @@ class PodioObjectTest extends TestCase
         $this->assertInstanceOf('PodioObject', $object->field);
     }
 
-    public function test_can_construct_one_to_many_relationship()
+    public function test_can_construct_one_to_many_relationship(): void
     {
         $object = new PodioObject();
         $object->has_many('fields', 'Object');
@@ -86,7 +86,7 @@ class PodioObjectTest extends TestCase
         }
     }
 
-    public function test_can_provide_properties()
+    public function test_can_provide_properties(): void
     {
         $this->assertSame([
             'id' => ['type' => 'integer', 'options' => []],
@@ -102,7 +102,7 @@ class PodioObjectTest extends TestCase
         ], $this->object->properties());
     }
 
-    public function test_can_provide_relationships()
+    public function test_can_provide_relationships(): void
     {
         $this->assertSame([
             'fields' => 'has_many',
@@ -111,7 +111,7 @@ class PodioObjectTest extends TestCase
         ], $this->object->relationships());
     }
 
-    public function test_can_convert_to_json()
+    public function test_can_convert_to_json(): void
     {
         $created_by = new PodioObject();
         $created_by->property('id', 'integer');
@@ -137,20 +137,20 @@ class PodioObjectTest extends TestCase
         $this->assertSame('{"id":1,"external_id":"a","subscribed":true,"date":"2011-05-31","created_on":"2012-12-24 14:00:00","rights":["view","update"],"data":{"item":"value"},"fields":[{"id":3},{"id":4},{"id":5}],"created_by":{"id":4,"name":"Captain Crunch"},"reference_target":{"id":5,"name":"Count Chocula"}}', $this->object->as_json());
     }
 
-    public function test_can_unset_attribute()
+    public function test_can_unset_attribute(): void
     {
         $this->assertSame(1, $this->object->id);
         unset($this->object->id);
         $this->assertNull($this->object->id);
     }
 
-    public function test_can_see_attribute_presence()
+    public function test_can_see_attribute_presence(): void
     {
         $this->assertTrue(isset($this->object->id));
         $this->assertFalse(isset($object->unknown_attribute));
     }
 
-    public function test_can_set_integer_attribute()
+    public function test_can_set_integer_attribute(): void
     {
         $object = new PodioObject();
         $object->property('int_property', 'integer');
@@ -159,7 +159,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame(1, $object->int_property);
     }
 
-    public function test_can_set_boolean_attribute()
+    public function test_can_set_boolean_attribute(): void
     {
         $object = new PodioObject();
         $object->property('bool_property', 'boolean');
@@ -170,7 +170,7 @@ class PodioObjectTest extends TestCase
         $this->assertFalse($object->bool2_property);
     }
 
-    public function test_can_set_string_attribute()
+    public function test_can_set_string_attribute(): void
     {
         $object = new PodioObject();
         $object->property('string_property', 'string');
@@ -179,7 +179,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame('FooBar', $object->string_property);
     }
 
-    public function test_can_set_array_attribute()
+    public function test_can_set_array_attribute(): void
     {
         $object = new PodioObject();
         $object->property('array_property', 'array');
@@ -188,7 +188,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame(['a', 'b', 'c'], $object->array_property);
     }
 
-    public function test_can_set_hash_attribute()
+    public function test_can_set_hash_attribute(): void
     {
         $object = new PodioObject();
         $object->property('hash_property', 'hash');
@@ -197,7 +197,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame(['a' => 'a', 'b' => 'b', 'c' => 'c'], $object->hash_property);
     }
 
-    public function test_can_set_date_attribute_in_constructor()
+    public function test_can_set_date_attribute_in_constructor(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -208,7 +208,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame('2014-01-01', $object->date_property->format('Y-m-d'));
     }
 
-    public function test_can_set_date_attribute_from_datetime()
+    public function test_can_set_date_attribute_from_datetime(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -219,7 +219,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame('2014-01-02', $object->date_property->format('Y-m-d'));
     }
 
-    public function test_can_set_date_attribute_from_string()
+    public function test_can_set_date_attribute_from_string(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -230,7 +230,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame('2014-01-03', $object->date_property->format('Y-m-d'));
     }
 
-    public function test_can_set_datetime_attribute_in_constructor()
+    public function test_can_set_datetime_attribute_in_constructor(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -241,7 +241,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame('2014-01-01 12:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
 
-    public function test_can_set_datetime_attribute_from_datetime()
+    public function test_can_set_datetime_attribute_from_datetime(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -252,7 +252,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame('2014-01-02 14:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
 
-    public function test_can_set_datetime_attribute_from_string()
+    public function test_can_set_datetime_attribute_from_string(): void
     {
         $tz = new DateTimeZone('UTC');
 
@@ -263,7 +263,7 @@ class PodioObjectTest extends TestCase
         $this->assertSame('2014-01-03 14:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
 
-    public function test_can_create_listing()
+    public function test_can_create_listing(): void
     {
         $listing = PodioObject::listing([['id' => 1], ['id' => 2]]);
         $this->assertTrue(is_array($listing));
@@ -272,37 +272,37 @@ class PodioObjectTest extends TestCase
         }
     }
 
-    public function test_can_create_member()
+    public function test_can_create_member(): void
     {
         $member = PodioObject::member(['id' => 1]);
         $this->assertInstanceOf('PodioObject', $member);
     }
 
-    public function test_can_check_rights()
+    public function test_can_check_rights(): void
     {
         $this->assertTrue($this->object->can('view'));
         $this->assertFalse($this->object->can('delete'));
     }
 
-    public function test_can_check_attribute_existence()
+    public function test_can_check_attribute_existence(): void
     {
         $this->assertTrue($this->object->has_attribute('rights'));
         $this->assertFalse($this->object->has_attribute('fields'));
     }
 
-    public function test_can_check_property_existence()
+    public function test_can_check_property_existence(): void
     {
         $this->assertTrue($this->object->has_property('external_id'));
         $this->assertFalse($this->object->has_property('invalid_property_name'));
     }
 
-    public function test_can_check_relationship_existence()
+    public function test_can_check_relationship_existence(): void
     {
         $this->assertTrue($this->object->has_relationship('fields'));
         $this->assertFalse($this->object->has_relationship('external_id'));
     }
 
-    public function test_can_add_child_relationship()
+    public function test_can_add_child_relationship(): void
     {
         $instance = new PodioObject();
         $this->object->add_relationship($instance, 'fields');

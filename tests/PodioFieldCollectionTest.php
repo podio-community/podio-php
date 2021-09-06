@@ -18,25 +18,25 @@ class PodioFieldCollectionTest extends TestCase
         ]);
     }
 
-    public function test_can_get_by_external_id()
+    public function test_can_get_by_external_id(): void
     {
         $field = $this->collection["b"];
         $this->assertSame(2, $field->field_id);
     }
 
-    public function test_can_get_by_external_id_using_get()
+    public function test_can_get_by_external_id_using_get(): void
     {
         $field = $this->collection->get("b");
         $this->assertSame(2, $field->field_id);
     }
 
-    public function test_can_get_by_field_id()
+    public function test_can_get_by_field_id(): void
     {
         $field = $this->collection->get(2);
         $this->assertSame(2, $field->field_id);
     }
 
-    public function test_can_add_field()
+    public function test_can_add_field(): void
     {
         $length = count($this->collection);
         $this->collection[] = new PodioAppField(['field_id' => 4, 'external_id' => 'd']);
@@ -44,13 +44,13 @@ class PodioFieldCollectionTest extends TestCase
         $this->assertCount($length + 1, $this->collection);
     }
 
-    public function test_cannot_add_object()
+    public function test_cannot_add_object(): void
     {
         $this->expectException('PodioDataIntegrityError');
         $this->collection[] = new PodioObject();
     }
 
-    public function test_can_replace_field()
+    public function test_can_replace_field(): void
     {
         $length = count($this->collection);
         $this->collection[] = new PodioAppField(['field_id' => 3, 'external_id' => 'd']);
@@ -59,7 +59,7 @@ class PodioFieldCollectionTest extends TestCase
         $this->assertSame('d', $this->collection->get(3)->external_id);
     }
 
-    public function test_can_remove_field_by_external_id()
+    public function test_can_remove_field_by_external_id(): void
     {
         $length = count($this->collection);
         unset($this->collection["b"]);
@@ -67,18 +67,18 @@ class PodioFieldCollectionTest extends TestCase
         $this->assertCount($length - 1, $this->collection);
     }
 
-    public function test_can_check_existence_by_external_id()
+    public function test_can_check_existence_by_external_id(): void
     {
         $this->assertTrue(isset($this->collection["b"]));
         $this->assertFalse(isset($this->collection["d"]));
     }
 
-    public function test_can_list_external_ids()
+    public function test_can_list_external_ids(): void
     {
         $this->assertSame(["a", "b", "c"], $this->collection->external_ids());
     }
 
-    public function test_can_list_readonly_fields()
+    public function test_can_list_readonly_fields(): void
     {
         $readonly = $this->collection->readonly_fields();
 

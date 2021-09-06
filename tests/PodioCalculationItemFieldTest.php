@@ -38,7 +38,7 @@ class PodioCalculationItemFieldTest extends TestCase
         ]);
     }
 
-    public function test_can_provide_value()
+    public function test_can_provide_value(): void
     {
         $this->assertNull($this->empty_values->values);
         $this->assertSame('1234.5600', $this->object->values);
@@ -53,13 +53,13 @@ class PodioCalculationItemFieldTest extends TestCase
         ], $this->date_value->values);
     }
 
-    public function test_cannot_modify_value()
+    public function test_cannot_modify_value(): void
     {
         $this->object->values = '12.34';
         $this->assertSame([['value' => '1234.5600']], $this->object->__attribute('values'));
     }
 
-    public function test_can_humanize_value()
+    public function test_can_humanize_value(): void
     {
         $this->assertSame('', $this->empty_values->humanized_value());
         $this->assertSame('1234.56', $this->object->humanized_value());
@@ -67,7 +67,7 @@ class PodioCalculationItemFieldTest extends TestCase
         // cannot humanize value for date ($this->date_value)
     }
 
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_convert_to_api_friendly_json(): void
     {
         $this->assertSame('null', $this->empty_values->as_json());
         $this->assertSame('"1234.5600"', $this->object->as_json());

@@ -20,7 +20,7 @@ class PodioLocationItemFieldTest extends TestCase
         $this->empty_values = new PodioLocationItemField(['field_id' => 1]);
     }
 
-    public function test_can_construct_from_simple_value()
+    public function test_can_construct_from_simple_value(): void
     {
         $object = new PodioLocationItemField([
             'field_id' => 123,
@@ -39,7 +39,7 @@ class PodioLocationItemFieldTest extends TestCase
         ], $object->__attribute('values'));
     }
 
-    public function test_can_provide_value()
+    public function test_can_provide_value(): void
     {
         // Empty values
         $this->assertNull($this->empty_values->values);
@@ -52,13 +52,13 @@ class PodioLocationItemFieldTest extends TestCase
         ], $this->object->values);
     }
 
-    public function test_can_provide_text()
+    public function test_can_provide_text(): void
     {
         $this->assertNull($this->empty_values->text);
         $this->assertSame('650 Townsend St., San Francisco, CA 94103', $this->object->text);
     }
 
-    public function test_can_set_value()
+    public function test_can_set_value(): void
     {
         $this->object->values = [
             'value' => 'Vesterbrogade 34, 1620 Copenhagen V, Denmark',
@@ -74,7 +74,7 @@ class PodioLocationItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
-    public function test_can_set_text()
+    public function test_can_set_text(): void
     {
         $this->object->text = 'Vesterbrogade 34, 1620 Copenhagen V, Denmark';
         $this->assertSame([
@@ -86,7 +86,7 @@ class PodioLocationItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
-    public function test_can_humanize_value()
+    public function test_can_humanize_value(): void
     {
         // Empty values
         $this->assertSame('', $this->empty_values->humanized_value());
@@ -95,7 +95,7 @@ class PodioLocationItemFieldTest extends TestCase
         $this->assertSame('650 Townsend St., San Francisco, CA 94103', $this->object->humanized_value());
     }
 
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_convert_to_api_friendly_json(): void
     {
         // Empty values
         $this->assertSame('null', $this->empty_values->as_json());

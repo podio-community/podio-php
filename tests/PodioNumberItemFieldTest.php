@@ -24,7 +24,7 @@ class PodioNumberItemFieldTest extends TestCase
         ]);
     }
 
-    public function test_can_construct_from_simple_value()
+    public function test_can_construct_from_simple_value(): void
     {
         $object = new PodioNumberItemField([
             'field_id' => 123,
@@ -33,14 +33,14 @@ class PodioNumberItemFieldTest extends TestCase
         $this->assertSame('12.34', $object->values);
     }
 
-    public function test_can_provide_value()
+    public function test_can_provide_value(): void
     {
         $this->assertNull($this->empty_values->values);
         $this->assertSame('1234.5600', $this->object->values);
         $this->assertSame('0', $this->zero_value->values);
     }
 
-    public function test_can_set_value()
+    public function test_can_set_value(): void
     {
         $this->object->values = '12.34';
         $this->assertSame([['value' => '12.34']], $this->object->__attribute('values'));
@@ -49,14 +49,14 @@ class PodioNumberItemFieldTest extends TestCase
         $this->assertSame('0', $this->zero_value->values);
     }
 
-    public function test_can_humanize_value()
+    public function test_can_humanize_value(): void
     {
         $this->assertSame('', $this->empty_values->humanized_value());
         $this->assertSame('1234.56', $this->object->humanized_value());
         $this->assertSame('0', $this->zero_value->humanized_value());
     }
 
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_convert_to_api_friendly_json(): void
     {
         $this->assertSame('null', $this->empty_values->as_json());
         $this->assertSame('"1234.5600"', $this->object->as_json());

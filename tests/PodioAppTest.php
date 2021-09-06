@@ -7,7 +7,7 @@ use PodioApp;
 
 class PodioAppTest extends TestCase
 {
-    public function test_performance_large_app()
+    public function test_performance_large_app(): void
     {
         $start = time();
         $appString = file_get_contents(__DIR__.'/large-app.json');

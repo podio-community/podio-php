@@ -21,7 +21,7 @@ class PodioItemFieldCollectionTest extends TestCase
         ]);
     }
 
-    public function test_can_construct_with_api_values()
+    public function test_can_construct_with_api_values(): void
     {
         $collection = new PodioItemFieldCollection([
             ['field_id' => 1, 'type' => 'text', 'values' => [['value' => 'FooBar']]],
@@ -31,7 +31,7 @@ class PodioItemFieldCollectionTest extends TestCase
         $this->assertSame('FooBar', $collection[0]->values);
     }
 
-    public function test_can_construct_from_array()
+    public function test_can_construct_from_array(): void
     {
         $collection = new PodioItemFieldCollection([
             ['field_id' => 1, 'type' => 'text', 'values' => 'FooBar'],
@@ -45,7 +45,7 @@ class PodioItemFieldCollectionTest extends TestCase
         $this->assertSame('FooBar', $collection[0]->values);
     }
 
-    public function test_can_construct_from_objects()
+    public function test_can_construct_from_objects(): void
     {
         $collection = new PodioItemFieldCollection([
             new PodioTextItemField(['field_id' => 1, 'external_id' => 'a', 'type' => 'text', 'values' => 'FooBar']),
@@ -57,7 +57,7 @@ class PodioItemFieldCollectionTest extends TestCase
         $this->assertSame('FooBar', $collection[0]->values);
     }
 
-    public function test_can_add_unknown_type()
+    public function test_can_add_unknown_type(): void
     {
         $collection = new PodioItemFieldCollection([
             ['field_id' => 1, 'type' => 'invalid_field_type'],
@@ -67,7 +67,7 @@ class PodioItemFieldCollectionTest extends TestCase
         $this->assertSame('PodioItemField', get_class($collection[0]));
     }
 
-    public function test_can_add_field()
+    public function test_can_add_field(): void
     {
         $length = count($this->collection);
         $this->collection[] = new PodioTextItemField(['field_id' => 4, 'external_id' => 'd']);
@@ -75,7 +75,7 @@ class PodioItemFieldCollectionTest extends TestCase
         $this->assertCount($length + 1, $this->collection);
     }
 
-    public function test_cannot_add_app_field()
+    public function test_cannot_add_app_field(): void
     {
         $this->expectException('PodioDataIntegrityError');
         $this->collection[] = new PodioAppField();

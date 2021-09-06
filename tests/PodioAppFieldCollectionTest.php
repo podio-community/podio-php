@@ -18,7 +18,7 @@ class PodioAppFieldCollectionTest extends TestCase
         ]);
     }
 
-    public function test_can_construct_from_array()
+    public function test_can_construct_from_array(): void
     {
         $collection = new PodioAppFieldCollection([
             ['field_id' => 1],
@@ -28,7 +28,7 @@ class PodioAppFieldCollectionTest extends TestCase
         $this->assertCount(3, $collection);
     }
 
-    public function test_can_construct_from_objects()
+    public function test_can_construct_from_objects(): void
     {
         $collection = new PodioAppFieldCollection([
             new PodioAppField(['field_id' => 1, 'external_id' => 'a', 'type' => 'text']),
@@ -39,7 +39,7 @@ class PodioAppFieldCollectionTest extends TestCase
         $this->assertCount(3, $collection);
     }
 
-    public function test_can_add_field()
+    public function test_can_add_field(): void
     {
         $length = count($this->collection);
         $this->collection[] = new PodioAppField(['field_id' => 4, 'external_id' => 'd']);
@@ -47,7 +47,7 @@ class PodioAppFieldCollectionTest extends TestCase
         $this->assertCount($length + 1, $this->collection);
     }
 
-    public function test_cannot_add_item_field()
+    public function test_cannot_add_item_field(): void
     {
         $this->expectException('PodioDataIntegrityError');
         $this->collection[] = new PodioItemField();
