@@ -22,16 +22,16 @@ class PodioObjectTest extends TestCase
         $this->object->property('data', 'hash');
         $this->object->has_many('fields', 'Object');
         $this->object->has_one('created_by', 'Object');
-        $this->object->has_one('reference_with_target', 'Object', array('json_target' => 'reference_target'));
-        $this->object->init(array(
-      'id' => 1,
-      'external_id' => 'a',
-      'rights' => array('view', 'update'),
-      'subscribed' => true,
-      'date' => '2011-05-31',
-      'created_on' => '2012-12-24 14:00:00',
-      'data' => array('item' => 'value')
-    ));
+        $this->object->has_one('reference_with_target', 'Object', ['json_target' => 'reference_target']);
+        $this->object->init([
+            'id' => 1,
+            'external_id' => 'a',
+            'rights' => ['view', 'update'],
+            'subscribed' => true,
+            'date' => '2011-05-31',
+            'created_on' => '2012-12-24 14:00:00',
+            'data' => ['item' => 'value'],
+        ]);
     }
 
     public function test_can_construct_from_array()
@@ -40,7 +40,7 @@ class PodioObjectTest extends TestCase
         $object->property('id', 'integer');
         $object->property('external_id', 'string');
         $object->property('string_property', 'string');
-        $object->init(array('id' => 1, 'external_id' => 'a', 'string_property' => 'FooBar'));
+        $object->init(['id' => 1, 'external_id' => 'a', 'string_property' => 'FooBar']);
 
         $this->assertEquals(1, $object->id);
         $this->assertEquals('a', $object->external_id);
@@ -69,7 +69,7 @@ class PodioObjectTest extends TestCase
     {
         $object = new PodioObject();
         $object->has_one('field', 'Object');
-        $object->init(array('field' => array('id' => 1)));
+        $object->init(['field' => ['id' => 1]]);
 
         $this->assertInstanceOf('PodioObject', $object->field);
     }
@@ -78,7 +78,7 @@ class PodioObjectTest extends TestCase
     {
         $object = new PodioObject();
         $object->has_many('fields', 'Object');
-        $object->init(array('fields' => array(array('id' => 1), array('id' => 1))));
+        $object->init(['fields' => [['id' => 1], ['id' => 1]]]);
 
         $this->assertInstanceOf('PodioCollection', $object->fields);
         foreach ($object->fields as $member) {
@@ -88,27 +88,27 @@ class PodioObjectTest extends TestCase
 
     public function test_can_provide_properties()
     {
-        $this->assertEquals(array(
-      'id' => array('type' => 'integer', 'options' => array()),
-      'external_id' => array('type' => 'string', 'options' => array()),
-      'subscribed' => array('type' => 'boolean', 'options' => array()),
-      'date' => array('type' => 'date', 'options' => array()),
-      'created_on' => array('type' => 'datetime', 'options' => array()),
-      'rights' => array('type' => 'array', 'options' => array()),
-      'data' => array('type' => 'hash', 'options' => array()),
-      'fields' => array('type' => 'Object', 'options' => array()),
-      'created_by' => array('type' => 'Object', 'options' => array()),
-      'reference_with_target' => array('type' => 'Object', 'options' => array('json_target' => 'reference_target')),
-    ), $this->object->properties());
+        $this->assertEquals([
+            'id' => ['type' => 'integer', 'options' => []],
+            'external_id' => ['type' => 'string', 'options' => []],
+            'subscribed' => ['type' => 'boolean', 'options' => []],
+            'date' => ['type' => 'date', 'options' => []],
+            'created_on' => ['type' => 'datetime', 'options' => []],
+            'rights' => ['type' => 'array', 'options' => []],
+            'data' => ['type' => 'hash', 'options' => []],
+            'fields' => ['type' => 'Object', 'options' => []],
+            'created_by' => ['type' => 'Object', 'options' => []],
+            'reference_with_target' => ['type' => 'Object', 'options' => ['json_target' => 'reference_target']],
+        ], $this->object->properties());
     }
 
     public function test_can_provide_relationships()
     {
-        $this->assertEquals(array(
-      'fields' => 'has_many',
-      'created_by' => 'has_one',
-      'reference_with_target' => 'has_one'
-    ), $this->object->relationships());
+        $this->assertEquals([
+            'fields' => 'has_many',
+            'created_by' => 'has_one',
+            'reference_with_target' => 'has_one',
+        ], $this->object->relationships());
     }
 
     public function test_can_convert_to_json()
@@ -116,20 +116,20 @@ class PodioObjectTest extends TestCase
         $created_by = new PodioObject();
         $created_by->property('id', 'integer');
         $created_by->property('name', 'string');
-        $created_by->init(array('id' => 4, 'name' => 'Captain Crunch'));
+        $created_by->init(['id' => 4, 'name' => 'Captain Crunch']);
         $this->object->created_by = $created_by;
 
         $reference_with_target = new PodioObject();
         $reference_with_target->property('id', 'integer');
         $reference_with_target->property('name', 'string');
-        $reference_with_target->init(array('id' => 5, 'name' => 'Count Chocula'));
+        $reference_with_target->init(['id' => 5, 'name' => 'Count Chocula']);
         $this->object->reference_with_target = $reference_with_target;
 
         $collection = new PodioCollection();
-        for ($i=0;$i<3;$i++) {
+        for ($i = 0; $i < 3; $i++) {
             $field = new PodioObject();
             $field->property('id', 'integer');
-            $field->init(array('id' => ($i+3)));
+            $field->init(['id' => ($i + 3)]);
             $collection[] = $field;
         }
         $this->object->fields = $collection;
@@ -154,7 +154,7 @@ class PodioObjectTest extends TestCase
     {
         $object = new PodioObject();
         $object->property('int_property', 'integer');
-        $object->init(array('int_property' => 1));
+        $object->init(['int_property' => 1]);
 
         $this->assertEquals(1, $object->int_property);
     }
@@ -164,7 +164,7 @@ class PodioObjectTest extends TestCase
         $object = new PodioObject();
         $object->property('bool_property', 'boolean');
         $object->property('bool2_property', 'boolean');
-        $object->init(array('bool_property' => true, 'bool2_property' => false));
+        $object->init(['bool_property' => true, 'bool2_property' => false]);
 
         $this->assertTrue($object->bool_property);
         $this->assertFalse($object->bool2_property);
@@ -174,7 +174,7 @@ class PodioObjectTest extends TestCase
     {
         $object = new PodioObject();
         $object->property('string_property', 'string');
-        $object->init(array('string_property' => 'FooBar'));
+        $object->init(['string_property' => 'FooBar']);
 
         $this->assertEquals('FooBar', $object->string_property);
     }
@@ -183,18 +183,18 @@ class PodioObjectTest extends TestCase
     {
         $object = new PodioObject();
         $object->property('array_property', 'array');
-        $object->init(array('array_property' => array('a', 'b', 'c')));
+        $object->init(['array_property' => ['a', 'b', 'c']]);
 
-        $this->assertEquals(array('a', 'b', 'c'), $object->array_property);
+        $this->assertEquals(['a', 'b', 'c'], $object->array_property);
     }
 
     public function test_can_set_hash_attribute()
     {
         $object = new PodioObject();
         $object->property('hash_property', 'hash');
-        $object->init(array('hash_property' => array('a' => 'a', 'b' => 'b', 'c' => 'c')));
+        $object->init(['hash_property' => ['a' => 'a', 'b' => 'b', 'c' => 'c']]);
 
-        $this->assertEquals(array('a' => 'a', 'b' => 'b', 'c' => 'c'), $object->hash_property);
+        $this->assertEquals(['a' => 'a', 'b' => 'b', 'c' => 'c'], $object->hash_property);
     }
 
     public function test_can_set_date_attribute_in_constructor()
@@ -203,7 +203,7 @@ class PodioObjectTest extends TestCase
 
         $object = new PodioObject();
         $object->property('date_property', 'date');
-        $object->init(array('date_property' => new DateTime('2014-01-01 12:00:00', $tz)));
+        $object->init(['date_property' => new DateTime('2014-01-01 12:00:00', $tz)]);
         $this->assertInstanceOf('DateTime', $object->date_property);
         $this->assertEquals('2014-01-01', $object->date_property->format('Y-m-d'));
     }
@@ -236,7 +236,7 @@ class PodioObjectTest extends TestCase
 
         $object = new PodioObject();
         $object->property('datetime_property', 'datetime');
-        $object->init(array('datetime_property' => new DateTime('2014-01-01 12:00:00', $tz)));
+        $object->init(['datetime_property' => new DateTime('2014-01-01 12:00:00', $tz)]);
         $this->assertInstanceOf('DateTime', $object->datetime_property);
         $this->assertEquals('2014-01-01 12:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
@@ -265,7 +265,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_create_listing()
     {
-        $listing = PodioObject::listing(array(array('id' => 1), array('id' => 2)));
+        $listing = PodioObject::listing([['id' => 1], ['id' => 2]]);
         $this->assertTrue(is_array($listing));
         foreach ($listing as $member) {
             $this->assertInstanceOf('PodioObject', $member);
@@ -274,7 +274,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_create_member()
     {
-        $member = PodioObject::member(array('id' => 1));
+        $member = PodioObject::member(['id' => 1]);
         $this->assertInstanceOf('PodioObject', $member);
     }
 

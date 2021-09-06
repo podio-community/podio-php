@@ -9,13 +9,13 @@ class PodioEmailItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->object = new PodioEmailItemField(array(
-      '__api_values' => true,
-      'values' => array(
-        array('type' => 'work', 'value' => 'mail@example.com'),
-        array('type' => 'other', 'value' => 'info@example.com')
-      )
-    ));
+        $this->object = new PodioEmailItemField([
+            '__api_values' => true,
+            'values' => [
+                ['type' => 'work', 'value' => 'mail@example.com'],
+                ['type' => 'other', 'value' => 'info@example.com'],
+            ],
+        ]);
     }
 
     public function test_can_provide_value()
@@ -25,24 +25,23 @@ class PodioEmailItemFieldTest extends TestCase
         $this->assertNull($empty_values->values);
 
         // Populated values
-        $this->assertEquals(array(
-        array('type' => 'work', 'value' => 'mail@example.com'),
-        array('type' => 'other', 'value' => 'info@example.com')
-      ), $this->object->values);
+        $this->assertEquals([
+            ['type' => 'work', 'value' => 'mail@example.com'],
+            ['type' => 'other', 'value' => 'info@example.com'],
+        ], $this->object->values);
     }
 
     public function test_can_set_value_from_hash()
     {
-        $this->object->values = array(
-      array('type' => 'work', 'value' => 'other@example.com'),
-      array('type' => 'other', 'value' => '42@example.com')
-    );
-        $this->assertEquals(array(
-      array('type' => 'work', 'value' => 'other@example.com'),
-      array('type' => 'other', 'value' => '42@example.com')
-    ), $this->object->__attribute('values'));
+        $this->object->values = [
+            ['type' => 'work', 'value' => 'other@example.com'],
+            ['type' => 'other', 'value' => '42@example.com'],
+        ];
+        $this->assertEquals([
+            ['type' => 'work', 'value' => 'other@example.com'],
+            ['type' => 'other', 'value' => '42@example.com'],
+        ], $this->object->__attribute('values'));
     }
-
 
     public function test_can_humanize_value()
     {

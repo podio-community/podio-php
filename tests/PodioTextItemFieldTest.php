@@ -9,22 +9,22 @@ class PodioTextItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->object = new PodioTextItemField(array(
-      '__api_values' => true,
-      'field_id' => 123,
-      'values' => array(
-        array('value' => 'FooBar')
-      )
-    ));
-        $this->empty_values = new PodioTextItemField(array('field_id' => 1));
+        $this->object = new PodioTextItemField([
+            '__api_values' => true,
+            'field_id' => 123,
+            'values' => [
+                ['value' => 'FooBar'],
+            ],
+        ]);
+        $this->empty_values = new PodioTextItemField(['field_id' => 1]);
     }
 
     public function test_can_construct_from_simple_value()
     {
-        $object = new PodioTextItemField(array(
-      'field_id' => 123,
-      'values' => 'FooBar'
-    ));
+        $object = new PodioTextItemField([
+            'field_id' => 123,
+            'values' => 'FooBar',
+        ]);
         $this->assertEquals('FooBar', $object->values);
     }
 
@@ -37,7 +37,7 @@ class PodioTextItemFieldTest extends TestCase
     public function test_can_set_value()
     {
         $this->object->values = 'Baz';
-        $this->assertEquals(array(array('value' => 'Baz')), $this->object->__attribute('values'));
+        $this->assertEquals([['value' => 'Baz']], $this->object->__attribute('values'));
     }
 
     public function test_can_humanize_value()
@@ -46,7 +46,7 @@ class PodioTextItemFieldTest extends TestCase
         $this->assertEquals('', $this->empty_values->humanized_value());
 
         // HTML content
-        $html_values = new PodioTextItemField(array('field_id' => 1));
+        $html_values = new PodioTextItemField(['field_id' => 1]);
         $html_values->values = '<p>FooBar</p>';
         $this->assertEquals('FooBar', $html_values->humanized_value());
 

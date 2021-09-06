@@ -9,24 +9,34 @@ class PodioLocationItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->object = new PodioLocationItemField(array(
-      '__api_values' => true,
-      'field_id' => 123,
-      'values' => array(
-        array('value' => '650 Townsend St., San Francisco, CA 94103', 'lat' => 37.7710325, 'lng' => -122.4033069),
-      )
-    ));
+        $this->object = new PodioLocationItemField([
+            '__api_values' => true,
+            'field_id' => 123,
+            'values' => [
+                ['value' => '650 Townsend St., San Francisco, CA 94103', 'lat' => 37.7710325, 'lng' => -122.4033069],
+            ],
+        ]);
 
-        $this->empty_values = new PodioLocationItemField(array('field_id' => 1));
+        $this->empty_values = new PodioLocationItemField(['field_id' => 1]);
     }
 
     public function test_can_construct_from_simple_value()
     {
-        $object = new PodioLocationItemField(array(
-      'field_id' => 123,
-      'values' => array('value' => '650 Townsend St., San Francisco, CA 94103', 'lat' => 37.7710325, 'lng' => -122.4033069)
-    ));
-        $this->assertEquals(array(array('value' => '650 Townsend St., San Francisco, CA 94103', 'lat' => 37.7710325, 'lng' => -122.4033069)), $object->__attribute('values'));
+        $object = new PodioLocationItemField([
+            'field_id' => 123,
+            'values' => [
+                'value' => '650 Townsend St., San Francisco, CA 94103',
+                'lat' => 37.7710325,
+                'lng' => -122.4033069,
+            ],
+        ]);
+        $this->assertEquals([
+            [
+                'value' => '650 Townsend St., San Francisco, CA 94103',
+                'lat' => 37.7710325,
+                'lng' => -122.4033069,
+            ],
+        ], $object->__attribute('values'));
     }
 
     public function test_can_provide_value()
@@ -35,7 +45,11 @@ class PodioLocationItemFieldTest extends TestCase
         $this->assertNull($this->empty_values->values);
 
         // Populated values
-        $this->assertEquals(array('value' => '650 Townsend St., San Francisco, CA 94103', 'lat' => 37.7710325, 'lng' => -122.4033069), $this->object->values);
+        $this->assertEquals([
+            'value' => '650 Townsend St., San Francisco, CA 94103',
+            'lat' => 37.7710325,
+            'lng' => -122.4033069,
+        ], $this->object->values);
     }
 
     public function test_can_provide_text()
@@ -46,14 +60,30 @@ class PodioLocationItemFieldTest extends TestCase
 
     public function test_can_set_value()
     {
-        $this->object->values = array('value' => 'Vesterbrogade 34, 1620 Copenhagen V, Denmark', 'lat' => 55.6725581, 'lng' => 12.5564512);
-        $this->assertEquals(array(array('value' => 'Vesterbrogade 34, 1620 Copenhagen V, Denmark', 'lat' => 55.6725581, 'lng' => 12.5564512)), $this->object->__attribute('values'));
+        $this->object->values = [
+            'value' => 'Vesterbrogade 34, 1620 Copenhagen V, Denmark',
+            'lat' => 55.6725581,
+            'lng' => 12.5564512,
+        ];
+        $this->assertEquals([
+            [
+                'value' => 'Vesterbrogade 34, 1620 Copenhagen V, Denmark',
+                'lat' => 55.6725581,
+                'lng' => 12.5564512,
+            ],
+        ], $this->object->__attribute('values'));
     }
 
     public function test_can_set_text()
     {
         $this->object->text = 'Vesterbrogade 34, 1620 Copenhagen V, Denmark';
-        $this->assertEquals(array(array('value' => 'Vesterbrogade 34, 1620 Copenhagen V, Denmark', 'lat' => 37.7710325, 'lng' => -122.4033069)), $this->object->__attribute('values'));
+        $this->assertEquals([
+            [
+                'value' => 'Vesterbrogade 34, 1620 Copenhagen V, Denmark',
+                'lat' => 37.7710325,
+                'lng' => -122.4033069,
+            ],
+        ], $this->object->__attribute('values'));
     }
 
     public function test_can_humanize_value()

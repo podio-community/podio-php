@@ -11,11 +11,11 @@ class PodioFieldCollectionTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->collection = new PodioFieldCollection(array(
-      new PodioAppField(array('field_id' => 1, 'external_id' => 'a', 'type' => 'text')),
-      new PodioAppField(array('field_id' => 2, 'external_id' => 'b', 'type' => 'number')),
-      new PodioAppField(array('field_id' => 3, 'external_id' => 'c', 'type' => 'calculation')),
-    ));
+        $this->collection = new PodioFieldCollection([
+            new PodioAppField(['field_id' => 1, 'external_id' => 'a', 'type' => 'text']),
+            new PodioAppField(['field_id' => 2, 'external_id' => 'b', 'type' => 'number']),
+            new PodioAppField(['field_id' => 3, 'external_id' => 'c', 'type' => 'calculation']),
+        ]);
     }
 
     public function test_can_get_by_external_id()
@@ -39,9 +39,9 @@ class PodioFieldCollectionTest extends TestCase
     public function test_can_add_field()
     {
         $length = count($this->collection);
-        $this->collection[] = new PodioAppField(array('field_id' => 4, 'external_id' => 'd'));
+        $this->collection[] = new PodioAppField(['field_id' => 4, 'external_id' => 'd']);
 
-        $this->assertEquals($length+1, count($this->collection));
+        $this->assertEquals($length + 1, count($this->collection));
     }
 
     public function test_cannot_add_object()
@@ -53,7 +53,7 @@ class PodioFieldCollectionTest extends TestCase
     public function test_can_replace_field()
     {
         $length = count($this->collection);
-        $this->collection[] = new PodioAppField(array('field_id' => 3, 'external_id' => 'd'));
+        $this->collection[] = new PodioAppField(['field_id' => 3, 'external_id' => 'd']);
 
         $this->assertEquals($length, count($this->collection));
         $this->assertEquals('d', $this->collection->get(3)->external_id);
@@ -64,7 +64,7 @@ class PodioFieldCollectionTest extends TestCase
         $length = count($this->collection);
         unset($this->collection["b"]);
 
-        $this->assertEquals($length-1, count($this->collection));
+        $this->assertEquals($length - 1, count($this->collection));
     }
 
     public function test_can_check_existence_by_external_id()
@@ -75,7 +75,7 @@ class PodioFieldCollectionTest extends TestCase
 
     public function test_can_list_external_ids()
     {
-        $this->assertEquals(array("a", "b", "c"), $this->collection->external_ids());
+        $this->assertEquals(["a", "b", "c"], $this->collection->external_ids());
     }
 
     public function test_can_list_readonly_fields()

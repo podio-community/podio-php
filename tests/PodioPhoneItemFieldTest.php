@@ -9,13 +9,13 @@ class PodioPhoneItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->object = new PodioPhoneItemField(array(
-      '__api_values' => true,
-      'values' => array(
-        array('type' => 'work', 'value' => '0123-1233333'),
-        array('type' => 'other', 'value' => '0232-123123')
-      )
-    ));
+        $this->object = new PodioPhoneItemField([
+            '__api_values' => true,
+            'values' => [
+                ['type' => 'work', 'value' => '0123-1233333'],
+                ['type' => 'other', 'value' => '0232-123123'],
+            ],
+        ]);
     }
 
     public function test_can_provide_value()
@@ -25,24 +25,23 @@ class PodioPhoneItemFieldTest extends TestCase
         $this->assertNull($empty_values->values);
 
         // Populated values
-        $this->assertEquals(array(
-        array('type' => 'work', 'value' => '0123-1233333'),
-        array('type' => 'other', 'value' => '0232-123123')
-      ), $this->object->values);
+        $this->assertEquals([
+            ['type' => 'work', 'value' => '0123-1233333'],
+            ['type' => 'other', 'value' => '0232-123123'],
+        ], $this->object->values);
     }
 
     public function test_can_set_value_from_hash()
     {
-        $this->object->values = array(
-      array('type' => 'work', 'value' => '0123-999'),
-      array('type' => 'other', 'value' => '0232-999')
-    );
-        $this->assertEquals(array(
-      array('type' => 'work', 'value' => '0123-999'),
-      array('type' => 'other', 'value' => '0232-999')
-    ), $this->object->__attribute('values'));
+        $this->object->values = [
+            ['type' => 'work', 'value' => '0123-999'],
+            ['type' => 'other', 'value' => '0232-999'],
+        ];
+        $this->assertEquals([
+            ['type' => 'work', 'value' => '0123-999'],
+            ['type' => 'other', 'value' => '0232-999'],
+        ], $this->object->__attribute('values'));
     }
-
 
     public function test_can_humanize_value()
     {

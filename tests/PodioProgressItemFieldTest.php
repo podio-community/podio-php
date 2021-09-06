@@ -9,23 +9,27 @@ class PodioProgressItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->object = new PodioProgressItemField(array(
-      '__api_values' => true,
-      'field_id' => 123,
-      'values' => array(
-        array('value' => 55)
-      )
-    ));
-        $this->empty_values = new PodioProgressItemField(array('field_id' => 1));
-        $this->zero_value = new PodioProgressItemField(array('__api_values' => true, 'field_id' => 2, 'values' => array(array('value' => 0))));
+        $this->object = new PodioProgressItemField([
+            '__api_values' => true,
+            'field_id' => 123,
+            'values' => [
+                ['value' => 55],
+            ],
+        ]);
+        $this->empty_values = new PodioProgressItemField(['field_id' => 1]);
+        $this->zero_value = new PodioProgressItemField([
+            '__api_values' => true,
+            'field_id' => 2,
+            'values' => [['value' => 0]],
+        ]);
     }
 
     public function test_can_construct_from_simple_value()
     {
-        $object = new PodioProgressItemField(array(
-      'field_id' => 123,
-      'values' => 75
-    ));
+        $object = new PodioProgressItemField([
+            'field_id' => 123,
+            'values' => 75,
+        ]);
         $this->assertEquals(75, $object->values);
     }
 
@@ -39,7 +43,7 @@ class PodioProgressItemFieldTest extends TestCase
     public function test_can_set_value()
     {
         $this->object->values = 75;
-        $this->assertEquals(array(array('value' => 75)), $this->object->__attribute('values'));
+        $this->assertEquals([['value' => 75]], $this->object->__attribute('values'));
 
         $this->object->values = 0;
         $this->assertEquals(0, $this->zero_value->values);

@@ -18,15 +18,15 @@ class PodioCollectionTest extends TestCase
     {
         $this->collection = new PodioCollection();
 
-        $external_ids = array('a', 'b', 'c');
-        for ($i=1; $i<4; $i++) {
+        $external_ids = ['a', 'b', 'c'];
+        for ($i = 1; $i < 4; $i++) {
             $item = new PodioItem();
             $item->property('id', 'integer');
             $item->property('external_id', 'string');
             $item->init();
 
             $item->id = $i;
-            $item->external_id = $external_ids[$i-1];
+            $item->external_id = $external_ids[$i - 1];
 
             $this->collection[] = $item;
         }
@@ -40,7 +40,7 @@ class PodioCollectionTest extends TestCase
 
     public function test_can_iterate()
     {
-        $checklist = array(1, 2, 3);
+        $checklist = [1, 2, 3];
         foreach ($this->collection as $offset => $item) {
             $this->assertEquals($checklist[$offset], $item->id);
         }
@@ -68,7 +68,7 @@ class PodioCollectionTest extends TestCase
         $length = count($this->collection);
         $this->collection[] = new PodioObject();
 
-        $this->assertEquals($length+1, count($this->collection));
+        $this->assertEquals($length + 1, count($this->collection));
     }
 
     public function test_can_remove_by_offset()

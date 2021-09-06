@@ -11,31 +11,31 @@ class PodioContactItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->object = new PodioContactItemField(array(
-      '__api_values' => true,
-      'values' => array(
-        array('value' => array('profile_id' => 1, 'name' => 'Snap')),
-        array('value' => array('profile_id' => 2, 'name' => 'Crackle')),
-        array('value' => array('profile_id' => 3, 'name' => 'Pop')),
-      )
-    ));
+        $this->object = new PodioContactItemField([
+            '__api_values' => true,
+            'values' => [
+                ['value' => ['profile_id' => 1, 'name' => 'Snap']],
+                ['value' => ['profile_id' => 2, 'name' => 'Crackle']],
+                ['value' => ['profile_id' => 3, 'name' => 'Pop']],
+            ],
+        ]);
     }
 
     public function test_can_construct_from_simple_value()
     {
-        $object = new PodioContactItemField(array(
-      'field_id' => 123,
-      'values' => array('profile_id' => 4, 'name' => 'Captain Crunch')
-    ));
-        $this->assertEquals(array(
-      array('value' => array('profile_id' => 4, 'name' => 'Captain Crunch')),
-    ), $object->__attribute('values'));
+        $object = new PodioContactItemField([
+            'field_id' => 123,
+            'values' => ['profile_id' => 4, 'name' => 'Captain Crunch'],
+        ]);
+        $this->assertEquals([
+            ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
+        ], $object->__attribute('values'));
     }
 
     public function test_can_provide_value()
     {
         // Empty values
-        $empty_values = new PodioContactItemField(array('field_id' => 1));
+        $empty_values = new PodioContactItemField(['field_id' => 1]);
         $this->assertNull($empty_values->values);
 
         // Populated values
@@ -48,57 +48,62 @@ class PodioContactItemFieldTest extends TestCase
 
     public function test_can_set_value_from_object()
     {
-        $this->object->values = new PodioContact(array('profile_id' => 4, 'name' => 'Captain Crunch'));
-        $this->assertEquals(array(
-      array('value' => array('profile_id' => 4, 'name' => 'Captain Crunch'))
-    ), $this->object->__attribute('values'));
+        $this->object->values = new PodioContact(['profile_id' => 4, 'name' => 'Captain Crunch']);
+        $this->assertEquals([
+            ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
+        ], $this->object->__attribute('values'));
     }
 
     public function test_can_set_value_from_collection()
     {
-        $this->object->values = new PodioCollection(array(new PodioContact(array('profile_id' => 4, 'name' => 'Captain Crunch'))));
+        $this->object->values = new PodioCollection([
+            new PodioContact([
+                'profile_id' => 4,
+                'name' => 'Captain Crunch',
+            ]),
+        ]);
 
-        $this->assertEquals(array(
-      array('value' => array('profile_id' => 4, 'name' => 'Captain Crunch'))
-    ), $this->object->__attribute('values'));
+        $this->assertEquals([
+            ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
+        ], $this->object->__attribute('values'));
     }
 
     public function test_can_set_value_from_hash()
     {
-        $this->object->values = array('profile_id' => 4, 'name' => 'Captain Crunch');
-        $this->assertEquals(array(
-      array('value' => array('profile_id' => 4, 'name' => 'Captain Crunch')),
-    ), $this->object->__attribute('values'));
+        $this->object->values = ['profile_id' => 4, 'name' => 'Captain Crunch'];
+        $this->assertEquals([
+            ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
+        ], $this->object->__attribute('values'));
     }
 
     public function test_can_set_value_from_array_of_objects()
     {
-        $this->object->values = array(
-      new PodioContact(array('profile_id' => 4, 'name' => 'Captain Crunch')),
-      new PodioContact(array('profile_id' => 5, 'name' => 'Count Chocula'))
-    );
-        $this->assertEquals(array(
-      array('value' => array('profile_id' => 4, 'name' => 'Captain Crunch')),
-      array('value' => array('profile_id' => 5, 'name' => 'Count Chocula')),
-    ), $this->object->__attribute('values'));
+        $this->object->values = [
+            new PodioContact(['profile_id' => 4, 'name' => 'Captain Crunch']),
+            new PodioContact(['profile_id' => 5, 'name' => 'Count Chocula']),
+        ];
+        $this->assertEquals([
+            ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
+            ['value' => ['profile_id' => 5, 'name' => 'Count Chocula']],
+        ], $this->object->__attribute('values'));
     }
 
     public function test_can_set_value_from_array_of_hashes()
     {
-        $this->object->values = array(
-      array('profile_id' => 4, 'name' => 'Captain Crunch'),
-      array('profile_id' => 5, 'name' => 'Count Chocula')
-    );
-        $this->assertEquals(array(
-      array('value' => array('profile_id' => 4, 'name' => 'Captain Crunch')),
-      array('value' => array('profile_id' => 5, 'name' => 'Count Chocula')),
-    ), $this->object->__attribute('values'));
+        $this->object->values = [
+            ['profile_id' => 4, 'name' => 'Captain Crunch'],
+            ['profile_id' => 5, 'name' => 'Count Chocula'],
+        ];
+        $this->assertEquals([
+            ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
+            ['value' => ['profile_id' => 5, 'name' => 'Count Chocula']],
+        ], $this->object->__attribute('values'));
     }
 
     public function test_can_humanize_value()
     {
         // Empty values
-        $empty_values = new PodioContactItemField(array('field_id' => 1));
+        $empty_values = new PodioContactItemField(['field_id' => 1]);
         $this->assertEquals('', $empty_values->humanized_value());
 
         // Populated values
@@ -108,7 +113,7 @@ class PodioContactItemFieldTest extends TestCase
     public function test_can_convert_to_api_friendly_json()
     {
         // Empty values
-        $empty_values = new PodioContactItemField(array('field_id' => 1));
+        $empty_values = new PodioContactItemField(['field_id' => 1]);
         $this->assertEquals('[]', $empty_values->as_json());
 
         // Populated values

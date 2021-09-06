@@ -9,25 +9,25 @@ class PodioDurationItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->object = new PodioDurationItemField(array(
-      '__api_values' => true,
-      'field_id' => 123,
-      'values' => array(
-        array('value' => 3723)
-      )
-    ));
+        $this->object = new PodioDurationItemField([
+            '__api_values' => true,
+            'field_id' => 123,
+            'values' => [
+                ['value' => 3723],
+            ],
+        ]);
 
-        $this->empty_values = new PodioDurationItemField(array(
-      'field_id' => 456
-    ));
+        $this->empty_values = new PodioDurationItemField([
+            'field_id' => 456,
+        ]);
     }
 
     public function test_can_construct_from_simple_value()
     {
-        $object = new PodioDurationItemField(array(
-      'field_id' => 123,
-      'values' => 3600
-    ));
+        $object = new PodioDurationItemField([
+            'field_id' => 123,
+            'values' => 3600,
+        ]);
         $this->assertEquals(3600, $object->values);
     }
 
@@ -58,7 +58,7 @@ class PodioDurationItemFieldTest extends TestCase
     public function test_can_set_value()
     {
         $this->object->values = 123;
-        $this->assertEquals(array(array('value' => 123)), $this->object->__attribute('values'));
+        $this->assertEquals([['value' => 123]], $this->object->__attribute('values'));
     }
 
     public function test_can_humanize_value()

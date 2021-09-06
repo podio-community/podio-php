@@ -9,23 +9,27 @@ class PodioNumberItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->object = new PodioNumberItemField(array(
-      '__api_values' => true,
-      'field_id' => 123,
-      'values' => array(
-        array('value' => '1234.5600')
-      )
-    ));
-        $this->empty_values = new PodioNumberItemField(array('field_id' => 1));
-        $this->zero_value = new PodioNumberItemField(array('__api_values' => true, 'field_id' => 2, 'values' => array(array('value' => '0'))));
+        $this->object = new PodioNumberItemField([
+            '__api_values' => true,
+            'field_id' => 123,
+            'values' => [
+                ['value' => '1234.5600'],
+            ],
+        ]);
+        $this->empty_values = new PodioNumberItemField(['field_id' => 1]);
+        $this->zero_value = new PodioNumberItemField([
+            '__api_values' => true,
+            'field_id' => 2,
+            'values' => [['value' => '0']],
+        ]);
     }
 
     public function test_can_construct_from_simple_value()
     {
-        $object = new PodioNumberItemField(array(
-      'field_id' => 123,
-      'values' => '12.34'
-    ));
+        $object = new PodioNumberItemField([
+            'field_id' => 123,
+            'values' => '12.34',
+        ]);
         $this->assertEquals('12.34', $object->values);
     }
 
@@ -39,7 +43,7 @@ class PodioNumberItemFieldTest extends TestCase
     public function test_can_set_value()
     {
         $this->object->values = '12.34';
-        $this->assertEquals(array(array('value' => '12.34')), $this->object->__attribute('values'));
+        $this->assertEquals([['value' => '12.34']], $this->object->__attribute('values'));
 
         $this->object->values = '0';
         $this->assertEquals('0', $this->zero_value->values);

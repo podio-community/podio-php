@@ -9,41 +9,41 @@ class PodioMoneyItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->object = new PodioMoneyItemField(array(
-      '__api_values' => true,
-      'field_id' => 123,
-      'values' => array(
-        array('value' => '123.5568', 'currency' => 'USD')
-      )
-    ));
+        $this->object = new PodioMoneyItemField([
+            '__api_values' => true,
+            'field_id' => 123,
+            'values' => [
+                ['value' => '123.5568', 'currency' => 'USD'],
+            ],
+        ]);
 
-        $this->empty_values = new PodioMoneyItemField(array(
-      'field_id' => 456
-    ));
+        $this->empty_values = new PodioMoneyItemField([
+            'field_id' => 456,
+        ]);
 
-        $this->zero_value = new PodioMoneyItemField(array(
-      '__api_values' => true,
-      'field_id' => 789,
-      'values' => array(
-        array('value' => '0', 'currency' => 'USD')
-      )
-    ));
+        $this->zero_value = new PodioMoneyItemField([
+            '__api_values' => true,
+            'field_id' => 789,
+            'values' => [
+                ['value' => '0', 'currency' => 'USD'],
+            ],
+        ]);
     }
 
     public function test_can_construct_from_simple_value()
     {
-        $object = new PodioMoneyItemField(array(
-      'field_id' => 123,
-      'values' => array('value' => '456.67', 'currency' => 'BTC')
-    ));
-        $this->assertEquals(array(array('value' => '456.67', 'currency' => 'BTC')), $object->__attribute('values'));
+        $object = new PodioMoneyItemField([
+            'field_id' => 123,
+            'values' => ['value' => '456.67', 'currency' => 'BTC'],
+        ]);
+        $this->assertEquals([['value' => '456.67', 'currency' => 'BTC']], $object->__attribute('values'));
     }
 
     public function test_can_provide_value()
     {
         $this->assertNull($this->empty_values->values);
-        $this->assertEquals(array('value' => '123.5568', 'currency' => 'USD'), $this->object->values);
-        $this->assertEquals(array('value' => '0', 'currency' => 'USD'), $this->zero_value->values);
+        $this->assertEquals(['value' => '123.5568', 'currency' => 'USD'], $this->object->values);
+        $this->assertEquals(['value' => '0', 'currency' => 'USD'], $this->zero_value->values);
     }
 
     public function test_can_provide_amount()
@@ -62,26 +62,26 @@ class PodioMoneyItemFieldTest extends TestCase
 
     public function test_can_set_value()
     {
-        $this->object->values = array('value' => '456.67', 'currency' => 'BTC');
-        $this->assertEquals(array(array('value' => '456.67', 'currency' => 'BTC')), $this->object->__attribute('values'));
+        $this->object->values = ['value' => '456.67', 'currency' => 'BTC'];
+        $this->assertEquals([['value' => '456.67', 'currency' => 'BTC']], $this->object->__attribute('values'));
 
-        $this->object->values = array('value' => '0', 'currency' => 'BTC');
-        $this->assertEquals(array(array('value' => '0', 'currency' => 'BTC')), $this->object->__attribute('values'));
+        $this->object->values = ['value' => '0', 'currency' => 'BTC'];
+        $this->assertEquals([['value' => '0', 'currency' => 'BTC']], $this->object->__attribute('values'));
     }
 
     public function test_can_set_amount()
     {
         $this->object->amount = '456.67';
-        $this->assertEquals(array(array('value' => '456.67', 'currency' => 'USD')), $this->object->__attribute('values'));
+        $this->assertEquals([['value' => '456.67', 'currency' => 'USD']], $this->object->__attribute('values'));
 
         $this->object->amount = '0';
-        $this->assertEquals(array(array('value' => '0', 'currency' => 'USD')), $this->object->__attribute('values'));
+        $this->assertEquals([['value' => '0', 'currency' => 'USD']], $this->object->__attribute('values'));
     }
 
     public function test_can_set_currency()
     {
         $this->object->currency = 'BTC';
-        $this->assertEquals(array(array('value' => '123.5568', 'currency' => 'BTC')), $this->object->__attribute('values'));
+        $this->assertEquals([['value' => '123.5568', 'currency' => 'BTC']], $this->object->__attribute('values'));
     }
 
     public function test_can_humanize_value()

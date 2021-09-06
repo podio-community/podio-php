@@ -11,67 +11,111 @@ class PodioDateItemFieldTest extends TestCase
 {
     public function setUp(): void
     {
-        $this->empty_values = new PodioDateItemField(array('field_id' => 1));
+        $this->empty_values = new PodioDateItemField(['field_id' => 1]);
 
-        $this->start_date = new PodioDateItemField(array('__api_values' => true, 'field_id' => 2, 'values' => array(array(
-      "start_date_utc" => "2011-05-31",
-      "end_date_utc" => "2011-05-31",
-      "start_time_utc" => null,
-      "end_time_utc" => null,
-    ))));
+        $this->start_date = new PodioDateItemField([
+            '__api_values' => true,
+            'field_id' => 2,
+            'values' => [
+                [
+                    "start_date_utc" => "2011-05-31",
+                    "end_date_utc" => "2011-05-31",
+                    "start_time_utc" => null,
+                    "end_time_utc" => null,
+                ],
+            ],
+        ]);
 
-        $this->start_datetime = new PodioDateItemField(array('__api_values' => true, 'field_id' => 3, 'values' => array(array(
-      "start_date_utc" => "2011-05-31",
-      "end_date_utc" => "2011-05-31",
-      "start_time_utc" => "14:00:00",
-      "end_time_utc" => null,
-    ))));
+        $this->start_datetime = new PodioDateItemField([
+            '__api_values' => true,
+            'field_id' => 3,
+            'values' => [
+                [
+                    "start_date_utc" => "2011-05-31",
+                    "end_date_utc" => "2011-05-31",
+                    "start_time_utc" => "14:00:00",
+                    "end_time_utc" => null,
+                ],
+            ],
+        ]);
 
-        $this->start_datetime_with_endtime_same_day = new PodioDateItemField(array('__api_values' => true, 'field_id' => 4, 'values' => array(array(
-      "start_date_utc" => "2011-05-31",
-      "end_date_utc" => "2011-05-31",
-      "start_time_utc" => "14:00:00",
-      "end_time_utc" => "15:00:00",
-    ))));
+        $this->start_datetime_with_endtime_same_day = new PodioDateItemField([
+            '__api_values' => true,
+            'field_id' => 4,
+            'values' => [
+                [
+                    "start_date_utc" => "2011-05-31",
+                    "end_date_utc" => "2011-05-31",
+                    "start_time_utc" => "14:00:00",
+                    "end_time_utc" => "15:00:00",
+                ],
+            ],
+        ]);
 
-        $this->start_date_end_date = new PodioDateItemField(array('__api_values' => true, 'field_id' => 5, 'values' => array(array(
-      "start_date_utc" => "2011-05-31",
-      "end_date_utc" => "2011-06-08",
-      "start_time_utc" => null,
-      "end_time_utc" => null,
-    ))));
+        $this->start_date_end_date = new PodioDateItemField([
+            '__api_values' => true,
+            'field_id' => 5,
+            'values' => [
+                [
+                    "start_date_utc" => "2011-05-31",
+                    "end_date_utc" => "2011-06-08",
+                    "start_time_utc" => null,
+                    "end_time_utc" => null,
+                ],
+            ],
+        ]);
 
-        $this->start_datetime_end_date = new PodioDateItemField(array('__api_values' => true, 'field_id' => 6, 'values' => array(array(
-      "start_date_utc" => "2011-05-31",
-      "end_date_utc" => "2011-06-08",
-      "start_time_utc" => "14:00:00",
-      "end_time_utc" => null,
-    ))));
+        $this->start_datetime_end_date = new PodioDateItemField([
+            '__api_values' => true,
+            'field_id' => 6,
+            'values' => [
+                [
+                    "start_date_utc" => "2011-05-31",
+                    "end_date_utc" => "2011-06-08",
+                    "start_time_utc" => "14:00:00",
+                    "end_time_utc" => null,
+                ],
+            ],
+        ]);
 
-        $this->start_datetime_end_datetime = new PodioDateItemField(array('__api_values' => true, 'field_id' => 7, 'values' => array(array(
-      "start_date_utc" => "2011-05-31",
-      "end_date_utc" => "2011-06-08",
-      "start_time_utc" => "14:00:00",
-      "end_time_utc" => "14:00:00",
-    ))));
+        $this->start_datetime_end_datetime = new PodioDateItemField([
+            '__api_values' => true,
+            'field_id' => 7,
+            'values' => [
+                [
+                    "start_date_utc" => "2011-05-31",
+                    "end_date_utc" => "2011-06-08",
+                    "start_time_utc" => "14:00:00",
+                    "end_time_utc" => "14:00:00",
+                ],
+            ],
+        ]);
 
-        $this->start_date_omitted_end = new PodioDateItemField(array('__api_values' => true, 'field_id' => 8, 'values' => array(array(
-      "start_date_utc" => "2011-05-31"
-    ))));
+        $this->start_date_omitted_end = new PodioDateItemField([
+            '__api_values' => true,
+            'field_id' => 8,
+            'values' => [
+                [
+                    "start_date_utc" => "2011-05-31",
+                ],
+            ],
+        ]);
     }
 
     public function test_can_construct_from_simple_value()
     {
-        $object = new PodioDateItemField(array(
-      'field_id' => 123,
-      'values' => array('start' => '2012-12-24')
-    ));
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => null,
-      'end_date_utc' => '2012-12-24',
-      'end_time_utc' => null
-    )), $object->__attribute('values'));
+        $object = new PodioDateItemField([
+            'field_id' => 123,
+            'values' => ['start' => '2012-12-24'],
+        ]);
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => null,
+                'end_date_utc' => '2012-12-24',
+                'end_time_utc' => null,
+            ],
+        ], $object->__attribute('values'));
     }
 
     public function test_can_provide_values()
@@ -197,174 +241,204 @@ class PodioDateItemFieldTest extends TestCase
 
     public function test_can_set_value_from_strings()
     {
-        $object = new PodioDateItemField(array('field_id' => 8));
+        $object = new PodioDateItemField(['field_id' => 8]);
 
-        $object->values = array(
-      'start' => '2012-12-24'
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => null,
-      'end_date_utc' => '2012-12-24',
-      'end_time_utc' => null
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => '2012-12-24',
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => null,
+                'end_date_utc' => '2012-12-24',
+                'end_time_utc' => null,
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => '2012-12-24 14:00:00'
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-24',
-      'end_time_utc' => null
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => '2012-12-24 14:00:00',
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-24',
+                'end_time_utc' => null,
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => '2012-12-24 14:00:00',
-      'end' => '2012-12-24 15:00:00'
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-24',
-      'end_time_utc' => '15:00:00'
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => '2012-12-24 14:00:00',
+            'end' => '2012-12-24 15:00:00',
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-24',
+                'end_time_utc' => '15:00:00',
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => '2012-12-24',
-      'end' => '2012-12-25'
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => null,
-      'end_date_utc' => '2012-12-25',
-      'end_time_utc' => null
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => '2012-12-24',
+            'end' => '2012-12-25',
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => null,
+                'end_date_utc' => '2012-12-25',
+                'end_time_utc' => null,
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => '2012-12-24 14:00:00',
-      'end' => '2012-12-25'
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-25',
-      'end_time_utc' => null
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => '2012-12-24 14:00:00',
+            'end' => '2012-12-25',
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-25',
+                'end_time_utc' => null,
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => '2012-12-24 14:00:00',
-      'end' => '2012-12-25 15:00:00'
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-25',
-      'end_time_utc' => '15:00:00'
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => '2012-12-24 14:00:00',
+            'end' => '2012-12-25 15:00:00',
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-25',
+                'end_time_utc' => '15:00:00',
+            ],
+        ], $object->__attribute('values'));
     }
 
     public function test_can_set_value_from_objects()
     {
         $tz = new DateTimeZone('UTC');
-        $object = new PodioDateItemField(array('field_id' => 8));
+        $object = new PodioDateItemField(['field_id' => 8]);
 
-        $object->values = array(
-      'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 00:00:00', $tz)
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '00:00:00',
-      'end_date_utc' => '2012-12-24',
-      'end_time_utc' => null
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 00:00:00', $tz),
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '00:00:00',
+                'end_date_utc' => '2012-12-24',
+                'end_time_utc' => null,
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz)
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-24',
-      'end_time_utc' => null
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-24',
+                'end_time_utc' => null,
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
-      'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 15:00:00', $tz)
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-24',
-      'end_time_utc' => '15:00:00'
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
+            'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 15:00:00', $tz),
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-24',
+                'end_time_utc' => '15:00:00',
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 00:00:00', $tz),
-      'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-25 00:00:00', $tz)
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '00:00:00',
-      'end_date_utc' => '2012-12-25',
-      'end_time_utc' => '00:00:00'
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 00:00:00', $tz),
+            'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-25 00:00:00', $tz),
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '00:00:00',
+                'end_date_utc' => '2012-12-25',
+                'end_time_utc' => '00:00:00',
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
-      'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-25 00:00:00', $tz)
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-25',
-      'end_time_utc' => '00:00:00'
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
+            'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-25 00:00:00', $tz),
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-25',
+                'end_time_utc' => '00:00:00',
+            ],
+        ], $object->__attribute('values'));
 
-        $object->values = array(
-      'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
-      'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-25 15:00:00', $tz)
-    );
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-24',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-25',
-      'end_time_utc' => '15:00:00'
-    )), $object->__attribute('values'));
+        $object->values = [
+            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
+            'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-25 15:00:00', $tz),
+        ];
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-24',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-25',
+                'end_time_utc' => '15:00:00',
+            ],
+        ], $object->__attribute('values'));
     }
 
     public function test_can_set_start_from_string()
     {
         $this->start_date->start = '2012-12-30 14:00:00';
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-30',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-30',
-      'end_time_utc' => null
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-30',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-30',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_set_start_date_from_string()
     {
         $this->start_datetime->start_date = '2012-12-30';
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-30',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-30',
-      'end_time_utc' => null
-    )), $this->start_datetime->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-30',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-30',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_datetime->__attribute('values'));
     }
 
     public function test_can_set_start_time_from_string()
     {
         $this->start_date->start_time = '14:00:00';
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2011-05-31',
-      'end_time_utc' => null
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2011-05-31',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_set_start_from_object()
@@ -372,12 +446,14 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->start = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-30',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-30',
-      'end_time_utc' => null
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-30',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-30',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_set_start_from_object_in_timezone()
@@ -385,34 +461,40 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('America/Los_Angeles');
 
         $this->start_date->start = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-30',
-      'start_time_utc' => '22:00:00',
-      'end_date_utc' => '2012-12-30',
-      'end_time_utc' => null
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-30',
+                'start_time_utc' => '22:00:00',
+                'end_date_utc' => '2012-12-30',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_remove_start_time()
     {
         $this->start_datetime->start_time = null;
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => null,
-      'end_date_utc' => '2011-05-31',
-      'end_time_utc' => null
-    )), $this->start_datetime->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => null,
+                'end_date_utc' => '2011-05-31',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_datetime->__attribute('values'));
     }
 
     public function test_can_remove_start_date()
     {
         $this->start_datetime->start_date = null;
-        $this->assertEquals(array(array(
-      'start_date_utc' => null,
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => null,
-      'end_time_utc' => null
-    )), $this->start_datetime->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => null,
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => null,
+                'end_time_utc' => null,
+            ],
+        ], $this->start_datetime->__attribute('values'));
     }
 
     public function test_can_set_start_date_from_object()
@@ -420,12 +502,14 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->start_date = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2012-12-30',
-      'start_time_utc' => null,
-      'end_date_utc' => '2012-12-30',
-      'end_time_utc' => null
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2012-12-30',
+                'start_time_utc' => null,
+                'end_date_utc' => '2012-12-30',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_set_start_time_from_object()
@@ -433,67 +517,79 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->start_time = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2011-05-31',
-      'end_time_utc' => null
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2011-05-31',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_set_end_from_string()
     {
         $this->start_date->end = '2012-12-30 14:00:00';
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => null,
-      'end_date_utc' => '2012-12-30',
-      'end_time_utc' => '14:00:00'
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => null,
+                'end_date_utc' => '2012-12-30',
+                'end_time_utc' => '14:00:00',
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_set_end_date_from_string()
     {
         $this->start_datetime->end_date = '2012-12-31';
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2012-12-31',
-      'end_time_utc' => null
-    )), $this->start_datetime->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2012-12-31',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_datetime->__attribute('values'));
     }
 
     public function test_can_set_end_time_from_string()
     {
         $this->start_datetime->end_time = '15:00:00';
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2011-05-31',
-      'end_time_utc' => '15:00:00'
-    )), $this->start_datetime->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2011-05-31',
+                'end_time_utc' => '15:00:00',
+            ],
+        ], $this->start_datetime->__attribute('values'));
     }
 
     public function test_can_remove_end_time()
     {
         $this->start_datetime_end_datetime->end_time = null;
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2011-06-08',
-      'end_time_utc' => null
-    )), $this->start_datetime_end_datetime->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2011-06-08',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_datetime_end_datetime->__attribute('values'));
     }
 
     public function test_can_remove_end_date()
     {
         $this->start_datetime_end_datetime->end_date = null;
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2011-05-31',
-      'end_time_utc' => '14:00:00'
-    )), $this->start_datetime_end_datetime->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2011-05-31',
+                'end_time_utc' => '14:00:00',
+            ],
+        ], $this->start_datetime_end_datetime->__attribute('values'));
     }
 
     public function test_can_set_end_from_object()
@@ -501,12 +597,14 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->end = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => null,
-      'end_date_utc' => '2012-12-30',
-      'end_time_utc' => '14:00:00'
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => null,
+                'end_date_utc' => '2012-12-30',
+                'end_time_utc' => '14:00:00',
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_set_end_from_object_in_timezone()
@@ -514,12 +612,14 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('America/Los_Angeles');
 
         $this->start_date->end = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => null,
-      'end_date_utc' => '2012-12-30',
-      'end_time_utc' => '22:00:00'
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => null,
+                'end_date_utc' => '2012-12-30',
+                'end_time_utc' => '22:00:00',
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_set_end_date_from_object()
@@ -527,12 +627,14 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->end_date = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => null,
-      'end_date_utc' => '2012-12-30',
-      'end_time_utc' => null
-    )), $this->start_date->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => null,
+                'end_date_utc' => '2012-12-30',
+                'end_time_utc' => null,
+            ],
+        ], $this->start_date->__attribute('values'));
     }
 
     public function test_can_set_end_time_from_object()
@@ -540,12 +642,14 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_datetime->end_time = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 15:00:00', $tz);
-        $this->assertEquals(array(array(
-      'start_date_utc' => '2011-05-31',
-      'start_time_utc' => '14:00:00',
-      'end_date_utc' => '2011-05-31',
-      'end_time_utc' => '15:00:00'
-    )), $this->start_datetime->__attribute('values'));
+        $this->assertEquals([
+            [
+                'start_date_utc' => '2011-05-31',
+                'start_time_utc' => '14:00:00',
+                'end_date_utc' => '2011-05-31',
+                'end_time_utc' => '15:00:00',
+            ],
+        ], $this->start_datetime->__attribute('values'));
     }
 
     public function test_can_humanize_value()
