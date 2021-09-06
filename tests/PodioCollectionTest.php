@@ -117,7 +117,7 @@ class PodioCollectionTest extends TestCase
     {
         $instance = new PodioObject();
 
-        $this->collection->add_relationship($instance, 'fields');
+        $this->collection->add_relationship($instance);
 
         $relationship = $this->collection->relationship();
         $this->assertSame($instance, $relationship['instance']);

@@ -314,7 +314,7 @@ class PodioObjectTest extends TestCase
     public function test_can_add_child_relationship(): void
     {
         $instance = new PodioObject();
-        $this->object->add_relationship($instance, 'fields');
+        $this->object->add_relationship($instance);
 
         $relationship = $this->object->relationship();
         $this->assertSame($instance, $relationship['instance']);
