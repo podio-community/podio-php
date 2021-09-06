@@ -25,7 +25,7 @@ class PodioAppFieldCollectionTest extends TestCase
             ['field_id' => 2],
             ['field_id' => 3],
         ]);
-        $this->assertEquals(3, count($collection));
+        $this->assertCount(3, $collection);
     }
 
     public function test_can_construct_from_objects()
@@ -36,7 +36,7 @@ class PodioAppFieldCollectionTest extends TestCase
             new PodioAppField(['field_id' => 3, 'external_id' => 'c', 'type' => 'calculation']),
         ]);
 
-        $this->assertEquals(3, count($collection));
+        $this->assertCount(3, $collection);
     }
 
     public function test_can_add_field()
@@ -44,7 +44,7 @@ class PodioAppFieldCollectionTest extends TestCase
         $length = count($this->collection);
         $this->collection[] = new PodioAppField(['field_id' => 4, 'external_id' => 'd']);
 
-        $this->assertEquals($length + 1, count($this->collection));
+        $this->assertCount($length + 1, $this->collection);
     }
 
     public function test_cannot_add_item_field()

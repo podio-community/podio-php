@@ -22,6 +22,6 @@ class PodioItemCollectionTest extends TestCase
         $length = count($collection);
         $collection[] = new PodioItem(['item_id' => 1, 'external_id' => 'a']);
 
-        $this->assertEquals($length + 1, count($collection));
+        $this->assertCount($length + 1, $collection);
     }
 }

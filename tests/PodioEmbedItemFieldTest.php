@@ -40,7 +40,7 @@ class PodioEmbedItemFieldTest extends TestCase
 
         // Populated values
         $this->assertInstanceOf('PodioCollection', $this->object->values);
-        $this->assertEquals(3, count($this->object->values));
+        $this->assertCount(3, $this->object->values);
         foreach ($this->object->values as $value) {
             $this->assertInstanceOf('PodioEmbed', $value);
             if ($value->files) {

@@ -48,7 +48,7 @@ class PodioCollectionTest extends TestCase
 
     public function test_can_provide_length()
     {
-        $this->assertEquals(3, count($this->collection));
+        $this->assertCount(3, $this->collection);
     }
 
     public function test_can_check_existence()
@@ -68,20 +68,20 @@ class PodioCollectionTest extends TestCase
         $length = count($this->collection);
         $this->collection[] = new PodioObject();
 
-        $this->assertEquals($length + 1, count($this->collection));
+        $this->assertCount($length + 1, $this->collection);
     }
 
     public function test_can_remove_by_offset()
     {
         unset($this->collection[0]);
-        $this->assertEquals(2, count($this->collection));
+        $this->assertCount(2, $this->collection);
         $this->assertFalse(isset($this->collection[0]));
     }
 
     public function test_cannot_access_by_id_after_remove_by_offset()
     {
         unset($this->collection[0]);
-        $this->assertEquals(2, count($this->collection));
+        $this->assertCount(2, $this->collection);
         $this->assertFalse(isset($this->collection[0]));
         $this->assertNull($this->collection->get('a'));
         $this->assertNull($this->collection->get(1));
@@ -90,14 +90,14 @@ class PodioCollectionTest extends TestCase
     public function test_can_remove_by_id()
     {
         $this->collection->remove(1);
-        $this->assertEquals(2, count($this->collection));
+        $this->assertCount(2, $this->collection);
         $this->assertNull($this->collection->get(1));
     }
 
     public function test_can_remove_by_external_id()
     {
         $this->collection->remove('a');
-        $this->assertEquals(2, count($this->collection));
+        $this->assertCount(2, $this->collection);
         $this->assertNull($this->collection->get(1));
     }
 

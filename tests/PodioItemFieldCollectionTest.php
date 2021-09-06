@@ -26,7 +26,7 @@ class PodioItemFieldCollectionTest extends TestCase
         $collection = new PodioItemFieldCollection([
             ['field_id' => 1, 'type' => 'text', 'values' => [['value' => 'FooBar']]],
         ], true);
-        $this->assertEquals(1, count($collection));
+        $this->assertCount(1, $collection);
         $this->assertEquals('PodioTextItemField', get_class($collection[0]));
         $this->assertEquals('FooBar', $collection[0]->values);
     }
@@ -38,7 +38,7 @@ class PodioItemFieldCollectionTest extends TestCase
             ['field_id' => 2, 'type' => 'number'],
             ['field_id' => 3, 'type' => 'calculation'],
         ]);
-        $this->assertEquals(3, count($collection));
+        $this->assertCount(3, $collection);
         $this->assertEquals('PodioTextItemField', get_class($collection[0]));
         $this->assertEquals('PodioNumberItemField', get_class($collection[1]));
         $this->assertEquals('PodioCalculationItemField', get_class($collection[2]));
@@ -53,7 +53,7 @@ class PodioItemFieldCollectionTest extends TestCase
             new PodioCalculationItemField(['field_id' => 3, 'external_id' => 'c', 'type' => 'calculation']),
         ]);
 
-        $this->assertEquals(3, count($collection));
+        $this->assertCount(3, $collection);
         $this->assertEquals('FooBar', $collection[0]->values);
     }
 
@@ -63,7 +63,7 @@ class PodioItemFieldCollectionTest extends TestCase
             ['field_id' => 1, 'type' => 'invalid_field_type'],
         ]);
 
-        $this->assertEquals(1, count($collection));
+        $this->assertCount(1, $collection);
         $this->assertEquals('PodioItemField', get_class($collection[0]));
     }
 
@@ -72,7 +72,7 @@ class PodioItemFieldCollectionTest extends TestCase
         $length = count($this->collection);
         $this->collection[] = new PodioTextItemField(['field_id' => 4, 'external_id' => 'd']);
 
-        $this->assertEquals($length + 1, count($this->collection));
+        $this->assertCount($length + 1, $this->collection);
     }
 
     public function test_cannot_add_app_field()
