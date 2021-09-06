@@ -27,7 +27,7 @@ class PodioEmbedItemFieldTest extends TestCase
             'field_id' => 123,
             'values' => ['embed' => ['embed_id' => 4], 'file' => ['file_id' => 12]],
         ]);
-        $this->assertEquals([
+        $this->assertSame([
             ['embed' => ['embed_id' => 4], 'file' => ['file_id' => 12]],
         ], $object->__attribute('values'));
     }
@@ -58,7 +58,7 @@ class PodioEmbedItemFieldTest extends TestCase
             'original_url' => 'http://example.com/',
             'files' => [['file_id' => 12]],
         ]);
-        $this->assertEquals([
+        $this->assertSame([
             ['embed' => ['embed_id' => 4, 'original_url' => 'http://example.com/'], 'file' => ['file_id' => 12]],
         ], $this->object->__attribute('values'));
     }
@@ -72,7 +72,7 @@ class PodioEmbedItemFieldTest extends TestCase
             ]),
         ]);
 
-        $this->assertEquals([
+        $this->assertSame([
             ['embed' => ['embed_id' => 4, 'original_url' => 'http://example.net/'], 'file' => null],
         ], $this->object->__attribute('values'));
     }
@@ -80,7 +80,7 @@ class PodioEmbedItemFieldTest extends TestCase
     public function test_can_set_value_from_hash()
     {
         $this->object->values = ['embed' => ['embed_id' => 4], 'file' => ['file_id' => 12]];
-        $this->assertEquals([
+        $this->assertSame([
             ['embed' => ['embed_id' => 4], 'file' => ['file_id' => 12]],
         ], $this->object->__attribute('values'));
     }
@@ -91,7 +91,7 @@ class PodioEmbedItemFieldTest extends TestCase
             new PodioEmbed(['embed_id' => 4, 'files' => [['file_id' => 12]]]),
             new PodioEmbed(['embed_id' => 5, 'files' => [['file_id' => 13]]]),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['embed' => ['embed_id' => 4], 'file' => ['file_id' => 12]],
             ['embed' => ['embed_id' => 5], 'file' => ['file_id' => 13]],
         ], $this->object->__attribute('values'));
@@ -103,7 +103,7 @@ class PodioEmbedItemFieldTest extends TestCase
             ['embed' => ['embed_id' => 4], 'file' => ['file_id' => 12]],
             ['embed' => ['embed_id' => 5], 'file' => ['file_id' => 13]],
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['embed' => ['embed_id' => 4], 'file' => ['file_id' => 12]],
             ['embed' => ['embed_id' => 5], 'file' => ['file_id' => 13]],
         ], $this->object->__attribute('values'));
@@ -113,19 +113,19 @@ class PodioEmbedItemFieldTest extends TestCase
     {
         // Empty values
         $empty_values = new PodioEmbedItemField(['field_id' => 1]);
-        $this->assertEquals('', $empty_values->humanized_value());
+        $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
-        $this->assertEquals('http://example.com/;;http://example.org/', $this->object->humanized_value());
+        $this->assertSame('http://example.com/;;http://example.org/', $this->object->humanized_value());
     }
 
     public function test_can_convert_to_api_friendly_json()
     {
         // Empty values
         $empty_values = new PodioEmbedItemField(['field_id' => 1]);
-        $this->assertEquals('[]', $empty_values->as_json());
+        $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values
-        $this->assertEquals('[{"embed":1,"file":10},{"embed":2,"file":null},{"embed":3,"file":11}]', $this->object->as_json());
+        $this->assertSame('[{"embed":1,"file":10},{"embed":2,"file":null},{"embed":3,"file":11}]', $this->object->as_json());
     }
 }

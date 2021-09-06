@@ -25,7 +25,7 @@ class PodioEmailItemFieldTest extends TestCase
         $this->assertNull($empty_values->values);
 
         // Populated values
-        $this->assertEquals([
+        $this->assertSame([
             ['type' => 'work', 'value' => 'mail@example.com'],
             ['type' => 'other', 'value' => 'info@example.com'],
         ], $this->object->values);
@@ -37,7 +37,7 @@ class PodioEmailItemFieldTest extends TestCase
             ['type' => 'work', 'value' => 'other@example.com'],
             ['type' => 'other', 'value' => '42@example.com'],
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['type' => 'work', 'value' => 'other@example.com'],
             ['type' => 'other', 'value' => '42@example.com'],
         ], $this->object->__attribute('values'));
@@ -47,19 +47,19 @@ class PodioEmailItemFieldTest extends TestCase
     {
         // Empty values
         $empty_values = new PodioEmailItemField();
-        $this->assertEquals('', $empty_values->humanized_value());
+        $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
-        $this->assertEquals('work: mail@example.com;other: info@example.com', $this->object->humanized_value());
+        $this->assertSame('work: mail@example.com;other: info@example.com', $this->object->humanized_value());
     }
 
     public function test_can_convert_to_api_friendly_json()
     {
         // Empty values
         $empty_values = new PodioEmailItemField();
-        $this->assertEquals('[]', $empty_values->as_json());
+        $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values
-        $this->assertEquals('[{"type":"work","value":"mail@example.com"},{"type":"other","value":"info@example.com"}]', $this->object->as_json());
+        $this->assertSame('[{"type":"work","value":"mail@example.com"},{"type":"other","value":"info@example.com"}]', $this->object->as_json());
     }
 }

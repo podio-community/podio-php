@@ -27,7 +27,7 @@ class PodioAppItemFieldTest extends TestCase
             'field_id' => 123,
             'values' => ['item_id' => 4, 'title' => 'Captain Crunch'],
         ]);
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['item_id' => 4, 'title' => 'Captain Crunch']],
         ], $object->__attribute('values'));
     }
@@ -49,7 +49,7 @@ class PodioAppItemFieldTest extends TestCase
     public function test_can_set_value_from_object()
     {
         $this->object->values = new PodioItem(['item_id' => 4, 'title' => 'Captain Crunch']);
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['item_id' => 4, 'title' => 'Captain Crunch']],
         ], $this->object->__attribute('values'));
     }
@@ -58,7 +58,7 @@ class PodioAppItemFieldTest extends TestCase
     {
         $this->object->values = new PodioCollection([new PodioItem(['item_id' => 4, 'title' => 'Captain Crunch'])]);
 
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['item_id' => 4, 'title' => 'Captain Crunch']],
         ], $this->object->__attribute('values'));
     }
@@ -66,7 +66,7 @@ class PodioAppItemFieldTest extends TestCase
     public function test_can_set_value_from_hash()
     {
         $this->object->values = ['item_id' => 4, 'title' => 'Captain Crunch'];
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['item_id' => 4, 'title' => 'Captain Crunch']],
         ], $this->object->__attribute('values'));
     }
@@ -77,7 +77,7 @@ class PodioAppItemFieldTest extends TestCase
             new PodioItem(['item_id' => 4, 'title' => 'Captain Crunch']),
             new PodioItem(['item_id' => 5, 'title' => 'Count Chocula']),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['item_id' => 4, 'title' => 'Captain Crunch']],
             ['value' => ['item_id' => 5, 'title' => 'Count Chocula']],
         ], $this->object->__attribute('values'));
@@ -89,7 +89,7 @@ class PodioAppItemFieldTest extends TestCase
             ['item_id' => 4, 'title' => 'Captain Crunch'],
             ['item_id' => 5, 'title' => 'Count Chocula'],
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['item_id' => 4, 'title' => 'Captain Crunch']],
             ['value' => ['item_id' => 5, 'title' => 'Count Chocula']],
         ], $this->object->__attribute('values'));
@@ -99,19 +99,19 @@ class PodioAppItemFieldTest extends TestCase
     {
         // Empty values
         $empty_values = new PodioAppItemField(['field_id' => 1]);
-        $this->assertEquals('', $empty_values->humanized_value());
+        $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
-        $this->assertEquals('Snap;Crackle;Pop', $this->object->humanized_value());
+        $this->assertSame('Snap;Crackle;Pop', $this->object->humanized_value());
     }
 
     public function test_can_convert_to_api_friendly_json()
     {
         // Empty values
         $empty_values = new PodioAppItemField(['field_id' => 1]);
-        $this->assertEquals('[]', $empty_values->as_json());
+        $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values
-        $this->assertEquals('[1,2,3]', $this->object->as_json());
+        $this->assertSame('[1,2,3]', $this->object->as_json());
     }
 }

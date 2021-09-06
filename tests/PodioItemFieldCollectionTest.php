@@ -27,8 +27,8 @@ class PodioItemFieldCollectionTest extends TestCase
             ['field_id' => 1, 'type' => 'text', 'values' => [['value' => 'FooBar']]],
         ], true);
         $this->assertCount(1, $collection);
-        $this->assertEquals('PodioTextItemField', get_class($collection[0]));
-        $this->assertEquals('FooBar', $collection[0]->values);
+        $this->assertSame('PodioTextItemField', get_class($collection[0]));
+        $this->assertSame('FooBar', $collection[0]->values);
     }
 
     public function test_can_construct_from_array()
@@ -39,10 +39,10 @@ class PodioItemFieldCollectionTest extends TestCase
             ['field_id' => 3, 'type' => 'calculation'],
         ]);
         $this->assertCount(3, $collection);
-        $this->assertEquals('PodioTextItemField', get_class($collection[0]));
-        $this->assertEquals('PodioNumberItemField', get_class($collection[1]));
-        $this->assertEquals('PodioCalculationItemField', get_class($collection[2]));
-        $this->assertEquals('FooBar', $collection[0]->values);
+        $this->assertSame('PodioTextItemField', get_class($collection[0]));
+        $this->assertSame('PodioNumberItemField', get_class($collection[1]));
+        $this->assertSame('PodioCalculationItemField', get_class($collection[2]));
+        $this->assertSame('FooBar', $collection[0]->values);
     }
 
     public function test_can_construct_from_objects()
@@ -54,7 +54,7 @@ class PodioItemFieldCollectionTest extends TestCase
         ]);
 
         $this->assertCount(3, $collection);
-        $this->assertEquals('FooBar', $collection[0]->values);
+        $this->assertSame('FooBar', $collection[0]->values);
     }
 
     public function test_can_add_unknown_type()
@@ -64,7 +64,7 @@ class PodioItemFieldCollectionTest extends TestCase
         ]);
 
         $this->assertCount(1, $collection);
-        $this->assertEquals('PodioItemField', get_class($collection[0]));
+        $this->assertSame('PodioItemField', get_class($collection[0]));
     }
 
     public function test_can_add_field()

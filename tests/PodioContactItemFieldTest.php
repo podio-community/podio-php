@@ -27,7 +27,7 @@ class PodioContactItemFieldTest extends TestCase
             'field_id' => 123,
             'values' => ['profile_id' => 4, 'name' => 'Captain Crunch'],
         ]);
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
         ], $object->__attribute('values'));
     }
@@ -49,7 +49,7 @@ class PodioContactItemFieldTest extends TestCase
     public function test_can_set_value_from_object()
     {
         $this->object->values = new PodioContact(['profile_id' => 4, 'name' => 'Captain Crunch']);
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
         ], $this->object->__attribute('values'));
     }
@@ -63,7 +63,7 @@ class PodioContactItemFieldTest extends TestCase
             ]),
         ]);
 
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
         ], $this->object->__attribute('values'));
     }
@@ -71,7 +71,7 @@ class PodioContactItemFieldTest extends TestCase
     public function test_can_set_value_from_hash()
     {
         $this->object->values = ['profile_id' => 4, 'name' => 'Captain Crunch'];
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
         ], $this->object->__attribute('values'));
     }
@@ -82,7 +82,7 @@ class PodioContactItemFieldTest extends TestCase
             new PodioContact(['profile_id' => 4, 'name' => 'Captain Crunch']),
             new PodioContact(['profile_id' => 5, 'name' => 'Count Chocula']),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
             ['value' => ['profile_id' => 5, 'name' => 'Count Chocula']],
         ], $this->object->__attribute('values'));
@@ -94,7 +94,7 @@ class PodioContactItemFieldTest extends TestCase
             ['profile_id' => 4, 'name' => 'Captain Crunch'],
             ['profile_id' => 5, 'name' => 'Count Chocula'],
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
             ['value' => ['profile_id' => 5, 'name' => 'Count Chocula']],
         ], $this->object->__attribute('values'));
@@ -104,19 +104,19 @@ class PodioContactItemFieldTest extends TestCase
     {
         // Empty values
         $empty_values = new PodioContactItemField(['field_id' => 1]);
-        $this->assertEquals('', $empty_values->humanized_value());
+        $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
-        $this->assertEquals('Snap;Crackle;Pop', $this->object->humanized_value());
+        $this->assertSame('Snap;Crackle;Pop', $this->object->humanized_value());
     }
 
     public function test_can_convert_to_api_friendly_json()
     {
         // Empty values
         $empty_values = new PodioContactItemField(['field_id' => 1]);
-        $this->assertEquals('[]', $empty_values->as_json());
+        $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values
-        $this->assertEquals('[1,2,3]', $this->object->as_json());
+        $this->assertSame('[1,2,3]', $this->object->as_json());
     }
 }

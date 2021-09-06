@@ -42,9 +42,9 @@ class PodioObjectTest extends TestCase
         $object->property('string_property', 'string');
         $object->init(['id' => 1, 'external_id' => 'a', 'string_property' => 'FooBar']);
 
-        $this->assertEquals(1, $object->id);
-        $this->assertEquals('a', $object->external_id);
-        $this->assertEquals('FooBar', $object->string_property);
+        $this->assertSame(1, $object->id);
+        $this->assertSame('a', $object->external_id);
+        $this->assertSame('FooBar', $object->string_property);
     }
 
     public function test_can_construct_from_id()
@@ -53,7 +53,7 @@ class PodioObjectTest extends TestCase
         $object->property('id', 'integer');
         $object->init(1);
 
-        $this->assertEquals(1, $object->id);
+        $this->assertSame(1, $object->id);
     }
 
     public function test_can_construct_from_external_id()
@@ -62,7 +62,7 @@ class PodioObjectTest extends TestCase
         $object->property('external_id', 'string');
         $object->init('a');
 
-        $this->assertEquals('a', $object->external_id);
+        $this->assertSame('a', $object->external_id);
     }
 
     public function test_can_construct_one_to_one_relationship()
@@ -88,7 +88,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_provide_properties()
     {
-        $this->assertEquals([
+        $this->assertSame([
             'id' => ['type' => 'integer', 'options' => []],
             'external_id' => ['type' => 'string', 'options' => []],
             'subscribed' => ['type' => 'boolean', 'options' => []],
@@ -104,7 +104,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_provide_relationships()
     {
-        $this->assertEquals([
+        $this->assertSame([
             'fields' => 'has_many',
             'created_by' => 'has_one',
             'reference_with_target' => 'has_one',
@@ -134,12 +134,12 @@ class PodioObjectTest extends TestCase
         }
         $this->object->fields = $collection;
 
-        $this->assertEquals('{"id":1,"external_id":"a","subscribed":true,"date":"2011-05-31","created_on":"2012-12-24 14:00:00","rights":["view","update"],"data":{"item":"value"},"fields":[{"id":3},{"id":4},{"id":5}],"created_by":{"id":4,"name":"Captain Crunch"},"reference_target":{"id":5,"name":"Count Chocula"}}', $this->object->as_json());
+        $this->assertSame('{"id":1,"external_id":"a","subscribed":true,"date":"2011-05-31","created_on":"2012-12-24 14:00:00","rights":["view","update"],"data":{"item":"value"},"fields":[{"id":3},{"id":4},{"id":5}],"created_by":{"id":4,"name":"Captain Crunch"},"reference_target":{"id":5,"name":"Count Chocula"}}', $this->object->as_json());
     }
 
     public function test_can_unset_attribute()
     {
-        $this->assertEquals(1, $this->object->id);
+        $this->assertSame(1, $this->object->id);
         unset($this->object->id);
         $this->assertNull($this->object->id);
     }
@@ -156,7 +156,7 @@ class PodioObjectTest extends TestCase
         $object->property('int_property', 'integer');
         $object->init(['int_property' => 1]);
 
-        $this->assertEquals(1, $object->int_property);
+        $this->assertSame(1, $object->int_property);
     }
 
     public function test_can_set_boolean_attribute()
@@ -176,7 +176,7 @@ class PodioObjectTest extends TestCase
         $object->property('string_property', 'string');
         $object->init(['string_property' => 'FooBar']);
 
-        $this->assertEquals('FooBar', $object->string_property);
+        $this->assertSame('FooBar', $object->string_property);
     }
 
     public function test_can_set_array_attribute()
@@ -185,7 +185,7 @@ class PodioObjectTest extends TestCase
         $object->property('array_property', 'array');
         $object->init(['array_property' => ['a', 'b', 'c']]);
 
-        $this->assertEquals(['a', 'b', 'c'], $object->array_property);
+        $this->assertSame(['a', 'b', 'c'], $object->array_property);
     }
 
     public function test_can_set_hash_attribute()
@@ -194,7 +194,7 @@ class PodioObjectTest extends TestCase
         $object->property('hash_property', 'hash');
         $object->init(['hash_property' => ['a' => 'a', 'b' => 'b', 'c' => 'c']]);
 
-        $this->assertEquals(['a' => 'a', 'b' => 'b', 'c' => 'c'], $object->hash_property);
+        $this->assertSame(['a' => 'a', 'b' => 'b', 'c' => 'c'], $object->hash_property);
     }
 
     public function test_can_set_date_attribute_in_constructor()
@@ -205,7 +205,7 @@ class PodioObjectTest extends TestCase
         $object->property('date_property', 'date');
         $object->init(['date_property' => new DateTime('2014-01-01 12:00:00', $tz)]);
         $this->assertInstanceOf('DateTime', $object->date_property);
-        $this->assertEquals('2014-01-01', $object->date_property->format('Y-m-d'));
+        $this->assertSame('2014-01-01', $object->date_property->format('Y-m-d'));
     }
 
     public function test_can_set_date_attribute_from_datetime()
@@ -216,7 +216,7 @@ class PodioObjectTest extends TestCase
         $object->property('date_property', 'date');
         $object->date_property = new DateTime('2014-01-02 14:00:00', $tz);
         $this->assertInstanceOf('DateTime', $object->date_property);
-        $this->assertEquals('2014-01-02', $object->date_property->format('Y-m-d'));
+        $this->assertSame('2014-01-02', $object->date_property->format('Y-m-d'));
     }
 
     public function test_can_set_date_attribute_from_string()
@@ -227,7 +227,7 @@ class PodioObjectTest extends TestCase
         $object->property('date_property', 'date');
         $object->date_property = '2014-01-03';
         $this->assertInstanceOf('DateTime', $object->date_property);
-        $this->assertEquals('2014-01-03', $object->date_property->format('Y-m-d'));
+        $this->assertSame('2014-01-03', $object->date_property->format('Y-m-d'));
     }
 
     public function test_can_set_datetime_attribute_in_constructor()
@@ -238,7 +238,7 @@ class PodioObjectTest extends TestCase
         $object->property('datetime_property', 'datetime');
         $object->init(['datetime_property' => new DateTime('2014-01-01 12:00:00', $tz)]);
         $this->assertInstanceOf('DateTime', $object->datetime_property);
-        $this->assertEquals('2014-01-01 12:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
+        $this->assertSame('2014-01-01 12:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
 
     public function test_can_set_datetime_attribute_from_datetime()
@@ -249,7 +249,7 @@ class PodioObjectTest extends TestCase
         $object->property('datetime_property', 'datetime');
         $object->datetime_property = new DateTime('2014-01-02 14:00:00', $tz);
         $this->assertInstanceOf('DateTime', $object->datetime_property);
-        $this->assertEquals('2014-01-02 14:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
+        $this->assertSame('2014-01-02 14:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
 
     public function test_can_set_datetime_attribute_from_string()
@@ -260,7 +260,7 @@ class PodioObjectTest extends TestCase
         $object->property('datetime_property', 'datetime');
         $object->datetime_property = '2014-01-03 14:00:00';
         $this->assertInstanceOf('DateTime', $object->datetime_property);
-        $this->assertEquals('2014-01-03 14:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
+        $this->assertSame('2014-01-03 14:00:00', $object->datetime_property->format('Y-m-d H:i:s'));
     }
 
     public function test_can_create_listing()
@@ -308,7 +308,7 @@ class PodioObjectTest extends TestCase
         $this->object->add_relationship($instance, 'fields');
 
         $relationship = $this->object->relationship();
-        $this->assertEquals($instance, $relationship['instance']);
-        $this->assertEquals('fields', $relationship['property']);
+        $this->assertSame($instance, $relationship['instance']);
+        $this->assertSame('fields', $relationship['property']);
     }
 }

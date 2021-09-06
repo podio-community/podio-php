@@ -27,7 +27,7 @@ class PodioAssetItemFieldTest extends TestCase
             'field_id' => 123,
             'values' => ['file_id' => 4, 'name' => 'philosoraptor.jpg'],
         ]);
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['file_id' => 4, 'name' => 'philosoraptor.jpg']],
         ], $object->__attribute('values'));
     }
@@ -49,7 +49,7 @@ class PodioAssetItemFieldTest extends TestCase
     public function test_can_set_value_from_object()
     {
         $this->object->values = new PodioFile(['file_id' => 4, 'name' => 'philosoraptor.jpg']);
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['file_id' => 4, 'name' => 'philosoraptor.jpg']],
         ], $this->object->__attribute('values'));
     }
@@ -58,7 +58,7 @@ class PodioAssetItemFieldTest extends TestCase
     {
         $this->object->values = new PodioCollection([new PodioFile(['file_id' => 4, 'name' => 'philosoraptor.jpg'])]);
 
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['file_id' => 4, 'name' => 'philosoraptor.jpg']],
         ], $this->object->__attribute('values'));
     }
@@ -66,7 +66,7 @@ class PodioAssetItemFieldTest extends TestCase
     public function test_can_set_value_from_hash()
     {
         $this->object->values = ['file_id' => 4, 'name' => 'philosoraptor.jpg'];
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['file_id' => 4, 'name' => 'philosoraptor.jpg']],
         ], $this->object->__attribute('values'));
     }
@@ -77,7 +77,7 @@ class PodioAssetItemFieldTest extends TestCase
             new PodioFile(['file_id' => 4, 'name' => 'philosoraptor.jpg']),
             new PodioFile(['file_id' => 5, 'name' => 'nyancat.jgp']),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['file_id' => 4, 'name' => 'philosoraptor.jpg']],
             ['value' => ['file_id' => 5, 'name' => 'nyancat.jgp']],
         ], $this->object->__attribute('values'));
@@ -89,7 +89,7 @@ class PodioAssetItemFieldTest extends TestCase
             ['file_id' => 4, 'name' => 'philosoraptor.jpg'],
             ['file_id' => 5, 'name' => 'nyancat.jgp'],
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['value' => ['file_id' => 4, 'name' => 'philosoraptor.jpg']],
             ['value' => ['file_id' => 5, 'name' => 'nyancat.jgp']],
         ], $this->object->__attribute('values'));
@@ -99,19 +99,19 @@ class PodioAssetItemFieldTest extends TestCase
     {
         // Empty values
         $empty_values = new PodioAssetItemField(['field_id' => 1]);
-        $this->assertEquals('', $empty_values->humanized_value());
+        $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
-        $this->assertEquals('doge.jpg;trollface.jpg;YUNO.jpg', $this->object->humanized_value());
+        $this->assertSame('doge.jpg;trollface.jpg;YUNO.jpg', $this->object->humanized_value());
     }
 
     public function test_can_convert_to_api_friendly_json()
     {
         // Empty values
         $empty_values = new PodioAssetItemField(['field_id' => 1]);
-        $this->assertEquals('[]', $empty_values->as_json());
+        $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values
-        $this->assertEquals('[1,2,3]', $this->object->as_json());
+        $this->assertSame('[1,2,3]', $this->object->as_json());
     }
 }

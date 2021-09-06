@@ -25,7 +25,7 @@ class PodioPhoneItemFieldTest extends TestCase
         $this->assertNull($empty_values->values);
 
         // Populated values
-        $this->assertEquals([
+        $this->assertSame([
             ['type' => 'work', 'value' => '0123-1233333'],
             ['type' => 'other', 'value' => '0232-123123'],
         ], $this->object->values);
@@ -37,7 +37,7 @@ class PodioPhoneItemFieldTest extends TestCase
             ['type' => 'work', 'value' => '0123-999'],
             ['type' => 'other', 'value' => '0232-999'],
         ];
-        $this->assertEquals([
+        $this->assertSame([
             ['type' => 'work', 'value' => '0123-999'],
             ['type' => 'other', 'value' => '0232-999'],
         ], $this->object->__attribute('values'));
@@ -47,19 +47,19 @@ class PodioPhoneItemFieldTest extends TestCase
     {
         // Empty values
         $empty_values = new PodioPhoneItemField();
-        $this->assertEquals('', $empty_values->humanized_value());
+        $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
-        $this->assertEquals('work: 0123-1233333;other: 0232-123123', $this->object->humanized_value());
+        $this->assertSame('work: 0123-1233333;other: 0232-123123', $this->object->humanized_value());
     }
 
     public function test_can_convert_to_api_friendly_json()
     {
         // Empty values
         $empty_values = new PodioPhoneItemField();
-        $this->assertEquals('[]', $empty_values->as_json());
+        $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values
-        $this->assertEquals('[{"type":"work","value":"0123-1233333"},{"type":"other","value":"0232-123123"}]', $this->object->as_json());
+        $this->assertSame('[{"type":"work","value":"0123-1233333"},{"type":"other","value":"0232-123123"}]', $this->object->as_json());
     }
 }

@@ -35,14 +35,14 @@ class PodioCollectionTest extends TestCase
     public function test_can_get_by_offset()
     {
         $item = $this->collection[1];
-        $this->assertEquals(2, $item->id);
+        $this->assertSame(2, $item->id);
     }
 
     public function test_can_iterate()
     {
         $checklist = [1, 2, 3];
         foreach ($this->collection as $offset => $item) {
-            $this->assertEquals($checklist[$offset], $item->id);
+            $this->assertSame($checklist[$offset], $item->id);
         }
     }
 
@@ -103,12 +103,12 @@ class PodioCollectionTest extends TestCase
 
     public function test_can_get_by_id()
     {
-        $this->assertEquals('b', $this->collection->get(2)->external_id);
+        $this->assertSame('b', $this->collection->get(2)->external_id);
     }
 
     public function test_can_get_by_external_id()
     {
-        $this->assertEquals(2, $this->collection->get('b')->id);
+        $this->assertSame(2, $this->collection->get('b')->id);
     }
 
     public function test_can_add_relationship()
@@ -118,13 +118,13 @@ class PodioCollectionTest extends TestCase
         $this->collection->add_relationship($instance, 'fields');
 
         $relationship = $this->collection->relationship();
-        $this->assertEquals($instance, $relationship['instance']);
-        $this->assertEquals('fields', $relationship['property']);
+        $this->assertSame($instance, $relationship['instance']);
+        $this->assertSame('fields', $relationship['property']);
 
         foreach ($this->collection as $object) {
             $relationship = $object->relationship();
-            $this->assertEquals($instance, $relationship['instance']);
-            $this->assertEquals('fields', $relationship['property']);
+            $this->assertSame($instance, $relationship['instance']);
+            $this->assertSame('fields', $relationship['property']);
         }
     }
 }

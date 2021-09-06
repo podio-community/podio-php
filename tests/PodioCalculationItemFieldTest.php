@@ -41,9 +41,9 @@ class PodioCalculationItemFieldTest extends TestCase
     public function test_can_provide_value()
     {
         $this->assertNull($this->empty_values->values);
-        $this->assertEquals('1234.5600', $this->object->values);
-        $this->assertEquals('0', $this->zero_value->values);
-        $this->assertEquals([
+        $this->assertSame('1234.5600', $this->object->values);
+        $this->assertSame('0', $this->zero_value->values);
+        $this->assertSame([
             'start' => '2016-11-11 00:00:00',
             'start_date_utc' => '2016-11-11',
             'start_time_utc' => '00:00:00',
@@ -56,23 +56,23 @@ class PodioCalculationItemFieldTest extends TestCase
     public function test_cannot_modify_value()
     {
         $this->object->values = '12.34';
-        $this->assertEquals([['value' => '1234.5600']], $this->object->__attribute('values'));
+        $this->assertSame([['value' => '1234.5600']], $this->object->__attribute('values'));
     }
 
     public function test_can_humanize_value()
     {
-        $this->assertEquals('', $this->empty_values->humanized_value());
-        $this->assertEquals('1234.56', $this->object->humanized_value());
-        $this->assertEquals('0', $this->zero_value->humanized_value());
+        $this->assertSame('', $this->empty_values->humanized_value());
+        $this->assertSame('1234.56', $this->object->humanized_value());
+        $this->assertSame('0', $this->zero_value->humanized_value());
         // cannot humanize value for date ($this->date_value)
     }
 
     public function test_can_convert_to_api_friendly_json()
     {
-        $this->assertEquals('null', $this->empty_values->as_json());
-        $this->assertEquals('"1234.5600"', $this->object->as_json());
-        $this->assertEquals('"0"', $this->zero_value->as_json());
+        $this->assertSame('null', $this->empty_values->as_json());
+        $this->assertSame('"1234.5600"', $this->object->as_json());
+        $this->assertSame('"0"', $this->zero_value->as_json());
         $date_value_json = '{"start":"2016-11-11 00:00:00","start_date_utc":"2016-11-11","start_time_utc":"00:00:00",'.'"start_time":"00:00:00","start_utc":"2016-11-11 00:00:00","start_date":"2016-11-11"}';
-        $this->assertEquals(''.$date_value_json.'', $this->date_value->as_json());
+        $this->assertSame(''.$date_value_json.'', $this->date_value->as_json());
     }
 }

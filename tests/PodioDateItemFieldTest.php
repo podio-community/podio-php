@@ -108,7 +108,7 @@ class PodioDateItemFieldTest extends TestCase
             'field_id' => 123,
             'values' => ['start' => '2012-12-24'],
         ]);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => null,
@@ -123,31 +123,31 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertNull($this->empty_values->values);
 
         $this->assertTrue(is_array($this->start_date->values));
-        $this->assertEquals('2011-05-31 00:00:00', $this->start_date->values['start']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-05-31 00:00:00', $this->start_date->values['start']->format('Y-m-d H:i:s'));
         $this->assertNull($this->start_date->values['end']);
 
         $this->assertTrue(is_array($this->start_datetime->values));
-        $this->assertEquals('2011-05-31 14:00:00', $this->start_datetime->values['start']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-05-31 14:00:00', $this->start_datetime->values['start']->format('Y-m-d H:i:s'));
         $this->assertNull($this->start_datetime->values['end']);
 
         $this->assertTrue(is_array($this->start_datetime_with_endtime_same_day->values));
-        $this->assertEquals('2011-05-31 14:00:00', $this->start_datetime_with_endtime_same_day->values['start']->format('Y-m-d H:i:s'));
-        $this->assertEquals('2011-05-31 15:00:00', $this->start_datetime_with_endtime_same_day->values['end']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-05-31 14:00:00', $this->start_datetime_with_endtime_same_day->values['start']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-05-31 15:00:00', $this->start_datetime_with_endtime_same_day->values['end']->format('Y-m-d H:i:s'));
 
         $this->assertTrue(is_array($this->start_date_end_date->values));
-        $this->assertEquals('2011-05-31 00:00:00', $this->start_date_end_date->values['start']->format('Y-m-d H:i:s'));
-        $this->assertEquals('2011-06-08 00:00:00', $this->start_date_end_date->values['end']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-05-31 00:00:00', $this->start_date_end_date->values['start']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-06-08 00:00:00', $this->start_date_end_date->values['end']->format('Y-m-d H:i:s'));
 
         $this->assertTrue(is_array($this->start_datetime_end_date->values));
-        $this->assertEquals('2011-05-31 14:00:00', $this->start_datetime_end_date->values['start']->format('Y-m-d H:i:s'));
-        $this->assertEquals('2011-06-08 00:00:00', $this->start_datetime_end_date->values['end']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-05-31 14:00:00', $this->start_datetime_end_date->values['start']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-06-08 00:00:00', $this->start_datetime_end_date->values['end']->format('Y-m-d H:i:s'));
 
         $this->assertTrue(is_array($this->start_datetime_end_datetime->values));
-        $this->assertEquals('2011-05-31 14:00:00', $this->start_datetime_end_datetime->values['start']->format('Y-m-d H:i:s'));
-        $this->assertEquals('2011-06-08 14:00:00', $this->start_datetime_end_datetime->values['end']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-05-31 14:00:00', $this->start_datetime_end_datetime->values['start']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-06-08 14:00:00', $this->start_datetime_end_datetime->values['end']->format('Y-m-d H:i:s'));
 
         $this->assertTrue(is_array($this->start_date_omitted_end->values));
-        $this->assertEquals('2011-05-31 00:00:00', $this->start_date_omitted_end->values['start']->format('Y-m-d H:i:s'));
+        $this->assertSame('2011-05-31 00:00:00', $this->start_date_omitted_end->values['start']->format('Y-m-d H:i:s'));
         $this->assertNull($this->start_date_omitted_end->values['end']);
     }
 
@@ -177,11 +177,11 @@ class PodioDateItemFieldTest extends TestCase
     {
         $this->assertNull($this->empty_values->start_time);
         $this->assertNull($this->start_date->start_time);
-        $this->assertEquals('14:00:00', $this->start_datetime->start_time->format('H:i:s'));
-        $this->assertEquals('14:00:00', $this->start_datetime_with_endtime_same_day->start_time->format('H:i:s'));
+        $this->assertSame('14:00:00', $this->start_datetime->start_time->format('H:i:s'));
+        $this->assertSame('14:00:00', $this->start_datetime_with_endtime_same_day->start_time->format('H:i:s'));
         $this->assertNull($this->start_date_end_date->start_time);
-        $this->assertEquals('14:00:00', $this->start_datetime_end_date->start_time->format('H:i:s'));
-        $this->assertEquals('14:00:00', $this->start_datetime_end_datetime->start_time->format('H:i:s'));
+        $this->assertSame('14:00:00', $this->start_datetime_end_date->start_time->format('H:i:s'));
+        $this->assertSame('14:00:00', $this->start_datetime_end_datetime->start_time->format('H:i:s'));
     }
 
     public function test_can_provide_end_datetime()
@@ -211,10 +211,10 @@ class PodioDateItemFieldTest extends TestCase
         $this->assertNull($this->empty_values->end_time);
         $this->assertNull($this->start_date->end_time);
         $this->assertNull($this->start_datetime->end_time);
-        $this->assertEquals('15:00:00', $this->start_datetime_with_endtime_same_day->end_time->format('H:i:s'));
+        $this->assertSame('15:00:00', $this->start_datetime_with_endtime_same_day->end_time->format('H:i:s'));
         $this->assertNull($this->start_date_end_date->end_time);
         $this->assertNull($this->start_datetime_end_date->end_time);
-        $this->assertEquals('14:00:00', $this->start_datetime_end_datetime->end_time->format('H:i:s'));
+        $this->assertSame('14:00:00', $this->start_datetime_end_datetime->end_time->format('H:i:s'));
     }
 
     public function test_can_provide_sameday()
@@ -246,7 +246,7 @@ class PodioDateItemFieldTest extends TestCase
         $object->values = [
             'start' => '2012-12-24',
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => null,
@@ -258,7 +258,7 @@ class PodioDateItemFieldTest extends TestCase
         $object->values = [
             'start' => '2012-12-24 14:00:00',
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '14:00:00',
@@ -271,7 +271,7 @@ class PodioDateItemFieldTest extends TestCase
             'start' => '2012-12-24 14:00:00',
             'end' => '2012-12-24 15:00:00',
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '14:00:00',
@@ -284,7 +284,7 @@ class PodioDateItemFieldTest extends TestCase
             'start' => '2012-12-24',
             'end' => '2012-12-25',
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => null,
@@ -297,7 +297,7 @@ class PodioDateItemFieldTest extends TestCase
             'start' => '2012-12-24 14:00:00',
             'end' => '2012-12-25',
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '14:00:00',
@@ -310,7 +310,7 @@ class PodioDateItemFieldTest extends TestCase
             'start' => '2012-12-24 14:00:00',
             'end' => '2012-12-25 15:00:00',
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '14:00:00',
@@ -328,7 +328,7 @@ class PodioDateItemFieldTest extends TestCase
         $object->values = [
             'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 00:00:00', $tz),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '00:00:00',
@@ -340,7 +340,7 @@ class PodioDateItemFieldTest extends TestCase
         $object->values = [
             'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '14:00:00',
@@ -353,7 +353,7 @@ class PodioDateItemFieldTest extends TestCase
             'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
             'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 15:00:00', $tz),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '14:00:00',
@@ -366,7 +366,7 @@ class PodioDateItemFieldTest extends TestCase
             'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 00:00:00', $tz),
             'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-25 00:00:00', $tz),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '00:00:00',
@@ -379,7 +379,7 @@ class PodioDateItemFieldTest extends TestCase
             'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
             'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-25 00:00:00', $tz),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '14:00:00',
@@ -392,7 +392,7 @@ class PodioDateItemFieldTest extends TestCase
             'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 14:00:00', $tz),
             'end' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-25 15:00:00', $tz),
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-24',
                 'start_time_utc' => '14:00:00',
@@ -405,7 +405,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_set_start_from_string()
     {
         $this->start_date->start = '2012-12-30 14:00:00';
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-30',
                 'start_time_utc' => '14:00:00',
@@ -418,7 +418,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_set_start_date_from_string()
     {
         $this->start_datetime->start_date = '2012-12-30';
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-30',
                 'start_time_utc' => '14:00:00',
@@ -431,7 +431,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_set_start_time_from_string()
     {
         $this->start_date->start_time = '14:00:00';
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => '14:00:00',
@@ -446,7 +446,7 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->start = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-30',
                 'start_time_utc' => '14:00:00',
@@ -461,7 +461,7 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('America/Los_Angeles');
 
         $this->start_date->start = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-30',
                 'start_time_utc' => '22:00:00',
@@ -474,7 +474,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_remove_start_time()
     {
         $this->start_datetime->start_time = null;
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => null,
@@ -487,7 +487,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_remove_start_date()
     {
         $this->start_datetime->start_date = null;
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => null,
                 'start_time_utc' => '14:00:00',
@@ -502,7 +502,7 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->start_date = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2012-12-30',
                 'start_time_utc' => null,
@@ -517,7 +517,7 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->start_time = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => '14:00:00',
@@ -530,7 +530,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_set_end_from_string()
     {
         $this->start_date->end = '2012-12-30 14:00:00';
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => null,
@@ -543,7 +543,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_set_end_date_from_string()
     {
         $this->start_datetime->end_date = '2012-12-31';
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => '14:00:00',
@@ -556,7 +556,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_set_end_time_from_string()
     {
         $this->start_datetime->end_time = '15:00:00';
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => '14:00:00',
@@ -569,7 +569,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_remove_end_time()
     {
         $this->start_datetime_end_datetime->end_time = null;
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => '14:00:00',
@@ -582,7 +582,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_remove_end_date()
     {
         $this->start_datetime_end_datetime->end_date = null;
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => '14:00:00',
@@ -597,7 +597,7 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->end = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => null,
@@ -612,7 +612,7 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('America/Los_Angeles');
 
         $this->start_date->end = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => null,
@@ -627,7 +627,7 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_date->end_date = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 14:00:00', $tz);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => null,
@@ -642,7 +642,7 @@ class PodioDateItemFieldTest extends TestCase
         $tz = new DateTimeZone('UTC');
 
         $this->start_datetime->end_time = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-30 15:00:00', $tz);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'start_date_utc' => '2011-05-31',
                 'start_time_utc' => '14:00:00',
@@ -654,23 +654,23 @@ class PodioDateItemFieldTest extends TestCase
 
     public function test_can_humanize_value()
     {
-        $this->assertEquals('', $this->empty_values->humanized_value());
-        $this->assertEquals('2011-05-31', $this->start_date->humanized_value());
-        $this->assertEquals('2011-05-31 14:00', $this->start_datetime->humanized_value());
-        $this->assertEquals('2011-05-31 14:00 - 15:00', $this->start_datetime_with_endtime_same_day->humanized_value());
-        $this->assertEquals('2011-05-31 - 2011-06-08', $this->start_date_end_date->humanized_value());
-        $this->assertEquals('2011-05-31 14:00 - 2011-06-08', $this->start_datetime_end_date->humanized_value());
-        $this->assertEquals('2011-05-31 14:00 - 2011-06-08 14:00', $this->start_datetime_end_datetime->humanized_value());
+        $this->assertSame('', $this->empty_values->humanized_value());
+        $this->assertSame('2011-05-31', $this->start_date->humanized_value());
+        $this->assertSame('2011-05-31 14:00', $this->start_datetime->humanized_value());
+        $this->assertSame('2011-05-31 14:00 - 15:00', $this->start_datetime_with_endtime_same_day->humanized_value());
+        $this->assertSame('2011-05-31 - 2011-06-08', $this->start_date_end_date->humanized_value());
+        $this->assertSame('2011-05-31 14:00 - 2011-06-08', $this->start_datetime_end_date->humanized_value());
+        $this->assertSame('2011-05-31 14:00 - 2011-06-08 14:00', $this->start_datetime_end_datetime->humanized_value());
     }
 
     public function test_can_convert_to_api_friendly_json()
     {
-        $this->assertEquals('[]', $this->empty_values->as_json());
-        $this->assertEquals('{"start_date":"2011-05-31","end_date":null}', $this->start_date->as_json());
-        $this->assertEquals('{"start_utc":"2011-05-31 14:00:00","end_date":null}', $this->start_datetime->as_json());
-        $this->assertEquals('{"start_utc":"2011-05-31 14:00:00","end_utc":"2011-05-31 15:00:00"}', $this->start_datetime_with_endtime_same_day->as_json());
-        $this->assertEquals('{"start_date":"2011-05-31","end_date":"2011-06-08"}', $this->start_date_end_date->as_json());
-        $this->assertEquals('{"start_utc":"2011-05-31 14:00:00","end_date":"2011-06-08"}', $this->start_datetime_end_date->as_json());
-        $this->assertEquals('{"start_utc":"2011-05-31 14:00:00","end_utc":"2011-06-08 14:00:00"}', $this->start_datetime_end_datetime->as_json());
+        $this->assertSame('[]', $this->empty_values->as_json());
+        $this->assertSame('{"start_date":"2011-05-31","end_date":null}', $this->start_date->as_json());
+        $this->assertSame('{"start_utc":"2011-05-31 14:00:00","end_date":null}', $this->start_datetime->as_json());
+        $this->assertSame('{"start_utc":"2011-05-31 14:00:00","end_utc":"2011-05-31 15:00:00"}', $this->start_datetime_with_endtime_same_day->as_json());
+        $this->assertSame('{"start_date":"2011-05-31","end_date":"2011-06-08"}', $this->start_date_end_date->as_json());
+        $this->assertSame('{"start_utc":"2011-05-31 14:00:00","end_date":"2011-06-08"}', $this->start_datetime_end_date->as_json());
+        $this->assertSame('{"start_utc":"2011-05-31 14:00:00","end_utc":"2011-06-08 14:00:00"}', $this->start_datetime_end_datetime->as_json());
     }
 }

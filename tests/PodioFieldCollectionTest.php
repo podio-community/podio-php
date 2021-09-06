@@ -21,19 +21,19 @@ class PodioFieldCollectionTest extends TestCase
     public function test_can_get_by_external_id()
     {
         $field = $this->collection["b"];
-        $this->assertEquals(2, $field->field_id);
+        $this->assertSame(2, $field->field_id);
     }
 
     public function test_can_get_by_external_id_using_get()
     {
         $field = $this->collection->get("b");
-        $this->assertEquals(2, $field->field_id);
+        $this->assertSame(2, $field->field_id);
     }
 
     public function test_can_get_by_field_id()
     {
         $field = $this->collection->get(2);
-        $this->assertEquals(2, $field->field_id);
+        $this->assertSame(2, $field->field_id);
     }
 
     public function test_can_add_field()
@@ -56,7 +56,7 @@ class PodioFieldCollectionTest extends TestCase
         $this->collection[] = new PodioAppField(['field_id' => 3, 'external_id' => 'd']);
 
         $this->assertCount($length, $this->collection);
-        $this->assertEquals('d', $this->collection->get(3)->external_id);
+        $this->assertSame('d', $this->collection->get(3)->external_id);
     }
 
     public function test_can_remove_field_by_external_id()
@@ -75,7 +75,7 @@ class PodioFieldCollectionTest extends TestCase
 
     public function test_can_list_external_ids()
     {
-        $this->assertEquals(["a", "b", "c"], $this->collection->external_ids());
+        $this->assertSame(["a", "b", "c"], $this->collection->external_ids());
     }
 
     public function test_can_list_readonly_fields()
@@ -83,6 +83,6 @@ class PodioFieldCollectionTest extends TestCase
         $readonly = $this->collection->readonly_fields();
 
         $this->assertInstanceOf('PodioFieldCollection', $readonly);
-        $this->assertEquals(count($readonly), 1);
+        $this->assertSame(count($readonly), 1);
     }
 }

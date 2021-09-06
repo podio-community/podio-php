@@ -30,7 +30,7 @@ class PodioLocationItemFieldTest extends TestCase
                 'lng' => -122.4033069,
             ],
         ]);
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'value' => '650 Townsend St., San Francisco, CA 94103',
                 'lat' => 37.7710325,
@@ -45,7 +45,7 @@ class PodioLocationItemFieldTest extends TestCase
         $this->assertNull($this->empty_values->values);
 
         // Populated values
-        $this->assertEquals([
+        $this->assertSame([
             'value' => '650 Townsend St., San Francisco, CA 94103',
             'lat' => 37.7710325,
             'lng' => -122.4033069,
@@ -55,7 +55,7 @@ class PodioLocationItemFieldTest extends TestCase
     public function test_can_provide_text()
     {
         $this->assertNull($this->empty_values->text);
-        $this->assertEquals('650 Townsend St., San Francisco, CA 94103', $this->object->text);
+        $this->assertSame('650 Townsend St., San Francisco, CA 94103', $this->object->text);
     }
 
     public function test_can_set_value()
@@ -65,7 +65,7 @@ class PodioLocationItemFieldTest extends TestCase
             'lat' => 55.6725581,
             'lng' => 12.5564512,
         ];
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'value' => 'Vesterbrogade 34, 1620 Copenhagen V, Denmark',
                 'lat' => 55.6725581,
@@ -77,7 +77,7 @@ class PodioLocationItemFieldTest extends TestCase
     public function test_can_set_text()
     {
         $this->object->text = 'Vesterbrogade 34, 1620 Copenhagen V, Denmark';
-        $this->assertEquals([
+        $this->assertSame([
             [
                 'value' => 'Vesterbrogade 34, 1620 Copenhagen V, Denmark',
                 'lat' => 37.7710325,
@@ -89,18 +89,18 @@ class PodioLocationItemFieldTest extends TestCase
     public function test_can_humanize_value()
     {
         // Empty values
-        $this->assertEquals('', $this->empty_values->humanized_value());
+        $this->assertSame('', $this->empty_values->humanized_value());
 
         // Populated values
-        $this->assertEquals('650 Townsend St., San Francisco, CA 94103', $this->object->humanized_value());
+        $this->assertSame('650 Townsend St., San Francisco, CA 94103', $this->object->humanized_value());
     }
 
     public function test_can_convert_to_api_friendly_json()
     {
         // Empty values
-        $this->assertEquals('null', $this->empty_values->as_json());
+        $this->assertSame('null', $this->empty_values->as_json());
 
         // Populated values
-        $this->assertEquals('{"value":"650 Townsend St., San Francisco, CA 94103","lat":37.7710325,"lng":-122.4033069}', $this->object->as_json());
+        $this->assertSame('{"value":"650 Townsend St., San Francisco, CA 94103","lat":37.7710325,"lng":-122.4033069}', $this->object->as_json());
     }
 }
