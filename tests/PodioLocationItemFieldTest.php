@@ -1,5 +1,9 @@
 <?php
 
+namespace Podio\Tests;
+
+use PodioLocationItemField;
+
 class PodioLocationItemFieldTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

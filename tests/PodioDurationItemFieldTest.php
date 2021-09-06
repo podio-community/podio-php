@@ -1,5 +1,9 @@
 <?php
 
+namespace Podio\Tests;
+
+use PodioDurationItemField;
+
 class PodioDurationItemFieldTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

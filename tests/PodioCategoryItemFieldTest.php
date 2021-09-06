@@ -1,5 +1,9 @@
 <?php
 
+namespace Podio\Tests;
+
+use PodioCategoryItemField;
+
 class PodioCategoryItemFieldTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

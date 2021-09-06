@@ -1,5 +1,11 @@
 <?php
 
+namespace Podio\Tests;
+
+use DateTime;
+use DateTimeZone;
+use PodioDateItemField;
+
 class PodioDateItemFieldTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

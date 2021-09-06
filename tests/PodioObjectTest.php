@@ -1,5 +1,12 @@
 <?php
 
+namespace Podio\Tests;
+
+use DateTime;
+use DateTimeZone;
+use PodioCollection;
+use PodioObject;
+
 class PodioObjectTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

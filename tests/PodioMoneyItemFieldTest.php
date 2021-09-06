@@ -1,5 +1,9 @@
 <?php
 
+namespace Podio\Tests;
+
+use PodioMoneyItemField;
+
 class PodioMoneyItemFieldTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

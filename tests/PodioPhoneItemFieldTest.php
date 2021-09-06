@@ -1,5 +1,9 @@
 <?php
 
+namespace Podio\Tests;
+
+use PodioPhoneItemField;
+
 class PodioPhoneItemFieldTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

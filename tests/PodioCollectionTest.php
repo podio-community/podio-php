@@ -1,5 +1,11 @@
 <?php
 
+namespace Podio\Tests;
+
+use PodioCollection;
+use PodioItem;
+use PodioObject;
+
 class PodioCollectionTest extends \PHPUnit\Framework\TestCase
 {
     /**

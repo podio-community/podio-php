@@ -1,5 +1,9 @@
 <?php
 
+namespace Podio\Tests;
+
+use PodioEmailItemField;
+
 class PodioEmailItemFieldTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp(): void

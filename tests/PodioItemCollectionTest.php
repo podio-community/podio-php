@@ -1,5 +1,11 @@
 <?php
 
+namespace Podio\Tests;
+
+use PodioItem;
+use PodioItemCollection;
+use PodioObject;
+
 class PodioItemCollectionTest extends \PHPUnit\Framework\TestCase
 {
     public function test_cannot_add_object()
