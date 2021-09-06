@@ -89,7 +89,7 @@ class PodioObjectTest extends TestCase
         $object->has_many('fields', 'Object');
         $object->init(['fields' => [['id' => 1], ['id' => 1]]]);
 
-        $this->assertInstanceOf('PodioCollection', $object->fields);
+        $this->assertInstanceOf(PodioCollection::class, $object->fields);
         foreach ($object->fields as $member) {
             $this->assertInstanceOf(PodioObject::class, $member);
         }
