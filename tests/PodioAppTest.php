@@ -2,9 +2,10 @@
 
 namespace Podio\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PodioApp;
 
-class PodioAppTest extends \PHPUnit\Framework\TestCase
+class PodioAppTest extends TestCase
 {
     public function test_performance_large_app()
     {

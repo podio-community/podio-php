@@ -2,9 +2,10 @@
 
 namespace Podio\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PodioMoneyItemField;
 
-class PodioMoneyItemFieldTest extends \PHPUnit\Framework\TestCase
+class PodioMoneyItemFieldTest extends TestCase
 {
     public function setUp(): void
     {

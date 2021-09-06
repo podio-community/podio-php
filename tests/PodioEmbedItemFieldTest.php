@@ -2,11 +2,12 @@
 
 namespace Podio\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PodioCollection;
 use PodioEmbed;
 use PodioEmbedItemField;
 
-class PodioEmbedItemFieldTest extends \PHPUnit\Framework\TestCase
+class PodioEmbedItemFieldTest extends TestCase
 {
     public function setUp(): void
     {

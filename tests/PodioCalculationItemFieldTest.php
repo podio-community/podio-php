@@ -2,9 +2,10 @@
 
 namespace Podio\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PodioCalculationItemField;
 
-class PodioCalculationItemFieldTest extends \PHPUnit\Framework\TestCase
+class PodioCalculationItemFieldTest extends TestCase
 {
     public function setUp(): void
     {

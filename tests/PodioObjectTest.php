@@ -4,10 +4,11 @@ namespace Podio\Tests;
 
 use DateTime;
 use DateTimeZone;
+use PHPUnit\Framework\TestCase;
 use PodioCollection;
 use PodioObject;
 
-class PodioObjectTest extends \PHPUnit\Framework\TestCase
+class PodioObjectTest extends TestCase
 {
     public function setUp(): void
     {

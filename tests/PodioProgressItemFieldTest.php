@@ -2,9 +2,10 @@
 
 namespace Podio\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PodioProgressItemField;
 
-class PodioProgressItemFieldTest extends \PHPUnit\Framework\TestCase
+class PodioProgressItemFieldTest extends TestCase
 {
     public function setUp(): void
     {

@@ -2,11 +2,12 @@
 
 namespace Podio\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PodioItem;
 use PodioItemCollection;
 use PodioObject;
 
-class PodioItemCollectionTest extends \PHPUnit\Framework\TestCase
+class PodioItemCollectionTest extends TestCase
 {
     public function test_cannot_add_object()
     {

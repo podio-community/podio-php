@@ -2,9 +2,10 @@
 
 namespace Podio\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PodioEmailItemField;
 
-class PodioEmailItemFieldTest extends \PHPUnit\Framework\TestCase
+class PodioEmailItemFieldTest extends TestCase
 {
     public function setUp(): void
     {

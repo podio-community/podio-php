@@ -2,11 +2,12 @@
 
 namespace Podio\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PodioCollection;
 use PodioItem;
 use PodioObject;
 
-class PodioCollectionTest extends \PHPUnit\Framework\TestCase
+class PodioCollectionTest extends TestCase
 {
     /**
      * @var PodioCollection
