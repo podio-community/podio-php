@@ -34,7 +34,7 @@ class PodioItemFieldCollectionTest extends TestCase
             ['field_id' => 1, 'type' => 'text', 'values' => [['value' => 'FooBar']]],
         ], true);
         $this->assertCount(1, $collection);
-        $this->assertSame('PodioTextItemField', get_class($collection[0]));
+        $this->assertInstanceOf(PodioTextItemField::class, $collection[0]);
         $this->assertSame('FooBar', $collection[0]->values);
     }
 
@@ -46,9 +46,9 @@ class PodioItemFieldCollectionTest extends TestCase
             ['field_id' => 3, 'type' => 'calculation'],
         ]);
         $this->assertCount(3, $collection);
-        $this->assertSame('PodioTextItemField', get_class($collection[0]));
-        $this->assertSame('PodioNumberItemField', get_class($collection[1]));
-        $this->assertSame('PodioCalculationItemField', get_class($collection[2]));
+        $this->assertInstanceOf(PodioTextItemField::class, $collection[0]);
+        $this->assertInstanceOf(PodioNumberItemField::class, $collection[1]);
+        $this->assertInstanceOf(PodioCalculationItemField::class, $collection[2]);
         $this->assertSame('FooBar', $collection[0]->values);
     }
 
@@ -71,7 +71,7 @@ class PodioItemFieldCollectionTest extends TestCase
         ]);
 
         $this->assertCount(1, $collection);
-        $this->assertSame('PodioItemField', get_class($collection[0]));
+        $this->assertInstanceOf(PodioItemField::class, $collection[0]);
     }
 
     public function test_can_add_field(): void

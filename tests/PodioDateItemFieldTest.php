@@ -164,31 +164,31 @@ class PodioDateItemFieldTest extends TestCase
     {
         $this->assertNull($this->empty_values->values);
 
-        $this->assertTrue(is_array($this->start_date->values));
+        $this->assertIsArray($this->start_date->values);
         $this->assertSame('2011-05-31 00:00:00', $this->start_date->values['start']->format('Y-m-d H:i:s'));
         $this->assertNull($this->start_date->values['end']);
 
-        $this->assertTrue(is_array($this->start_datetime->values));
+        $this->assertIsArray($this->start_datetime->values);
         $this->assertSame('2011-05-31 14:00:00', $this->start_datetime->values['start']->format('Y-m-d H:i:s'));
         $this->assertNull($this->start_datetime->values['end']);
 
-        $this->assertTrue(is_array($this->start_datetime_with_endtime_same_day->values));
+        $this->assertIsArray($this->start_datetime_with_endtime_same_day->values);
         $this->assertSame('2011-05-31 14:00:00', $this->start_datetime_with_endtime_same_day->values['start']->format('Y-m-d H:i:s'));
         $this->assertSame('2011-05-31 15:00:00', $this->start_datetime_with_endtime_same_day->values['end']->format('Y-m-d H:i:s'));
 
-        $this->assertTrue(is_array($this->start_date_end_date->values));
+        $this->assertIsArray($this->start_date_end_date->values);
         $this->assertSame('2011-05-31 00:00:00', $this->start_date_end_date->values['start']->format('Y-m-d H:i:s'));
         $this->assertSame('2011-06-08 00:00:00', $this->start_date_end_date->values['end']->format('Y-m-d H:i:s'));
 
-        $this->assertTrue(is_array($this->start_datetime_end_date->values));
+        $this->assertIsArray($this->start_datetime_end_date->values);
         $this->assertSame('2011-05-31 14:00:00', $this->start_datetime_end_date->values['start']->format('Y-m-d H:i:s'));
         $this->assertSame('2011-06-08 00:00:00', $this->start_datetime_end_date->values['end']->format('Y-m-d H:i:s'));
 
-        $this->assertTrue(is_array($this->start_datetime_end_datetime->values));
+        $this->assertIsArray($this->start_datetime_end_datetime->values);
         $this->assertSame('2011-05-31 14:00:00', $this->start_datetime_end_datetime->values['start']->format('Y-m-d H:i:s'));
         $this->assertSame('2011-06-08 14:00:00', $this->start_datetime_end_datetime->values['end']->format('Y-m-d H:i:s'));
 
-        $this->assertTrue(is_array($this->start_date_omitted_end->values));
+        $this->assertIsArray($this->start_date_omitted_end->values);
         $this->assertSame('2011-05-31 00:00:00', $this->start_date_omitted_end->values['start']->format('Y-m-d H:i:s'));
         $this->assertNull($this->start_date_omitted_end->values['end']);
     }

@@ -275,7 +275,7 @@ class PodioObjectTest extends TestCase
     public function test_can_create_listing(): void
     {
         $listing = PodioObject::listing([['id' => 1], ['id' => 2]]);
-        $this->assertTrue(is_array($listing));
+        $this->assertIsArray($listing);
         foreach ($listing as $member) {
             $this->assertInstanceOf(PodioObject::class, $member);
         }
