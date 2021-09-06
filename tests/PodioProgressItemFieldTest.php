@@ -7,6 +7,21 @@ use PodioProgressItemField;
 
 class PodioProgressItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioProgressItemField
+     */
+    private $object;
+
+    /**
+     * @var \PodioProgressItemField
+     */
+    private $empty_values;
+
+    /**
+     * @var \PodioProgressItemField
+     */
+    private $zero_value;
+
     public function setUp(): void
     {
         parent::setUp();

@@ -9,6 +9,11 @@ use PodioItem;
 
 class PodioAppItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioAppItemField
+     */
+    private $object;
+
     public function setUp(): void
     {
         parent::setUp();

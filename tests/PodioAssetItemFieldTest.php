@@ -9,6 +9,11 @@ use PodioFile;
 
 class PodioAssetItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioAssetItemField
+     */
+    private $object;
+
     public function setUp(): void
     {
         parent::setUp();

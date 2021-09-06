@@ -10,6 +10,13 @@ use PodioObject;
 
 class PodioObjectTest extends TestCase
 {
+    /**
+     * @var \PodioObject
+     */
+    private $object;
+
+
+
     public function setUp(): void
     {
         parent::setUp();

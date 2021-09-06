@@ -7,6 +7,16 @@ use PodioDurationItemField;
 
 class PodioDurationItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioDurationItemField
+     */
+    private $object;
+
+    /**
+     * @var \PodioDurationItemField
+     */
+    private $empty_values;
+
     public function setUp(): void
     {
         parent::setUp();

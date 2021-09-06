@@ -7,6 +7,16 @@ use PodioTextItemField;
 
 class PodioTextItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioTextItemField
+     */
+    private $object;
+
+    /**
+     * @var \PodioTextItemField
+     */
+    private $empty_values;
+
     public function setUp(): void
     {
         parent::setUp();

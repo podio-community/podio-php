@@ -10,7 +10,7 @@ use PodioObject;
 class PodioCollectionTest extends TestCase
 {
     /**
-     * @var PodioCollection
+     * @var \PodioItem
      */
     protected $collection;
 

@@ -12,6 +12,11 @@ use PodioTextItemField;
 
 class PodioItemFieldCollectionTest extends TestCase
 {
+    /**
+     * @var \PodioItemFieldCollection
+     */
+    private $collection;
+
     public function setUp(): void
     {
         parent::setUp();

@@ -7,6 +7,21 @@ use PodioMoneyItemField;
 
 class PodioMoneyItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioMoneyItemField
+     */
+    private $object;
+
+    /**
+     * @var \PodioMoneyItemField
+     */
+    private $empty_values;
+
+    /**
+     * @var \PodioMoneyItemField
+     */
+    private $zero_value;
+
     public function setUp(): void
     {
         parent::setUp();

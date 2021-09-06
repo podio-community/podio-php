@@ -7,6 +7,11 @@ use PodioCategoryItemField;
 
 class PodioCategoryItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioCategoryItemField
+     */
+    private $object;
+
     public function setUp(): void
     {
         parent::setUp();

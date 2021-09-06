@@ -9,6 +9,46 @@ use PodioDateItemField;
 
 class PodioDateItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioDateItemField
+     */
+    private $empty_values;
+
+    /**
+     * @var \PodioDateItemField
+     */
+    private $start_date;
+
+    /**
+     * @var \PodioDateItemField
+     */
+    private $start_datetime;
+
+    /**
+     * @var \PodioDateItemField
+     */
+    private $start_datetime_with_endtime_same_day;
+
+    /**
+     * @var \PodioDateItemField
+     */
+    private $start_date_end_date;
+
+    /**
+     * @var \PodioDateItemField
+     */
+    private $start_datetime_end_date;
+
+    /**
+     * @var \PodioDateItemField
+     */
+    private $start_datetime_end_datetime;
+
+    /**
+     * @var \PodioDateItemField
+     */
+    private $start_date_omitted_end;
+
     public function setUp(): void
     {
         parent::setUp();

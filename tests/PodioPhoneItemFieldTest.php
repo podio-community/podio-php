@@ -7,6 +7,12 @@ use PodioPhoneItemField;
 
 class PodioPhoneItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioPhoneItemField
+     */
+    private $object;
+
+
     public function setUp(): void
     {
         parent::setUp();

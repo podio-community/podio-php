@@ -7,6 +7,11 @@ use PodioEmailItemField;
 
 class PodioEmailItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioEmailItemField
+     */
+    private $object;
+
     public function setUp(): void
     {
         parent::setUp();

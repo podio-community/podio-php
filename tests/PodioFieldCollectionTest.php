@@ -9,6 +9,11 @@ use PodioObject;
 
 class PodioFieldCollectionTest extends TestCase
 {
+    /**
+     * @var \PodioFieldCollection
+     */
+    private $collection;
+
     public function setUp(): void
     {
         parent::setUp();

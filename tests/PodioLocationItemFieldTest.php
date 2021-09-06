@@ -7,6 +7,16 @@ use PodioLocationItemField;
 
 class PodioLocationItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioLocationItemField
+     */
+    private $object;
+
+    /**
+     * @var \PodioLocationItemField
+     */
+    private $empty_values;
+
     public function setUp(): void
     {
         parent::setUp();

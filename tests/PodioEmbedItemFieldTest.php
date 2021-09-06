@@ -10,6 +10,11 @@ use PodioFile;
 
 class PodioEmbedItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioEmbedItemField
+     */
+    private $object;
+
     public function setUp(): void
     {
         parent::setUp();

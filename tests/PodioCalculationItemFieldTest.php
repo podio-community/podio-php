@@ -7,6 +7,26 @@ use PodioCalculationItemField;
 
 class PodioCalculationItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioCalculationItemField
+     */
+    private $object;
+
+    /**
+     * @var \PodioCalculationItemField
+     */
+    private $empty_values;
+
+    /**
+     * @var \PodioCalculationItemField
+     */
+    private $zero_value;
+
+    /**
+     * @var \PodioCalculationItemField
+     */
+    private $date_value;
+
     public function setUp(): void
     {
         parent::setUp();

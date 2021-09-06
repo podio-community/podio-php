@@ -7,6 +7,21 @@ use PodioNumberItemField;
 
 class PodioNumberItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioNumberItemField
+     */
+    private $object;
+
+    /**
+     * @var \PodioNumberItemField
+     */
+    private $empty_values;
+
+    /**
+     * @var \PodioNumberItemField
+     */
+    private $zero_value;
+
     public function setUp(): void
     {
         parent::setUp();

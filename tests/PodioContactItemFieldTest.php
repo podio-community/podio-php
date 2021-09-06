@@ -9,6 +9,11 @@ use PodioContactItemField;
 
 class PodioContactItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioContactItemField
+     */
+    private $object;
+
     public function setUp(): void
     {
         parent::setUp();
