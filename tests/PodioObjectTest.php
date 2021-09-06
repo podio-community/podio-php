@@ -230,8 +230,6 @@ class PodioObjectTest extends TestCase
 
     public function test_can_set_date_attribute_from_string(): void
     {
-        $tz = new DateTimeZone('UTC');
-
         $object = new PodioObject();
         $object->property('date_property', 'date');
         $object->date_property = '2014-01-03';
@@ -263,8 +261,6 @@ class PodioObjectTest extends TestCase
 
     public function test_can_set_datetime_attribute_from_string(): void
     {
-        $tz = new DateTimeZone('UTC');
-
         $object = new PodioObject();
         $object->property('datetime_property', 'datetime');
         $object->datetime_property = '2014-01-03 14:00:00';
