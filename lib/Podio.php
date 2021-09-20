@@ -276,7 +276,8 @@ class Podio
             }
             self::$last_response = $response;
         } catch (RequestException $requestException) {
-            throw new PodioConnectionError('Connection to Podio API failed: [' . get_class($requestException) . '] ' . $requestException->getMessage(), $requestException->getCode());
+            $response->status = $requestException->getCode();
+            $response->body = $requestException->getResponse()->getBody()->getContents();
         } catch (GuzzleException $e) { // this generally should not happen as RequestOptions::HTTP_ERRORS is set to `false`
             throw new PodioConnectionError('Connection to Podio API failed: [' . get_class($e) . '] ' . $e->getMessage(), $e->getCode());
         }
