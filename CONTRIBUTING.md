@@ -19,7 +19,7 @@ We use [EditorConfig](https://editorconfig.org) to maintain consistent coding st
 PRs can be merged by any member of the [Podio Community](https://github.com/orgs/podio-community) organization, when the following conditions are met:
 
 1. All build checks are passing.
-2. At least two members (different than the PR creator) reviewed the PR.
+2. At least one member (different than the PR creator) reviewed the PR.
 3. All questions/problems are addressed.
 
 ## Versioning
