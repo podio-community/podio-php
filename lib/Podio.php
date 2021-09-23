@@ -262,6 +262,7 @@ class Podio
             $transferTime = 0;
             /** \Psr\Http\Message\ResponseInterface */
             $http_response = self::$http_client->send($request, [
+        RequestOptions::HTTP_ERRORS => false,
         RequestOptions::ON_STATS => function (TransferStats $stats) use (&$transferTime) {
             $transferTime = $stats->getTransferTime();
         }
@@ -276,8 +277,7 @@ class Podio
             }
             self::$last_response = $response;
         } catch (RequestException $requestException) {
-            $response->status = $requestException->getCode();
-            $response->body = $requestException->getResponse()->getBody()->getContents();
+            throw new PodioConnectionError('Connection to Podio API failed: [' . get_class($requestException) . '] ' . $requestException->getMessage(), $requestException->getCode());
         } catch (GuzzleException $e) { // this generally should not happen as RequestOptions::HTTP_ERRORS is set to `false`
             throw new PodioConnectionError('Connection to Podio API failed: [' . get_class($e) . '] ' . $e->getMessage(), $e->getCode());
         }
