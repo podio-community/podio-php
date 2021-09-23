@@ -1,61 +1,72 @@
 <?php
 
-class PodioEmailItemFieldTest extends \PHPUnit\Framework\TestCase
+namespace Podio\Tests;
+
+use PHPUnit\Framework\TestCase;
+use PodioEmailItemField;
+
+class PodioEmailItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioEmailItemField
+     */
+    private $object;
+
     public function setUp(): void
     {
-        $this->object = new PodioEmailItemField(array(
-      '__api_values' => true,
-      'values' => array(
-        array('type' => 'work', 'value' => 'mail@example.com'),
-        array('type' => 'other', 'value' => 'info@example.com')
-      )
-    ));
+        parent::setUp();
+
+        $this->object = new PodioEmailItemField([
+            '__api_values' => true,
+            'values' => [
+                ['type' => 'work', 'value' => 'mail@example.com'],
+                ['type' => 'other', 'value' => 'info@example.com'],
+            ],
+        ]);
     }
 
-    public function test_can_provide_value()
+    public function test_can_provide_value(): void
     {
         // Empty values
         $empty_values = new PodioEmailItemField();
         $this->assertNull($empty_values->values);
 
         // Populated values
-        $this->assertEquals(array(
-        array('type' => 'work', 'value' => 'mail@example.com'),
-        array('type' => 'other', 'value' => 'info@example.com')
-      ), $this->object->values);
+        $this->assertSame([
+            ['type' => 'work', 'value' => 'mail@example.com'],
+            ['type' => 'other', 'value' => 'info@example.com'],
+        ], $this->object->values);
     }
 
-    public function test_can_set_value_from_hash()
+    public function test_can_set_value_from_hash(): void
     {
-        $this->object->values = array(
-      array('type' => 'work', 'value' => 'other@example.com'),
-      array('type' => 'other', 'value' => '42@example.com')
-    );
-        $this->assertEquals(array(
-      array('type' => 'work', 'value' => 'other@example.com'),
-      array('type' => 'other', 'value' => '42@example.com')
-    ), $this->object->__attribute('values'));
+        $this->object->values = [
+            ['type' => 'work', 'value' => 'other@example.com'],
+            ['type' => 'other', 'value' => '42@example.com'],
+        ];
+        $this->assertSame([
+            ['type' => 'work', 'value' => 'other@example.com'],
+            ['type' => 'other', 'value' => '42@example.com'],
+        ], $this->object->__attribute('values'));
     }
 
-
-    public function test_can_humanize_value()
-    {
-        // Empty values
-        $empty_values = new PodioEmailItemField();
-        $this->assertEquals('', $empty_values->humanized_value());
-
-        // Populated values
-        $this->assertEquals('work: mail@example.com;other: info@example.com', $this->object->humanized_value());
-    }
-
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_humanize_value(): void
     {
         // Empty values
         $empty_values = new PodioEmailItemField();
-        $this->assertEquals('[]', $empty_values->as_json());
+        $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
-        $this->assertEquals('[{"type":"work","value":"mail@example.com"},{"type":"other","value":"info@example.com"}]', $this->object->as_json());
+        $this->assertSame('work: mail@example.com;other: info@example.com', $this->object->humanized_value());
+    }
+
+    public function test_can_convert_to_api_friendly_json(): void
+    {
+        // Empty values
+        $empty_values = new PodioEmailItemField();
+        $this->assertSame('[]', $empty_values->as_json());
+
+        // Populated values
+        $this->assertSame('[{"type":"work","value":"mail@example.com"},{"type":"other","value":"info@example.com"}]', $this->object->as_json());
     }
 }

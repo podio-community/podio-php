@@ -1,96 +1,119 @@
 <?php
 
-class PodioCategoryItemFieldTest extends \PHPUnit\Framework\TestCase
+namespace Podio\Tests;
+
+use PHPUnit\Framework\TestCase;
+use PodioCategoryItemField;
+
+class PodioCategoryItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioCategoryItemField
+     */
+    private $object;
+
     public function setUp(): void
     {
-        $this->object = new PodioCategoryItemField(array(
-      '__api_values' => true,
-      'field_id' => 123,
-      'values' => array(
-        array('value' => array('id' => 1, 'text' => 'Snap')),
-        array('value' => array('id' => 2, 'text' => 'Crackle')),
-        array('value' => array('id' => 3, 'text' => 'Pop')),
-      )
-    ));
+        parent::setUp();
+
+        $this->object = new PodioCategoryItemField([
+            '__api_values' => true,
+            'field_id' => 123,
+            'values' => [
+                ['value' => ['id' => 1, 'text' => 'Snap']],
+                ['value' => ['id' => 2, 'text' => 'Crackle']],
+                ['value' => ['id' => 3, 'text' => 'Pop']],
+            ],
+        ]);
     }
 
-    public function test_can_construct_from_simple_value()
+    public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioCategoryItemField(array(
-      'field_id' => 123,
-      'values' => 4
-    ));
-        $this->assertEquals(array(array('value' => array('id' => 4))), $object->__attribute('values'));
+        $object = new PodioCategoryItemField([
+            'field_id' => 123,
+            'values' => 4,
+        ]);
+        $this->assertSame([['value' => ['id' => 4]]], $object->__attribute('values'));
     }
 
-    public function test_can_provide_value()
+    public function test_can_provide_value(): void
     {
         // Empty values
-        $empty_values = new PodioCategoryItemField(array('field_id' => 1));
+        $empty_values = new PodioCategoryItemField(['field_id' => 1]);
         $this->assertNull($empty_values->values);
 
         // Populated values
-        $this->assertEquals(array(array('id' => 1, 'text' => 'Snap'), array('id' => 2, 'text' => 'Crackle'), array('id' => 3, 'text' => 'Pop')), $this->object->values);
+        $this->assertSame([
+            ['id' => 1, 'text' => 'Snap'],
+            ['id' => 2, 'text' => 'Crackle'],
+            ['id' => 3, 'text' => 'Pop'],
+        ], $this->object->values);
     }
 
-    public function test_can_set_values_from_id()
+    public function test_can_set_values_from_id(): void
     {
         $this->object->values = 4;
-        $this->assertEquals(array(array('value' => array('id' => 4))), $this->object->__attribute('values'));
+        $this->assertSame([['value' => ['id' => 4]]], $this->object->__attribute('values'));
     }
 
-    public function test_can_set_values_from_array()
+    public function test_can_set_values_from_array(): void
     {
-        $this->object->values = array(4);
-        $this->assertEquals(array(array('value' => array('id' => 4))), $this->object->__attribute('values'));
+        $this->object->values = [4];
+        $this->assertSame([['value' => ['id' => 4]]], $this->object->__attribute('values'));
     }
 
-    public function test_can_set_values_from_hash()
+    public function test_can_set_values_from_hash(): void
     {
-        $this->object->values = array(array('id' => 4, 'text' => 'Captain Crunch'));
-        $this->assertEquals(array(array('value' => array('id' => 4, 'text' => 'Captain Crunch'))), $this->object->__attribute('values'));
+        $this->object->values = [['id' => 4, 'text' => 'Captain Crunch']];
+        $this->assertSame([
+            [
+                'value' => [
+                    'id' => 4,
+                    'text' => 'Captain Crunch',
+                ],
+            ],
+        ], $this->object->__attribute('values'));
     }
 
-    public function test_can_add_value_from_id()
+    public function test_can_add_value_from_id(): void
     {
         $this->object->add_value(4);
-        $this->assertEquals(array(
-      array('value' => array('id' => 1, 'text' => 'Snap')),
-      array('value' => array('id' => 2, 'text' => 'Crackle')),
-      array('value' => array('id' => 3, 'text' => 'Pop')),
-      array('value' => array('id' => 4)),
-    ), $this->object->__attribute('values'));
+        $this->assertSame([
+            ['value' => ['id' => 1, 'text' => 'Snap']],
+            ['value' => ['id' => 2, 'text' => 'Crackle']],
+            ['value' => ['id' => 3, 'text' => 'Pop']],
+            ['value' => ['id' => 4]],
+        ], $this->object->__attribute('values'));
     }
 
-    public function test_can_add_value_from_hash()
+    public function test_can_add_value_from_hash(): void
     {
-        $this->object->add_value(array('id' => 4, 'text' => 'Captain Crunch'));
-        $this->assertEquals(array(
-      array('value' => array('id' => 1, 'text' => 'Snap')),
-      array('value' => array('id' => 2, 'text' => 'Crackle')),
-      array('value' => array('id' => 3, 'text' => 'Pop')),
-      array('value' => array('id' => 4, 'text' => 'Captain Crunch')),
-    ), $this->object->__attribute('values'));
+        $this->object->add_value(['id' => 4, 'text' => 'Captain Crunch']);
+        $this->assertSame([
+            ['value' => ['id' => 1, 'text' => 'Snap']],
+            ['value' => ['id' => 2, 'text' => 'Crackle']],
+            ['value' => ['id' => 3, 'text' => 'Pop']],
+            ['value' => ['id' => 4, 'text' => 'Captain Crunch']],
+        ], $this->object->__attribute('values'));
     }
 
-    public function test_can_humanize_value()
-    {
-        // Empty values
-        $empty_values = new PodioCategoryItemField(array('field_id' => 1));
-        $this->assertEquals('', $empty_values->humanized_value());
-
-        // Populated values
-        $this->assertEquals('Snap;Crackle;Pop', $this->object->humanized_value());
-    }
-
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_humanize_value(): void
     {
         // Empty values
-        $empty_values = new PodioCategoryItemField(array('field_id' => 1));
-        $this->assertEquals('[]', $empty_values->as_json());
+        $empty_values = new PodioCategoryItemField(['field_id' => 1]);
+        $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
-        $this->assertEquals('[1,2,3]', $this->object->as_json());
+        $this->assertSame('Snap;Crackle;Pop', $this->object->humanized_value());
+    }
+
+    public function test_can_convert_to_api_friendly_json(): void
+    {
+        // Empty values
+        $empty_values = new PodioCategoryItemField(['field_id' => 1]);
+        $this->assertSame('[]', $empty_values->as_json());
+
+        // Populated values
+        $this->assertSame('[1,2,3]', $this->object->as_json());
     }
 }
