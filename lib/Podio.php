@@ -262,6 +262,7 @@ class Podio
             $transferTime = 0;
             /** \Psr\Http\Message\ResponseInterface */
             $http_response = self::$http_client->send($request, [
+        RequestOptions::HTTP_ERRORS => false,
         RequestOptions::ON_STATS => function (TransferStats $stats) use (&$transferTime) {
             $transferTime = $stats->getTransferTime();
         }

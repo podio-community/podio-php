@@ -1,6 +1,10 @@
 [6.1.0](#v6.1.0) / Unreleased
 ==================
 
+[6.0.1](#v6.0.1) / 2021-09-24
+==================
+* Bugfix: Turn off Guzzle HTTP errors, Podio::request handles 4xx and 5xx errors ([#211](https://github.com/podio-community/podio-php/issues/211))
+
 [6.0.0](#v6.0.0) / 2021-08-23
 ==================
 * BREAKING CHANGE: Drop support for PHP 5.x and 7.0/7.1/7.2
