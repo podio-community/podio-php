@@ -1,70 +1,87 @@
 <?php
 
-class PodioDurationItemFieldTest extends \PHPUnit\Framework\TestCase
+namespace Podio\Tests;
+
+use PHPUnit\Framework\TestCase;
+use PodioDurationItemField;
+
+class PodioDurationItemFieldTest extends TestCase
 {
+    /**
+     * @var \PodioDurationItemField
+     */
+    private $object;
+
+    /**
+     * @var \PodioDurationItemField
+     */
+    private $empty_values;
+
     public function setUp(): void
     {
-        $this->object = new PodioDurationItemField(array(
-      '__api_values' => true,
-      'field_id' => 123,
-      'values' => array(
-        array('value' => 3723)
-      )
-    ));
+        parent::setUp();
 
-        $this->empty_values = new PodioDurationItemField(array(
-      'field_id' => 456
-    ));
+        $this->object = new PodioDurationItemField([
+            '__api_values' => true,
+            'field_id' => 123,
+            'values' => [
+                ['value' => 3723],
+            ],
+        ]);
+
+        $this->empty_values = new PodioDurationItemField([
+            'field_id' => 456,
+        ]);
     }
 
-    public function test_can_construct_from_simple_value()
+    public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioDurationItemField(array(
-      'field_id' => 123,
-      'values' => 3600
-    ));
-        $this->assertEquals(3600, $object->values);
+        $object = new PodioDurationItemField([
+            'field_id' => 123,
+            'values' => 3600,
+        ]);
+        $this->assertSame(3600, $object->values);
     }
 
-    public function test_can_provide_value()
+    public function test_can_provide_value(): void
     {
         $this->assertNull($this->empty_values->values);
-        $this->assertEquals(3723, $this->object->values);
+        $this->assertSame(3723, $this->object->values);
     }
 
-    public function test_can_provide_hours()
+    public function test_can_provide_hours(): void
     {
-        $this->assertEquals(0, $this->empty_values->hours);
-        $this->assertEquals(1, $this->object->hours);
+        $this->assertSame(0, (int) $this->empty_values->hours);
+        $this->assertSame(1, (int) $this->object->hours);
     }
 
-    public function test_can_provide_minutes()
+    public function test_can_provide_minutes(): void
     {
-        $this->assertEquals(0, $this->empty_values->minutes);
-        $this->assertEquals(2, $this->object->minutes);
+        $this->assertSame(0, $this->empty_values->minutes);
+        $this->assertSame(2, $this->object->minutes);
     }
 
-    public function test_can_provide_seconds()
+    public function test_can_provide_seconds(): void
     {
-        $this->assertEquals(0, $this->empty_values->seconds);
-        $this->assertEquals(3, $this->object->seconds);
+        $this->assertSame(0, $this->empty_values->seconds);
+        $this->assertSame(3, $this->object->seconds);
     }
 
-    public function test_can_set_value()
+    public function test_can_set_value(): void
     {
         $this->object->values = 123;
-        $this->assertEquals(array(array('value' => 123)), $this->object->__attribute('values'));
+        $this->assertSame([['value' => 123]], $this->object->__attribute('values'));
     }
 
-    public function test_can_humanize_value()
+    public function test_can_humanize_value(): void
     {
-        $this->assertEquals('00:00:00', $this->empty_values->humanized_value());
-        $this->assertEquals('01:02:03', $this->object->humanized_value());
+        $this->assertSame('00:00:00', $this->empty_values->humanized_value());
+        $this->assertSame('01:02:03', $this->object->humanized_value());
     }
 
-    public function test_can_convert_to_api_friendly_json()
+    public function test_can_convert_to_api_friendly_json(): void
     {
-        $this->assertEquals('null', $this->empty_values->as_json());
-        $this->assertEquals(3723, $this->object->as_json());
+        $this->assertSame('null', $this->empty_values->as_json());
+        $this->assertSame(3723, (int) $this->object->as_json());
     }
 }

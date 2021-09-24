@@ -33,6 +33,11 @@
   "autoload": {
     "classmap": ["lib/", "lib/error/", "models/", "models/field/"]
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Podio\\Tests\\": "tests/"
+    }
+  },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.0",
     "php-coveralls/php-coveralls": "^2.1",

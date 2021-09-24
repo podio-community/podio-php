@@ -1,123 +1,132 @@
 <?php
 
-class PodioCollectionTest extends \PHPUnit\Framework\TestCase
+namespace Podio\Tests;
+
+use PHPUnit\Framework\TestCase;
+use PodioCollection;
+use PodioItem;
+use PodioObject;
+
+class PodioCollectionTest extends TestCase
 {
     /**
-     * @var PodioCollection
+     * @var \PodioCollection
      */
     protected $collection;
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->collection = new PodioCollection();
 
-        $external_ids = array('a', 'b', 'c');
-        for ($i=1; $i<4; $i++) {
+        $external_ids = ['a', 'b', 'c'];
+        for ($i = 1; $i < 4; $i++) {
             $item = new PodioItem();
             $item->property('id', 'integer');
             $item->property('external_id', 'string');
             $item->init();
 
             $item->id = $i;
-            $item->external_id = $external_ids[$i-1];
+            $item->external_id = $external_ids[$i - 1];
 
             $this->collection[] = $item;
         }
     }
 
-    public function test_can_get_by_offset()
+    public function test_can_get_by_offset(): void
     {
         $item = $this->collection[1];
-        $this->assertEquals(2, $item->id);
+        $this->assertSame(2, $item->id);
     }
 
-    public function test_can_iterate()
+    public function test_can_iterate(): void
     {
-        $checklist = array(1, 2, 3);
+        $checklist = [1, 2, 3];
         foreach ($this->collection as $offset => $item) {
-            $this->assertEquals($checklist[$offset], $item->id);
+            $this->assertSame($checklist[$offset], $item->id);
         }
     }
 
-    public function test_can_provide_length()
+    public function test_can_provide_length(): void
     {
-        $this->assertEquals(3, count($this->collection));
+        $this->assertCount(3, $this->collection);
     }
 
-    public function test_can_check_existence()
+    public function test_can_check_existence(): void
     {
         $this->assertTrue(isset($this->collection[0]));
         $this->assertFalse(isset($this->collection[3]));
     }
 
-    public function test_cannot_add_string()
+    public function test_cannot_add_string(): void
     {
         $this->expectException('PodioDataIntegrityError');
         $this->collection[] = 'Sample String';
     }
 
-    public function test_can_add_object()
+    public function test_can_add_object(): void
     {
         $length = count($this->collection);
         $this->collection[] = new PodioObject();
 
-        $this->assertEquals($length+1, count($this->collection));
+        $this->assertCount($length + 1, $this->collection);
     }
 
-    public function test_can_remove_by_offset()
+    public function test_can_remove_by_offset(): void
     {
         unset($this->collection[0]);
-        $this->assertEquals(2, count($this->collection));
+        $this->assertCount(2, $this->collection);
         $this->assertFalse(isset($this->collection[0]));
     }
 
-    public function test_cannot_access_by_id_after_remove_by_offset()
+    public function test_cannot_access_by_id_after_remove_by_offset(): void
     {
         unset($this->collection[0]);
-        $this->assertEquals(2, count($this->collection));
+        $this->assertCount(2, $this->collection);
         $this->assertFalse(isset($this->collection[0]));
         $this->assertNull($this->collection->get('a'));
         $this->assertNull($this->collection->get(1));
     }
 
-    public function test_can_remove_by_id()
+    public function test_can_remove_by_id(): void
     {
         $this->collection->remove(1);
-        $this->assertEquals(2, count($this->collection));
+        $this->assertCount(2, $this->collection);
         $this->assertNull($this->collection->get(1));
     }
 
-    public function test_can_remove_by_external_id()
+    public function test_can_remove_by_external_id(): void
     {
         $this->collection->remove('a');
-        $this->assertEquals(2, count($this->collection));
+        $this->assertCount(2, $this->collection);
         $this->assertNull($this->collection->get(1));
     }
 
-    public function test_can_get_by_id()
+    public function test_can_get_by_id(): void
     {
-        $this->assertEquals('b', $this->collection->get(2)->external_id);
+        $this->assertSame('b', $this->collection->get(2)->external_id);
     }
 
-    public function test_can_get_by_external_id()
+    public function test_can_get_by_external_id(): void
     {
-        $this->assertEquals(2, $this->collection->get('b')->id);
+        $this->assertSame(2, $this->collection->get('b')->id);
     }
 
-    public function test_can_add_relationship()
+    public function test_can_add_relationship(): void
     {
         $instance = new PodioObject();
 
-        $this->collection->add_relationship($instance, 'fields');
+        $this->collection->add_relationship($instance);
 
         $relationship = $this->collection->relationship();
-        $this->assertEquals($instance, $relationship['instance']);
-        $this->assertEquals('fields', $relationship['property']);
+        $this->assertSame($instance, $relationship['instance']);
+        $this->assertSame('fields', $relationship['property']);
 
         foreach ($this->collection as $object) {
             $relationship = $object->relationship();
-            $this->assertEquals($instance, $relationship['instance']);
-            $this->assertEquals('fields', $relationship['property']);
+            $this->assertSame($instance, $relationship['instance']);
+            $this->assertSame('fields', $relationship['property']);
         }
     }
 }
