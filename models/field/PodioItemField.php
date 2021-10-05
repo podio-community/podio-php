@@ -26,7 +26,7 @@ class PodioItemField extends PodioObject
     {
         $relationship = $this->relationship();
         if (!$relationship) {
-            throw new PodioMissingRelationshipError('{"error_description":"Field is missing relationship to item"}', null, null);
+            throw new PodioMissingRelationshipError('{"error_description":"Field is missing relationship to item", "request": {}}', null, null);
         }
         if (!$this->id && !$this->external_id) {
             throw new PodioDataIntegrityError('Field must have id or external_id set.');

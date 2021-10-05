@@ -74,7 +74,7 @@ class PodioItem extends PodioObject
                 $this->item_id = $new->item_id;
                 return $this;
             } else {
-                throw new PodioMissingRelationshipError('{"error_description":"Item is missing relationship to app"}', null, null);
+                throw new PodioMissingRelationshipError('{"error_description":"Item is missing relationship to app", "request": {}}', null, null);
             }
         }
     }

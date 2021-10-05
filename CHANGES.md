@@ -1,5 +1,6 @@
 [6.1.0](#v6.1.0) / Unreleased
 ==================
+* Bugfix: In some cases errors where raised, instead of defined exceptions if preconditions for save operations were missing (see #213).
 
 [6.0.1](#v6.0.1) / 2021-09-24
 ==================
