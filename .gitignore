@@ -11,3 +11,4 @@ _site
 vendor
 composer.lock
 .php-cs-fixer.cache
+clover.xml
