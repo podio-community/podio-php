@@ -57,8 +57,7 @@ class PodioFile extends PodioObject
      */
     public static function upload($file_path, $file_name)
     {
-        $source = defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 5 ? new CurlFile(realpath($file_path)) : '@'.realpath($file_path);
-        return self::member(Podio::post("/file/v2/", array('source' => $source, 'filename' => $file_name), array('upload' => true, 'filesize' => filesize($file_path))));
+        return self::member(Podio::post("/file/", array('filename' => $file_name, 'filepath' => $file_path), array('upload' => true, 'filesize' => filesize($file_path))));
     }
 
     /**
