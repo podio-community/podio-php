@@ -1,4 +1,8 @@
-[6.0.2](#v6.0.2) / Unreleased
+[6.0.3](#v6.0.3) / Unreleased
+==================
+*
+
+[6.0.2](#v6.0.2) / 2022-01-14
 ==================
 * Bugfix: In some cases errors where raised, instead of defined exceptions if preconditions for save operations were missing (see [#213](https://github.com/podio-community/podio-php/issues/213)).
 * Bugfix: File upload was broken ([#215](https://github.com/podio-community/podio-php/issues/215))
