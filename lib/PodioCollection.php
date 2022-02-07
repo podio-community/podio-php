@@ -36,7 +36,7 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Implements Countable
      */
-    public function count()
+    public function count(): int
     {
         return count($this->__items);
     }
