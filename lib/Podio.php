@@ -147,7 +147,10 @@ class Podio {
     }
 
     // Reset attributes so we can reuse curl object
-    curl_setopt(self::$ch, CURLOPT_POSTFIELDS, null);
+    if (self::POST !== $method) {
+      curl_setopt(self::$ch, CURLOPT_POSTFIELDS, null);
+    }
+
     unset(self::$headers['Content-length']);
     $original_url = $url;
     $encoded_attributes = null;
