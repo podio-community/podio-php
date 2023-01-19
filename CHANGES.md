@@ -1,4 +1,4 @@
-[6.0.3](#v6.0.3) / Unreleased
+[6.1.0](#v6.1.0) / Unreleased
 ==================
 * Upgraded dependency Kint from 3.3 to 4.2.3
 

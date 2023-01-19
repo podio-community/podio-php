@@ -18,11 +18,11 @@ jobs:
         php: [ 7.3, 7.4, 8.0 ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache Composer packages
         id: composer-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
@@ -33,24 +33,28 @@ jobs:
         uses: php-actions/composer@v6
         with:
           php_version: ${{ matrix.php }}
-          version: 1
+          version: 2.x
 
       - name: Run tests
         uses: php-actions/composer@v6
         with:
           php_version: ${{ matrix.php }}
           php_extensions: xdebug
-          version: 1
+          version: 2.x
           command: run-script test
 
-      - name: Create build directory neccessary for coveralls # see https://github.com/php-coveralls/php-coveralls/issues/251
+      - name: Create build directory necessary for coveralls # see https://github.com/php-coveralls/php-coveralls/issues/251
         run: mkdir -p build/logs
+        shell: bash
+
+      - name: workaround for failing build
+        run: git config --global --add safe.directory /app
         shell: bash
 
       - name: Upload coverage
         uses: php-actions/composer@v6
         with:
           php_version: ${{ matrix.php }}
-          version: 1
+          version: 2.x
           command: run-script upload-coverage
 
