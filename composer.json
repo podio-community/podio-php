@@ -23,7 +23,7 @@
   ],
   "require": {
     "php": "^7.3 || ^8.0",
-    "kint-php/kint": "^3.2",
+    "kint-php/kint": "^4.2.0",
     "guzzlehttp/guzzle": ">=6.2.0",
     "ext-json": "*"
   },
