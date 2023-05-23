@@ -5,6 +5,7 @@ class PodioError extends Exception
     public $body;
     public $status;
     public $url;
+    public $request;
     public function __construct($body, $status, $url)
     {
         $this->body = json_decode($body, true);
