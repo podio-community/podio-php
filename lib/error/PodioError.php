@@ -10,7 +10,7 @@ class PodioError extends Exception
         $this->body = json_decode($body, true);
         $this->status = $status;
         $this->url = $url;
-        $this->request = $this->body['request'];
+        $this->request = $this->body['request'] ?? null;
         parent::__construct(get_class($this), 1, null);
     }
 
