@@ -4,8 +4,9 @@
  */
 class PodioComment extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('comment_id', 'integer', array('id' => true));
         $this->property('value', 'string');
         $this->property('rich_value', 'string');
@@ -30,42 +31,42 @@ class PodioComment extends PodioObject
     /**
      * @see https://developers.podio.com/doc/comments/get-a-comment-22345
      */
-    public static function get($comment_id)
+    public static function get($comment_id, PodioClient $podio_client)
     {
-        return self::member(Podio::get("/comment/{$comment_id}"));
+        return self::member($podio_client->get("/comment/{$comment_id}"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/comments/get-comments-on-object-22371
      */
-    public static function get_for($ref_type, $ref_id, $attributes = array())
+    public static function get_for($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/comment/{$ref_type}/{$ref_id}/", $attributes));
+        return self::listing($podio_client->get("/comment/{$ref_type}/{$ref_id}/", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/comments/delete-a-comment-22347
      */
-    public static function delete($comment_id)
+    public static function delete($comment_id, PodioClient $podio_client)
     {
-        return Podio::delete("/comment/{$comment_id}");
+        return $podio_client->delete("/comment/{$comment_id}");
     }
 
     /**
      * @see https://developers.podio.com/doc/comments/add-comment-to-object-22340
      */
-    public static function create($ref_type, $ref_id, $attributes = array(), $options = array())
+    public static function create($ref_type, $ref_id, $attributes = array(), $options = array(), PodioClient $podio_client)
     {
-        $url = Podio::url_with_options("/comment/{$ref_type}/{$ref_id}", $options);
-        $body = Podio::post($url, $attributes)->json_body();
+        $url = $podio_client->url_with_options("/comment/{$ref_type}/{$ref_id}", $options);
+        $body = $podio_client->post($url, $attributes)->json_body();
         return $body['comment_id'];
     }
 
     /**
      * @see https://developers.podio.com/doc/comments/update-a-comment-22346
      */
-    public static function update($comment_id, $attributes = array())
+    public static function update($comment_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::put("/comment/{$comment_id}", $attributes);
+        return $podio_client->put("/comment/{$comment_id}", $attributes);
     }
 }

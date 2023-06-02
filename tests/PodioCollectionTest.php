@@ -14,15 +14,18 @@ class PodioCollectionTest extends TestCase
      */
     protected $collection;
 
+    private $mockClient;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->collection = new PodioCollection();
+        $this->collection = new PodioCollection($this->mockClient);
 
         $external_ids = ['a', 'b', 'c'];
         for ($i = 1; $i < 4; $i++) {
-            $item = new PodioItem();
+            $item = new PodioItem($this->mockClient);
             $item->property('id', 'integer');
             $item->property('external_id', 'string');
             $item->init();
@@ -68,7 +71,7 @@ class PodioCollectionTest extends TestCase
     public function test_can_add_object(): void
     {
         $length = count($this->collection);
-        $this->collection[] = new PodioObject();
+        $this->collection[] = new PodioObject($this->mockClient);
 
         $this->assertCount($length + 1, $this->collection);
     }
@@ -115,7 +118,7 @@ class PodioCollectionTest extends TestCase
 
     public function test_can_add_relationship(): void
     {
-        $instance = new PodioObject();
+        $instance = new PodioObject($this->mockClient);
 
         $this->collection->add_relationship($instance);
 

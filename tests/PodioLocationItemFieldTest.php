@@ -17,11 +17,14 @@ class PodioLocationItemFieldTest extends TestCase
      */
     private $empty_values;
 
+    private $mockClient;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioLocationItemField([
+        $this->object = new PodioLocationItemField($this->mockClient, [
             '__api_values' => true,
             'field_id' => 123,
             'values' => [
@@ -29,12 +32,12 @@ class PodioLocationItemFieldTest extends TestCase
             ],
         ]);
 
-        $this->empty_values = new PodioLocationItemField(['field_id' => 1]);
+        $this->empty_values = new PodioLocationItemField($this->mockClient, ['field_id' => 1]);
     }
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioLocationItemField([
+        $object = new PodioLocationItemField($this->mockClient, [
             'field_id' => 123,
             'values' => [
                 'value' => '650 Townsend St., San Francisco, CA 94103',

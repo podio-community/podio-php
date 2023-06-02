@@ -4,8 +4,9 @@
  */
 class PodioItemRevision extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('revision', 'integer', array('id' => true));
         $this->property('app_revision', 'integer');
         $this->property('created_on', 'datetime');
@@ -19,16 +20,16 @@ class PodioItemRevision extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-item-revision-22373
      */
-    public static function get($item_id, $revision_id)
+    public static function get($item_id, $revision_id, PodioClient $podio_client)
     {
-        return self::member(Podio::get("/item/{$item_id}/revision/{$revision_id}"));
+        return self::member($podio_client->get("/item/{$item_id}/revision/{$revision_id}"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/items/get-item-revision-22373
      */
-    public static function get_for($item_id)
+    public static function get_for($item_id, PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/item/{$item_id}/revision/"));
+        return self::listing($podio_client->get("/item/{$item_id}/revision/"), $podio_client);
     }
 }

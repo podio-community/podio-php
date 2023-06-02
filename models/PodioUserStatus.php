@@ -4,8 +4,9 @@
  */
 class PodioUserStatus extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('properties', 'hash');
         $this->property('inbox_new', 'integer');
         $this->property('calendar_code', 'string');
@@ -21,8 +22,8 @@ class PodioUserStatus extends PodioObject
     /**
      * @see https://developers.podio.com/doc/users/get-user-status-22480
      */
-    public static function get()
+    public static function get(PodioClient $podio_client)
     {
-        return self::member(Podio::get("/user/status"));
+        return self::member($podio_client->get("/user/status"), $podio_client);
     }
 }

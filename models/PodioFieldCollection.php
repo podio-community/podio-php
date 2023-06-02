@@ -8,13 +8,18 @@
 class PodioFieldCollection extends PodioCollection
 {
     private $__belongs_to;
+    /**
+     * @var PodioClient
+     */
+    private $podio_client;
 
     /**
      * Constructor. Pass in an array of fields.
      */
-    public function __construct($fields)
+    public function __construct(PodioClient $podio_client, $fields)
     {
-        parent::__construct($fields);
+        parent::__construct($podio_client, $fields);
+        $this->podio_client = $podio_client;
     }
 
     /**
@@ -88,9 +93,9 @@ class PodioFieldCollection extends PodioCollection
     /**
      * Returns all readonly fields
      */
-    public function readonly_fields()
+    public function readonly_fields(): PodioFieldCollection
     {
-        $fields = new PodioFieldCollection(array());
+        $fields = new PodioFieldCollection($this->podio_client, array());
         foreach ($this->_get_items() as $field) {
             if ($field->type === 'calculation') {
                 $fields[] = $field;

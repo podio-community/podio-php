@@ -1,6 +1,6 @@
-[6.1.1](#v6.1.1) / [unreleased]
+[7.0.0](#v7.0.0) / [unreleased]
 ==================
-* 
+* BREAKING: Replace static `Podio` client with instantiable `PodioClient` class.
 
 [6.1.0](#v6.1.0) / 2023-01-19
 ==================
@@ -13,7 +13,7 @@
 
 [6.0.1](#v6.0.1) / 2021-09-24
 ==================
-* Bugfix: Turn off Guzzle HTTP errors, Podio::request handles 4xx and 5xx errors ([#211](https://github.com/podio-community/podio-php/issues/211))
+* Bugfix: Turn off Guzzle HTTP errors, $podio_client->request handles 4xx and 5xx errors ([#211](https://github.com/podio-community/podio-php/issues/211))
 
 [6.0.0](#v6.0.0) / 2021-08-23
 ==================
@@ -25,7 +25,7 @@
 
 5.1.0 / 2020-07-15
 ==================
-* Bugfix: Assure Podio::set_debug(true) performs debug output (with Kint) in non-cli setting.
+* Bugfix: Assure $podio_client->set_debug(true) performs debug output (with Kint) in non-cli setting.
 * Doc: More thorough quick start guide in README.md (#190)
 * Bugfix: Force HTTP 1.1 to prevent broken requests/file uploads (#191)
 

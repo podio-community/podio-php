@@ -4,8 +4,9 @@
  */
 class PodioGrant extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('grant_id', 'integer', array('id' => true));
         $this->property('ref_type', 'string');
         $this->property('ref_id', 'integer');
@@ -24,48 +25,48 @@ class PodioGrant extends PodioObject
     /**
      * @see https://developers.podio.com/doc/grants/get-grants-on-object-16491464
      */
-    public static function get_for($ref_type, $ref_id)
+    public static function get_for($ref_type, $ref_id, PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/grant/{$ref_type}/{$ref_id}/"));
+        return self::listing($podio_client->get("/grant/{$ref_type}/{$ref_id}/"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/grants/get-own-grant-information-16490748
      */
-    public static function get_own($ref_type, $ref_id)
+    public static function get_own($ref_type, $ref_id, PodioClient $podio_client)
     {
-        return self::member(Podio::get("/grant/{$ref_type}/{$ref_id}/own"));
+        return self::member($podio_client->get("/grant/{$ref_type}/{$ref_id}/own"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/grants/get-own-grants-on-org-22330891
      */
-    public static function get_own_on_org($org_id)
+    public static function get_own_on_org($org_id, PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/grant/org/{$org_id}/own/"));
+        return self::listing($podio_client->get("/grant/org/{$org_id}/own/"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/grants/get-grants-to-user-on-space-19389786
      */
-    public static function get_for_user_on_space($space_id, $user_id)
+    public static function get_for_user_on_space($space_id, $user_id, PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/grant/space/{$space_id}/user/{$user_id}/"));
+        return self::listing($podio_client->get("/grant/space/{$space_id}/user/{$user_id}/"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/grants/create-grant-16168841
      */
-    public static function create($ref_type, $ref_id, $attributes = array())
+    public static function create($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::post("/grant/{$ref_type}/{$ref_id}", $attributes)->json_body();
+        return $podio_client->post("/grant/{$ref_type}/{$ref_id}", $attributes)->json_body();
     }
 
     /**
      * @see https://developers.podio.com/doc/grants/remove-grant-16496711
      */
-    public static function delete($ref_type, $ref_id, $user_id)
+    public static function delete($ref_type, $ref_id, $user_id, PodioClient $podio_client)
     {
-        return Podio::delete("/grant/{$ref_type}/{$ref_id}/{$user_id}");
+        return $podio_client->delete("/grant/{$ref_type}/{$ref_id}/{$user_id}");
     }
 }

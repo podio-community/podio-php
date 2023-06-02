@@ -4,8 +4,9 @@
  */
 class PodioStatus extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('status_id', 'integer', array('id' => true));
         $this->property('value', 'string');
         $this->property('rich_value', 'string');
@@ -32,24 +33,24 @@ class PodioStatus extends PodioObject
     /**
      * @see https://developers.podio.com/doc/status/add-new-status-message-22336
      */
-    public static function create($space_id, $attributes = array())
+    public static function create($space_id, $attributes = array(), PodioClient $podio_client)
     {
-        return self::member(Podio::post("/status/space/{$space_id}/", $attributes));
+        return self::member($podio_client->post("/status/space/{$space_id}/", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/status/get-status-message-22337
      */
-    public static function get($status_id)
+    public static function get($status_id, PodioClient $podio_client)
     {
-        return self::member(Podio::get("/status/{$status_id}"));
+        return self::member($podio_client->get("/status/{$status_id}"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/status/delete-a-status-message-22339
      */
-    public static function delete($status_id)
+    public static function delete($status_id, PodioClient $podio_client)
     {
-        return Podio::delete("/status/{$status_id}");
+        return $podio_client->delete("/status/{$status_id}");
     }
 }

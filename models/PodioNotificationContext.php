@@ -4,8 +4,9 @@
  */
 class PodioNotificationContext extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('title', 'string');
         $this->property('data', 'hash');
         $this->property('comment_count', 'integer');
