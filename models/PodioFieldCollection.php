@@ -67,7 +67,8 @@ class PodioFieldCollection extends PodioCollection
     /**
      * Array access. Get field using external_id or offset.
      */
-    public function offsetGet($offset): mixed
+    #[ReturnTypeWillChange] // We cannot use :mixed due to incompatibility with php 7.3, 7.4
+    public function offsetGet($offset)
     {
         if (is_string($offset)) {
             return $this->get($offset);

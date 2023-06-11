@@ -104,7 +104,8 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Array access. Get.
      */
-    public function offsetGet($offset): mixed
+    #[ReturnTypeWillChange] // We cannot use :mixed due to incompatibility with php 7.3, 7.4
+    public function offsetGet($offset)
     {
         return isset($this->__items[$offset]) ? $this->__items[$offset] : null;
     }
