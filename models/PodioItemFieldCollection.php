@@ -40,7 +40,7 @@ class PodioItemFieldCollection extends PodioFieldCollection
     /**
      * Array access. Add field to collection.
      */
-    public function offsetSet($offset, $field)
+    public function offsetSet($offset, $field): void
     {
         if (!is_a($field, 'PodioItemField')) {
             throw new PodioDataIntegrityError("Objects in PodioItemFieldCollection must be of class PodioItemField");
