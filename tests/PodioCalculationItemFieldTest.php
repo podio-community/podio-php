@@ -27,24 +27,27 @@ class PodioCalculationItemFieldTest extends TestCase
      */
     private $date_value;
 
+    private $mockClient;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioCalculationItemField([
+        $this->object = new PodioCalculationItemField($this->mockClient, [
             '__api_values' => true,
             'field_id' => 123,
             'values' => [
                 ['value' => '1234.5600'],
             ],
         ]);
-        $this->empty_values = new PodioCalculationItemField(['field_id' => 1]);
-        $this->zero_value = new PodioCalculationItemField([
+        $this->empty_values = new PodioCalculationItemField($this->mockClient, ['field_id' => 1]);
+        $this->zero_value = new PodioCalculationItemField($this->mockClient, [
             '__api_values' => true,
             'field_id' => 2,
             'values' => [['value' => '0']],
         ]);
-        $this->date_value = new PodioCalculationItemField([
+        $this->date_value = new PodioCalculationItemField($this->mockClient, [
             '__api_values' => true,
             'field_id' => 3,
             'values' => [

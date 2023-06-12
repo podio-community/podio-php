@@ -4,8 +4,9 @@
  */
 class PodioReference extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('type', 'string');
         $this->property('id', 'integer');
         $this->property('title', 'string');
@@ -22,24 +23,24 @@ class PodioReference extends PodioObject
     /**
      * @see https://developers.podio.com/doc/reference/get-reference-10661022
      */
-    public static function get_for($ref_type, $ref_id, $attributes = array())
+    public static function get_for($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
     {
-        return self::member(Podio::get("/reference/{$ref_type}/{$ref_id}", $attributes));
+        return self::member($podio_client->get("/reference/{$ref_type}/{$ref_id}", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/reference/search-references-13312595
      */
-    public static function search($attributes = array())
+    public static function search($attributes = array(), PodioClient $podio_client)
     {
-        return Podio::post("/reference/search", $attributes)->json_body();
+        return $podio_client->post("/reference/search", $attributes)->json_body();
     }
 
     /**
      * @see https://developers.podio.com/doc/reference/resolve-url-66839423
      */
-    public static function resolve($attributes = array())
+    public static function resolve($attributes = array(), PodioClient $podio_client)
     {
-        return self::member(Podio::get("/reference/resolve", $attributes));
+        return self::member($podio_client->get("/reference/resolve", $attributes), $podio_client);
     }
 }

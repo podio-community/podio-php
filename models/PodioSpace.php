@@ -4,8 +4,9 @@
  */
 class PodioSpace extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('space_id', 'integer', array('id' => true));
         $this->property('name', 'string');
         $this->property('url', 'string');
@@ -36,64 +37,64 @@ class PodioSpace extends PodioObject
     /**
      * @see https://developers.podio.com/doc/spaces/get-space-22389
      */
-    public static function get($space_id)
+    public static function get($space_id, PodioClient $podio_client)
     {
-        return self::member(Podio::get("/space/{$space_id}"));
+        return self::member($podio_client->get("/space/{$space_id}"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/organizations/get-spaces-on-organization-22387
      */
-    public static function get_for_org($org_id)
+    public static function get_for_org($org_id, PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/org/{$org_id}/space/"));
+        return self::listing($podio_client->get("/org/{$org_id}/space/"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/spaces/get-space-by-url-22481
      */
-    public static function get_for_url($attributes = array())
+    public static function get_for_url($attributes = array(), PodioClient $podio_client)
     {
-        return self::member(Podio::get("/space/url", $attributes));
+        return self::member($podio_client->get("/space/url", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/spaces/get-available-spaces-1911961
      */
-    public static function get_available($org_id)
+    public static function get_available($org_id, PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/space/org/{$org_id}/available/"));
+        return self::listing($podio_client->get("/space/org/{$org_id}/available/"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/spaces/get-top-spaces-22477
      */
-    public static function get_top($attributes = array())
+    public static function get_top($attributes = array(), PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/space/top/", $attributes));
+        return self::listing($podio_client->get("/space/top/", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/spaces/create-space-22390
      */
-    public static function create($attributes = array())
+    public static function create($attributes = array(), PodioClient $podio_client)
     {
-        return Podio::post("/space/", $attributes)->json_body();
+        return $podio_client->post("/space/", $attributes)->json_body();
     }
 
     /**
      * @see https://developers.podio.com/doc/spaces/update-space-22391
      */
-    public static function update($space_id, $attributes = array())
+    public static function update($space_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::put("/space/{$space_id}", $attributes);
+        return $podio_client->put("/space/{$space_id}", $attributes);
     }
 
     /**
      * @see https://developers.podio.com/doc/spaces/delete-space-22417
      */
-    public static function delete($space_id, $attributes = array())
+    public static function delete($space_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::delete("/space/{$space_id}");
+        return $podio_client->delete("/space/{$space_id}");
     }
 }

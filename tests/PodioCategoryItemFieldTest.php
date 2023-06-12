@@ -12,11 +12,14 @@ class PodioCategoryItemFieldTest extends TestCase
      */
     private $object;
 
+    private $mockClient;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioCategoryItemField([
+        $this->object = new PodioCategoryItemField($this->mockClient, [
             '__api_values' => true,
             'field_id' => 123,
             'values' => [
@@ -29,7 +32,7 @@ class PodioCategoryItemFieldTest extends TestCase
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioCategoryItemField([
+        $object = new PodioCategoryItemField($this->mockClient, [
             'field_id' => 123,
             'values' => 4,
         ]);
@@ -39,7 +42,7 @@ class PodioCategoryItemFieldTest extends TestCase
     public function test_can_provide_value(): void
     {
         // Empty values
-        $empty_values = new PodioCategoryItemField(['field_id' => 1]);
+        $empty_values = new PodioCategoryItemField($this->mockClient, ['field_id' => 1]);
         $this->assertNull($empty_values->values);
 
         // Populated values
@@ -100,7 +103,7 @@ class PodioCategoryItemFieldTest extends TestCase
     public function test_can_humanize_value(): void
     {
         // Empty values
-        $empty_values = new PodioCategoryItemField(['field_id' => 1]);
+        $empty_values = new PodioCategoryItemField($this->mockClient, ['field_id' => 1]);
         $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
@@ -110,7 +113,7 @@ class PodioCategoryItemFieldTest extends TestCase
     public function test_can_convert_to_api_friendly_json(): void
     {
         // Empty values
-        $empty_values = new PodioCategoryItemField(['field_id' => 1]);
+        $empty_values = new PodioCategoryItemField($this->mockClient, ['field_id' => 1]);
         $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values

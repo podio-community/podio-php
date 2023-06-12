@@ -4,8 +4,9 @@
  */
 class PodioAppMarketShare extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('share_id', 'integer', array('id' => true));
         $this->property('type', 'string');
         $this->property('status', 'string');
@@ -42,8 +43,8 @@ class PodioAppMarketShare extends PodioObject
     /**
      * @see https://developers.podio.com/doc/app-market/install-share-22499
      */
-    public static function install($share_id, $attributes = array())
+    public static function install($share_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::post("/app_store/{$share_id}/install", $attributes)->json_body();
+        return $podio_client->post("/app_store/{$share_id}/install", $attributes)->json_body();
     }
 }

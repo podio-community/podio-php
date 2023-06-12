@@ -17,23 +17,26 @@ class PodioTextItemFieldTest extends TestCase
      */
     private $empty_values;
 
+    private $mockClient;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioTextItemField([
+        $this->object = new PodioTextItemField($this->mockClient, [
             '__api_values' => true,
             'field_id' => 123,
             'values' => [
                 ['value' => 'FooBar'],
             ],
         ]);
-        $this->empty_values = new PodioTextItemField(['field_id' => 1]);
+        $this->empty_values = new PodioTextItemField($this->mockClient, ['field_id' => 1]);
     }
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioTextItemField([
+        $object = new PodioTextItemField($this->mockClient, [
             'field_id' => 123,
             'values' => 'FooBar',
         ]);
@@ -58,7 +61,7 @@ class PodioTextItemFieldTest extends TestCase
         $this->assertSame('', $this->empty_values->humanized_value());
 
         // HTML content
-        $html_values = new PodioTextItemField(['field_id' => 1]);
+        $html_values = new PodioTextItemField($this->mockClient, ['field_id' => 1]);
         $html_values->values = '<p>FooBar</p>';
         $this->assertSame('FooBar', $html_values->humanized_value());
 

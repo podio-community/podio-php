@@ -24,9 +24,9 @@ class PodioContactItemField extends PodioItemField
         $attribute = parent::__get($name);
         if ($name == 'values' && $attribute) {
             // Create PodioCollection from raw values
-            $collection = new PodioCollection();
+            $collection = new PodioCollection($this->podio_client);
             foreach ($attribute as $value) {
-                $collection[] = new PodioContact($value['value']);
+                $collection[] = new PodioContact($this->podio_client, $value['value']);
             }
             return $collection;
         }

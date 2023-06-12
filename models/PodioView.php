@@ -4,8 +4,9 @@
  */
 class PodioView extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('view_id', 'integer', array('id' => true));
         $this->property('name', 'string');
         $this->property('created_on', 'datetime');
@@ -24,49 +25,49 @@ class PodioView extends PodioObject
     /**
      * @see https://developers.podio.com/doc/views/create-view-27453
      */
-    public static function create($app_id, $attributes = array())
+    public static function create($app_id, $attributes = array(), PodioClient $podio_client)
     {
-        $body = Podio::post("/view/app/{$app_id}/", $attributes)->json_body();
+        $body = $podio_client->post("/view/app/{$app_id}/", $attributes)->json_body();
         return $body['view_id'];
     }
 
     /**
      * @see https://developers.podio.com/doc/views/get-view-27450
      */
-    public static function get($view_id)
+    public static function get($view_id, PodioClient $podio_client)
     {
-        return self::member(Podio::get("/view/{$view_id}"));
+        return self::member($podio_client->get("/view/{$view_id}"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/views/get-views-27460
      */
-    public static function get_for_app($app_id)
+    public static function get_for_app($app_id, PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/view/app/{$app_id}/"));
+        return self::listing($podio_client->get("/view/app/{$app_id}/"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/views/get-last-view-27663
      */
-    public static function get_last($app_id)
+    public static function get_last($app_id, PodioClient $podio_client)
     {
-        return self::member(Podio::get("/view/app/{$app_id}/last"));
+        return self::member($podio_client->get("/view/app/{$app_id}/last"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/views/update-last-view-5988251
      */
-    public static function update_last($app_id, $attributes = array())
+    public static function update_last($app_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::put("/view/app/{$app_id}/last", $attributes);
+        return $podio_client->put("/view/app/{$app_id}/last", $attributes);
     }
 
     /**
      * @see https://developers.podio.com/doc/views/delete-view-27454
      */
-    public static function delete($view_id)
+    public static function delete($view_id, PodioClient $podio_client)
     {
-        return Podio::delete("/view/{$view_id}");
+        return $podio_client->delete("/view/{$view_id}");
     }
 }

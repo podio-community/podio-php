@@ -4,8 +4,9 @@
  */
 class PodioNotification extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('notification_id', 'integer', array('id' => true));
         $this->property('type', 'string');
         $this->property('data', 'hash');
@@ -26,49 +27,49 @@ class PodioNotification extends PodioObject
     /**
      * @see https://developers.podio.com/doc/notifications/get-inbox-new-count-84610
      */
-    public static function get_new_count()
+    public static function get_new_count(PodioClient $podio_client)
     {
-        $body = Podio::get("/notification/inbox/new/count")->json_body();
+        $body = $podio_client->get("/notification/inbox/new/count")->json_body();
         return $body['new'];
     }
 
     /**
      * @see https://developers.podio.com/doc/notifications/mark-all-notifications-as-viewed-58099
      */
-    public static function mark_all_as_viewed()
+    public static function mark_all_as_viewed(PodioClient $podio_client)
     {
-        return Podio::post("/notification/viewed");
+        return $podio_client->post("/notification/viewed");
     }
 
     /**
      * @see https://developers.podio.com/doc/notifications/mark-notification-as-viewed-22436
      */
-    public static function mark_as_viewed($notification_id)
+    public static function mark_as_viewed($notification_id, PodioClient $podio_client)
     {
-        return Podio::post("/notification/{$notification_id}/viewed");
+        return $podio_client->post("/notification/{$notification_id}/viewed");
     }
 
     /**
      * @see https://developers.podio.com/doc/notifications/mark-notifications-as-viewed-by-ref-553653
      */
-    public static function mark_as_viewed_for_ref($ref_type, $ref_id)
+    public static function mark_as_viewed_for_ref($ref_type, $ref_id, PodioClient $podio_client)
     {
-        return Podio::post("/notification/{$ref_type}/{$ref_id}/viewed");
+        return $podio_client->post("/notification/{$ref_type}/{$ref_id}/viewed");
     }
 
     /**
      * @see https://developers.podio.com/doc/notifications/star-notification-295910
      */
-    public static function star($notification_id)
+    public static function star($notification_id, PodioClient $podio_client)
     {
-        return Podio::post("/notification/{$notification_id}/star");
+        return $podio_client->post("/notification/{$notification_id}/star");
     }
 
     /**
      * @see https://developers.podio.com/doc/notifications/un-star-notification-295911
      */
-    public static function unstar($notification_id)
+    public static function unstar($notification_id, PodioClient $podio_client)
     {
-        return Podio::delete("/notification/{$notification_id}/star");
+        return $podio_client->delete("/notification/{$notification_id}/star");
     }
 }

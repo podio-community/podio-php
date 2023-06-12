@@ -4,8 +4,9 @@
  */
 class PodioCalendarMute extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('id', 'integer');
         $this->property('type', 'string');
         $this->property('title', 'string');
@@ -20,8 +21,8 @@ class PodioCalendarMute extends PodioObject
     /**
      * @see https://developers.podio.com/doc/calendar/get-mutes-in-global-calendar-62730
      */
-    public static function get_all()
+    public static function get_all(PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/calendar/mute/"));
+        return self::listing($podio_client->get("/calendar/mute/"), $podio_client);
     }
 }

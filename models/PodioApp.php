@@ -4,8 +4,9 @@
  */
 class PodioApp extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('app_id', 'integer', array('id' => true));
         $this->property('original', 'integer');
         $this->property('original_revision', 'integer');
@@ -37,149 +38,149 @@ class PodioApp extends PodioObject
     /**
      * @see https://developers.podio.com/doc/applications/get-app-22349
      */
-    public static function get($app_id, $attributes = array())
+    public static function get($app_id, $attributes = array(), PodioClient $podio_client)
     {
-        return self::member(Podio::get("/app/{$app_id}", $attributes));
+        return self::member($podio_client->get("/app/{$app_id}", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/get-all-user-apps-5902728
      */
-    public static function get_all($attributes = array())
+    public static function get_all($attributes = array(), PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/app/v2/", $attributes));
+        return self::listing($podio_client->get("/app/v2/", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/get-top-apps-22476
      */
-    public static function get_top($attributes = array())
+    public static function get_top($attributes = array(), PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/app/top/", $attributes));
+        return self::listing($podio_client->get("/app/top/", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/get-top-apps-for-organization-1671395
      */
-    public static function get_top_for_org($org_id, $attributes = array())
+    public static function get_top_for_org($org_id, $attributes = array(), PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/app/org/{$org_id}/top/", $attributes));
+        return self::listing($podio_client->get("/app/org/{$org_id}/top/", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/get-app-on-space-by-url-label-477105
      */
-    public static function get_for_url($space_id, $url_label, $attributes = array())
+    public static function get_for_url($space_id, $url_label, $attributes = array(), PodioClient $podio_client)
     {
-        return self::member(Podio::get("/app/space/{$space_id}/{$url_label}", $attributes));
+        return self::member($podio_client->get("/app/space/{$space_id}/{$url_label}", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/get-apps-by-space-22478
      */
-    public static function get_for_space($space_id, $attributes = array())
+    public static function get_for_space($space_id, $attributes = array(), PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/app/space/{$space_id}/", $attributes));
+        return self::listing($podio_client->get("/app/space/{$space_id}/", $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/add-new-app-22351
      */
-    public static function create($attributes = array(), $silent = false)
+    public static function create($attributes = array(), $silent = false, PodioClient $podio_client)
     {
-        return self::member(Podio::post(Podio::url_with_options("/app/", array('silent' => $silent)), $attributes));
+        return self::member($podio_client->post($podio_client->url_with_options("/app/", array('silent' => $silent)), $attributes), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/update-app-22352
      */
-    public static function update($app_id, $attributes = array(), $silent = false)
+    public static function update($app_id, $attributes = array(), $silent = false, PodioClient $podio_client)
     {
-        return Podio::put(Podio::url_with_options("/app/{$app_id}", array('silent' => $silent)), $attributes);
+        return $podio_client->put($podio_client->url_with_options("/app/{$app_id}", array('silent' => $silent)), $attributes);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/delete-app-43693
      */
-    public static function delete($app_id, $silent = false)
+    public static function delete($app_id, $silent = false, PodioClient $podio_client)
     {
-        return Podio::delete(Podio::url_with_options("/app/{$app_id}", array('silent' => $silent)));
+        return $podio_client->delete($podio_client->url_with_options("/app/{$app_id}", array('silent' => $silent)));
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/install-app-22506
      */
-    public static function install($app_id, $attributes = array())
+    public static function install($app_id, $attributes = array(), PodioClient $podio_client)
     {
-        $body = Podio::post("/app/{$app_id}/install", $attributes)->json_body();
+        $body = $podio_client->post("/app/{$app_id}/install", $attributes)->json_body();
         return $body['app_id'];
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/update-app-order-22463
      */
-    public static function update_org($space_id, $attributes = array())
+    public static function update_org($space_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::put("/app/space/{$space_id}/order", $attributes);
+        return $podio_client->put("/app/space/{$space_id}/order", $attributes);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/activate-app-43822
      */
-    public static function activate($app_id)
+    public static function activate($app_id, PodioClient $podio_client)
     {
-        return Podio::post("/app/{$app_id}/activate");
+        return $podio_client->post("/app/{$app_id}/activate");
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/deactivate-app-43821
      */
-    public static function deactivate($app_id)
+    public static function deactivate($app_id, PodioClient $podio_client)
     {
-        return Podio::post("/app/{$app_id}/deactivate");
+        return $podio_client->post("/app/{$app_id}/deactivate");
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/get-calculations-for-app-773005
      */
-    public static function calculations($app_id)
+    public static function calculations($app_id, PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/app/{$app_id}/calculation/"));
+        return self::listing($podio_client->get("/app/{$app_id}/calculation/"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/get-features-43648
      */
-    public static function features($attributes = array())
+    public static function features($attributes = array(), PodioClient $podio_client)
     {
-        return Podio::get("/app/features/")->json_body();
+        return $podio_client->get("/app/features/")->json_body();
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/get-app-dependencies-39159
      */
-    public static function dependencies($app_id)
+    public static function dependencies($app_id, PodioClient $podio_client)
     {
-        $result = Podio::get("/app/{$app_id}/dependencies/")->json_body();
-        $result['apps'] = self::listing($result['apps']);
+        $result = $podio_client->get("/app/{$app_id}/dependencies/")->json_body();
+        $result['apps'] = self::listing($result['apps'], $podio_client);
         return $result;
     }
 
     /**
      * @see https://developers.podio.com/doc/applications/get-space-app-dependencies-45779
      */
-    public static function dependencies_space($space_id)
+    public static function dependencies_space($space_id, PodioClient $podio_client)
     {
-        $result = Podio::get("/space/{$space_id}/dependencies/")->json_body();
-        $result['apps'] = self::listing($result['apps']);
+        $result = $podio_client->get("/space/{$space_id}/dependencies/")->json_body();
+        $result['apps'] = self::listing($result['apps'], $podio_client);
         return $result;
     }
 
     /**
      * Activate app in space. Only applicable to Platform
      */
-    public static function activate_for_space($app_id, $space_id, $attributes = array())
+    public static function activate_for_space($app_id, $space_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::put("/app/{$app_id}/activate/{$space_id}", $attributes);
+        return $podio_client->put("/app/{$app_id}/activate/{$space_id}", $attributes);
     }
 }

@@ -16,9 +16,9 @@ Use in your PHP files:
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-Podio::setup($client_id, $client_secret);
-Podio::authenticate_with_app($app_id, $app_token);
-$items = PodioItem::filter($app_id);
+$client = new PodioClient($client_id, $client_secret);
+$client->authenticate_with_app($app_id, $app_token);
+$items = PodioItem::filter($app_id, $client);
 
 print "My app has " . count($items) . " items";
 ```

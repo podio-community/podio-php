@@ -4,8 +4,9 @@
  */
 class PodioTag extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('count', 'integer');
         $this->property('text', 'string');
 
@@ -15,32 +16,32 @@ class PodioTag extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tags/create-tags-22464
      */
-    public static function create($ref_type, $ref_id, $attributes = array())
+    public static function create($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::post("/tag/{$ref_type}/{$ref_id}/", $attributes);
+        return $podio_client->post("/tag/{$ref_type}/{$ref_id}/", $attributes);
     }
 
     /**
      * @see https://developers.podio.com/doc/tags/update-tags-39859
      */
-    public static function update($ref_type, $ref_id, $attributes = array())
+    public static function update($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::put("/tag/{$ref_type}/{$ref_id}/", $attributes);
+        return $podio_client->put("/tag/{$ref_type}/{$ref_id}/", $attributes);
     }
 
     /**
      * @see https://developers.podio.com/doc/tags/remove-tag-22465
      */
-    public static function delete($ref_type, $ref_id, $attributes = array())
+    public static function delete($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::delete("/tag/{$ref_type}/{$ref_id}/", $attributes);
+        return $podio_client->delete("/tag/{$ref_type}/{$ref_id}/", $attributes);
     }
 
     /**
      * @see https://developers.podio.com/doc/tags/get-tags-on-app-22467
      */
-    public static function get_for_app($app_id, $attributes = array())
+    public static function get_for_app($app_id, $attributes = array(), PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/tag/app/{$app_id}/", $attributes));
+        return self::listing($podio_client->get("/tag/app/{$app_id}/", $attributes), $podio_client);
     }
 }

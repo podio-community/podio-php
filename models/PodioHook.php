@@ -4,8 +4,9 @@
  */
 class PodioHook extends PodioObject
 {
-    public function __construct($attributes = array())
+    public function __construct(PodioClient $podio_client, $attributes = array())
     {
+        parent::__construct($podio_client);
         $this->property('hook_id', 'integer', array('id' => true));
         $this->property('status', 'string');
         $this->property('type', 'string');
@@ -21,41 +22,41 @@ class PodioHook extends PodioObject
     /**
      * @see https://developers.podio.com/doc/hooks/get-hooks-215285
      */
-    public static function get_for($ref_type, $ref_id)
+    public static function get_for($ref_type, $ref_id, PodioClient $podio_client)
     {
-        return self::listing(Podio::get("/hook/{$ref_type}/{$ref_id}/"));
+        return self::listing($podio_client->get("/hook/{$ref_type}/{$ref_id}/"), $podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/hooks/create-hook-215056
      */
-    public static function create($ref_type, $ref_id, $attributes = array())
+    public static function create($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
     {
-        $body = Podio::post("/hook/{$ref_type}/{$ref_id}/", $attributes)->json_body();
+        $body = $podio_client->post("/hook/{$ref_type}/{$ref_id}/", $attributes)->json_body();
         return $body['hook_id'];
     }
 
     /**
      * @see https://developers.podio.com/doc/hooks/request-hook-verification-215232
      */
-    public static function verify($hook_id)
+    public static function verify($hook_id, PodioClient $podio_client)
     {
-        return Podio::post("/hook/{$hook_id}/verify/request")->json_body();
+        return $podio_client->post("/hook/{$hook_id}/verify/request")->json_body();
     }
 
     /**
      * @see https://developers.podio.com/doc/hooks/validate-hook-verification-215241
      */
-    public static function validate($hook_id, $attributes = array())
+    public static function validate($hook_id, $attributes = array(), PodioClient $podio_client)
     {
-        return Podio::post("/hook/{$hook_id}/verify/validate", $attributes)->json_body();
+        return $podio_client->post("/hook/{$hook_id}/verify/validate", $attributes)->json_body();
     }
 
     /**
      * @see https://developers.podio.com/doc/hooks/delete-hook-215291
      */
-    public static function delete($hook_id)
+    public static function delete($hook_id, PodioClient $podio_client)
     {
-        return Podio::delete("/hook/{$hook_id}");
+        return $podio_client->delete("/hook/{$hook_id}");
     }
 }
