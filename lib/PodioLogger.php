@@ -29,7 +29,7 @@ class PodioLogger
     public function log($text)
     {
         if (!is_dir(dirname($this->file))) {
-            @mkdir(dirname($this->file));
+            mkdir(dirname($this->file), 0777, true);
         }
         if ($fp = fopen($this->file, 'ab')) {
             fwrite($fp, $text);
