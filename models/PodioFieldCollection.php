@@ -25,7 +25,7 @@ class PodioFieldCollection extends PodioCollection
     /**
      * Array access. Set fiels using external id or offset.
      */
-    public function offsetSet($offset, $field)
+    public function offsetSet($offset, $field): void
     {
 
     // Allow you to set external id in the array offset.
@@ -49,7 +49,7 @@ class PodioFieldCollection extends PodioCollection
     /**
      * Array access. Check for existence using external_id or offset.
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         if (is_string($offset)) {
             return $this->get($offset) ? true : false;
@@ -60,7 +60,7 @@ class PodioFieldCollection extends PodioCollection
     /**
      * Array access. Unset field using external)id or offset.
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if (is_string($offset)) {
             $this->remove($offset);
@@ -72,6 +72,7 @@ class PodioFieldCollection extends PodioCollection
     /**
      * Array access. Get field using external_id or offset.
      */
+    #[ReturnTypeWillChange] // We cannot use :mixed due to incompatibility with php 7.3, 7.4
     public function offsetGet($offset)
     {
         if (is_string($offset)) {

@@ -1,6 +1,13 @@
 [7.0.0](#v7.0.0) / [unreleased]
 ==================
-* BREAKING: Replace static `Podio` client with instantiable `PodioClient` class.
+* BREAKING: Replace static `Podio` client with instantiable `PodioClient` class. #228
+
+[6.1.1](#v6.1.1) / 2023-06-12
+==================
+* Bugfix: PodioError.php fix for null requests by @mgithens in https://github.com/podio-community/podio-php/pull/227
+* Bugfix: Added missing var to PodioError.php by @mgithens in https://github.com/podio-community/podio-php/pull/226
+* Bugfix: Issue#224 PHP 8.1 ArrayAccess Issue by @bbanuri in https://github.com/podio-community/podio-php/pull/229
+* Bugfix: PodioLogger.php fix by @mgithens in https://github.com/podio-community/podio-php/pull/225
 
 [6.1.0](#v6.1.0) / 2023-01-19
 ==================
