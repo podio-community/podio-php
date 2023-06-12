@@ -311,7 +311,7 @@ class PodioClient
                 if (strstr($body['error_description'], 'expired_token') || strstr($body['error'], 'invalid_token')) {
                     if ($this->oauth->refresh_token) {
                         // Access token is expired. Try to refresh it.
-                        if (static::refresh_access_token()) {
+                        if ($this->refresh_access_token()) {
                             // Try the original request again.
                             return $this->request($method, $original_url, $attributes);
                         } else {
