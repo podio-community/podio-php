@@ -20,8 +20,8 @@ class PodioAction extends PodioObject
     /**
      * @see https://developers.podio.com/doc/actions/get-action-1701120
      */
-    public static function get($action_id, PodioClient $podio_client)
+    public static function get(PodioClient $podio_client, $action_id)
     {
-        return self::member($podio_client->get("/action/{$action_id}"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/action/{$action_id}"));
     }
 }

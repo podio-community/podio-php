@@ -16,16 +16,16 @@ class PodioNotificationGroup extends PodioObject
     /**
      * @see https://developers.podio.com/doc/notifications/get-notification-v2-2973737
      */
-    public static function get($notification_id, PodioClient $podio_client)
+    public static function get(PodioClient $podio_client, $notification_id)
     {
-        return self::member($podio_client->get("/notification/{$notification_id}/v2"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/notification/{$notification_id}/v2"));
     }
 
     /**
      * @see https://developers.podio.com/doc/notifications/get-notifications-290777
      */
-    public static function get_all($attributes = array(), PodioClient $podio_client)
+    public static function get_all(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client->get("/notification/", $attributes), $podio_client);
+        return self::listing($podio_client, $podio_client->get("/notification/", $attributes));
     }
 }

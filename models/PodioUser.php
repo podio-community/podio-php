@@ -31,13 +31,13 @@ class PodioUser extends PodioObject
      */
     public static function get(PodioClient $podio_client)
     {
-        return self::member($podio_client->get("/user"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/user"));
     }
 
     /**
      * @see https://developers.podio.com/doc/users/get-user-property-29798
      */
-    public static function get_property($name, PodioClient $podio_client)
+    public static function get_property(PodioClient $podio_client, $name)
     {
         return $podio_client->get("/user/property/{$name}")->json_body();
     }
@@ -45,7 +45,7 @@ class PodioUser extends PodioObject
     /**
      * @see https://developers.podio.com/doc/users/set-user-property-29799
      */
-    public static function set_property($name, $value, PodioClient $podio_client)
+    public static function set_property(PodioClient $podio_client, $name, $value)
     {
         return $podio_client->put("/user/property/{$name}", $value);
     }
@@ -53,7 +53,7 @@ class PodioUser extends PodioObject
     /**
      * @see https://developers.podio.com/doc/users/set-user-properties-9052829
      */
-    public static function set_properties($attributes, PodioClient $podio_client)
+    public static function set_properties(PodioClient $podio_client, $attributes)
     {
         return $podio_client->put("/user/property/", $attributes);
     }
@@ -61,7 +61,7 @@ class PodioUser extends PodioObject
     /**
      * @see https://developers.podio.com/doc/users/delete-user-property-29800
      */
-    public static function delete_property($name, PodioClient $podio_client)
+    public static function delete_property(PodioClient $podio_client, $name)
     {
         return $podio_client->delete("/user/property/{$name}");
     }
@@ -69,7 +69,7 @@ class PodioUser extends PodioObject
     /**
      * @see https://developers.podio.com/doc/users/update-profile-22402
      */
-    public static function update_profile($attributes, PodioClient $podio_client)
+    public static function update_profile(PodioClient $podio_client, $attributes)
     {
         return $podio_client->put("/user/profile/", $attributes);
     }
@@ -77,7 +77,7 @@ class PodioUser extends PodioObject
     /**
      * @see https://developers.podio.com/doc/users/get-profile-field-22380
      */
-    public static function get_profile_field($field, PodioClient $podio_client)
+    public static function get_profile_field(PodioClient $podio_client, $field)
     {
         return $podio_client->get("/user/profile/{$field}")->json_body();
     }

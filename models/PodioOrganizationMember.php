@@ -21,23 +21,23 @@ class PodioOrganizationMember extends PodioObject
     /**
      * @see https://developers.podio.com/doc/organizations/get-organization-member-50908
      */
-    public static function get($org_id, $user_id, PodioClient $podio_client)
+    public static function get(PodioClient $podio_client, $org_id, $user_id)
     {
-        return self::member($podio_client->get("/org/{$org_id}/member/{$user_id}"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/org/{$org_id}/member/{$user_id}"));
     }
 
     /**
      * @see https://developers.podio.com/doc/organizations/get-organization-members-50661
      */
-    public static function get_for_org($org_id, $attributes = array(), PodioClient $podio_client)
+    public static function get_for_org(PodioClient $podio_client, $org_id, $attributes = array())
     {
-        return self::listing($podio_client->get("/org/{$org_id}/member/", $attributes), $podio_client);
+        return self::listing($podio_client, $podio_client->get("/org/{$org_id}/member/", $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/organizations/end-organization-membership-50689
      */
-    public static function delete($org_id, $user_id, PodioClient $podio_client)
+    public static function delete(PodioClient $podio_client, $org_id, $user_id)
     {
         return $podio_client->delete("/org/{$org_id}/member/{$user_id}");
     }

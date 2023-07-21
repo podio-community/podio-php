@@ -31,23 +31,23 @@ class PodioComment extends PodioObject
     /**
      * @see https://developers.podio.com/doc/comments/get-a-comment-22345
      */
-    public static function get($comment_id, PodioClient $podio_client)
+    public static function get(PodioClient $podio_client, $comment_id)
     {
-        return self::member($podio_client->get("/comment/{$comment_id}"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/comment/{$comment_id}"));
     }
 
     /**
      * @see https://developers.podio.com/doc/comments/get-comments-on-object-22371
      */
-    public static function get_for($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
+    public static function get_for(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
-        return self::listing($podio_client->get("/comment/{$ref_type}/{$ref_id}/", $attributes), $podio_client);
+        return self::listing($podio_client, $podio_client->get("/comment/{$ref_type}/{$ref_id}/", $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/comments/delete-a-comment-22347
      */
-    public static function delete($comment_id, PodioClient $podio_client)
+    public static function delete(PodioClient $podio_client, $comment_id)
     {
         return $podio_client->delete("/comment/{$comment_id}");
     }
@@ -55,7 +55,7 @@ class PodioComment extends PodioObject
     /**
      * @see https://developers.podio.com/doc/comments/add-comment-to-object-22340
      */
-    public static function create($ref_type, $ref_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function create(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/comment/{$ref_type}/{$ref_id}", $options);
         $body = $podio_client->post($url, $attributes)->json_body();
@@ -65,7 +65,7 @@ class PodioComment extends PodioObject
     /**
      * @see https://developers.podio.com/doc/comments/update-a-comment-22346
      */
-    public static function update($comment_id, $attributes = array(), PodioClient $podio_client)
+    public static function update(PodioClient $podio_client, $comment_id, $attributes = array())
     {
         return $podio_client->put("/comment/{$comment_id}", $attributes);
     }

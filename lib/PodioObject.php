@@ -187,7 +187,7 @@ class PodioObject
         throw new PodioDataIntegrityError("Attribute cannot be assigned. Property '{$name}' doesn't exist.");
     }
 
-    public static function listing($response_or_attributes, PodioClient $podio_client)
+    public static function listing(PodioClient $podio_client, $response_or_attributes)
     {
         if ($response_or_attributes) {
             if (is_object($response_or_attributes) && get_class($response_or_attributes) == 'PodioResponse') {
@@ -204,7 +204,7 @@ class PodioObject
         }
     }
 
-    public static function member($response, PodioClient $podio_client)
+    public static function member(PodioClient $podio_client, $response)
     {
         if ($response) {
             $class_name = get_called_class();
@@ -212,7 +212,7 @@ class PodioObject
         }
     }
 
-    public static function collection($response, $collection_type = "PodioCollection", PodioClient $podio_client)
+    public static function collection(PodioClient $podio_client, $response, $collection_type = "PodioCollection")
     {
         if ($response) {
             $body = $response->json_body();

@@ -33,23 +33,23 @@ class PodioStatus extends PodioObject
     /**
      * @see https://developers.podio.com/doc/status/add-new-status-message-22336
      */
-    public static function create($space_id, $attributes = array(), PodioClient $podio_client)
+    public static function create(PodioClient $podio_client, $space_id, $attributes = array())
     {
-        return self::member($podio_client->post("/status/space/{$space_id}/", $attributes), $podio_client);
+        return self::member($podio_client, $podio_client->post("/status/space/{$space_id}/", $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/status/get-status-message-22337
      */
-    public static function get($status_id, PodioClient $podio_client)
+    public static function get(PodioClient $podio_client, $status_id)
     {
-        return self::member($podio_client->get("/status/{$status_id}"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/status/{$status_id}"));
     }
 
     /**
      * @see https://developers.podio.com/doc/status/delete-a-status-message-22339
      */
-    public static function delete($status_id, PodioClient $podio_client)
+    public static function delete(PodioClient $podio_client, $status_id)
     {
         return $podio_client->delete("/status/{$status_id}");
     }

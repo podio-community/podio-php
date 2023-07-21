@@ -16,15 +16,15 @@ class PodioReminder extends PodioObject
     /**
      * @see https://developers.podio.com/doc/reminders/get-reminder-3415569
      */
-    public static function get_for($ref_type, $ref_id, PodioClient $podio_client)
+    public static function get_for(PodioClient $podio_client, $ref_type, $ref_id)
     {
-        return self::member($podio_client->get("/reminder/{$ref_type}/{$ref_id}"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/reminder/{$ref_type}/{$ref_id}"));
     }
 
     /**
      * @see https://developers.podio.com/doc/reminders/create-or-update-reminder-3315055
      */
-    public static function create($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
+    public static function create(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
         return $podio_client->put("/reminder/{$ref_type}/{$ref_id}", $attributes);
     }
@@ -32,7 +32,7 @@ class PodioReminder extends PodioObject
     /**
      * @see https://developers.podio.com/doc/reminders/create-or-update-reminder-3315055
      */
-    public static function update($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
+    public static function update(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
         return $podio_client->put("/reminder/{$ref_type}/{$ref_id}", $attributes);
     }
@@ -40,7 +40,7 @@ class PodioReminder extends PodioObject
     /**
      * @see https://developers.podio.com/doc/reminders/snooze-reminder-3321049
      */
-    public static function snooze($ref_type, $ref_id, PodioClient $podio_client)
+    public static function snooze(PodioClient $podio_client, $ref_type, $ref_id)
     {
         return $podio_client->post("/reminder/{$ref_type}/{$ref_id}/snooze");
     }
@@ -48,7 +48,7 @@ class PodioReminder extends PodioObject
     /**
      * @see https://developers.podio.com/doc/reminders/delete-reminder-3315117
      */
-    public static function delete($ref_type, $ref_id, PodioClient $podio_client)
+    public static function delete(PodioClient $podio_client, $ref_type, $ref_id)
     {
         return $podio_client->delete("/reminder/{$ref_type}/{$ref_id}");
     }
