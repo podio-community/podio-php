@@ -15,14 +15,11 @@ class PodioEmbedItemFieldTest extends TestCase
      */
     private $object;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioEmbedItemField($this->mockClient, [
+        $this->object = new PodioEmbedItemField([
             '__api_values' => true,
             'values' => [
                 ['embed' => ['embed_id' => 1, 'original_url' => 'http://example.com/'], 'file' => ['file_id' => 10]],
@@ -34,7 +31,7 @@ class PodioEmbedItemFieldTest extends TestCase
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioEmbedItemField($this->mockClient, [
+        $object = new PodioEmbedItemField([
             'field_id' => 123,
             'values' => ['embed' => ['embed_id' => 4], 'file' => ['file_id' => 12]],
         ]);
@@ -46,7 +43,7 @@ class PodioEmbedItemFieldTest extends TestCase
     public function test_can_provide_value(): void
     {
         // Empty values
-        $empty_values = new PodioEmbedItemField($this->mockClient, ['field_id' => 1]);
+        $empty_values = new PodioEmbedItemField(['field_id' => 1]);
         $this->assertNull($empty_values->values);
 
         // Populated values
@@ -64,7 +61,7 @@ class PodioEmbedItemFieldTest extends TestCase
 
     public function test_can_set_value_from_object(): void
     {
-        $this->object->values = new PodioEmbed($this->mockClient, [
+        $this->object->values = new PodioEmbed([
             'embed_id' => 4,
             'original_url' => 'http://example.com/',
             'files' => [['file_id' => 12]],
@@ -76,8 +73,8 @@ class PodioEmbedItemFieldTest extends TestCase
 
     public function test_can_set_value_from_collection(): void
     {
-        $this->object->values = new PodioCollection($this->mockClient, [
-            new PodioEmbed($this->mockClient, [
+        $this->object->values = new PodioCollection([
+            new PodioEmbed([
                 'embed_id' => 4,
                 'original_url' => 'http://example.net/',
             ]),
@@ -99,8 +96,8 @@ class PodioEmbedItemFieldTest extends TestCase
     public function test_can_set_value_from_array_of_objects(): void
     {
         $this->object->values = [
-            new PodioEmbed($this->mockClient, ['embed_id' => 4, 'files' => [['file_id' => 12]]]),
-            new PodioEmbed($this->mockClient, ['embed_id' => 5, 'files' => [['file_id' => 13]]]),
+            new PodioEmbed(['embed_id' => 4, 'files' => [['file_id' => 12]]]),
+            new PodioEmbed(['embed_id' => 5, 'files' => [['file_id' => 13]]]),
         ];
         $this->assertSame([
             ['embed' => ['embed_id' => 4], 'file' => ['file_id' => 12]],
@@ -123,7 +120,7 @@ class PodioEmbedItemFieldTest extends TestCase
     public function test_can_humanize_value(): void
     {
         // Empty values
-        $empty_values = new PodioEmbedItemField($this->mockClient, ['field_id' => 1]);
+        $empty_values = new PodioEmbedItemField(['field_id' => 1]);
         $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
@@ -133,7 +130,7 @@ class PodioEmbedItemFieldTest extends TestCase
     public function test_can_convert_to_api_friendly_json(): void
     {
         // Empty values
-        $empty_values = new PodioEmbedItemField($this->mockClient, ['field_id' => 1]);
+        $empty_values = new PodioEmbedItemField(['field_id' => 1]);
         $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values

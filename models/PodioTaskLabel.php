@@ -6,9 +6,9 @@ class PodioTaskLabel extends PodioObject
 {
     public const DEFAULT_COLOR = 'E9E9E9';
 
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('label_id', 'integer', array('id' => true));
         $this->property('text', 'string');
         $this->property('color', 'string');

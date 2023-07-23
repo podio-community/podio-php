@@ -1,6 +1,7 @@
 [7.0.0](#v7.0.0) / [unreleased]
 ==================
 * BREAKING: Replace static `Podio` client with instantiable `PodioClient` class. #228
+* BREAKING: Replace update/save methods on instances with static methods #234
 
 [6.1.1](#v6.1.1) / 2023-06-12
 ==================

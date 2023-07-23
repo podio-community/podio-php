@@ -14,17 +14,14 @@ class PodioFieldCollectionTest extends TestCase
      */
     private $collection;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->collection = new PodioFieldCollection($this->mockClient, [
-            new PodioAppField($this->mockClient, ['field_id' => 1, 'external_id' => 'a', 'type' => 'text']),
-            new PodioAppField($this->mockClient, ['field_id' => 2, 'external_id' => 'b', 'type' => 'number']),
-            new PodioAppField($this->mockClient, ['field_id' => 3, 'external_id' => 'c', 'type' => 'calculation']),
+        $this->collection = new PodioFieldCollection([
+            new PodioAppField(['field_id' => 1, 'external_id' => 'a', 'type' => 'text']),
+            new PodioAppField(['field_id' => 2, 'external_id' => 'b', 'type' => 'number']),
+            new PodioAppField(['field_id' => 3, 'external_id' => 'c', 'type' => 'calculation']),
         ]);
     }
 
@@ -49,7 +46,7 @@ class PodioFieldCollectionTest extends TestCase
     public function test_can_add_field(): void
     {
         $length = count($this->collection);
-        $this->collection[] = new PodioAppField($this->mockClient, ['field_id' => 4, 'external_id' => 'd']);
+        $this->collection[] = new PodioAppField(['field_id' => 4, 'external_id' => 'd']);
 
         $this->assertCount($length + 1, $this->collection);
     }
@@ -57,13 +54,13 @@ class PodioFieldCollectionTest extends TestCase
     public function test_cannot_add_object(): void
     {
         $this->expectException('PodioDataIntegrityError');
-        $this->collection[] = new PodioObject($this->mockClient);
+        $this->collection[] = new PodioObject();
     }
 
     public function test_can_replace_field(): void
     {
         $length = count($this->collection);
-        $this->collection[] = new PodioAppField($this->mockClient, ['field_id' => 3, 'external_id' => 'd']);
+        $this->collection[] = new PodioAppField(['field_id' => 3, 'external_id' => 'd']);
 
         $this->assertCount($length, $this->collection);
         $this->assertSame('d', $this->collection->get(3)->external_id);

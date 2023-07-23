@@ -4,9 +4,9 @@
  */
 class PodioTask extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('task_id', 'integer', array('id' => true));
         $this->property('status', 'string');
         $this->property('group', 'string');
@@ -41,39 +41,15 @@ class PodioTask extends PodioObject
     /**
      * Creates or updates a task
      */
-    public function save()
+    public static function save(PodioClient $podio_client, PodioTask $task)
     {
-        if ($this->id) {
-            return self::update($this->podio_client, $this->id, $this);
+        if ($task->id) {
+            return self::update($podio_client, $task->id, $task);
         } else {
-            $new = self::create($this->podio_client, $this);
-            $this->task_id = $new->task_id;
-            return $this;
+            $new = self::create($podio_client, $task);
+            $task->task_id = $new->task_id;
+            return $task;
         }
-    }
-
-    /**
-     * Complete a task
-     */
-    public function completed()
-    {
-        return self::complete($this->podio_client, $this->id);
-    }
-
-    /**
-     * Incomplete a task
-     */
-    public function incompleted()
-    {
-        return self::incomplete($this->podio_client, $this->id);
-    }
-
-    /**
-     * Delete a task
-     */
-    public function destroy()
-    {
-        return self::delete($this->podio_client, $this->id);
     }
 
     /**
@@ -254,9 +230,9 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tasks/update-task-private-22434
      */
-    public function update_private($private_flag, $options = array())
+    public static function update_private(PodioClient $podio_client, PodioTask $task, $private_flag, $options = array())
     {
-        $url = $this->podio_client->url_with_options("/task/{$this->id}/private", $options);
-        return $this->podio_client->put($url, array('private' => $private_flag))->body;
+        $url = $podio_client->url_with_options("/task/{$task->id}/private", $options);
+        return $podio_client->put($url, array('private' => $private_flag))->body;
     }
 }

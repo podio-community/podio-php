@@ -4,9 +4,9 @@
  */
 class PodioOrganization extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('org_id', 'integer', array('id' => true));
         $this->property('name', 'string');
         $this->property('type', 'string');

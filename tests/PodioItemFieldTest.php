@@ -5,8 +5,10 @@ namespace Podio\Tests;
 require __DIR__ . '/../vendor/autoload.php';
 
 use PHPUnit\Framework\TestCase;
+use PodioDataIntegrityError;
 use PodioItem;
 use PodioItemFieldCollection;
+use PodioMissingRelationshipError;
 
 class PodioItemFieldTest extends TestCase
 {
@@ -19,18 +21,18 @@ class PodioItemFieldTest extends TestCase
     }
     public function test_save_should_throw_error_if_relationship_to_item_missing(): void
     {
-        $this->expectException('PodioMissingRelationshipError');
-        $itemField = new \PodioItemField($this->mockClient);
-        $itemField->save();
+        $this->expectException(PodioMissingRelationshipError::class);
+        $itemField = new \PodioItemField();
+        \PodioItemField::save($this->mockClient, $itemField);
     }
 
     public function test_save_should_throw_error_if_external_id_missing(): void
     {
-        $this->expectException('PodioDataIntegrityError');
-        $itemField = new \PodioItemField($this->mockClient);
+        $this->expectException(PodioDataIntegrityError::class);
+        $itemField = new \PodioItemField();
         // assure relationship to item is present:
-        new PodioItem($this->mockClient, ['fields' => new PodioItemFieldCollection($this->mockClient, [$itemField])]);
+        new PodioItem(['fields' => new PodioItemFieldCollection([$itemField])]);
 
-        $itemField->save();
+        \PodioItemField::save($this->mockClient, $itemField);
     }
 }

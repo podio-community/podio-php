@@ -4,9 +4,9 @@
  */
 class PodioEmbed extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('embed_id', 'integer', array('id' => true));
         $this->property('original_url', 'string');
         $this->property('resolved_url', 'string');

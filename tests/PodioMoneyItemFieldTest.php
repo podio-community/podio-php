@@ -22,14 +22,11 @@ class PodioMoneyItemFieldTest extends TestCase
      */
     private $zero_value;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioMoneyItemField($this->mockClient, [
+        $this->object = new PodioMoneyItemField([
             '__api_values' => true,
             'field_id' => 123,
             'values' => [
@@ -37,11 +34,11 @@ class PodioMoneyItemFieldTest extends TestCase
             ],
         ]);
 
-        $this->empty_values = new PodioMoneyItemField($this->mockClient, [
+        $this->empty_values = new PodioMoneyItemField([
             'field_id' => 456,
         ]);
 
-        $this->zero_value = new PodioMoneyItemField($this->mockClient, [
+        $this->zero_value = new PodioMoneyItemField([
             '__api_values' => true,
             'field_id' => 789,
             'values' => [
@@ -52,7 +49,7 @@ class PodioMoneyItemFieldTest extends TestCase
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioMoneyItemField($this->mockClient, [
+        $object = new PodioMoneyItemField([
             'field_id' => 123,
             'values' => ['value' => '456.67', 'currency' => 'BTC'],
         ]);

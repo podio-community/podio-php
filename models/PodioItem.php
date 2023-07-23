@@ -4,9 +4,9 @@
  */
 class PodioItem extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
 
         # Basic item
         $this->property('item_id', 'integer', array('id' => true));
@@ -63,17 +63,17 @@ class PodioItem extends PodioObject
     /**
      * Create or updates an item
      */
-    public function save($options = array())
+    public static function save(PodioClient $podio_client, PodioItem $item, $options = array())
     {
-        $json_attributes = $this->as_json_without_readonly_fields();
+        $json_attributes = $item->as_json_without_readonly_fields();
 
-        if ($this->id) {
-            return self::update($this->podio_client, $this->id, $json_attributes, $options);
+        if ($item->id) {
+            return self::update($podio_client, $item->id, $json_attributes, $options);
         } else {
-            if ($this->app && $this->app->id) {
-                $new = self::create($this->podio_client, $this->app->id, $json_attributes, $options);
-                $this->item_id = $new->item_id;
-                return $this;
+            if ($item->app && $item->app->id) {
+                $new = self::create($podio_client, $item->app->id, $json_attributes, $options);
+                $item->item_id = $new->item_id;
+                return $item;
             } else {
                 throw new PodioMissingRelationshipError('{"error_description":"Item is missing relationship to app", "request": {}}', null, null);
             }

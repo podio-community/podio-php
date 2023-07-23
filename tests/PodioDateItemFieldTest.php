@@ -49,16 +49,13 @@ class PodioDateItemFieldTest extends TestCase
      */
     private $start_date_omitted_end;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->empty_values = new PodioDateItemField($this->mockClient, ['field_id' => 1]);
+        $this->empty_values = new PodioDateItemField(['field_id' => 1]);
 
-        $this->start_date = new PodioDateItemField($this->mockClient, [
+        $this->start_date = new PodioDateItemField([
             '__api_values' => true,
             'field_id' => 2,
             'values' => [
@@ -71,7 +68,7 @@ class PodioDateItemFieldTest extends TestCase
             ],
         ]);
 
-        $this->start_datetime = new PodioDateItemField($this->mockClient, [
+        $this->start_datetime = new PodioDateItemField([
             '__api_values' => true,
             'field_id' => 3,
             'values' => [
@@ -84,7 +81,7 @@ class PodioDateItemFieldTest extends TestCase
             ],
         ]);
 
-        $this->start_datetime_with_endtime_same_day = new PodioDateItemField($this->mockClient, [
+        $this->start_datetime_with_endtime_same_day = new PodioDateItemField([
             '__api_values' => true,
             'field_id' => 4,
             'values' => [
@@ -97,7 +94,7 @@ class PodioDateItemFieldTest extends TestCase
             ],
         ]);
 
-        $this->start_date_end_date = new PodioDateItemField($this->mockClient, [
+        $this->start_date_end_date = new PodioDateItemField([
             '__api_values' => true,
             'field_id' => 5,
             'values' => [
@@ -110,7 +107,7 @@ class PodioDateItemFieldTest extends TestCase
             ],
         ]);
 
-        $this->start_datetime_end_date = new PodioDateItemField($this->mockClient, [
+        $this->start_datetime_end_date = new PodioDateItemField([
             '__api_values' => true,
             'field_id' => 6,
             'values' => [
@@ -123,7 +120,7 @@ class PodioDateItemFieldTest extends TestCase
             ],
         ]);
 
-        $this->start_datetime_end_datetime = new PodioDateItemField($this->mockClient, [
+        $this->start_datetime_end_datetime = new PodioDateItemField([
             '__api_values' => true,
             'field_id' => 7,
             'values' => [
@@ -136,7 +133,7 @@ class PodioDateItemFieldTest extends TestCase
             ],
         ]);
 
-        $this->start_date_omitted_end = new PodioDateItemField($this->mockClient, [
+        $this->start_date_omitted_end = new PodioDateItemField([
             '__api_values' => true,
             'field_id' => 8,
             'values' => [
@@ -149,7 +146,7 @@ class PodioDateItemFieldTest extends TestCase
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioDateItemField($this->mockClient, [
+        $object = new PodioDateItemField([
             'field_id' => 123,
             'values' => ['start' => '2012-12-24'],
         ]);
@@ -286,7 +283,7 @@ class PodioDateItemFieldTest extends TestCase
 
     public function test_can_set_value_from_strings(): void
     {
-        $object = new PodioDateItemField($this->mockClient, ['field_id' => 8]);
+        $object = new PodioDateItemField(['field_id' => 8]);
 
         $object->values = [
             'start' => '2012-12-24',
@@ -368,7 +365,7 @@ class PodioDateItemFieldTest extends TestCase
     public function test_can_set_value_from_objects(): void
     {
         $tz = new DateTimeZone('UTC');
-        $object = new PodioDateItemField($this->mockClient, ['field_id' => 8]);
+        $object = new PodioDateItemField(['field_id' => 8]);
 
         $object->values = [
             'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-24 00:00:00', $tz),

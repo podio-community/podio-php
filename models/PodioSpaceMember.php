@@ -4,9 +4,9 @@
  */
 class PodioSpaceMember extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('role', 'string');
         $this->property('invited_on', 'datetime');
         $this->property('started_on', 'datetime');

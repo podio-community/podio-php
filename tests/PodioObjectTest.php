@@ -23,7 +23,7 @@ class PodioObjectTest extends TestCase
         parent::setUp();
         $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioObject($this->mockClient);
+        $this->object = new PodioObject();
         $this->object->property('id', 'integer');
         $this->object->property('external_id', 'string');
         $this->object->property('subscribed', 'boolean');
@@ -47,7 +47,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_construct_from_array(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('id', 'integer');
         $object->property('external_id', 'string');
         $object->property('string_property', 'string');
@@ -60,7 +60,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_construct_from_id(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('id', 'integer');
         $object->init(1);
 
@@ -69,7 +69,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_construct_from_external_id(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('external_id', 'string');
         $object->init('a');
 
@@ -78,7 +78,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_construct_one_to_one_relationship(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->has_one('field', 'Object');
         $object->init(['field' => ['id' => 1]]);
 
@@ -87,7 +87,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_construct_one_to_many_relationship(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->has_many('fields', 'Object');
         $object->init(['fields' => [['id' => 1], ['id' => 1]]]);
 
@@ -124,21 +124,21 @@ class PodioObjectTest extends TestCase
 
     public function test_can_convert_to_json(): void
     {
-        $created_by = new PodioObject($this->mockClient);
+        $created_by = new PodioObject();
         $created_by->property('id', 'integer');
         $created_by->property('name', 'string');
         $created_by->init(['id' => 4, 'name' => 'Captain Crunch']);
         $this->object->created_by = $created_by;
 
-        $reference_with_target = new PodioObject($this->mockClient);
+        $reference_with_target = new PodioObject();
         $reference_with_target->property('id', 'integer');
         $reference_with_target->property('name', 'string');
         $reference_with_target->init(['id' => 5, 'name' => 'Count Chocula']);
         $this->object->reference_with_target = $reference_with_target;
 
-        $collection = new PodioCollection($this->mockClient);
+        $collection = new PodioCollection();
         for ($i = 0; $i < 3; $i++) {
-            $field = new PodioObject($this->mockClient);
+            $field = new PodioObject();
             $field->property('id', 'integer');
             $field->init(['id' => ($i + 3)]);
             $collection[] = $field;
@@ -163,7 +163,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_set_integer_attribute(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('int_property', 'integer');
         $object->init(['int_property' => 1]);
 
@@ -172,7 +172,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_set_boolean_attribute(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('bool_property', 'boolean');
         $object->property('bool2_property', 'boolean');
         $object->init(['bool_property' => true, 'bool2_property' => false]);
@@ -183,7 +183,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_set_string_attribute(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('string_property', 'string');
         $object->init(['string_property' => 'FooBar']);
 
@@ -192,7 +192,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_set_array_attribute(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('array_property', 'array');
         $object->init(['array_property' => ['a', 'b', 'c']]);
 
@@ -201,7 +201,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_set_hash_attribute(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('hash_property', 'hash');
         $object->init(['hash_property' => ['a' => 'a', 'b' => 'b', 'c' => 'c']]);
 
@@ -212,7 +212,7 @@ class PodioObjectTest extends TestCase
     {
         $tz = new DateTimeZone('UTC');
 
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('date_property', 'date');
         $object->init(['date_property' => new DateTime('2014-01-01 12:00:00', $tz)]);
         $this->assertInstanceOf(DateTime::class, $object->date_property);
@@ -223,7 +223,7 @@ class PodioObjectTest extends TestCase
     {
         $tz = new DateTimeZone('UTC');
 
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('date_property', 'date');
         $object->date_property = new DateTime('2014-01-02 14:00:00', $tz);
         $this->assertInstanceOf(DateTime::class, $object->date_property);
@@ -232,7 +232,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_set_date_attribute_from_string(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('date_property', 'date');
         $object->date_property = '2014-01-03';
         $this->assertInstanceOf(DateTime::class, $object->date_property);
@@ -243,7 +243,7 @@ class PodioObjectTest extends TestCase
     {
         $tz = new DateTimeZone('UTC');
 
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('datetime_property', 'datetime');
         $object->init(['datetime_property' => new DateTime('2014-01-01 12:00:00', $tz)]);
         $this->assertInstanceOf(DateTime::class, $object->datetime_property);
@@ -254,7 +254,7 @@ class PodioObjectTest extends TestCase
     {
         $tz = new DateTimeZone('UTC');
 
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('datetime_property', 'datetime');
         $object->datetime_property = new DateTime('2014-01-02 14:00:00', $tz);
         $this->assertInstanceOf(DateTime::class, $object->datetime_property);
@@ -263,7 +263,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_set_datetime_attribute_from_string(): void
     {
-        $object = new PodioObject($this->mockClient);
+        $object = new PodioObject();
         $object->property('datetime_property', 'datetime');
         $object->datetime_property = '2014-01-03 14:00:00';
         $this->assertInstanceOf(DateTime::class, $object->datetime_property);
@@ -311,7 +311,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_add_child_relationship(): void
     {
-        $instance = new PodioObject($this->mockClient);
+        $instance = new PodioObject();
         $this->object->add_relationship($instance);
 
         $relationship = $this->object->relationship();

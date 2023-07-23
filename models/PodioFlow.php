@@ -4,9 +4,9 @@
  */
 class PodioFlow extends PodioObject
 {
-    public function __construct(PodioClient $podio_clint, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_clint);
+        parent::__construct();
         $this->property('flow_id', 'integer', array('id' => true));
         $this->property('name', 'string');
         $this->property('type', 'string');

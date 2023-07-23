@@ -4,9 +4,9 @@
  */
 class PodioItemField extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array(), $force_type = null)
+    public function __construct($attributes = array(), $force_type = null)
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('field_id', 'integer', array('id' => true));
         $this->property('type', 'string');
         $this->property('external_id', 'string');
@@ -23,17 +23,17 @@ class PodioItemField extends PodioObject
     /**
      * Saves the value of the field
      */
-    public function save($options = array())
+    public static function save(PodioClient $podio_client, PodioItemField $field, $options = array())
     {
-        $relationship = $this->relationship();
+        $relationship = $field->relationship();
         if (!$relationship) {
             throw new PodioMissingRelationshipError('{"error_description":"Field is missing relationship to item", "request": {}}', null, null);
         }
-        if (!$this->id && !$this->external_id) {
+        if (!$field->id && !$field->external_id) {
             throw new PodioDataIntegrityError('Field must have id or external_id set.');
         }
-        $attributes = $this->as_json(false);
-        return self::update($this->podio_client, $relationship['instance']->id, $this->id ? $this->id : $this->external_id, $attributes, $options);
+        $attributes = $field->as_json(false);
+        return self::update($podio_client, $relationship['instance']->id, $field->id ?: $field->external_id, $attributes, $options);
     }
 
     /**

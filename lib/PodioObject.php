@@ -7,13 +7,10 @@ class PodioObject
     private $__properties = array();
     private $__relationships = array();
 
-    /** @var PodioClient */
-    protected $podio_client;
     protected $__id_column;
 
-    public function __construct(PodioClient $podio_client)
+    public function __construct()
     {
-        $this->podio_client = $podio_client;
     }
 
     public function init($default_attributes = array())
@@ -57,7 +54,7 @@ class PodioObject
                     $class_name = 'Podio'.$property['type'];
 
                     if ($type == 'has_one') {
-                        $child = is_object($default_attributes[$name]) ? $default_attributes[$name] : new $class_name($this->podio_client, $default_attributes[$name]);
+                        $child = is_object($default_attributes[$name]) ? $default_attributes[$name] : new $class_name($default_attributes[$name]);
                         $child->add_relationship($this, $name);
                         $this->set_attribute($name, $child);
                     } elseif ($type == 'has_many' && is_array($default_attributes[$name])) {
@@ -69,17 +66,17 @@ class PodioObject
 
                             // Make sure we pass along info on whether the values property
                             // contains API style values or not
-                            $collection = new PodioItemFieldCollection($this->podio_client, $values, $has_api_values);
+                            $collection = new PodioItemFieldCollection($values, $has_api_values);
                         } elseif ($class_name == 'PodioAppField') {
                             $values = $default_attributes[$name];
-                            $collection = new PodioAppFieldCollection($this->podio_client, $values);
+                            $collection = new PodioAppFieldCollection($values);
                         } else {
                             $values = array();
                             foreach ($default_attributes[$name] as $value) {
-                                $child = is_object($value) ? $value : new $class_name($this->podio_client, $value);
+                                $child = is_object($value) ? $value : new $class_name($value);
                                 $values[] = $child;
                             }
-                            $collection = new PodioCollection($this->podio_client, $values);
+                            $collection = new PodioCollection($values);
                         }
                         $collection->add_relationship($this, $name);
                         $this->set_attribute($name, $collection);

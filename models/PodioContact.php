@@ -4,9 +4,9 @@
  */
 class PodioContact extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('profile_id', 'integer');
         $this->property('user_id', 'integer');
         $this->property('name', 'string');

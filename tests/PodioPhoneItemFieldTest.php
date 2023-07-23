@@ -12,14 +12,11 @@ class PodioPhoneItemFieldTest extends TestCase
      */
     private $object;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioPhoneItemField($this->mockClient, [
+        $this->object = new PodioPhoneItemField([
             '__api_values' => true,
             'values' => [
                 ['type' => 'work', 'value' => '0123-1233333'],
@@ -31,7 +28,7 @@ class PodioPhoneItemFieldTest extends TestCase
     public function test_can_provide_value(): void
     {
         // Empty values
-        $empty_values = new PodioPhoneItemField($this->mockClient);
+        $empty_values = new PodioPhoneItemField();
         $this->assertNull($empty_values->values);
 
         // Populated values
@@ -56,7 +53,7 @@ class PodioPhoneItemFieldTest extends TestCase
     public function test_can_humanize_value(): void
     {
         // Empty values
-        $empty_values = new PodioPhoneItemField($this->mockClient);
+        $empty_values = new PodioPhoneItemField();
         $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
@@ -66,7 +63,7 @@ class PodioPhoneItemFieldTest extends TestCase
     public function test_can_convert_to_api_friendly_json(): void
     {
         // Empty values
-        $empty_values = new PodioPhoneItemField($this->mockClient);
+        $empty_values = new PodioPhoneItemField();
         $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values

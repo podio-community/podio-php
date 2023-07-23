@@ -17,14 +17,11 @@ class PodioDurationItemFieldTest extends TestCase
      */
     private $empty_values;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioDurationItemField($this->mockClient, [
+        $this->object = new PodioDurationItemField([
             '__api_values' => true,
             'field_id' => 123,
             'values' => [
@@ -32,14 +29,14 @@ class PodioDurationItemFieldTest extends TestCase
             ],
         ]);
 
-        $this->empty_values = new PodioDurationItemField($this->mockClient, [
+        $this->empty_values = new PodioDurationItemField([
             'field_id' => 456,
         ]);
     }
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioDurationItemField($this->mockClient, [
+        $object = new PodioDurationItemField([
             'field_id' => 123,
             'values' => 3600,
         ]);

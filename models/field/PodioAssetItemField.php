@@ -24,9 +24,9 @@ class PodioAssetItemField extends PodioItemField
         $attribute = parent::__get($name);
         if ($name == 'values' && $attribute) {
             // Create PodioCollection from raw values
-            $collection = new PodioCollection($this->podio_client);
+            $collection = new PodioCollection();
             foreach ($attribute as $value) {
-                $collection[] = new PodioFile($this->podio_client, $value['value']);
+                $collection[] = new PodioFile($value['value']);
             }
             return $collection;
         }

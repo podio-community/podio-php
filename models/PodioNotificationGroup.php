@@ -4,9 +4,9 @@
  */
 class PodioNotificationGroup extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->has_one('context', 'NotificationContext');
         $this->has_many('notifications', 'Notification');
 
