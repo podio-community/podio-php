@@ -7,7 +7,6 @@ use PodioApp;
 
 class PodioAppTest extends TestCase
 {
-
     public function test_performance_large_app(): void
     {
         $start = time();

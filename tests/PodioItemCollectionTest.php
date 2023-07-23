@@ -9,7 +9,6 @@ use PodioObject;
 
 class PodioItemCollectionTest extends TestCase
 {
-
     public function test_cannot_add_object(): void
     {
         $this->expectException('PodioDataIntegrityError');
