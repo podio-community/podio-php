@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class PodioErrorTest extends TestCase
 {
-
     public function test__constructShouldOutputNoWarningForEmptyBody()
     {
         $this->expectOutputString('');
