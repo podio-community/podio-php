@@ -15,7 +15,7 @@ class PodioCollection implements IteratorAggregate, ArrayAccess, Countable
      * Constructor. Pass in an array of PodioObject objects.
      * @param PodioClient $podio_client not used, but required for compatibility with other Podio collections.
      */
-    public function __construct(PodioClient $podio_client, $items = array())
+    public function __construct($items = array())
     {
         foreach ($items as $item) {
             $this->offsetSet(null, $item);

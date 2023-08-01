@@ -4,9 +4,9 @@
  */
 class PodioItemField extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array(), $force_type = null)
+    public function __construct($attributes = array(), $force_type = null)
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('field_id', 'integer', array('id' => true));
         $this->property('type', 'string');
         $this->property('external_id', 'string');
@@ -23,17 +23,17 @@ class PodioItemField extends PodioObject
     /**
      * Saves the value of the field
      */
-    public function save($options = array())
+    public static function save(PodioClient $podio_client, PodioItemField $field, $options = array())
     {
-        $relationship = $this->relationship();
+        $relationship = $field->relationship();
         if (!$relationship) {
             throw new PodioMissingRelationshipError('{"error_description":"Field is missing relationship to item", "request": {}}', null, null);
         }
-        if (!$this->id && !$this->external_id) {
+        if (!$field->id && !$field->external_id) {
             throw new PodioDataIntegrityError('Field must have id or external_id set.');
         }
-        $attributes = $this->as_json(false);
-        return self::update($relationship['instance']->id, $this->id ? $this->id : $this->external_id, $attributes, $options, $this->podio_client);
+        $attributes = $field->as_json(false);
+        return self::update($podio_client, $relationship['instance']->id, $field->id ?: $field->external_id, $attributes, $options);
     }
 
     /**
@@ -56,7 +56,7 @@ class PodioItemField extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/update-item-field-values-22367
      */
-    public static function update($item_id, $field_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function update(PodioClient $podio_client, $item_id, $field_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/{$item_id}/value/{$field_id}", $options);
         return $podio_client->put($url, $attributes)->json_body();
@@ -65,7 +65,7 @@ class PodioItemField extends PodioObject
     /**
      * @see https://developers.podio.com/doc/calendar/get-item-field-calendar-as-ical-10195681
      */
-    public static function ical($item_id, $field_id, PodioClient $podio_client)
+    public static function ical(PodioClient $podio_client, $item_id, $field_id)
     {
         return $podio_client->get("/calendar/item/{$item_id}/field/{$field_id}/ics/")->body;
     }
@@ -73,7 +73,7 @@ class PodioItemField extends PodioObject
     /**
      * @see https://developers.podio.com/doc/calendar/get-item-field-calendar-as-ical-10195681
      */
-    public static function ical_field($item_id, $field_id, PodioClient $podio_client)
+    public static function ical_field(PodioClient $podio_client, $item_id, $field_id)
     {
         return $podio_client->get("/calendar/item/{$item_id}/field/{$field_id}/ics/")->body;
     }

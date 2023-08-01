@@ -4,9 +4,9 @@
  */
 class PodioTask extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('task_id', 'integer', array('id' => true));
         $this->property('status', 'string');
         $this->property('group', 'string');
@@ -41,79 +41,55 @@ class PodioTask extends PodioObject
     /**
      * Creates or updates a task
      */
-    public function save()
+    public static function save(PodioClient $podio_client, PodioTask $task)
     {
-        if ($this->id) {
-            return self::update($this->id, $this, [], $this->podio_client);
+        if ($task->id) {
+            return self::update($podio_client, $task->id, $task);
         } else {
-            $new = self::create($this, [], $this->podio_client);
-            $this->task_id = $new->task_id;
-            return $this;
+            $new = self::create($podio_client, $task);
+            $task->task_id = $new->task_id;
+            return $task;
         }
-    }
-
-    /**
-     * Complete a task
-     */
-    public function completed()
-    {
-        return self::complete($this->id, $this->podio_client);
-    }
-
-    /**
-     * Incomplete a task
-     */
-    public function incompleted()
-    {
-        return self::incomplete($this->id, $this->podio_client);
-    }
-
-    /**
-     * Delete a task
-     */
-    public function destroy()
-    {
-        return self::delete($this->id, $this->podio_client);
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/create-task-22419
      */
-    public static function create($attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function create(PodioClient $podio_client, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/task/", $options);
-        return self::member($podio_client->post($url, $attributes), $podio_client);
+        return self::member($podio_client, $podio_client->post($url, $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/create-task-with-reference-22420
      */
-    public static function create_for($ref_type, $ref_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function create_for(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/task/{$ref_type}/{$ref_id}/", $options);
-        return self::member($podio_client->post($url, $attributes), $podio_client);
+        return self::member($podio_client, $podio_client->post($url, $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/get-task-22413
      */
-    public static function get($task_id, PodioClient $podio_client)
+    public static function get(PodioClient $podio_client, $task_id)
     {
-        return self::member($podio_client->get("/task/{$task_id}"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/task/{$task_id}"));
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/get-tasks-77949
      */
-    public static function get_all($attributes = array(), PodioClient $podio_client)
+    public static function get_all(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client->get("/task/", $attributes), $podio_client);
+        return self::listing($podio_client, $podio_client->get("/task/", $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/delete-task-77179
      */
-    public static function delete($task_id, PodioClient $podio_client)
+    public static function delete(PodioClient $podio_client, $task_id)
     {
         return $podio_client->delete("/task/{$task_id}");
     }
@@ -121,7 +97,7 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tasks/remove-task-reference-6146114
      */
-    public static function delete_ref($task_id, PodioClient $podio_client)
+    public static function delete_ref(PodioClient $podio_client, $task_id)
     {
         return $podio_client->delete("/task/{$task_id}/ref");
     }
@@ -129,16 +105,16 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tasks/update-task-10583674
      */
-    public static function update($task_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function update(PodioClient $podio_client, $task_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/task/{$task_id}", $options);
-        return self::member($podio_client->put($url, $attributes), $podio_client);
+        return self::member($podio_client, $podio_client->put($url, $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/assign-task-22412
      */
-    public static function assign($task_id, $attributes = array(), PodioClient $podio_client)
+    public static function assign(PodioClient $podio_client, $task_id, $attributes = array())
     {
         return $podio_client->post("/task/{$task_id}/assign", $attributes);
     }
@@ -146,7 +122,7 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tasks/complete-task-22432
      */
-    public static function complete($task_id, PodioClient $podio_client)
+    public static function complete(PodioClient $podio_client, $task_id)
     {
         return $podio_client->post("/task/{$task_id}/complete");
     }
@@ -154,7 +130,7 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tasks/incomplete-task-22433
      */
-    public static function incomplete($task_id, PodioClient $podio_client)
+    public static function incomplete(PodioClient $podio_client, $task_id)
     {
         return $podio_client->post("/task/{$task_id}/incomplete");
     }
@@ -162,7 +138,7 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tasks/rank-task-81015
      */
-    public static function rank($task_id, $attributes = array(), PodioClient $podio_client)
+    public static function rank(PodioClient $podio_client, $task_id, $attributes = array())
     {
         return $podio_client->post("/task/{$task_id}/rank", $attributes);
     }
@@ -170,7 +146,7 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/calendar/get-task-calendar-as-ical-10195650
      */
-    public static function ical($task_id, PodioClient $podio_client)
+    public static function ical(PodioClient $podio_client, $task_id)
     {
         return $podio_client->get("/calendar/task/{$task_id}/ics/")->body;
     }
@@ -178,67 +154,67 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tasks/get-task-summary-1612017
      */
-    public static function get_summary($attributes = array(), PodioClient $podio_client)
+    public static function get_summary(PodioClient $podio_client, $attributes = array())
     {
         $result = $podio_client->get("/task/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks'], $podio_client);
-        $result['today']['tasks'] = self::listing($result['today']['tasks'], $podio_client);
-        $result['other']['tasks'] = self::listing($result['other']['tasks'], $podio_client);
+        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
         return $result;
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/get-task-summary-for-personal-1657217
      */
-    public static function get_summary_personal($attributes = array(), PodioClient $podio_client)
+    public static function get_summary_personal(PodioClient $podio_client, $attributes = array())
     {
         $result = $podio_client->get("/task/personal/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks'], $podio_client);
-        $result['today']['tasks'] = self::listing($result['today']['tasks'], $podio_client);
-        $result['other']['tasks'] = self::listing($result['other']['tasks'], $podio_client);
+        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
         return $result;
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/get-task-summary-for-organization-1612063
      */
-    public static function get_summary_for_org($org_id, $attributes = array(), PodioClient $podio_client)
+    public static function get_summary_for_org(PodioClient $podio_client, $org_id, $attributes = array())
     {
         $result = $podio_client->get("/task/org/{$org_id}/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks'], $podio_client);
-        $result['today']['tasks'] = self::listing($result['today']['tasks'], $podio_client);
-        $result['other']['tasks'] = self::listing($result['other']['tasks'], $podio_client);
+        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
         return $result;
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/get-task-summary-for-space-1612130
      */
-    public static function get_summary_for_space($space_id, $attributes = array(), PodioClient $podio_client)
+    public static function get_summary_for_space(PodioClient $podio_client, $space_id, $attributes = array())
     {
         $result = $podio_client->get("/task/space/{$space_id}/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks'], $podio_client);
-        $result['today']['tasks'] = self::listing($result['today']['tasks'], $podio_client);
-        $result['other']['tasks'] = self::listing($result['other']['tasks'], $podio_client);
+        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
         return $result;
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/get-task-summary-for-reference-1657980
      */
-    public static function get_summary_for($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
+    public static function get_summary_for(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
         $result = $podio_client->get("/task/{$ref_type}/{$ref_id}/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks'], $podio_client);
-        $result['today']['tasks'] = self::listing($result['today']['tasks'], $podio_client);
-        $result['other']['tasks'] = self::listing($result['other']['tasks'], $podio_client);
+        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
         return $result;
     }
 
     /**
      * @see https://developers.podio.com/doc/tasks/update-task-reference-170733
      */
-    public static function update_reference($task_id, $attributes = array(), PodioClient $podio_client)
+    public static function update_reference(PodioClient $podio_client, $task_id, $attributes = array())
     {
         return $podio_client->put("/task/{$task_id}/ref", $attributes)->body;
     }
@@ -246,7 +222,7 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tasks/get-task-count-38316458
      */
-    public static function count($ref_type, $ref_id, PodioClient $podio_client)
+    public static function count(PodioClient $podio_client, $ref_type, $ref_id)
     {
         return $podio_client->get("/task/{$ref_type}/{$ref_id}/count")->json_body();
     }
@@ -254,9 +230,9 @@ class PodioTask extends PodioObject
     /**
      * @see https://developers.podio.com/doc/tasks/update-task-private-22434
      */
-    public function update_private($private_flag, $options = array())
+    public static function update_private(PodioClient $podio_client, PodioTask $task, $private_flag, $options = array())
     {
-        $url = $this->podio_client->url_with_options("/task/{$this->id}/private", $options);
-        return $this->podio_client->put($url, array('private' => $private_flag))->body;
+        $url = $podio_client->url_with_options("/task/{$task->id}/private", $options);
+        return $podio_client->put($url, array('private' => $private_flag))->body;
     }
 }

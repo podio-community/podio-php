@@ -4,9 +4,9 @@
  */
 class PodioItem extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
 
         # Basic item
         $this->property('item_id', 'integer', array('id' => true));
@@ -63,17 +63,17 @@ class PodioItem extends PodioObject
     /**
      * Create or updates an item
      */
-    public function save($options = array())
+    public static function save(PodioClient $podio_client, PodioItem $item, $options = array())
     {
-        $json_attributes = $this->as_json_without_readonly_fields();
+        $json_attributes = $item->as_json_without_readonly_fields();
 
-        if ($this->id) {
-            return self::update($this->id, $json_attributes, $options, $this->podio_client);
+        if ($item->id) {
+            return self::update($podio_client, $item->id, $json_attributes, $options);
         } else {
-            if ($this->app && $this->app->id) {
-                $new = self::create($this->app->id, $json_attributes, $options, $this->podio_client);
-                $this->item_id = $new->item_id;
-                return $this;
+            if ($item->app && $item->app->id) {
+                $new = self::create($podio_client, $item->app->id, $json_attributes, $options);
+                $item->item_id = $new->item_id;
+                return $item;
             } else {
                 throw new PodioMissingRelationshipError('{"error_description":"Item is missing relationship to app", "request": {}}', null, null);
             }
@@ -98,58 +98,58 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-item-22360
      */
-    public static function get($item_id, $options = array(), PodioClient $podio_client)
+    public static function get(PodioClient $podio_client, $item_id, $options = array())
     {
         $url = $podio_client->url_with_options("/item/{$item_id}", $options);
-        return self::member($podio_client->get($url), $podio_client);
+        return self::member($podio_client, $podio_client->get($url));
     }
 
     /**
      * @see https://developers.podio.com/doc/items/get-item-by-app-item-id-66506688
      */
-    public static function get_by_app_item_id($app_id, $app_item_id, PodioClient $podio_client)
+    public static function get_by_app_item_id(PodioClient $podio_client, $app_id, $app_item_id)
     {
-        return self::member($podio_client->get("/app/{$app_id}/item/{$app_item_id}"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/app/{$app_id}/item/{$app_item_id}"));
     }
 
     /**
      * @see https://developers.podio.com/doc/items/get-item-by-external-id-19556702
      */
-    public static function get_by_external_id($app_id, $external_id, PodioClient $podio_client)
+    public static function get_by_external_id(PodioClient $podio_client, $app_id, $external_id)
     {
-        return self::member($podio_client->get("/item/app/{$app_id}/external_id/{$external_id}"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/item/app/{$app_id}/external_id/{$external_id}"));
     }
 
     /**
      * @see https://developers.podio.com/doc/items/get-item-basic-61768
      */
-    public static function get_basic($item_id, $attributes = array(), PodioClient $podio_client)
+    public static function get_basic(PodioClient $podio_client, $item_id, $attributes = array())
     {
-        return self::member($podio_client->get("/item/{$item_id}/basic", $attributes), $podio_client);
+        return self::member($podio_client, $podio_client->get("/item/{$item_id}/basic", $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/items/filter-items-4496747
      */
-    public static function filter($app_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function filter(PodioClient $podio_client, $app_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/app/{$app_id}/filter/", $options);
-        return self::collection($podio_client->post($url, $attributes ? $attributes : new StdClass()), "PodioItemCollection", $podio_client);
+        return self::collection($podio_client, $podio_client->post($url, $attributes ? $attributes : new StdClass()), "PodioItemCollection");
     }
 
     /**
      * @see https://developers.podio.com/doc/items/filter-items-by-view-4540284
      */
-    public static function filter_by_view($app_id, $view_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function filter_by_view(PodioClient $podio_client, $app_id, $view_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/app/{$app_id}/filter/{$view_id}/", $options);
-        return self::collection($podio_client->post($url, $attributes ? $attributes : new StdClass()), "PodioItemCollection", $podio_client);
+        return self::collection($podio_client, $podio_client->post($url, $attributes ? $attributes : new StdClass()), "PodioItemCollection");
     }
 
     /**
      * @see https://developers.podio.com/doc/items/delete-item-22364
      */
-    public static function delete($item_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function delete(PodioClient $podio_client, $item_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/{$item_id}", $options);
         return $podio_client->delete($url, $attributes);
@@ -158,7 +158,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/bulk-delete-items-19406111
      */
-    public static function bulk_delete($app_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function bulk_delete(PodioClient $podio_client, $app_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/app/{$app_id}/delete", $options);
         return $podio_client->post($url, $attributes);
@@ -167,7 +167,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/delete-item-reference-7302326
      */
-    public static function delete_reference($item_id, $attributes = array(), PodioClient $podio_client)
+    public static function delete_reference(PodioClient $podio_client, $item_id, $attributes = array())
     {
         return $podio_client->delete("/item/{$item_id}/ref", $attributes);
     }
@@ -175,16 +175,16 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/add-new-item-22362
      */
-    public static function create($app_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function create(PodioClient $podio_client, $app_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/app/{$app_id}/", $options);
-        return self::member($podio_client->post($url, $attributes), $podio_client);
+        return self::member($podio_client, $podio_client->post($url, $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/items/clone-item-37722742
      */
-    public static function duplicate($item_id, $options = array(), PodioClient $podio_client)
+    public static function duplicate(PodioClient $podio_client, $item_id, $options = array())
     {
         $url =  $podio_client->url_with_options("/item/{$item_id}/clone", $options);
         $body = $podio_client->post($url)->json_body();
@@ -194,7 +194,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/update-item-22363
      */
-    public static function update($item_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function update(PodioClient $podio_client, $item_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/{$item_id}", $options);
         return $podio_client->put($url, $attributes)->json_body();
@@ -203,7 +203,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/update-item-reference-7421495
      */
-    public static function update_reference($item_id, $attributes = array(), PodioClient $podio_client)
+    public static function update_reference(PodioClient $podio_client, $item_id, $attributes = array())
     {
         return $podio_client->put("/item/{$item_id}/ref", $attributes)->json_body();
     }
@@ -211,7 +211,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/update-item-values-22366
      */
-    public static function update_values($item_id, $attributes = array(), $options = array(), PodioClient $podio_client)
+    public static function update_values(PodioClient $podio_client, $item_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/{$item_id}/value", $options);
         return $podio_client->put($url, $attributes)->json_body();
@@ -220,7 +220,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/calculate-67633
      */
-    public static function calculate($app_id, $attributes = array(), PodioClient $podio_client)
+    public static function calculate(PodioClient $podio_client, $app_id, $attributes = array())
     {
         return $podio_client->post("/item/app/{$app_id}/calculate", $attributes)->json_body();
     }
@@ -228,7 +228,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/export-items-4235696
      */
-    public static function export($app_id, $exporter, $attributes = array(), PodioClient $podio_client)
+    public static function export(PodioClient $podio_client, $app_id, $exporter, $attributes = array())
     {
         $body = $podio_client->post("/item/app/{$app_id}/export/{$exporter}", $attributes ? $attributes : new StdClass())->json_body();
         return $body['batch_id'];
@@ -237,7 +237,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-items-as-xlsx-63233
      */
-    public static function xlsx($app_id, $attributes = array(), PodioClient $podio_client)
+    public static function xlsx(PodioClient $podio_client, $app_id, $attributes = array())
     {
         return $podio_client->get("/item/app/{$app_id}/xlsx/", $attributes)->body;
     }
@@ -245,7 +245,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/find-items-by-field-and-title-22485
      */
-    public static function search_field($field_id, $attributes = array(), PodioClient $podio_client)
+    public static function search_field(PodioClient $podio_client, $field_id, $attributes = array())
     {
         return $podio_client->get("/item/field/{$field_id}/find", $attributes)->json_body();
     }
@@ -253,7 +253,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-item-count-34819997
      */
-    public static function get_count($app_id, $view_id, PodioClient $podio_client)
+    public static function get_count(PodioClient $podio_client, $app_id, $view_id)
     {
         $attributes = empty($view_id) ? array() : array("view_id" => $view_id);
         $body = $podio_client->get("/item/app/{$app_id}/count", $attributes)->json_body();
@@ -263,7 +263,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-app-values-22455
      */
-    public static function get_app_values($app_id, PodioClient $podio_client)
+    public static function get_app_values(PodioClient $podio_client, $app_id)
     {
         return $podio_client->get("/item/app/{$app_id}/values")->json_body();
     }
@@ -271,7 +271,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-item-field-values-22368
      */
-    public static function get_field_value($item_id, $field_id, PodioClient $podio_client)
+    public static function get_field_value(PodioClient $podio_client, $item_id, $field_id)
     {
         return $podio_client->get("/item/{$item_id}/value/{$field_id}")->json_body();
     }
@@ -279,15 +279,15 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-item-preview-for-field-reference-7529318
      */
-    public static function get_basic_by_field($item_id, $field_id, PodioClient $podio_client)
+    public static function get_basic_by_field(PodioClient $podio_client, $item_id, $field_id)
     {
-        return self::member($podio_client->get("/item/{$item_id}/reference/{$field_id}/preview"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/item/{$item_id}/reference/{$field_id}/preview"));
     }
 
     /**
      * @see https://developers.podio.com/doc/items/get-item-references-22439
      */
-    public static function get_references($item_id, PodioClient $podio_client)
+    public static function get_references(PodioClient $podio_client, $item_id)
     {
         return $podio_client->get("/item/{$item_id}/reference/")->json_body();
     }
@@ -295,7 +295,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-meeting-url-14763260
      */
-    public static function get_meeting_url($item_id, PodioClient $podio_client)
+    public static function get_meeting_url(PodioClient $podio_client, $item_id)
     {
         $body = $podio_client->get("/item/{$item_id}/meeting/url")->json_body();
         return $body['url'];
@@ -304,23 +304,23 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-item-preview-for-field-reference-7529318
      */
-    public static function get_references_by_field($item_id, $field_id, $attributes = array(), PodioClient $podio_client)
+    public static function get_references_by_field(PodioClient $podio_client, $item_id, $field_id, $attributes = array())
     {
-        return self::listing($podio_client->get("/item/{$item_id}/reference/field/{$field_id}", $attributes), $podio_client);
+        return self::listing($podio_client, $podio_client->get("/item/{$item_id}/reference/field/{$field_id}", $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/items/get-top-values-for-field-68334
      */
-    public static function get_top_values_by_field($field_id, $attributes = array(), PodioClient $podio_client)
+    public static function get_top_values_by_field(PodioClient $podio_client, $field_id, $attributes = array())
     {
-        return self::listing($podio_client->get("/item/field/{$field_id}/top/", $attributes), $podio_client);
+        return self::listing($podio_client, $podio_client->get("/item/field/{$field_id}/top/", $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/items/set-participation-7156154
      */
-    public static function participation($item_id, $attributes = array(), PodioClient $podio_client)
+    public static function participation(PodioClient $podio_client, $item_id, $attributes = array())
     {
         return $podio_client->put("/item/{$item_id}/participation", $attributes)->json_body();
     }
@@ -328,7 +328,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/revert-to-revision-194362682
      */
-    public static function revert_to_revision($item_id, $revision, $attributes = array(), PodioClient $podio_client)
+    public static function revert_to_revision(PodioClient $podio_client, $item_id, $revision, $attributes = array())
     {
         return $podio_client->post("/item/{$item_id}/revision/{$revision}/revert_to", $attributes);
     }
@@ -336,7 +336,7 @@ class PodioItem extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-item-values-22365
      */
-    public static function get_item_values($item_id, PodioClient $podio_client)
+    public static function get_item_values(PodioClient $podio_client, $item_id)
     {
         return $podio_client->get("/item/{$item_id}/value")->json_body();
     }

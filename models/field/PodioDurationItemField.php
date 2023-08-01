@@ -27,7 +27,7 @@ class PodioDurationItemField extends PodioItemField
         } elseif ($name == 'hours') {
             return floor($this->values / 3600);
         } elseif ($name == 'minutes') {
-            return (($this->values / 60) % 60);
+            return (floor($this->values / 60) % 60);
         } elseif ($name == 'seconds') {
             return ($this->values % 60);
         }

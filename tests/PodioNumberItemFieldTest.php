@@ -22,22 +22,19 @@ class PodioNumberItemFieldTest extends TestCase
      */
     private $zero_value;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioNumberItemField($this->mockClient, [
+        $this->object = new PodioNumberItemField([
             '__api_values' => true,
             'field_id' => 123,
             'values' => [
                 ['value' => '1234.5600'],
             ],
         ]);
-        $this->empty_values = new PodioNumberItemField($this->mockClient, ['field_id' => 1]);
-        $this->zero_value = new PodioNumberItemField($this->mockClient, [
+        $this->empty_values = new PodioNumberItemField(['field_id' => 1]);
+        $this->zero_value = new PodioNumberItemField([
             '__api_values' => true,
             'field_id' => 2,
             'values' => [['value' => '0']],
@@ -46,7 +43,7 @@ class PodioNumberItemFieldTest extends TestCase
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioNumberItemField($this->mockClient, [
+        $object = new PodioNumberItemField([
             'field_id' => 123,
             'values' => '12.34',
         ]);

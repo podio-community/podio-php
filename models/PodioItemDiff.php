@@ -4,9 +4,9 @@
  */
 class PodioItemDiff extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('field_id', 'integer');
         $this->property('type', 'string');
         $this->property('external_id', 'string');
@@ -21,7 +21,7 @@ class PodioItemDiff extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/revert-item-revision-953195
      */
-    public static function revert($item_id, $revision_id, PodioClient $podio_client)
+    public static function revert(PodioClient $podio_client, $item_id, $revision_id)
     {
         $response = $podio_client->delete("/item/{$item_id}/revision/{$revision_id}");
         if ($response->body) {
@@ -34,8 +34,8 @@ class PodioItemDiff extends PodioObject
     /**
      * @see https://developers.podio.com/doc/items/get-item-revision-difference-22374
      */
-    public static function get_for($item_id, $revision_from_id, $revision_to_id, PodioClient $podio_client)
+    public static function get_for(PodioClient $podio_client, $item_id, $revision_from_id, $revision_to_id)
     {
-        return self::listing($podio_client->get("/item/{$item_id}/revision/{$revision_from_id}/{$revision_to_id}"), $podio_client);
+        return self::listing($podio_client, $podio_client->get("/item/{$item_id}/revision/{$revision_from_id}/{$revision_to_id}"));
     }
 }

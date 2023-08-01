@@ -14,14 +14,11 @@ class PodioAppItemFieldTest extends TestCase
      */
     private $object;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioAppItemField($this->mockClient, [
+        $this->object = new PodioAppItemField([
             '__api_values' => true,
             'values' => [
                 ['value' => ['item_id' => 1, 'title' => 'Snap']],
@@ -33,7 +30,7 @@ class PodioAppItemFieldTest extends TestCase
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioAppItemField($this->mockClient, [
+        $object = new PodioAppItemField([
             'field_id' => 123,
             'values' => ['item_id' => 4, 'title' => 'Captain Crunch'],
         ]);
@@ -45,7 +42,7 @@ class PodioAppItemFieldTest extends TestCase
     public function test_can_provide_value(): void
     {
         // Empty values
-        $empty_values = new PodioAppItemField($this->mockClient, ['field_id' => 1]);
+        $empty_values = new PodioAppItemField(['field_id' => 1]);
         $this->assertNull($empty_values->values);
 
         // Populated values
@@ -58,7 +55,7 @@ class PodioAppItemFieldTest extends TestCase
 
     public function test_can_set_value_from_object(): void
     {
-        $this->object->values = new PodioItem($this->mockClient, ['item_id' => 4, 'title' => 'Captain Crunch']);
+        $this->object->values = new PodioItem(['item_id' => 4, 'title' => 'Captain Crunch']);
         $this->assertSame([
             ['value' => ['item_id' => 4, 'title' => 'Captain Crunch']],
         ], $this->object->__attribute('values'));
@@ -66,7 +63,7 @@ class PodioAppItemFieldTest extends TestCase
 
     public function test_can_set_value_from_collection(): void
     {
-        $this->object->values = new PodioCollection($this->mockClient, [new PodioItem($this->mockClient, ['item_id' => 4, 'title' => 'Captain Crunch'])]);
+        $this->object->values = new PodioCollection([new PodioItem(['item_id' => 4, 'title' => 'Captain Crunch'])]);
 
         $this->assertSame([
             ['value' => ['item_id' => 4, 'title' => 'Captain Crunch']],
@@ -84,8 +81,8 @@ class PodioAppItemFieldTest extends TestCase
     public function test_can_set_value_from_array_of_objects(): void
     {
         $this->object->values = [
-            new PodioItem($this->mockClient, ['item_id' => 4, 'title' => 'Captain Crunch']),
-            new PodioItem($this->mockClient, ['item_id' => 5, 'title' => 'Count Chocula']),
+            new PodioItem(['item_id' => 4, 'title' => 'Captain Crunch']),
+            new PodioItem(['item_id' => 5, 'title' => 'Count Chocula']),
         ];
         $this->assertSame([
             ['value' => ['item_id' => 4, 'title' => 'Captain Crunch']],
@@ -108,7 +105,7 @@ class PodioAppItemFieldTest extends TestCase
     public function test_can_humanize_value(): void
     {
         // Empty values
-        $empty_values = new PodioAppItemField($this->mockClient, ['field_id' => 1]);
+        $empty_values = new PodioAppItemField(['field_id' => 1]);
         $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
@@ -118,7 +115,7 @@ class PodioAppItemFieldTest extends TestCase
     public function test_can_convert_to_api_friendly_json(): void
     {
         // Empty values
-        $empty_values = new PodioAppItemField($this->mockClient, ['field_id' => 1]);
+        $empty_values = new PodioAppItemField(['field_id' => 1]);
         $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values

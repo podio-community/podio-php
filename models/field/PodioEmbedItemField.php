@@ -24,11 +24,11 @@ class PodioEmbedItemField extends PodioItemField
         $attribute = parent::__get($name);
         if ($name == 'values' && $attribute) {
             // Create PodioCollection from raw values
-            $embeds = new PodioCollection($this->podio_client);
+            $embeds = new PodioCollection();
             foreach ($attribute as $value) {
-                $embed = new PodioEmbed($this->podio_client, $value['embed']);
+                $embed = new PodioEmbed($value['embed']);
                 if (!empty($value['file'])) {
-                    $embed->files = new PodioCollection($this->podio_client, array(new PodioFile($this->podio_client, $value['file'])));
+                    $embed->files = new PodioCollection(array(new PodioFile($value['file'])));
                 }
                 $embeds[] = $embed;
             }

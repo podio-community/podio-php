@@ -9,19 +9,19 @@ class PodioAppFieldCollection extends PodioFieldCollection
      * Constructor. Pass in either decoded JSON from an API request
      * or an array of PodioAppField objects.
      */
-    public function __construct(PodioClient $podio_client, $attributes)
+    public function __construct($attributes)
     {
 
     // Make default array into array of proper objects
         $fields = array();
 
         foreach ($attributes as $field_attributes) {
-            $field = is_object($field_attributes) ? $field_attributes : new PodioAppField($podio_client, $field_attributes);
+            $field = is_object($field_attributes) ? $field_attributes : new PodioAppField($field_attributes);
             $fields[] = $field;
         }
 
         // Add to internal storage
-        parent::__construct($podio_client, $fields);
+        parent::__construct($fields);
     }
 
     /**

@@ -4,9 +4,9 @@
  */
 class PodioNotification extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('notification_id', 'integer', array('id' => true));
         $this->property('type', 'string');
         $this->property('data', 'hash');
@@ -44,7 +44,7 @@ class PodioNotification extends PodioObject
     /**
      * @see https://developers.podio.com/doc/notifications/mark-notification-as-viewed-22436
      */
-    public static function mark_as_viewed($notification_id, PodioClient $podio_client)
+    public static function mark_as_viewed(PodioClient $podio_client, $notification_id)
     {
         return $podio_client->post("/notification/{$notification_id}/viewed");
     }
@@ -52,7 +52,7 @@ class PodioNotification extends PodioObject
     /**
      * @see https://developers.podio.com/doc/notifications/mark-notifications-as-viewed-by-ref-553653
      */
-    public static function mark_as_viewed_for_ref($ref_type, $ref_id, PodioClient $podio_client)
+    public static function mark_as_viewed_for_ref(PodioClient $podio_client, $ref_type, $ref_id)
     {
         return $podio_client->post("/notification/{$ref_type}/{$ref_id}/viewed");
     }
@@ -60,7 +60,7 @@ class PodioNotification extends PodioObject
     /**
      * @see https://developers.podio.com/doc/notifications/star-notification-295910
      */
-    public static function star($notification_id, PodioClient $podio_client)
+    public static function star(PodioClient $podio_client, $notification_id)
     {
         return $podio_client->post("/notification/{$notification_id}/star");
     }
@@ -68,7 +68,7 @@ class PodioNotification extends PodioObject
     /**
      * @see https://developers.podio.com/doc/notifications/un-star-notification-295911
      */
-    public static function unstar($notification_id, PodioClient $podio_client)
+    public static function unstar(PodioClient $podio_client, $notification_id)
     {
         return $podio_client->delete("/notification/{$notification_id}/star");
     }

@@ -22,22 +22,19 @@ class PodioProgressItemFieldTest extends TestCase
      */
     private $zero_value;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioProgressItemField($this->mockClient, [
+        $this->object = new PodioProgressItemField([
             '__api_values' => true,
             'field_id' => 123,
             'values' => [
                 ['value' => 55],
             ],
         ]);
-        $this->empty_values = new PodioProgressItemField($this->mockClient, ['field_id' => 1]);
-        $this->zero_value = new PodioProgressItemField($this->mockClient, [
+        $this->empty_values = new PodioProgressItemField(['field_id' => 1]);
+        $this->zero_value = new PodioProgressItemField([
             '__api_values' => true,
             'field_id' => 2,
             'values' => [['value' => 0]],
@@ -46,7 +43,7 @@ class PodioProgressItemFieldTest extends TestCase
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioProgressItemField($this->mockClient, [
+        $object = new PodioProgressItemField([
             'field_id' => 123,
             'values' => 75,
         ]);

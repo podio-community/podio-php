@@ -14,14 +14,11 @@ class PodioContactItemFieldTest extends TestCase
      */
     private $object;
 
-    private $mockClient;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
-        $this->object = new PodioContactItemField($this->mockClient, [
+        $this->object = new PodioContactItemField([
             '__api_values' => true,
             'values' => [
                 ['value' => ['profile_id' => 1, 'name' => 'Snap']],
@@ -33,7 +30,7 @@ class PodioContactItemFieldTest extends TestCase
 
     public function test_can_construct_from_simple_value(): void
     {
-        $object = new PodioContactItemField($this->mockClient, [
+        $object = new PodioContactItemField([
             'field_id' => 123,
             'values' => ['profile_id' => 4, 'name' => 'Captain Crunch'],
         ]);
@@ -45,7 +42,7 @@ class PodioContactItemFieldTest extends TestCase
     public function test_can_provide_value(): void
     {
         // Empty values
-        $empty_values = new PodioContactItemField($this->mockClient, ['field_id' => 1]);
+        $empty_values = new PodioContactItemField(['field_id' => 1]);
         $this->assertNull($empty_values->values);
 
         // Populated values
@@ -58,7 +55,7 @@ class PodioContactItemFieldTest extends TestCase
 
     public function test_can_set_value_from_object(): void
     {
-        $this->object->values = new PodioContact($this->mockClient, ['profile_id' => 4, 'name' => 'Captain Crunch']);
+        $this->object->values = new PodioContact(['profile_id' => 4, 'name' => 'Captain Crunch']);
         $this->assertSame([
             ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
         ], $this->object->__attribute('values'));
@@ -66,8 +63,8 @@ class PodioContactItemFieldTest extends TestCase
 
     public function test_can_set_value_from_collection(): void
     {
-        $this->object->values = new PodioCollection($this->mockClient, [
-            new PodioContact($this->mockClient, [
+        $this->object->values = new PodioCollection([
+            new PodioContact([
                 'profile_id' => 4,
                 'name' => 'Captain Crunch',
             ]),
@@ -89,8 +86,8 @@ class PodioContactItemFieldTest extends TestCase
     public function test_can_set_value_from_array_of_objects(): void
     {
         $this->object->values = [
-            new PodioContact($this->mockClient, ['profile_id' => 4, 'name' => 'Captain Crunch']),
-            new PodioContact($this->mockClient, ['profile_id' => 5, 'name' => 'Count Chocula']),
+            new PodioContact(['profile_id' => 4, 'name' => 'Captain Crunch']),
+            new PodioContact(['profile_id' => 5, 'name' => 'Count Chocula']),
         ];
         $this->assertSame([
             ['value' => ['profile_id' => 4, 'name' => 'Captain Crunch']],
@@ -113,7 +110,7 @@ class PodioContactItemFieldTest extends TestCase
     public function test_can_humanize_value(): void
     {
         // Empty values
-        $empty_values = new PodioContactItemField($this->mockClient, ['field_id' => 1]);
+        $empty_values = new PodioContactItemField(['field_id' => 1]);
         $this->assertSame('', $empty_values->humanized_value());
 
         // Populated values
@@ -123,7 +120,7 @@ class PodioContactItemFieldTest extends TestCase
     public function test_can_convert_to_api_friendly_json(): void
     {
         // Empty values
-        $empty_values = new PodioContactItemField($this->mockClient, ['field_id' => 1]);
+        $empty_values = new PodioContactItemField(['field_id' => 1]);
         $this->assertSame('[]', $empty_values->as_json());
 
         // Populated values

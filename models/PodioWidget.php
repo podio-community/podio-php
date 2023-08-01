@@ -4,9 +4,9 @@
  */
 class PodioWidget extends PodioObject
 {
-    public function __construct(PodioClient $podio_client, $attributes = array())
+    public function __construct($attributes = array())
     {
-        parent::__construct($podio_client);
+        parent::__construct();
         $this->property('widget_id', 'integer', array('id' => true));
         $this->property('type', 'string');
         $this->property('title', 'string');
@@ -24,15 +24,15 @@ class PodioWidget extends PodioObject
     /**
      * @see https://developers.podio.com/doc/widgets/create-widget-22491
      */
-    public static function create($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
+    public static function create(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
-        return self::member($podio_client->post("/widget/{$ref_type}/{$ref_id}/", $attributes), $podio_client);
+        return self::member($podio_client, $podio_client->post("/widget/{$ref_type}/{$ref_id}/", $attributes));
     }
 
     /**
      * @see https://developers.podio.com/doc/widgets/delete-widget-22492
      */
-    public static function delete($widget_id, PodioClient $podio_client)
+    public static function delete(PodioClient $podio_client, $widget_id)
     {
         return $podio_client->delete("/widget/{$widget_id}");
     }
@@ -40,23 +40,23 @@ class PodioWidget extends PodioObject
     /**
      * @see https://developers.podio.com/doc/widgets/get-widget-22489
      */
-    public static function get($widget_id, PodioClient $podio_client)
+    public static function get(PodioClient $podio_client, $widget_id)
     {
-        return self::member($podio_client->get("/widget/{$widget_id}"), $podio_client);
+        return self::member($podio_client, $podio_client->get("/widget/{$widget_id}"));
     }
 
     /**
      * @see https://developers.podio.com/doc/widgets/get-widgets-22494
      */
-    public static function get_for($ref_type, $ref_id, PodioClient $podio_client)
+    public static function get_for(PodioClient $podio_client, $ref_type, $ref_id)
     {
-        return self::listing($podio_client->get("/widget/{$ref_type}/{$ref_id}/"), $podio_client);
+        return self::listing($podio_client, $podio_client->get("/widget/{$ref_type}/{$ref_id}/"));
     }
 
     /**
      * @see https://developers.podio.com/doc/widgets/update-widget-22490
      */
-    public static function update($widget_id, $attributes = array(), PodioClient $podio_client)
+    public static function update(PodioClient $podio_client, $widget_id, $attributes = array())
     {
         return $podio_client->put("/widget/{$widget_id}", $attributes);
     }
@@ -64,7 +64,7 @@ class PodioWidget extends PodioObject
     /**
      * @see https://developers.podio.com/doc/widgets/update-widget-order-22495
      */
-    public static function update_order($ref_type, $ref_id, $attributes = array(), PodioClient $podio_client)
+    public static function update_order(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
         return $podio_client->put("/widget/{$ref_type}/{$ref_id}/order", $attributes);
     }
