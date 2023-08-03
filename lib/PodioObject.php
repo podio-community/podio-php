@@ -195,7 +195,7 @@ class PodioObject
             $list = array();
             foreach ($body as $attributes) {
                 $class_name = get_called_class();
-                $list[] = new $class_name($podio_client, array_merge($attributes, array('__api_values' => true)));
+                $list[] = new $class_name(array_merge($attributes, array('__api_values' => true)));
             }
             return $list;
         }
@@ -205,7 +205,7 @@ class PodioObject
     {
         if ($response) {
             $class_name = get_called_class();
-            return new $class_name($podio_client, array_merge($response instanceof PodioResponse ? $response->json_body() : $response, array('__api_values' => true)));
+            return new $class_name(array_merge($response instanceof PodioResponse ? $response->json_body() : $response, array('__api_values' => true)));
         }
     }
 
@@ -217,10 +217,10 @@ class PodioObject
             if (isset($body['items'])) {
                 foreach ($body['items'] as $attributes) {
                     $class_name = get_called_class();
-                    $list[] = new $class_name($podio_client, array_merge($attributes, array('__api_values' => true)));
+                    $list[] = new $class_name(array_merge($attributes, array('__api_values' => true)));
                 }
             }
-            return new $collection_type($podio_client, $list, $body['filtered'], $body['total']);
+            return new $collection_type($list, $body['filtered'], $body['total']);
         }
     }
 
