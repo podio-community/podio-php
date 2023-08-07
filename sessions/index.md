@@ -6,11 +6,16 @@ active: sessions
 An important part of any Podio API integration is managing your authentication tokens. You can avoid hitting rate limits and make your integration faster by storing authentication tokens and thus avoid having to re-authenticate every time your script runs.
 
 ## What is a session manager
-When you setup the API client you can optionally pass in the name of a session manager. This should be the class name of your session manager class. This class handles storing and retrieving access tokens through a unified interface. For example if your class is called `PodioSession` you would setup your client as:
+When you setup the API client you can optionally pass in the name of a session manager. This can be the class name of your session manager class or an instance of a session manager. This class handles storing and retrieving access tokens through a unified interface. For example if your class is called `PodioSession` you would setup your client as:
 
 {% highlight php startinline %}
-Podio::setup($client_id, $client_secret, array(
+$client = new PodioClient($client_id, $client_secret, array(
   "session_manager" => "PodioSession"
+));
+// alternatively you can pass in an instance of your session manager:
+$session = new PodioSession();
+$client = new PodioClient($client_id, $client_secret, array(
+  "session_manager" => $session
 ));
 
 if (Podio::is_authenticated()) {
@@ -23,18 +28,18 @@ else {
 }
 {% endhighlight %}
 
-If you use a session manager your authentication tokens will automatically be stored at the end of your script run and automatically retrieved when you create your client at the beginning of the following script run.
+If you use a session manager your authentication tokens will automatically be stored at the end of your script run (more specifically when the `PodioClient` is destroyed/destructed) and automatically retrieved when you create your client at the beginning of the following script run.
 
 ## Writing your own session manager
 Writing a session manager is straight-forward. You need to create a new class that has two methods: `get` and `set`.
 
 ### The `get` method
-The `get` method should retrieve an existing authentication when called. It has one parameter, `$auth_type`, which contains information about the current authentication method when using app or password authentication. This makes it easier to switch between multiple forms of authentication (see below).
+The `get` method should retrieve an existing authentication when called.
 
 It should return a `PodioOAuth` object in all cases. Return an empty `PodioOAuth` object if no existing authentication could be found.
 
 ### The `set` method
-The `set` method should store a `PodioOAuth` object when called. It has two parameters, `$oauth`, which holds the current `PodioOAuth` objecy and `$auth_type`, which contains information about the current authentication method when using app or password authentication. This makes it easier to switch between multiple forms of authentication (see below).
+The `set` method should store a `PodioOAuth` object when called. It has two parameters, `$oauth`, which holds the current `PodioOAuth` object and `$auth_type`, which contains information about the current authentication method when using app or password authentication. This makes it easier to switch between multiple forms of authentication (see below).
 
 ## Example: Store access tokens in browser session cookie
 This is a simple example meant for a web application that uses the server-side authentication flow. It stores the authentication data in a session cookie.
@@ -53,10 +58,9 @@ class PodioBrowserSession {
   }
 
   /**
-   * Get oauth object from session, if present. We ignore $auth_type since
-   * it doesn't work with server-side authentication.
+   * Get oauth object from session, if present.
    */
-  public function get($auth_type = null) {
+  public function get() {
 
     // Check if we have a stored session
     if (!empty($_SESSION['podio-php-session'])) {
@@ -95,13 +99,13 @@ class PodioBrowserSession {
 Save the above class and include it in your project. You can now use this session manager:
 
 {% highlight php startinline %}
-Podio::setup($client_id, $client_secret, array(
+$client = new PodioClient($client_id, $client_secret, array(
   "session_manager" => "PodioBrowserSession"
 ));
 {% endhighlight %}
 
 ## Example: Store access tokens in Redis
-This is a simple example of how you could store authentication data in Redis. It uses `$auth_type` to juggle between multiple app authentications.
+This is a simple example of how you could store authentication data in Redis.
 
 {% highlight php startinline %}
 class PodioRedisSession {
@@ -109,29 +113,20 @@ class PodioRedisSession {
   /**
    * Create a pointer to Redis when constructing a new object
    */
-  public function __construct() {
+  public function __construct(private $key) {
     $this->redis = new Predis\Client();
   }
 
   /**
-   * Get oauth object from session, if present. We use $auth_type as
-   * basis for the cache key.
+   * Get oauth object from session, if present.
    */
-  public function get($auth_type = null) {
-
-    // If no $auth_type is set, just return empty
-    // since we won't be able to find anything.
-    if (!$auth_type) {
-      return new PodioOauth();
-    }
-
-    $cache_key = "podio_cache_".$auth_type['type']."_".$auth_type['identifier'];
+  public function get() {
 
     // Check if we have a stored session
-    if ($this->redis->exists($cache_key)) {
+    if ($this->redis->exists($this->key)) {
 
       // We have a session, create new PodioOauth object and return it
-      $cached_value = $this->redis->hgetall($cache_key);
+      $cached_value = $this->redis->hgetall($this->key);
       return new PodioOAuth(
         $cached_value['access_token'],
         $cached_value['refresh_token'],
@@ -152,13 +147,13 @@ class PodioRedisSession {
     $cache_key = "podio_cache_".$auth_type['type']."_".$auth_type['identifier'];
 
     // Save all properties of the oauth object in redis
-    $this->redis->hmset = array(
+    $this->redis->hmset($this->key, array(
       'access_token' => $oauth->access_token,
       'refresh_token' => $oauth->refresh_token,
       'expires_in' => $oauth->expires_in,
       'ref_type' => $oauth->ref["type"],
       'ref_id' => $oauth->ref["id"],
-    );
+    ));
 
   }
 }
@@ -167,42 +162,18 @@ class PodioRedisSession {
 Save the above class and include it in your project. You can now use this session manager:
 
 {% highlight php startinline %}
-Podio::setup($client_id, $client_secret, array(
-  "session_manager" => "PodioRedisSession"
+$client = new PodioClient($client_id, $client_secret, array(
+  // We pass the current user id as the key to the session manager, so that the session is not shared between users:
+  "session_manager" => new PodioRedisSession($current_user_id)
 ));
-
-// podio-php will attempt to find a session automatically, but will fail because
-// it doesn't know which $auth_type to use.
-// So we must attempt to locate a session manually.
-Podio::$auth_type = array(
-  "type" => "app",
-  "identifier" => $app_id
-);
-Podio::$oauth = self::$session_manager->get(Podio::$auth_type);
 
 // Now we can check if anything could be found in the cache and
 // authenticate if it couldn't
-if (!Podio::is_authenticated()) {
+if (!$client->is_authenticated()) {
   // No authentication found in session manager.
   // You must re-authenticate here.
 
-  Podio::authenticate_with_app($app_id, $app_token);
-}
-
-// We can safely switch to another app now
-// First attempt to get authentication from cache
-// If that fails re-authenticate
-Podio::$auth_type = array(
-  "type" => "app",
-  "identifier" => $another_app_id
-);
-Podio::$oauth = self::$session_manager->get(Podio::$auth_type);
-
-if (!Podio::is_authenticated()) {
-  // No authentication found in session manager.
-  // You must re-authenticate here.
-
-  Podio::authenticate_with_app($another_app_id, $another_app_token);
+  $client->authenticate_with_app($app_id, $app_token);
 }
 {% endhighlight %}
 

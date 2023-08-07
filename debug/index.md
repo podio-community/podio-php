@@ -15,13 +15,13 @@ The exceptions all contain information about the request that caused the problem
 If you get unexpected results but you are not seeing exceptions you can switch podio-php into debug mode. Add this before making any API requests:
 
 {% highlight php startinline %}
-Podio::set_debug(true);
+$client->set_debug(true);
 {% endhighlight %}
 
 This will output information about all API requests you make to the screen. This can sometimes be overwhelming so you can choose to output to a file instead:
 
 {% highlight php startinline %}
-Podio::set_debug(true, 'file');
+$client->set_debug(true, 'file');
 {% endhighlight %}
 
 This allows you to see exactly the data that's being sent between your script and the Podio API. If you are not writing a command line script [Kint](http://raveren.github.io/kint/) will be used to make everything display nicely.
@@ -29,5 +29,5 @@ This allows you to see exactly the data that's being sent between your script an
 If you only want to debug part of a script you can turn off debug mode with:
 
 {% highlight php startinline %}
-Podio::set_debug(false);
+$client->set_debug(false);
 {% endhighlight %}

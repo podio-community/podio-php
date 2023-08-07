@@ -12,7 +12,7 @@ The easiest way to create a new webhook is to do it manually in the developer se
 $app_field_id = 123; // Only act on changes on the field with field_id=123
 $event_type = "item.update"; // Only act when field values are updated
 
-$hook = PodioHook::create("app_field", $app_field_id, array(
+$hook = PodioHook::create($client, "app_field", $app_field_id, array(
   "url" => "http://example.com/my/hook/url",
   "type" => $event_type
 ));
@@ -23,14 +23,14 @@ Immediately after you create a webhook you must verify it. Verifying just means 
 If you create your webhook ahead of the URL being available you must manually request a webhook verification:
 
 {% highlight php startinline %}
-PodioHook::verify( $hook_id );
+PodioHook::verify($client, $hook_id);
 {% endhighlight %}
 
 ## Checking webhooks status
 If you are unsure of the status of your hooks you can get a list of all hooks for a reference:
 
 {% highlight php startinline %}
-$hooks = PodioHook::get_for( $ref_type, $ref_id );
+$hooks = PodioHook::get_for($client, $ref_type, $ref_id);
 
 foreach ($hooks as $hook) {
   print "Hook id: ".$hook->hook_id;
@@ -62,8 +62,8 @@ $app_id = "YOUR_APP_ID";
 $app_token = "YOUR_APP_TOKEN";
 
 // Setup client and authenticate
-Podio::setup($client_id, $client_secret);
-Podio::authenticate_with_app($app_id, $app_token);
+$client = new PodioClient($client_id, $client_secret);
+$client->authenticate_with_app($app_id, $app_token);
 
 // Big switch statement to handle the different events
 
@@ -71,7 +71,7 @@ switch ($_POST['type']) {
 
   // Validate the webhook. This is a special case where we verify newly created webhooks.
   case 'hook.verify':
-    PodioHook::validate($_POST['hook_id'], array('code' => $_POST['code']));
+    PodioHook::validate($client, $_POST['hook_id'], array('code' => $_POST['code']));
 
   // An item was created
   case 'item.create':

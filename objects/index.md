@@ -33,7 +33,7 @@ You can access all attributes directly on your objects even though they are not 
 
 {% highlight php startinline %}
 // Get a task
-$task = PodioTask::get(123);
+$task = PodioTask::get($client, 123);
 
 // $task now holds a PodioTask object and we can work on the values:
 
@@ -60,20 +60,20 @@ In a similar fashion you change values simply by assigning them. Changes are not
 {% highlight php startinline %}
 
 // Get a task
-$task = PodioTask::get(123);
+$task = PodioTask::get($client, 123);
 
 // Change the task text:
 $task->text = 'This is my new task text';
 
 // Manually save the task:
-PodioTask::update($task->id, $task);
+PodioTask::update($client, $task->id, $task);
 
 {% endhighlight %}
 
-Additionally Podio* objects have a few functions that can make your life easier.
+Additionally, Podio* objects have a few functions that can make your life easier.
 
 {% highlight php startinline %}
-$item = PodioItem::get(123);
+$item = PodioItem::get($client, 123);
 
 // Check rights with `can`
 if ($item->can('update')) {
@@ -89,7 +89,7 @@ A PodioCollection is as the name implies a collection of Podio* objects. They be
 
 {% highlight php startinline %}
 // Get a PodioCollection of tasks
-$tasks = PodioTask::get_all();
+$tasks = PodioTask::get_all($client);
 
 // See how large the collection is
 print "The collection has ".count($tasks)." tasks.";

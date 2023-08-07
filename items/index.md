@@ -17,12 +17,12 @@ If you have the `item_id` you can use either `PodioItem::get()` or `PodioItem::g
 
 {% highlight php startinline %}
 // Get only data about the item
-$item = PodioItem::get_basic(123); // Get item with item_id=123
+$item = PodioItem::get_basic($client, 123); // Get item with item_id=123
 {% endhighlight %}
 
 {% highlight php startinline %}
 // Get item and auxiliary data such as comments
-$item = PodioItem::get(123); // Get item with item_id=123
+$item = PodioItem::get($client, 123); // Get item with item_id=123
 {% endhighlight %}
 
 If you have assigned an external_id to an item you can get the item by providing that external_id. Since external_ids are not unique you need to provide the app_id as well.
@@ -33,7 +33,7 @@ If you have assigned an external_id to an item you can get the item by providing
 $app_id = 456;
 $external_id = "my_sample_external_id";
 
-$item = PodioItem::get_by_external_id($app_id, $external_id);
+$item = PodioItem::get_by_external_id($client, $app_id, $external_id);
 {% endhighlight %}
 
 In a similar fashion each item in an app has a short numeric id called `app_item_id`. These are unique within the app, but not globally unique. It's the numeric id you can see in the URL when viewing an item on Podio. You can also get an item by providing an app_id and the app_item_id.
@@ -44,7 +44,7 @@ In a similar fashion each item in an app has a short numeric id called `app_item
 $app_id = 456;
 $app_item_id = 1;
 
-$item = PodioItem::get_by_app_item_id($app_id, $app_item_id);
+$item = PodioItem::get_by_app_item_id($client, $app_id, $app_item_id);
 {% endhighlight %}
 
 The final option is to [resolve an item URL](https://developers.podio.com/doc/reference/resolve-url-66839423) and create an item that way. This is useful in cases where you only have the browser's URL to work with (e.g. when creating browser extensions or when you are asking users to copy and paste URLs into your app).
@@ -55,7 +55,7 @@ The final option is to [resolve an item URL](https://developers.podio.com/doc/re
 $url = "http://podio.com/myorganization/myspace/apps/myapp/items/1";
 
 // Resolve URL to a reference
-$reference = PodioReference::resolve(array('url' => $url));
+$reference = PodioReference::resolve($client, array('url' => $url));
 
 // Create item from reference
 $item = new PodioItem($reference->data);
@@ -73,7 +73,7 @@ If you just want see all fields you can iterate over them.
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_basic(123); // Get item with item_id=123
+$item = PodioItem::get_basic($client, 123); // Get item with item_id=123
 
 // Iterate over the field collection
 foreach ($item->fields as $field) {
@@ -89,7 +89,7 @@ You can access individual fields either by `field_id` or more likely by the huma
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_basic(123); // Get item with item_id=123
+$item = PodioItem::get_basic($client, 123); // Get item with item_id=123
 
 // Get the field with the external_id=sample-external-id
 $field = $item->fields["sample-external-id"];
@@ -101,7 +101,7 @@ If you only have a field_id use the `get()` method to get the field:
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_basic(123); // Get item with item_id=123
+$item = PodioItem::get_basic($client, 123); // Get item with item_id=123
 
 // Get the field with the field_id=456
 $field = $item->fields->get(456);
@@ -143,7 +143,7 @@ You remove a field either by `unset` (if you have the `external_id`) or by calli
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_basic(123); // Get item with item_id=123
+$item = PodioItem::get_basic($client, 123); // Get item with item_id=123
 
 // Remove the field with the external_id=sample-external-id
 unset($item->fields["sample-external-id"]);
@@ -151,7 +151,7 @@ unset($item->fields["sample-external-id"]);
 
 {% highlight php startinline %}
 // Get an item to work on
-$item = PodioItem::get_basic(123); // Get item with item_id=123
+$item = PodioItem::get_basic($client, 123); // Get item with item_id=123
 
 // Remove the field with the field_id=456
 $item->fields->remove(456);
@@ -167,20 +167,20 @@ The format varies a bit from field to field. You can see examples for all field 
 
 {% highlight php startinline %}
 // Change a single field value and save.
-$item = PodioItem::get_basic(123); // Get item with item_id=123
+$item = PodioItem::get_basic($client, 123); // Get item with item_id=123
 
 $field = $item->fields["sample-text-field"];
 $field->values = "New value for this field";
-$field->save();
+PodioItemField::save($client, $field);
 {% endhighlight %}
 
 {% highlight php startinline %}
 // If you change multiple values save the entire item.
-$item = PodioItem::get_basic(123); // Get item with item_id=123
+$item = PodioItem::get_basic($client, 123); // Get item with item_id=123
 
 $item->fields["my-sample-text-field"] = "New value for this field";
 $item->fields["my-sample-progress-field"] = 75;
-$item->save();
+PodioItem::save($client, $item);
 {% endhighlight %}
 
 ### Create item
@@ -202,7 +202,7 @@ $item = new PodioItem(array(
 ));
 
 // Save the new item
-$item->save();
+PodioItem::save($client, $item);
 {% endhighlight %}
 
 ### Modifying items
@@ -212,13 +212,13 @@ Updating items are handled exactly the same way as creating items. If an item's 
 Often you will be fetching an existing item, making modifications and saving those changes:
 {% highlight php startinline %}
 // Get item from API
-$item = PodioItem::get(123); Get item with item_id=123
+$item = PodioItem::get($client, 123); // Get item with item_id=123
 
 // Make changes. Here we update the tags
 $item->tags = array("my sample tag");
 
 // Save your changes
-$item->save();
+PodioItem::save($client, $item);
 {% endhighlight %}
 
 You can also create the `PodioItem` object from scratch and save:
@@ -231,7 +231,7 @@ $item = new PodioItem(123);
 $item->tags = array("my sample tag");
 
 // Save your changes to an existing item
-$item->save();
+PodioItem::save($client, $item);
 {% endhighlight %}
 
 ## Item collections
@@ -239,7 +239,7 @@ $item->save();
 One of the most common operations is getting a collection of items from an app, potentially with a filter applied. For this you can use [PodioItem::filter()](https://developers.podio.com/doc/items/filter-items-4496747). It returns a collection with two additional properties: filtered (total amount of items with the filter applied) and total (total amount of items in the app). You can iterate over this collection as normal.
 
 {% highlight php startinline %}
-$collection = PodioItem::filter(123); // Get items from app with app_id=123
+$collection = PodioItem::filter($client, 123); // Get items from app with app_id=123
 
 print "The collection contains ".count($collection)." items";
 print "There are ".$collection->total." items in the app in total";
@@ -256,7 +256,7 @@ foreach ($collection as $item) {
 You can sort items by various properties. [See a full list in the API reference](https://developers.podio.com/doc/filters).
 {% highlight php startinline %}
 // Sort by last edit date for the items, descending
-$collection = PodioItem::filter(123, array(
+$collection = PodioItem::filter($client, 123, array(
   'sort_by' => 'last_edit_on',
   'sort_desc' => true
 ));
@@ -271,7 +271,7 @@ You can filter on most fields. Take a look at the [API reference for a full list
 {% highlight php startinline %}
 // Category: Only items with "FooBar" in category field value
 $category_field_id = 1;
-$collection = PodioItem::filter(123, array(
+$collection = PodioItem::filter($client, 123, array(
   'filters' => array(
     $category_field_id => array("FooBar")
   ),
@@ -282,7 +282,7 @@ $collection = PodioItem::filter(123, array(
 // Number: Only items within a certain range
 // Same concept for calculation, progress, duration & money fields
 $number_field_id = 2;
-$collection = PodioItem::filter(123, array(
+$collection = PodioItem::filter($client, 123, array(
   'filters' => array(
     $number_field_id => array("from" => 100, "to" => 200)
   ),
@@ -296,7 +296,7 @@ $app_reference_field_id = 3;
 // Item id to filter against
 $filter_target_item_id = 123456789;
 
-$collection = PodioItem::filter(123, array(
+$collection = PodioItem::filter($client, 123, array(
   'filters' => array(
     $app_reference_field_id => array($filter_target_item_id)
   ),
@@ -310,7 +310,7 @@ $contact_field_id = 4;
 // profile_id of contact to filter on
 $filter_target_profile_id = 123456789;
 
-$collection = PodioItem::filter(123, array(
+$collection = PodioItem::filter($client, 123, array(
   'filters' => array(
     $contact_field_id => array($filter_target_profile_id)
   ),
@@ -323,7 +323,7 @@ $collection = PodioItem::filter(123, array(
 $date_field_id = 4;
 
 // Filter on absolute dates:
-$collection = PodioItem::filter(123, array(
+$collection = PodioItem::filter($client, 123, array(
   'filters' => array(
     $date_field_id => array(
       "from" => "2014-01-01 00:00:00",
