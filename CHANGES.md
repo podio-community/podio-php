@@ -1,7 +1,10 @@
 [7.0.0](#v7.0.0) / [unreleased]
 ==================
 * BREAKING: Replace static `Podio` client with instantiable `PodioClient` class. #228
-* BREAKING: Replace update/save methods on instances with static methods #234
+* BREAKING: Replace `save` (and `completed`/`incompleted`/`destroy` on `PodioTask`) methods on instances with static methods #234
+* BREAKING: Remove obsolete `PodioClient::secret` and `PodioClient::headers` properties.
+* BREAKING: `Podio::debug` changed from public to protected: use `PodioClient::set_debug(..)`
+* See [migration guide](https://github.com/podio-community/podio-php/blob/master/MIGRATION_GUIDE_v7.md) for details.
 
 [6.1.1](#v6.1.1) / 2023-06-12
 ==================

@@ -18,9 +18,9 @@ require __DIR__ . '/vendor/autoload.php';
 
 $client = new PodioClient($client_id, $client_secret);
 $client->authenticate_with_app($app_id, $app_token);
-$items = PodioItem::filter($app_id, $client);
+$items = PodioItem::filter($client, $app_id);
 
-print "My app has " . count($items) . " items";
+print "My app has " . $items->total . " items";
 ```
 
 ## Contribute
