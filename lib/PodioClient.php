@@ -192,10 +192,6 @@ class PodioClient
      */
     public function request($method, $url, $attributes = [], $options = [])
     {
-        if (!$this->http_client) {
-            throw new Exception('Client has not been setup with client id and client secret.');
-        }
-
         $original_url = $url;
         $encoded_attributes = null;
 
