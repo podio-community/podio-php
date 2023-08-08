@@ -23,12 +23,12 @@
   ],
   "require": {
     "php": "^7.3 || ^8.0",
-    "kint-php/kint": "^4.2.0",
     "guzzlehttp/guzzle": ">=6.2.0",
     "ext-json": "*"
   },
   "suggest": {
-    "composer/ca-bundle": "Improve security through providing current CA ROOT certificates bundle"
+    "composer/ca-bundle": "Improve security through providing current CA ROOT certificates bundle",
+    "kint-php/kint": "Debugging helper for web setups"
   },
   "autoload": {
     "classmap": ["lib/", "lib/error/", "models/", "models/field/"]

@@ -5,7 +5,6 @@
  */
 class PodioLogger
 {
-    protected $enabled = true;
     public $call_log = array();
     public $file;
     public $maxsize;
@@ -14,16 +13,6 @@ class PodioLogger
     {
         $this->file = dirname(__FILE__).'/../log/podio.log';
         $this->maxsize = 1024*1024;
-    }
-
-    public function disable()
-    {
-        $this->enabled = false;
-    }
-
-    public function enable()
-    {
-        $this->enabled = true;
     }
 
     public function log($text)
