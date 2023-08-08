@@ -15,6 +15,7 @@ class PodioClient
     protected $debug = false;
     public $logger;
     public $session_manager;
+    /** @var ?PodioResponse */
     public $last_response;
     public $auth_type;
     /** @var \GuzzleHttp\Client */
@@ -22,12 +23,10 @@ class PodioClient
     protected $url;
     protected $client_id;
     protected $client_secret;
-    protected $secret;
-    protected $headers;
     /** @var \Psr\Http\Message\ResponseInterface */
     private $last_http_response;
 
-    public const VERSION = '6.1.0';
+    public const VERSION = '7.0.0';
 
     public const GET = 'GET';
     public const POST = 'POST';
