@@ -5,17 +5,17 @@ active: auth
 # Making your first API call
 Making API calls is a three step process:
 
-1. Setup the API client
+1. Create an API client
 2. Authenticate
 3. Make your API calls
 
-## Setting up the API client
-Before you can do anything you must setup the API client using your Podio API key. [Head over to Podio to generate a client_id and client_secret](https://podio.com/settings/api) before continuing.
+## Create an API client
+Before you can do anything you must create an API client using your Podio API key. [Head over to Podio to generate a client_id and client_secret](https://podio.com/settings/api) before continuing.
 
-Podio-php exposes a bunch of static methods on its classes. You'll be using more of these later, but for now you just need to use the main `Podio` class. It has a `setup` method you need to call before doing anything else. You only have to call it once before making any API calls and then you can forget about it. Call it with the client_id and client_secret from your [API key]((https://podio.com/settings/api).
+Podio-php exposes a bunch of static methods on its classes. You'll be using more of these later, but for now you just need to use the main `PodioClient` class. You only have to create it once before making any API calls. Call it with the client_id and client_secret from your [API key]((https://podio.com/settings/api).
 
 {% highlight php startinline %}
-Podio::setup($client_id, $client_secret);
+$client = new PodioClient($client_id, $client_secret);
 {% endhighlight %}
 
 Now you're ready to authenticate.
@@ -32,23 +32,23 @@ The example below handles three cases:
 * The user has already authenticated and they have a session stored using the [session manager]({{site.baseurl}}/sessions).
 * The user is being redirected back to our page after authenticating.
 
-See [Scopes & Permissions](https://developers.podio.com/authentication/scopes) for details about the scope parameter to `Podio::authorize_url`
+See [Scopes & Permissions](https://developers.podio.com/authentication/scopes) for details about the scope parameter to `PodioClient::authorize_url`
 
 {% highlight php startinline %}
 // Set up the REDIRECT_URI -- which is just the URL for this file.
 define("REDIRECT_URI", 'http://example.com/path/to/your/script.php');
 // Set up the scope string
 define("SCOPE", 'user:read user:delete space:all');
-Podio::setup($client_id, $client_secret);
+$client = new PodioClient($client_id, $client_secret);
 
-if (!isset($_GET['code']) && !Podio::is_authenticated()) {
+if (!isset($_GET['code']) && !$client->is_authenticated()) {
 
   // User is not being redirected and does not have an active session
   // We just display a link to the authentication page on podio.com
-  $auth_url = htmlentities(Podio::authorize_url(REDIRECT_URI, SCOPE));
+  $auth_url = htmlentities($client->authorize_url(REDIRECT_URI, SCOPE));
   print "<a href='{$auth_url}'>Start authenticating</a>";
 
-} elseif (Podio::is_authenticated()) {
+} elseif ($client->is_authenticated()) {
 
   // User already has an active session. You can make API calls here:
   print "You were already authenticated and no authentication is needed.";
@@ -66,7 +66,7 @@ elseif (isset($_GET['code'])) {
   }
   else {
     // Finalize authentication. Note that we must pass the REDIRECT_URI again.
-    Podio::authenticate_with_authorization_code($_GET['code'], REDIRECT_URI);
+    $client->authenticate_with_authorization_code($_GET['code'], REDIRECT_URI);
     print "You have been authenticated. Wee!";
   }
 
@@ -77,8 +77,8 @@ elseif (isset($_GET['code'])) {
 App authentication doesn't require any direct user authentication and is thus much simpler. You can simply pass the app id and app token directly to the authentication function:
 
 {% highlight php startinline %}
-Podio::setup($client_id, $client_secret);
-Podio::authenticate_with_app($app_id, $app_token);
+$client = new PodioClient($client_id, $client_secret);
+$client->authenticate_with_app($app_id, $app_token);
 // You can now make API calls.
 {% endhighlight %}
 
@@ -86,8 +86,8 @@ Podio::authenticate_with_app($app_id, $app_token);
 Password authentication works the same way as app authentication, but you have full access to any data the user has access to. As it's bad practice to store your Podio password like this you should only use password-based authentication for testing or if you cannot use any of the other options.
 
 {% highlight php startinline %}
-Podio::setup($client_id, $client_secret);
-Podio::authenticate_with_password($username, $password);
+$client = new PodioClient($client_id, $client_secret);
+$client->authenticate_with_password($username, $password);
 // You can now make API calls.
 {% endhighlight %}
 
@@ -101,15 +101,15 @@ Podio-php will automatically refresh tokens for you, but it's your responsibilit
 ## Managing multiple authentications
 You can end up in a situation where you need to switch between multiple authentications. This usually happens if you are using app authentication and need to switch between multiple apps.
 
-To switch from one authentication to another simply call another authentication function:
+To switch from one authentication to another simply create another API client:
 
 {% highlight php startinline %}
-Podio::setup($client_id, $client_secret);
-Podio::authenticate_with_app($first_app_id, $first_app_token);
-// Here you can make API calls against the first app
+$client1 = new PodioClient($client_id, $client_secret);
+$client1->authenticate_with_app($first_app_id, $first_app_token);
 
-Podio::authenticate_with_app($second_app_id, $second_app_token);
-// Now you can make API calls against the second app
+$client2 = new PodioClient($client_id, $client_secret);
+$client2->authenticate_with_app($second_app_id, $second_app_token);
+
+// With $client1 you can make API calls against the first app
+// With $client2 you can make API calls against the second app
 {% endhighlight %}
-
-However, this simple approach will break the automatic refresh of access tokens. In the above example your API calls may have resulted in a refresh of your access/refresh tokens, but you no longer have a reference to those tokens. You will need to manually store your tokens before switching to a different authentication. This usually involves a [session manager]({{site.baseurl}}/sessions).
