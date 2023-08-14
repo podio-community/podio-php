@@ -4,6 +4,8 @@
 * BREAKING: Replace `save` (and `completed`/`incompleted`/`destroy` on `PodioTask`) methods on instances with static methods #234
 * BREAKING: Remove obsolete `PodioClient::secret` and `PodioClient::headers` properties.
 * BREAKING: `Podio::debug` changed from public to protected: use `PodioClient::set_debug(..)`
+* BREAKING: Kint is now an optional dependency of the package. Use `composer require kint-php/kint` to install it, if you need it.
+* Bugfix: Debug output via Kint is now working again. #240
 * See [migration guide](https://github.com/podio-community/podio-php/blob/master/MIGRATION_GUIDE_v7.md) for details.
 
 [6.1.1](#v6.1.1) / 2023-06-12

@@ -12,7 +12,13 @@ use GuzzleHttp\TransferStats;
 class PodioClient
 {
     public $oauth;
+    /** @var bool|string */
     protected $debug = false;
+    /**
+     * Only created/used if debug is enabled and set to 'file'.
+     *
+     * @var ?PodioLogger
+     */
     public $logger;
     public $session_manager;
     /** @var ?PodioResponse */
@@ -186,10 +192,6 @@ class PodioClient
      */
     public function request($method, $url, $attributes = [], $options = [])
     {
-        if (!$this->http_client) {
-            throw new Exception('Client has not been setup with client id and client secret.');
-        }
-
         $original_url = $url;
         $encoded_attributes = null;
 
@@ -425,26 +427,26 @@ class PodioClient
         }
     }
 
-    public function log_request($method, $url, $encoded_attributes, $response, $transferTime): void
+    protected function log_request($method, $url, $encoded_attributes, $response, $transferTime): void
     {
         if ($this->debug) {
+            if (!$this->logger) {
+                $this->logger = new PodioLogger();
+            }
             $timestamp = gmdate('Y-m-d H:i:s');
             $text = "{$timestamp} {$response->status} {$method} {$url}\n";
             if (!empty($encoded_attributes)) {
                 $text .= "{$timestamp} Request body: " . $encoded_attributes . "\n";
             }
-            $text .= "{$timestamp} Reponse: {$response->body}\n\n";
+            $text .= "{$timestamp} Response: {$response->body}\n\n";
 
             if ($this->debug === 'file') {
-                if (!$this->logger) {
-                    $this->logger = new PodioLogger();
-                }
                 $this->logger->log($text);
-            } elseif ($this->debug === 'stdout' && php_sapi_name() === 'cli') {
+            } elseif ($this->debug === 'stdout' && php_sapi_name() !== 'cli' && class_exists('\\Kint\\Kint')) {
+                /** @noinspection PhpFullyQualifiedNameUsageInspection */
+                \Kint\Kint::dump("{$method} {$url}", $encoded_attributes, $response);
+            } else {
                 print $text;
-            } elseif ($this->debug === 'stdout' && php_sapi_name() === 'cli') {
-                require_once 'vendor/kint/Kint.class.php';
-                Kint::dump("{$method} {$url}", $encoded_attributes, $response);
             }
 
             $this->logger->call_log[] = $transferTime;
@@ -471,9 +473,6 @@ class PodioClient
 
             $text = "\n{$timestamp} Performed {$count} request(s) in {$duration} seconds\n";
             if ($this->debug === 'file') {
-                if (!$this->logger) {
-                    $this->logger = new PodioLogger();
-                }
                 $this->logger->log($text);
             } elseif ($this->debug === 'stdout' && php_sapi_name() === 'cli') {
                 print $text;
