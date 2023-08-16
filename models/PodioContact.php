@@ -104,15 +104,20 @@ class PodioContact extends PodioObject
     }
 
     /**
+     * @param int|array|string $profile_ids either a single profile id or an array of profile ids.
+     * A string with comma separated profile ids is also accepted for backwards compatibility.
+     * @return PodioContact|array a single contact or an array of contacts depending on the parameter `$profile_ids`.
      * @see https://developers.podio.com/doc/contacts/get-contact-s-22335
      */
     public static function get(PodioClient $podio_client, $profile_ids, $attributes = array())
     {
-        $result = $podio_client->get("/contact/{$profile_ids}/v2", $attributes);
-        if (is_array($result->json_body())) {
-            return self::listing($podio_client, $result);
+        $urlParam = is_array($profile_ids) ? implode(',', $profile_ids) : $profile_ids;
+        $result = $podio_client->get("/contact/$urlParam/v2", $attributes);
+        $response_body = $result->json_body();
+        if (empty($response_body['profile_id'])) {
+            return self::listing($podio_client, $response_body);
         }
-        return self::member($podio_client, $result);
+        return self::member($podio_client, $response_body);
     }
 
     /**
