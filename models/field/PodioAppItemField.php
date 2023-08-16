@@ -48,24 +48,22 @@ class PodioAppItemField extends PodioItemField
 
     public function set_value($values)
     {
-        if ($values) {
-            // Ensure that we have an array of values
-            if (is_a($values, 'PodioCollection')) {
-                $values = $values->_get_items();
-            }
-            if (is_object($values) || (is_array($values) && !empty($values['item_id']))) {
-                $values = array($values);
-            }
-
-            $values = array_map(function ($value) {
-                if (is_object($value)) {
-                    return array('value' => $value->as_json(false));
-                }
-                return array('value' => $value);
-            }, $values);
-
-            parent::__set('values', $values);
+        // Ensure that we have an array of values
+        if (is_a($values, 'PodioCollection')) {
+            $values = $values->_get_items();
         }
+        if (is_object($values) || (is_array($values) && !empty($values['item_id']))) {
+            $values = array($values);
+        }
+
+        $values = array_map(function ($value) {
+            if (is_object($value)) {
+                return array('value' => $value->as_json(false));
+            }
+            return array('value' => $value);
+        }, $values);
+
+        parent::__set('values', $values);
     }
 
     public function api_friendly_values()

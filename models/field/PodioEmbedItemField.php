@@ -52,27 +52,25 @@ class PodioEmbedItemField extends PodioItemField
 
     public function set_value($values)
     {
-        if ($values) {
-            // Ensure that we have an array of values
-            if (is_a($values, 'PodioCollection')) {
-                $values = $values->_get_items();
-            }
-            if (is_object($values) || (is_array($values) && !empty($values['embed']))) {
-                $values = array($values);
-            }
-
-            $values = array_map(function ($value) {
-                if (is_object($value)) {
-                    $file = $value->files ? $value->files[0] : null;
-                    unset($value->files);
-
-                    return array('embed' => $value->as_json(false), 'file' => $file ? $file->as_json(false) : null);
-                }
-                return $value;
-            }, $values);
-
-            parent::__set('values', $values);
+        // Ensure that we have an array of values
+        if (is_a($values, 'PodioCollection')) {
+            $values = $values->_get_items();
         }
+        if (is_object($values) || (is_array($values) && !empty($values['embed']))) {
+            $values = array($values);
+        }
+
+        $values = array_map(function ($value) {
+            if (is_object($value)) {
+                $file = $value->files ? $value->files[0] : null;
+                unset($value->files);
+
+                return array('embed' => $value->as_json(false), 'file' => $file ? $file->as_json(false) : null);
+            }
+            return $value;
+        }, $values);
+
+        parent::__set('values', $values);
     }
 
     public function api_friendly_values()

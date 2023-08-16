@@ -62,6 +62,12 @@ class PodioCategoryItemFieldTest extends TestCase
         $this->assertSame([['value' => ['id' => 4]]], $this->object->__attribute('values'));
     }
 
+    public function test_can_set_values_from_empty_array(): void
+    {
+        $this->object->values = [];
+        $this->assertSame([], $this->object->__attribute('values'));
+    }
+
     public function test_can_set_values_from_hash(): void
     {
         $this->object->values = [['id' => 4, 'text' => 'Captain Crunch']];

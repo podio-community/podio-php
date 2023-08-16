@@ -107,6 +107,12 @@ class PodioContactItemFieldTest extends TestCase
         ], $this->object->__attribute('values'));
     }
 
+    public function test_can_set_value_from_empty_array(): void
+    {
+        $this->object->values = [];
+        $this->assertSame([], $this->object->__attribute('values'));
+    }
+
     public function test_can_humanize_value(): void
     {
         // Empty values
