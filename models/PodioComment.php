@@ -33,7 +33,7 @@ class PodioComment extends PodioObject
      */
     public static function get(PodioClient $podio_client, $comment_id)
     {
-        return self::member($podio_client, $podio_client->get("/comment/{$comment_id}"));
+        return self::member($podio_client->get("/comment/{$comment_id}"));
     }
 
     /**
@@ -41,7 +41,7 @@ class PodioComment extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/comment/{$ref_type}/{$ref_id}/", $attributes));
+        return self::listing($podio_client->get("/comment/{$ref_type}/{$ref_id}/", $attributes));
     }
 
     /**

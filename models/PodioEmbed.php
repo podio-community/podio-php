@@ -29,6 +29,6 @@ class PodioEmbed extends PodioObject
      */
     public static function create(PodioClient $podio_client, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->post("/embed/", $attributes));
+        return self::member($podio_client->post("/embed/", $attributes));
     }
 }

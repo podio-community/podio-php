@@ -42,6 +42,6 @@ class PodioTag extends PodioObject
      */
     public static function get_for_app(PodioClient $podio_client, $app_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/tag/app/{$app_id}/", $attributes));
+        return self::listing($podio_client->get("/tag/app/{$app_id}/", $attributes));
     }
 }

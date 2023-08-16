@@ -15,13 +15,9 @@ class PodioObjectTest extends TestCase
      */
     private $object;
 
-    private $mockClient;
-
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->mockClient = $this->createMock(\PodioClient::class);
 
         $this->object = new PodioObject();
         $this->object->property('id', 'integer');
@@ -272,7 +268,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_create_listing(): void
     {
-        $listing = PodioObject::listing($this->mockClient, [['id' => 1], ['id' => 2]]);
+        $listing = PodioObject::listing([['id' => 1], ['id' => 2]]);
         $this->assertIsArray($listing);
         foreach ($listing as $member) {
             $this->assertInstanceOf(PodioObject::class, $member);
@@ -281,7 +277,7 @@ class PodioObjectTest extends TestCase
 
     public function test_can_create_member(): void
     {
-        $member = PodioObject::member($this->mockClient, ['id' => 1]);
+        $member = PodioObject::member(['id' => 1]);
         $this->assertInstanceOf(PodioObject::class, $member);
     }
 

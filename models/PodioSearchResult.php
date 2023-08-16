@@ -27,7 +27,7 @@ class PodioSearchResult extends PodioObject
      */
     public static function app(PodioClient $podio_client, $app_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->post("/search/app/{$app_id}/", $attributes));
+        return self::listing($podio_client->post("/search/app/{$app_id}/", $attributes));
     }
 
     /**
@@ -35,7 +35,7 @@ class PodioSearchResult extends PodioObject
      */
     public static function space(PodioClient $podio_client, $space_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->post("/search/space/{$space_id}/", $attributes));
+        return self::listing($podio_client->post("/search/space/{$space_id}/", $attributes));
     }
 
     /**
@@ -43,7 +43,7 @@ class PodioSearchResult extends PodioObject
      */
     public static function org(PodioClient $podio_client, $org_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->post("/search/org/{$org_id}/", $attributes));
+        return self::listing($podio_client->post("/search/org/{$org_id}/", $attributes));
     }
 
     /**
@@ -51,7 +51,7 @@ class PodioSearchResult extends PodioObject
      */
     public static function search(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->post("/search/", $attributes));
+        return self::listing($podio_client->post("/search/", $attributes));
     }
 
     /**
@@ -59,6 +59,6 @@ class PodioSearchResult extends PodioObject
      */
     public static function search_app_and_space(PodioClient $podio_client, $space_id, $app_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->post("/search/app/{$app_id}/space/{$space_id}", $attributes));
+        return self::listing($podio_client->post("/search/app/{$app_id}/space/{$space_id}", $attributes));
     }
 }

@@ -27,7 +27,7 @@ class PodioGrant extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $ref_type, $ref_id)
     {
-        return self::listing($podio_client, $podio_client->get("/grant/{$ref_type}/{$ref_id}/"));
+        return self::listing($podio_client->get("/grant/{$ref_type}/{$ref_id}/"));
     }
 
     /**
@@ -35,7 +35,7 @@ class PodioGrant extends PodioObject
      */
     public static function get_own(PodioClient $podio_client, $ref_type, $ref_id)
     {
-        return self::member($podio_client, $podio_client->get("/grant/{$ref_type}/{$ref_id}/own"));
+        return self::member($podio_client->get("/grant/{$ref_type}/{$ref_id}/own"));
     }
 
     /**
@@ -43,7 +43,7 @@ class PodioGrant extends PodioObject
      */
     public static function get_own_on_org(PodioClient $podio_client, $org_id)
     {
-        return self::listing($podio_client, $podio_client->get("/grant/org/{$org_id}/own/"));
+        return self::listing($podio_client->get("/grant/org/{$org_id}/own/"));
     }
 
     /**
@@ -51,7 +51,7 @@ class PodioGrant extends PodioObject
      */
     public static function get_for_user_on_space(PodioClient $podio_client, $space_id, $user_id)
     {
-        return self::listing($podio_client, $podio_client->get("/grant/space/{$space_id}/user/{$user_id}/"));
+        return self::listing($podio_client->get("/grant/space/{$space_id}/user/{$user_id}/"));
     }
 
     /**

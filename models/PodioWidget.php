@@ -26,7 +26,7 @@ class PodioWidget extends PodioObject
      */
     public static function create(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->post("/widget/{$ref_type}/{$ref_id}/", $attributes));
+        return self::member($podio_client->post("/widget/{$ref_type}/{$ref_id}/", $attributes));
     }
 
     /**
@@ -42,7 +42,7 @@ class PodioWidget extends PodioObject
      */
     public static function get(PodioClient $podio_client, $widget_id)
     {
-        return self::member($podio_client, $podio_client->get("/widget/{$widget_id}"));
+        return self::member($podio_client->get("/widget/{$widget_id}"));
     }
 
     /**
@@ -50,7 +50,7 @@ class PodioWidget extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $ref_type, $ref_id)
     {
-        return self::listing($podio_client, $podio_client->get("/widget/{$ref_type}/{$ref_id}/"));
+        return self::listing($podio_client->get("/widget/{$ref_type}/{$ref_id}/"));
     }
 
     /**

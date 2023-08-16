@@ -19,7 +19,7 @@ class PodioRating extends PodioObject
      */
     public static function get_for_type_and_user(PodioClient $podio_client, $ref_type, $ref_id, $rating_type, $user_id)
     {
-        return self::member($podio_client, $podio_client->get("/rating/{$ref_type}/{$ref_id}/{$rating_type}/{$user_id}"));
+        return self::member($podio_client->get("/rating/{$ref_type}/{$ref_id}/{$rating_type}/{$user_id}"));
     }
 
     /**
@@ -43,7 +43,7 @@ class PodioRating extends PodioObject
      */
     public static function get_own_for_type(PodioClient $podio_client, $ref_type, $ref_id, $rating_type)
     {
-        return self::member($podio_client, $podio_client->get("/rating/{$ref_type}/{$ref_id}/{$rating_type}/self"));
+        return self::member($podio_client->get("/rating/{$ref_type}/{$ref_id}/{$rating_type}/self"));
     }
 
     /**

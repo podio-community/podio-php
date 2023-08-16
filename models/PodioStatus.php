@@ -35,7 +35,7 @@ class PodioStatus extends PodioObject
      */
     public static function create(PodioClient $podio_client, $space_id, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->post("/status/space/{$space_id}/", $attributes));
+        return self::member($podio_client->post("/status/space/{$space_id}/", $attributes));
     }
 
     /**
@@ -43,7 +43,7 @@ class PodioStatus extends PodioObject
      */
     public static function get(PodioClient $podio_client, $status_id)
     {
-        return self::member($podio_client, $podio_client->get("/status/{$status_id}"));
+        return self::member($podio_client->get("/status/{$status_id}"));
     }
 
     /**

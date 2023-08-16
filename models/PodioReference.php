@@ -25,7 +25,7 @@ class PodioReference extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->get("/reference/{$ref_type}/{$ref_id}", $attributes));
+        return self::member($podio_client->get("/reference/{$ref_type}/{$ref_id}", $attributes));
     }
 
     /**
@@ -41,6 +41,6 @@ class PodioReference extends PodioObject
      */
     public static function resolve(PodioClient $podio_client, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->get("/reference/resolve", $attributes));
+        return self::member($podio_client->get("/reference/resolve", $attributes));
     }
 }

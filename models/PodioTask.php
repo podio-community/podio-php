@@ -58,7 +58,7 @@ class PodioTask extends PodioObject
     public static function create(PodioClient $podio_client, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/task/", $options);
-        return self::member($podio_client, $podio_client->post($url, $attributes));
+        return self::member($podio_client->post($url, $attributes));
     }
 
     /**
@@ -67,7 +67,7 @@ class PodioTask extends PodioObject
     public static function create_for(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/task/{$ref_type}/{$ref_id}/", $options);
-        return self::member($podio_client, $podio_client->post($url, $attributes));
+        return self::member($podio_client->post($url, $attributes));
     }
 
     /**
@@ -75,7 +75,7 @@ class PodioTask extends PodioObject
      */
     public static function get(PodioClient $podio_client, $task_id)
     {
-        return self::member($podio_client, $podio_client->get("/task/{$task_id}"));
+        return self::member($podio_client->get("/task/{$task_id}"));
     }
 
     /**
@@ -83,7 +83,7 @@ class PodioTask extends PodioObject
      */
     public static function get_all(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/task/", $attributes));
+        return self::listing($podio_client->get("/task/", $attributes));
     }
 
     /**
@@ -108,7 +108,7 @@ class PodioTask extends PodioObject
     public static function update(PodioClient $podio_client, $task_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/task/{$task_id}", $options);
-        return self::member($podio_client, $podio_client->put($url, $attributes));
+        return self::member($podio_client->put($url, $attributes));
     }
 
     /**
@@ -157,9 +157,9 @@ class PodioTask extends PodioObject
     public static function get_summary(PodioClient $podio_client, $attributes = array())
     {
         $result = $podio_client->get("/task/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
-        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
-        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
+        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($result['other']['tasks']);
         return $result;
     }
 
@@ -169,9 +169,9 @@ class PodioTask extends PodioObject
     public static function get_summary_personal(PodioClient $podio_client, $attributes = array())
     {
         $result = $podio_client->get("/task/personal/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
-        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
-        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
+        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($result['other']['tasks']);
         return $result;
     }
 
@@ -181,9 +181,9 @@ class PodioTask extends PodioObject
     public static function get_summary_for_org(PodioClient $podio_client, $org_id, $attributes = array())
     {
         $result = $podio_client->get("/task/org/{$org_id}/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
-        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
-        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
+        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($result['other']['tasks']);
         return $result;
     }
 
@@ -193,9 +193,9 @@ class PodioTask extends PodioObject
     public static function get_summary_for_space(PodioClient $podio_client, $space_id, $attributes = array())
     {
         $result = $podio_client->get("/task/space/{$space_id}/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
-        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
-        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
+        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($result['other']['tasks']);
         return $result;
     }
 
@@ -205,9 +205,9 @@ class PodioTask extends PodioObject
     public static function get_summary_for(PodioClient $podio_client, $ref_type, $ref_id, $attributes = array())
     {
         $result = $podio_client->get("/task/{$ref_type}/{$ref_id}/summary", $attributes)->json_body();
-        $result['overdue']['tasks'] = self::listing($podio_client, $result['overdue']['tasks']);
-        $result['today']['tasks'] = self::listing($podio_client, $result['today']['tasks']);
-        $result['other']['tasks'] = self::listing($podio_client, $result['other']['tasks']);
+        $result['overdue']['tasks'] = self::listing($result['overdue']['tasks']);
+        $result['today']['tasks'] = self::listing($result['today']['tasks']);
+        $result['other']['tasks'] = self::listing($result['other']['tasks']);
         return $result;
     }
 

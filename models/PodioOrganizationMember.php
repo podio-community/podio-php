@@ -23,7 +23,7 @@ class PodioOrganizationMember extends PodioObject
      */
     public static function get(PodioClient $podio_client, $org_id, $user_id)
     {
-        return self::member($podio_client, $podio_client->get("/org/{$org_id}/member/{$user_id}"));
+        return self::member($podio_client->get("/org/{$org_id}/member/{$user_id}"));
     }
 
     /**
@@ -31,7 +31,7 @@ class PodioOrganizationMember extends PodioObject
      */
     public static function get_for_org(PodioClient $podio_client, $org_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/org/{$org_id}/member/", $attributes));
+        return self::listing($podio_client->get("/org/{$org_id}/member/", $attributes));
     }
 
     /**

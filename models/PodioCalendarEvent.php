@@ -26,7 +26,7 @@ class PodioCalendarEvent extends PodioObject
      */
     public static function get(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/calendar/", $attributes));
+        return self::listing($podio_client->get("/calendar/", $attributes));
     }
 
     /**
@@ -34,7 +34,7 @@ class PodioCalendarEvent extends PodioObject
      */
     public static function get_for_space(PodioClient $podio_client, $space_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/calendar/space/{$space_id}/", $attributes));
+        return self::listing($podio_client->get("/calendar/space/{$space_id}/", $attributes));
     }
 
     /**
@@ -42,7 +42,7 @@ class PodioCalendarEvent extends PodioObject
      */
     public static function get_for_app(PodioClient $podio_client, $app_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/calendar/app/{$app_id}/", $attributes));
+        return self::listing($podio_client->get("/calendar/app/{$app_id}/", $attributes));
     }
 
     /**
@@ -75,8 +75,8 @@ class PodioCalendarEvent extends PodioObject
     public static function get_summary(PodioClient $podio_client, $attributes = array())
     {
         $result = $podio_client->get("/calendar/summary", $attributes)->json_body();
-        $result['today']['events'] = self::listing($podio_client, $result['today']['events']);
-        $result['upcoming']['events'] = self::listing($podio_client, $result['upcoming']['events']);
+        $result['today']['events'] = self::listing($result['today']['events']);
+        $result['upcoming']['events'] = self::listing($result['upcoming']['events']);
         return $result;
     }
 
@@ -86,8 +86,8 @@ class PodioCalendarEvent extends PodioObject
     public static function get_summary_personal(PodioClient $podio_client, $attributes = array())
     {
         $result = $podio_client->get("/calendar/personal/summary", $attributes)->json_body();
-        $result['today']['events'] = self::listing($podio_client, $result['today']['events']);
-        $result['upcoming']['events'] = self::listing($podio_client, $result['upcoming']['events']);
+        $result['today']['events'] = self::listing($result['today']['events']);
+        $result['upcoming']['events'] = self::listing($result['upcoming']['events']);
         return $result;
     }
 
@@ -97,8 +97,8 @@ class PodioCalendarEvent extends PodioObject
     public static function get_summary_for_space(PodioClient $podio_client, $space_id, $attributes = array())
     {
         $result = $podio_client->get("/calendar/space/{$space_id}/summary", $attributes)->json_body();
-        $result['today']['events'] = self::listing($podio_client, $result['today']['events']);
-        $result['upcoming']['events'] = self::listing($podio_client, $result['upcoming']['events']);
+        $result['today']['events'] = self::listing($result['today']['events']);
+        $result['upcoming']['events'] = self::listing($result['upcoming']['events']);
         return $result;
     }
 }

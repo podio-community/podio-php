@@ -18,7 +18,7 @@ class PodioNotificationGroup extends PodioObject
      */
     public static function get(PodioClient $podio_client, $notification_id)
     {
-        return self::member($podio_client, $podio_client->get("/notification/{$notification_id}/v2"));
+        return self::member($podio_client->get("/notification/{$notification_id}/v2"));
     }
 
     /**
@@ -26,6 +26,6 @@ class PodioNotificationGroup extends PodioObject
      */
     public static function get_all(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/notification/", $attributes));
+        return self::listing($podio_client->get("/notification/", $attributes));
     }
 }

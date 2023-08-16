@@ -21,7 +21,7 @@ class PodioTagSearch extends PodioObject
      */
     public static function get_for_app(PodioClient $podio_client, $app_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/tag/app/{$app_id}/search/", $attributes));
+        return self::listing($podio_client->get("/tag/app/{$app_id}/search/", $attributes));
     }
 
     /**
@@ -29,7 +29,7 @@ class PodioTagSearch extends PodioObject
      */
     public static function get_for_space(PodioClient $podio_client, $space_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/tag/space/{$space_id}/search/", $attributes));
+        return self::listing($podio_client->get("/tag/space/{$space_id}/search/", $attributes));
     }
 
     /**
@@ -37,6 +37,6 @@ class PodioTagSearch extends PodioObject
      */
     public static function get_for_org(PodioClient $podio_client, $org_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/tag/org/{$org_id}/search/", $attributes));
+        return self::listing($podio_client->get("/tag/org/{$org_id}/search/", $attributes));
     }
 }

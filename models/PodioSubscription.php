@@ -20,7 +20,7 @@ class PodioSubscription extends PodioObject
      */
     public static function get(PodioClient $podio_client, $subscription_id)
     {
-        return self::member($podio_client, $podio_client->get("/subscription/{$subscription_id}"));
+        return self::member($podio_client->get("/subscription/{$subscription_id}"));
     }
 
     /**
@@ -28,7 +28,7 @@ class PodioSubscription extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $ref_type, $ref_id)
     {
-        return self::member($podio_client, $podio_client->get("/subscription/{$ref_type}/{$ref_id}"));
+        return self::member($podio_client->get("/subscription/{$ref_type}/{$ref_id}"));
     }
 
     /**
