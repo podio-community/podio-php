@@ -6,4 +6,7 @@
       <directory suffix=".php">./models</directory>
     </include>
   </coverage>
+  <testsuite name="unit-tests">
+    <directory>./tests</directory>
+  </testsuite>
 </phpunit>
