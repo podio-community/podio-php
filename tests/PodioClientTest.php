@@ -63,10 +63,12 @@ class TestSessionManager
 {
     public function set($oauth, $authType)
     {
+        // empty method stub
     }
 
     public function get()
     {
+        // empty method stub
     }
 }
 
