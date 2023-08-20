@@ -71,4 +71,3 @@ class TestSessionManager
         // empty method stub
     }
 }
-
