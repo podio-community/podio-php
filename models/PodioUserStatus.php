@@ -24,6 +24,6 @@ class PodioUserStatus extends PodioObject
      */
     public static function get(PodioClient $podio_client)
     {
-        return self::member($podio_client, $podio_client->get("/user/status"));
+        return self::member($podio_client->get("/user/status"));
     }
 }

@@ -104,15 +104,20 @@ class PodioContact extends PodioObject
     }
 
     /**
+     * @param int|array|string $profile_ids either a single profile id or an array of profile ids.
+     * A string with comma separated profile ids is also accepted for backwards compatibility.
+     * @return PodioContact|array a single contact or an array of contacts depending on the parameter `$profile_ids`.
      * @see https://developers.podio.com/doc/contacts/get-contact-s-22335
      */
     public static function get(PodioClient $podio_client, $profile_ids, $attributes = array())
     {
-        $result = $podio_client->get("/contact/{$profile_ids}/v2", $attributes);
-        if (is_array($result->json_body())) {
-            return self::listing($podio_client, $result);
+        $urlParam = is_array($profile_ids) ? implode(',', $profile_ids) : $profile_ids;
+        $result = $podio_client->get("/contact/$urlParam/v2", $attributes);
+        $response_body = $result->json_body();
+        if (empty($response_body['profile_id'])) {
+            return self::listing($response_body);
         }
-        return self::member($podio_client, $result);
+        return self::member($response_body);
     }
 
     /**
@@ -128,7 +133,7 @@ class PodioContact extends PodioObject
      */
     public static function get_for_user(PodioClient $podio_client, $user_id)
     {
-        return self::member($podio_client, $podio_client->get("/contact/user/{$user_id}"));
+        return self::member($podio_client->get("/contact/user/{$user_id}"));
     }
 
     /**
@@ -136,7 +141,7 @@ class PodioContact extends PodioObject
      */
     public static function get_all(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/contact/", $attributes));
+        return self::listing($podio_client->get("/contact/", $attributes));
     }
 
     /**
@@ -144,7 +149,7 @@ class PodioContact extends PodioObject
      */
     public static function get_for_org(PodioClient $podio_client, $org_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/contact/org/{$org_id}", $attributes));
+        return self::listing($podio_client->get("/contact/org/{$org_id}", $attributes));
     }
 
     /**
@@ -152,7 +157,7 @@ class PodioContact extends PodioObject
      */
     public static function get_for_space(PodioClient $podio_client, $space_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/contact/space/{$space_id}/", $attributes));
+        return self::listing($podio_client->get("/contact/space/{$space_id}/", $attributes));
     }
 
     /**
@@ -160,7 +165,7 @@ class PodioContact extends PodioObject
      */
     public static function get_for_app(PodioClient $podio_client, $app_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/contact/app/{$app_id}/", $attributes));
+        return self::listing($podio_client->get("/contact/app/{$app_id}/", $attributes));
     }
 
     /**

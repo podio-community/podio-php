@@ -5,6 +5,8 @@
 * BREAKING: Remove obsolete `PodioClient::secret` and `PodioClient::headers` properties.
 * BREAKING: `Podio::debug` changed from public to protected: use `PodioClient::set_debug(..)`
 * BREAKING: Kint is now an optional dependency of the package. Use `composer require kint-php/kint` to install it, if you need it.
+* Bugfix: Error on fetching single contact with `PodioContact::get`.
+* Bugfix: Setting values to empty array of several `PodioItemField` subtypes was broken.
 * Bugfix: Debug output via Kint is now working again. #240
 * See [migration guide](https://github.com/podio-community/podio-php/blob/master/MIGRATION_GUIDE_v7.md) for details.
 

@@ -22,7 +22,7 @@ class PodioItemRevision extends PodioObject
      */
     public static function get(PodioClient $podio_client, $item_id, $revision_id)
     {
-        return self::member($podio_client, $podio_client->get("/item/{$item_id}/revision/{$revision_id}"));
+        return self::member($podio_client->get("/item/{$item_id}/revision/{$revision_id}"));
     }
 
     /**
@@ -30,6 +30,6 @@ class PodioItemRevision extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $item_id)
     {
-        return self::listing($podio_client, $podio_client->get("/item/{$item_id}/revision/"));
+        return self::listing($podio_client->get("/item/{$item_id}/revision/"));
     }
 }

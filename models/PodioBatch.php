@@ -30,7 +30,7 @@ class PodioBatch extends PodioObject
      */
     public static function get(PodioClient $podio_client, $batch_id)
     {
-        return self::member($podio_client, $podio_client->get("/batch/{$batch_id}"));
+        return self::member($podio_client->get("/batch/{$batch_id}"));
     }
 
     /**
@@ -38,7 +38,7 @@ class PodioBatch extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $ref_type, $ref_id, $plugin)
     {
-        return self::listing($podio_client, $podio_client->get("/batch/{$ref_type}/{$ref_id}/{$plugin}/running/"));
+        return self::listing($podio_client->get("/batch/{$ref_type}/{$ref_id}/{$plugin}/running/"));
     }
 
     /**
@@ -46,6 +46,6 @@ class PodioBatch extends PodioObject
      */
     public static function get_all(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/batch/", $attributes));
+        return self::listing($podio_client->get("/batch/", $attributes));
     }
 }

@@ -36,6 +36,6 @@ class PodioItemDiff extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $item_id, $revision_from_id, $revision_to_id)
     {
-        return self::listing($podio_client, $podio_client->get("/item/{$item_id}/revision/{$revision_from_id}/{$revision_to_id}"));
+        return self::listing($podio_client->get("/item/{$item_id}/revision/{$revision_from_id}/{$revision_to_id}"));
     }
 }

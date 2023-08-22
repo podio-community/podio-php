@@ -39,7 +39,7 @@ class PodioSpace extends PodioObject
      */
     public static function get(PodioClient $podio_client, $space_id)
     {
-        return self::member($podio_client, $podio_client->get("/space/{$space_id}"));
+        return self::member($podio_client->get("/space/{$space_id}"));
     }
 
     /**
@@ -47,7 +47,7 @@ class PodioSpace extends PodioObject
      */
     public static function get_for_org(PodioClient $podio_client, $org_id)
     {
-        return self::listing($podio_client, $podio_client->get("/org/{$org_id}/space/"));
+        return self::listing($podio_client->get("/org/{$org_id}/space/"));
     }
 
     /**
@@ -55,7 +55,7 @@ class PodioSpace extends PodioObject
      */
     public static function get_for_url(PodioClient $podio_client, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->get("/space/url", $attributes));
+        return self::member($podio_client->get("/space/url", $attributes));
     }
 
     /**
@@ -63,7 +63,7 @@ class PodioSpace extends PodioObject
      */
     public static function get_available(PodioClient $podio_client, $org_id)
     {
-        return self::listing($podio_client, $podio_client->get("/space/org/{$org_id}/available/"));
+        return self::listing($podio_client->get("/space/org/{$org_id}/available/"));
     }
 
     /**
@@ -71,7 +71,7 @@ class PodioSpace extends PodioObject
      */
     public static function get_top(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/space/top/", $attributes));
+        return self::listing($podio_client->get("/space/top/", $attributes));
     }
 
     /**

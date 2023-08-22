@@ -46,19 +46,17 @@ class PodioCategoryItemField extends PodioItemField
 
     public function set_value($values)
     {
-        if ($values) {
-            if (is_array($values)) {
-                $formatted_values = array_map(function ($value) {
-                    if (is_array($value)) {
-                        return array('value' => $value);
-                    } else {
-                        return array('value' => array('id' => $value));
-                    }
-                }, $values);
-                parent::__set('values', $formatted_values);
-            } else {
-                parent::__set('values', array(array('value' => array('id' => $values))));
-            }
+        if (is_array($values)) {
+            $formatted_values = array_map(function ($value) {
+                if (is_array($value)) {
+                    return array('value' => $value);
+                } else {
+                    return array('value' => array('id' => $value));
+                }
+            }, $values);
+            parent::__set('values', $formatted_values);
+        } else {
+            parent::__set('values', array(array('value' => array('id' => $values))));
         }
     }
 

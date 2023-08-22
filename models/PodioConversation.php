@@ -33,7 +33,7 @@ class PodioConversation extends PodioObject
      */
     public static function get(PodioClient $podio_client, $conversation_id)
     {
-        return self::member($podio_client, $podio_client->get("/conversation/{$conversation_id}"));
+        return self::member($podio_client->get("/conversation/{$conversation_id}"));
     }
 
     /**
@@ -41,7 +41,7 @@ class PodioConversation extends PodioObject
      */
     public static function get_all(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/conversation/", $attributes));
+        return self::listing($podio_client->get("/conversation/", $attributes));
     }
 
     /**
@@ -49,7 +49,7 @@ class PodioConversation extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $ref_type, $ref_id, $plugin)
     {
-        return self::listing($podio_client, $podio_client->get("/batch/{$ref_type}/{$ref_id}/"));
+        return self::listing($podio_client->get("/batch/{$ref_type}/{$ref_id}/"));
     }
 
     /**

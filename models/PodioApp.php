@@ -40,7 +40,7 @@ class PodioApp extends PodioObject
      */
     public static function get(PodioClient $podio_client, $app_id, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->get("/app/{$app_id}", $attributes));
+        return self::member($podio_client->get("/app/{$app_id}", $attributes));
     }
 
     /**
@@ -48,7 +48,7 @@ class PodioApp extends PodioObject
      */
     public static function get_all(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/app/v2/", $attributes));
+        return self::listing($podio_client->get("/app/v2/", $attributes));
     }
 
     /**
@@ -56,7 +56,7 @@ class PodioApp extends PodioObject
      */
     public static function get_top(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/app/top/", $attributes));
+        return self::listing($podio_client->get("/app/top/", $attributes));
     }
 
     /**
@@ -64,7 +64,7 @@ class PodioApp extends PodioObject
      */
     public static function get_top_for_org(PodioClient $podio_client, $org_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/app/org/{$org_id}/top/", $attributes));
+        return self::listing($podio_client->get("/app/org/{$org_id}/top/", $attributes));
     }
 
     /**
@@ -72,7 +72,7 @@ class PodioApp extends PodioObject
      */
     public static function get_for_url(PodioClient $podio_client, $space_id, $url_label, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->get("/app/space/{$space_id}/{$url_label}", $attributes));
+        return self::member($podio_client->get("/app/space/{$space_id}/{$url_label}", $attributes));
     }
 
     /**
@@ -80,7 +80,7 @@ class PodioApp extends PodioObject
      */
     public static function get_for_space(PodioClient $podio_client, $space_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/app/space/{$space_id}/", $attributes));
+        return self::listing($podio_client->get("/app/space/{$space_id}/", $attributes));
     }
 
     /**
@@ -88,7 +88,7 @@ class PodioApp extends PodioObject
      */
     public static function create(PodioClient $podio_client, $attributes = array(), $silent = false)
     {
-        return self::member($podio_client, $podio_client->post($podio_client->url_with_options("/app/", array('silent' => $silent)), $attributes));
+        return self::member($podio_client->post($podio_client->url_with_options("/app/", array('silent' => $silent)), $attributes));
     }
 
     /**
@@ -145,7 +145,7 @@ class PodioApp extends PodioObject
      */
     public static function calculations(PodioClient $podio_client, $app_id)
     {
-        return self::listing($podio_client, $podio_client->get("/app/{$app_id}/calculation/"));
+        return self::listing($podio_client->get("/app/{$app_id}/calculation/"));
     }
 
     /**
@@ -162,7 +162,7 @@ class PodioApp extends PodioObject
     public static function dependencies(PodioClient $podio_client, $app_id)
     {
         $result = $podio_client->get("/app/{$app_id}/dependencies/")->json_body();
-        $result['apps'] = self::listing($podio_client, $result['apps']);
+        $result['apps'] = self::listing($result['apps']);
         return $result;
     }
 
@@ -172,7 +172,7 @@ class PodioApp extends PodioObject
     public static function dependencies_space(PodioClient $podio_client, $space_id)
     {
         $result = $podio_client->get("/space/{$space_id}/dependencies/")->json_body();
-        $result['apps'] = self::listing($podio_client, $result['apps']);
+        $result['apps'] = self::listing($result['apps']);
         return $result;
     }
 

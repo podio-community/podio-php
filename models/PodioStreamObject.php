@@ -36,7 +36,7 @@ class PodioStreamObject extends PodioObject
      */
     public static function get(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/stream/", $attributes));
+        return self::listing($podio_client->get("/stream/", $attributes));
     }
 
     /**
@@ -44,7 +44,7 @@ class PodioStreamObject extends PodioObject
      */
     public static function get_for_org(PodioClient $podio_client, $org_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/stream/org/{$org_id}/", $attributes));
+        return self::listing($podio_client->get("/stream/org/{$org_id}/", $attributes));
     }
 
     /**
@@ -52,7 +52,7 @@ class PodioStreamObject extends PodioObject
      */
     public static function get_for_space(PodioClient $podio_client, $space_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/stream/space/{$space_id}/", $attributes));
+        return self::listing($podio_client->get("/stream/space/{$space_id}/", $attributes));
     }
 
     /**
@@ -60,7 +60,7 @@ class PodioStreamObject extends PodioObject
      */
     public static function get_for_app(PodioClient $podio_client, $app_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/stream/app/{$app_id}/", $attributes));
+        return self::listing($podio_client->get("/stream/app/{$app_id}/", $attributes));
     }
 
     /**
@@ -68,7 +68,7 @@ class PodioStreamObject extends PodioObject
      */
     public static function get_for_user(PodioClient $podio_client, $user_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/stream/user/{$user_id}/", $attributes));
+        return self::listing($podio_client->get("/stream/user/{$user_id}/", $attributes));
     }
 
     /**
@@ -76,6 +76,6 @@ class PodioStreamObject extends PodioObject
      */
     public static function personal(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/stream/personal/", $attributes));
+        return self::listing($podio_client->get("/stream/personal/", $attributes));
     }
 }

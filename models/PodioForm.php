@@ -40,7 +40,7 @@ class PodioForm extends PodioObject
      */
     public static function create(PodioClient $podio_client, $app_id, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->post("/form/app/{$app_id}/", $attributes));
+        return self::member($podio_client->post("/form/app/{$app_id}/", $attributes));
     }
 
     /**
@@ -56,7 +56,7 @@ class PodioForm extends PodioObject
      */
     public static function get(PodioClient $podio_client, $form_id)
     {
-        return self::member($podio_client, $podio_client->get("/form/{$form_id}"));
+        return self::member($podio_client->get("/form/{$form_id}"));
     }
 
     /**
@@ -64,7 +64,7 @@ class PodioForm extends PodioObject
      */
     public static function get_for_app(PodioClient $podio_client, $app_id)
     {
-        return self::listing($podio_client, $podio_client->get("/form/app/{$app_id}/"));
+        return self::listing($podio_client->get("/form/app/{$app_id}/"));
     }
 
     /**

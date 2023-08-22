@@ -101,7 +101,7 @@ class PodioItem extends PodioObject
     public static function get(PodioClient $podio_client, $item_id, $options = array())
     {
         $url = $podio_client->url_with_options("/item/{$item_id}", $options);
-        return self::member($podio_client, $podio_client->get($url));
+        return self::member($podio_client->get($url));
     }
 
     /**
@@ -109,7 +109,7 @@ class PodioItem extends PodioObject
      */
     public static function get_by_app_item_id(PodioClient $podio_client, $app_id, $app_item_id)
     {
-        return self::member($podio_client, $podio_client->get("/app/{$app_id}/item/{$app_item_id}"));
+        return self::member($podio_client->get("/app/{$app_id}/item/{$app_item_id}"));
     }
 
     /**
@@ -117,7 +117,7 @@ class PodioItem extends PodioObject
      */
     public static function get_by_external_id(PodioClient $podio_client, $app_id, $external_id)
     {
-        return self::member($podio_client, $podio_client->get("/item/app/{$app_id}/external_id/{$external_id}"));
+        return self::member($podio_client->get("/item/app/{$app_id}/external_id/{$external_id}"));
     }
 
     /**
@@ -125,7 +125,7 @@ class PodioItem extends PodioObject
      */
     public static function get_basic(PodioClient $podio_client, $item_id, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->get("/item/{$item_id}/basic", $attributes));
+        return self::member($podio_client->get("/item/{$item_id}/basic", $attributes));
     }
 
     /**
@@ -134,7 +134,7 @@ class PodioItem extends PodioObject
     public static function filter(PodioClient $podio_client, $app_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/app/{$app_id}/filter/", $options);
-        return self::collection($podio_client, $podio_client->post($url, $attributes ? $attributes : new StdClass()), "PodioItemCollection");
+        return self::collection($podio_client->post($url, $attributes ? $attributes : new StdClass()), "PodioItemCollection");
     }
 
     /**
@@ -143,7 +143,7 @@ class PodioItem extends PodioObject
     public static function filter_by_view(PodioClient $podio_client, $app_id, $view_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/app/{$app_id}/filter/{$view_id}/", $options);
-        return self::collection($podio_client, $podio_client->post($url, $attributes ? $attributes : new StdClass()), "PodioItemCollection");
+        return self::collection($podio_client->post($url, $attributes ? $attributes : new StdClass()), "PodioItemCollection");
     }
 
     /**
@@ -178,7 +178,7 @@ class PodioItem extends PodioObject
     public static function create(PodioClient $podio_client, $app_id, $attributes = array(), $options = array())
     {
         $url = $podio_client->url_with_options("/item/app/{$app_id}/", $options);
-        return self::member($podio_client, $podio_client->post($url, $attributes));
+        return self::member($podio_client->post($url, $attributes));
     }
 
     /**
@@ -281,7 +281,7 @@ class PodioItem extends PodioObject
      */
     public static function get_basic_by_field(PodioClient $podio_client, $item_id, $field_id)
     {
-        return self::member($podio_client, $podio_client->get("/item/{$item_id}/reference/{$field_id}/preview"));
+        return self::member($podio_client->get("/item/{$item_id}/reference/{$field_id}/preview"));
     }
 
     /**
@@ -306,7 +306,7 @@ class PodioItem extends PodioObject
      */
     public static function get_references_by_field(PodioClient $podio_client, $item_id, $field_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/item/{$item_id}/reference/field/{$field_id}", $attributes));
+        return self::listing($podio_client->get("/item/{$item_id}/reference/field/{$field_id}", $attributes));
     }
 
     /**
@@ -314,7 +314,7 @@ class PodioItem extends PodioObject
      */
     public static function get_top_values_by_field(PodioClient $podio_client, $field_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/item/field/{$field_id}/top/", $attributes));
+        return self::listing($podio_client->get("/item/field/{$field_id}/top/", $attributes));
     }
 
     /**

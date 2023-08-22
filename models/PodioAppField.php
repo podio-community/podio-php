@@ -31,7 +31,7 @@ class PodioAppField extends PodioObject
      */
     public static function get(PodioClient $podio_client, $app_id, $field_id)
     {
-        return self::member($podio_client, $podio_client->get("/app/{$app_id}/field/{$field_id}"));
+        return self::member($podio_client->get("/app/{$app_id}/field/{$field_id}"));
     }
 
     /**

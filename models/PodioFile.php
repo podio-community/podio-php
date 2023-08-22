@@ -59,7 +59,7 @@ class PodioFile extends PodioObject
      */
     public static function upload(PodioClient $podio_client, $file_path, $file_name)
     {
-        return self::member($podio_client, $podio_client->post("/file/", array('filename' => $file_name, 'filepath' => $file_path), array('upload' => true, 'filesize' => filesize($file_path))));
+        return self::member($podio_client->post("/file/", array('filename' => $file_name, 'filepath' => $file_path), array('upload' => true, 'filesize' => filesize($file_path))));
     }
 
     /**
@@ -67,7 +67,7 @@ class PodioFile extends PodioObject
      */
     public static function get(PodioClient $podio_client, $file_id)
     {
-        return self::member($podio_client, $podio_client->get("/file/{$file_id}"));
+        return self::member($podio_client->get("/file/{$file_id}"));
     }
 
     /**
@@ -75,7 +75,7 @@ class PodioFile extends PodioObject
      */
     public static function get_for_app(PodioClient $podio_client, $app_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/file/app/{$app_id}/", $attributes));
+        return self::listing($podio_client->get("/file/app/{$app_id}/", $attributes));
     }
 
     /**
@@ -83,7 +83,7 @@ class PodioFile extends PodioObject
      */
     public static function get_for_space(PodioClient $podio_client, $space_id, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/file/space/{$space_id}/", $attributes));
+        return self::listing($podio_client->get("/file/space/{$space_id}/", $attributes));
     }
 
     /**
@@ -108,7 +108,7 @@ class PodioFile extends PodioObject
      */
     public static function copy(PodioClient $podio_client, $file_id)
     {
-        return self::member($podio_client, $podio_client->post("/file/{$file_id}/copy"));
+        return self::member($podio_client->post("/file/{$file_id}/copy"));
     }
 
     /**
@@ -116,7 +116,7 @@ class PodioFile extends PodioObject
      */
     public static function get_all(PodioClient $podio_client, $attributes = array())
     {
-        return self::listing($podio_client, $podio_client->get("/file/", $attributes));
+        return self::listing($podio_client->get("/file/", $attributes));
     }
 
     /**

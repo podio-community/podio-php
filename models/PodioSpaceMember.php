@@ -24,7 +24,7 @@ class PodioSpaceMember extends PodioObject
      */
     public static function get(PodioClient $podio_client, $space_id, $user_id)
     {
-        return self::member($podio_client, $podio_client->get("/space/{$space_id}/member/{$user_id}"));
+        return self::member($podio_client->get("/space/{$space_id}/member/{$user_id}"));
     }
 
     /**
@@ -32,7 +32,7 @@ class PodioSpaceMember extends PodioObject
      */
     public static function get_all(PodioClient $podio_client, $space_id)
     {
-        return self::listing($podio_client, $podio_client->get("/space/{$space_id}/member/"));
+        return self::listing($podio_client->get("/space/{$space_id}/member/"));
     }
 
     /**
@@ -40,7 +40,7 @@ class PodioSpaceMember extends PodioObject
      */
     public static function get_by_role(PodioClient $podio_client, $space_id, $role)
     {
-        return self::listing($podio_client, $podio_client->get("/space/{$space_id}/member/{$role}/"));
+        return self::listing($podio_client->get("/space/{$space_id}/member/{$role}/"));
     }
 
     /**

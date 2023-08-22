@@ -36,7 +36,7 @@ class PodioView extends PodioObject
      */
     public static function get(PodioClient $podio_client, $view_id)
     {
-        return self::member($podio_client, $podio_client->get("/view/{$view_id}"));
+        return self::member($podio_client->get("/view/{$view_id}"));
     }
 
     /**
@@ -44,7 +44,7 @@ class PodioView extends PodioObject
      */
     public static function get_for_app(PodioClient $podio_client, $app_id)
     {
-        return self::listing($podio_client, $podio_client->get("/view/app/{$app_id}/"));
+        return self::listing($podio_client->get("/view/app/{$app_id}/"));
     }
 
     /**
@@ -52,7 +52,7 @@ class PodioView extends PodioObject
      */
     public static function get_last(PodioClient $podio_client, $app_id)
     {
-        return self::member($podio_client, $podio_client->get("/view/app/{$app_id}/last"));
+        return self::member($podio_client->get("/view/app/{$app_id}/last"));
     }
 
     /**

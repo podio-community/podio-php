@@ -18,7 +18,7 @@ class PodioReminder extends PodioObject
      */
     public static function get_for(PodioClient $podio_client, $ref_type, $ref_id)
     {
-        return self::member($podio_client, $podio_client->get("/reminder/{$ref_type}/{$ref_id}"));
+        return self::member($podio_client->get("/reminder/{$ref_type}/{$ref_id}"));
     }
 
     /**

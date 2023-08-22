@@ -35,7 +35,7 @@ class PodioOrganization extends PodioObject
      */
     public static function get(PodioClient $podio_client, $org_id)
     {
-        return self::member($podio_client, $podio_client->get("/org/{$org_id}"));
+        return self::member($podio_client->get("/org/{$org_id}"));
     }
 
     /**
@@ -43,7 +43,7 @@ class PodioOrganization extends PodioObject
      */
     public static function get_for_url(PodioClient $podio_client, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->get("/org/url", $attributes));
+        return self::member($podio_client->get("/org/url", $attributes));
     }
 
     /**
@@ -51,7 +51,7 @@ class PodioOrganization extends PodioObject
      */
     public static function get_all(PodioClient $podio_client)
     {
-        return self::listing($podio_client, $podio_client->get("/org/"));
+        return self::listing($podio_client->get("/org/"));
     }
 
     /**
@@ -59,7 +59,7 @@ class PodioOrganization extends PodioObject
      */
     public static function create(PodioClient $podio_client, $attributes = array())
     {
-        return self::member($podio_client, $podio_client->post("/org/", $attributes));
+        return self::member($podio_client->post("/org/", $attributes));
     }
 
     /**
@@ -75,7 +75,7 @@ class PodioOrganization extends PodioObject
      */
     public static function get_all_admins(PodioClient $podio_client, $org_id)
     {
-        return PodioUser::listing($podio_client, $podio_client->get("/org/{$org_id}/admin/"));
+        return PodioUser::listing($podio_client->get("/org/{$org_id}/admin/"));
     }
 
     /**
