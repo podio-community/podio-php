@@ -1,4 +1,12 @@
-[7.0.0](#v7.0.0) / [unreleased]
+[7.0.2](#v7.0.2) / [UNRELEASED]
+==================
+* Bugfix: Correct handling of `null` values for date/datetime fields. #244
+
+[7.0.1](#v7.0.1) / [2023-11-07]
+==================
+* Bugfix: Require guzzlehttp/psr7 >= 1.7.0 for Util class by @toby-griffiths in #243.
+
+[7.0.0](#v7.0.0) / [2023-08-22]
 ==================
 * BREAKING: Replace static `Podio` client with instantiable `PodioClient` class. #228
 * BREAKING: Replace `save` (and `completed`/`incompleted`/`destroy` on `PodioTask`) methods on instances with static methods #234

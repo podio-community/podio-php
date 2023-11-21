@@ -99,7 +99,7 @@ class PodioObject
         }
         if ($this->has_attribute($name)) {
             // Create DateTime object if necessary
-            if ($this->has_property($name) && ($this->__properties[$name]['type'] == 'datetime' || $this->__properties[$name]['type'] == 'date')) {
+            if ($this->has_property($name) && ($this->__properties[$name]['type'] == 'datetime' || $this->__properties[$name]['type'] == 'date') && !empty($this->__attributes[$name])) {
                 $tz = new DateTimeZone('UTC');
                 return DateTime::createFromFormat($this->date_format_for_property($name), $this->__attributes[$name], $tz);
             }
