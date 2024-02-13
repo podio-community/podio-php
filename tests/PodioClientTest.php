@@ -4,6 +4,7 @@ namespace Podio\Tests;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Utils;
 use PodioClient;
 use PHPUnit\Framework\TestCase;
 
@@ -56,6 +57,58 @@ class PodioClientTest extends TestCase
         $client->auth_type = ['type' => 'password'];
 
         $client->clear_authentication();
+    }
+
+    public function test_throw_exception_on_400()
+    {
+        $client = new PodioClient('test-client', 'test-secret');
+        $httpClientMock = $this->createMock(Client::class);
+        $httpClientMock->method('send')->willReturn(new Response(400, [], Utils::streamFor('{"error": "some reason"}')));
+        $client->http_client = $httpClientMock;
+
+        $this->expectException(\PodioBadRequestError::class);
+        $client->get('/test');
+    }
+
+    public function test_throw_exception_on_400_when_return_raw_as_resource_only_is_true()
+    {
+        $client = new PodioClient('test-client-id', 'test-client-secret');
+        $httpClientMock = $this->createMock(Client::class);
+        $httpClientMock->method('send')->willReturn(new Response(400, [], Utils::streamFor('{"error": "some reason"}')));
+        $client->http_client = $httpClientMock;
+
+        $this->expectException(\PodioBadRequestError::class);
+        $client->get('/test', [], ['return_raw_as_resource_only' => true]);
+    }
+
+    public function test_throw_exception_with_body_on_500()
+    {
+        $client = new PodioClient('test-client-id', 'test-client-secret');
+        $httpClientMock = $this->createMock(Client::class);
+        $httpClientMock->method('send')->willReturn(new Response(500, [], Utils::streamFor('{"error": "some reason"}')));
+        $client->http_client = $httpClientMock;
+
+        try {
+            $client->get('/test');
+            $this->fail('Exception not thrown');
+        } catch (\PodioServerError $e) {
+            $this->assertEquals(['error' => 'some reason'], $e->body);
+        }
+    }
+
+    public function test_throw_exception_with_body_on_500_when_return_raw_as_resource_only_is_true()
+    {
+        $client = new PodioClient('test-client-id', 'test-client-secret');
+        $httpClientMock = $this->createMock(Client::class);
+        $httpClientMock->method('send')->willReturn(new Response(500, [], Utils::streamFor('{"error": "some reason"}')));
+        $client->http_client = $httpClientMock;
+
+        try {
+            $client->get('/test', [], ['return_raw_as_resource_only' => true]);
+            $this->fail('Exception not thrown');
+        } catch (\PodioServerError $e) {
+            $this->assertEquals(['error' => 'some reason'], $e->body);
+        }
     }
 }
 
