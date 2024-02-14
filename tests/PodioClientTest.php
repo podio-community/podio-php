@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Utils;
 use PodioClient;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 class PodioClientTest extends TestCase
 {
@@ -57,6 +58,24 @@ class PodioClientTest extends TestCase
         $client->auth_type = ['type' => 'password'];
 
         $client->clear_authentication();
+    }
+
+    public function test_should_retry_after_401_and_token_refresh_and_return_stream()
+    {
+        $httpClientMock = $this->createMock(Client::class);
+        $httpClientMock->expects($this->exactly(3))->method('send')->willReturnOnConsecutiveCalls(
+            new Response(401, [], Utils::streamFor('{"error_description": "expired_token"}')),
+            new Response(200, [], Utils::streamFor('{"access_token": "new-token", "refresh_token": "new-refresh-token", "expires_in": 42000, "ref": "test-ref", "scope": "test-scope"}')),
+            new Response(200, [], Utils::streamFor('{"items": []}'))
+        );
+        $client = new PodioClient('test-client', 'test-secret');
+        $client->oauth = new \PodioOAuth('test-token', 'test-refresh-token');
+        $client->http_client = $httpClientMock;
+
+        $result = $client->request('GET', '/test', [], ['return_raw_as_resource_only' => true]);
+
+        $this->assertInstanceOf(StreamInterface::class, $result);
+        $this->assertEquals('{"items": []}', $result->getContents());
     }
 
     public function test_throw_exception_on_400()

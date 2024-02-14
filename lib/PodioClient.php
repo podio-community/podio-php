@@ -316,7 +316,7 @@ class PodioClient
                         // Access token is expired. Try to refresh it.
                         if ($this->refresh_access_token()) {
                             // Try the original request again.
-                            return $this->request($method, $original_url, $attributes);
+                            return $this->request($method, $original_url, $attributes, $options);
                         } else {
                             $this->clear_authentication();
                             throw new PodioAuthorizationError($body_str, $response->status, $url);
