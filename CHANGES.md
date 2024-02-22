@@ -1,6 +1,10 @@
-[7.0.3](#v7.0.2) / [UNRELEASED]
+[7.0.4](#v7.0.4) / [UNRELEASED]
 ==================
-* Bugfix: handle http errors correctly when using `return_raw_as_resource_only` to stream responses.
+* ...
+
+[7.0.3](#v7.0.3) / [2024-02-22]
+==================
+* Bugfix: handle http errors correctly when using `return_raw_as_resource_only` to stream responses. #246
 
 [7.0.2](#v7.0.2) / [2023-11-21]
 ==================
