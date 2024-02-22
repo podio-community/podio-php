@@ -1,4 +1,8 @@
-[7.0.2](#v7.0.2) / [UNRELEASED]
+[7.0.3](#v7.0.2) / [UNRELEASED]
+==================
+* Bugfix: handle http errors correctly when using `return_raw_as_resource_only` to stream responses.
+
+[7.0.2](#v7.0.2) / [2023-11-21]
 ==================
 * Bugfix: Correct handling of `null` values for date/datetime fields. #244
 

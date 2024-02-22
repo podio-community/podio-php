@@ -298,56 +298,58 @@ class PodioClient
                 return $response;
             case 400:
                 // invalid_grant_error or bad_request_error
-                $body = $response->json_body();
+                $body_str = $response->body ?? $http_response->getBody()->getContents();
+                $body = json_decode($body_str, true);
                 if (strstr($body['error'], 'invalid_grant')) {
                     // Reset access token & refresh_token
                     $this->clear_authentication();
-                    throw new PodioInvalidGrantError($response->body, $response->status, $url);
+                    throw new PodioInvalidGrantError($body_str, $response->status, $url);
                 } else {
-                    throw new PodioBadRequestError($response->body, $response->status, $url);
+                    throw new PodioBadRequestError($body_str, $response->status, $url);
                 }
             // no break
             case 401:
-                $body = $response->json_body();
+                $body_str = $response->body ?? $http_response->getBody()->getContents();
+                $body = json_decode($body_str, true);
                 if (strstr($body['error_description'], 'expired_token') || strstr($body['error'], 'invalid_token')) {
                     if ($this->oauth->refresh_token) {
                         // Access token is expired. Try to refresh it.
                         if ($this->refresh_access_token()) {
                             // Try the original request again.
-                            return $this->request($method, $original_url, $attributes);
+                            return $this->request($method, $original_url, $attributes, $options);
                         } else {
                             $this->clear_authentication();
-                            throw new PodioAuthorizationError($response->body, $response->status, $url);
+                            throw new PodioAuthorizationError($body_str, $response->status, $url);
                         }
                     } else {
                         // We have tried in vain to get a new access token. Log the user out.
                         $this->clear_authentication();
-                        throw new PodioAuthorizationError($response->body, $response->status, $url);
+                        throw new PodioAuthorizationError($body_str, $response->status, $url);
                     }
                 } elseif (strstr($body['error'], 'invalid_request') || strstr($body['error'], 'unauthorized')) {
                     // Access token is invalid.
                     $this->clear_authentication();
-                    throw new PodioAuthorizationError($response->body, $response->status, $url);
+                    throw new PodioAuthorizationError($body_str, $response->status, $url);
                 }
                 break;
             case 403:
-                throw new PodioForbiddenError($response->body, $response->status, $url);
+                throw new PodioForbiddenError($response->body ?? $http_response->getBody()->getContents(), $response->status, $url);
             case 404:
-                throw new PodioNotFoundError($response->body, $response->status, $url);
+                throw new PodioNotFoundError($response->body ?? $http_response->getBody()->getContents(), $response->status, $url);
             case 409:
-                throw new PodioConflictError($response->body, $response->status, $url);
+                throw new PodioConflictError($response->body ?? $http_response->getBody()->getContents(), $response->status, $url);
             case 410:
-                throw new PodioGoneError($response->body, $response->status, $url);
+                throw new PodioGoneError($response->body ?? $http_response->getBody()->getContents(), $response->status, $url);
             case 420:
-                throw new PodioRateLimitError($response->body, $response->status, $url);
+                throw new PodioRateLimitError($response->body ?? $http_response->getBody()->getContents(), $response->status, $url);
             case 500:
-                throw new PodioServerError($response->body, $response->status, $url);
+                throw new PodioServerError($response->body ?? $http_response->getBody()->getContents(), $response->status, $url);
             case 502:
             case 503:
             case 504:
-                throw new PodioUnavailableError($response->body, $response->status, $url);
+                throw new PodioUnavailableError($response->body ?? $http_response->getBody()->getContents(), $response->status, $url);
             default:
-                throw new PodioError($response->body, $response->status, $url);
+                throw new PodioError($response->body ?? $http_response->getBody()->getContents(), $response->status, $url);
         }
         return false;
     }
